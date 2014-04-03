@@ -1,4 +1,4 @@
-package com.oakcity.nicknack.demo;
+package com.oakcity.nicknack;
 
 import java.util.ArrayList;
 import java.util.Collections;

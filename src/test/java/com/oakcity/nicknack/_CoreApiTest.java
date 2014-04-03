@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.oakcity.nicknack.attributes.OnOffPositionAttributeDefinition;
-import com.oakcity.nicknack.demo.SwitchEventDefinition;
 import com.oakcity.nicknack.filters.EventFilterAndOperator;
 import com.oakcity.nicknack.filters.OnOffPositionAttributeFilter;
 
