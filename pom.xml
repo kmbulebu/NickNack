@@ -9,16 +9,25 @@
 
 	<url>https://github.com/kmbulebu/NickNack</url>
 	<inceptionYear>2014</inceptionYear>
+	<description>Event driven automation engine for the home.</description>
+	
 	<developers>
 		<developer>
 			<id>kmbulebu</id>
 		</developer>
 	</developers>
+	
 	<scm>
 		<connection>scm:git:https://github.com/kmbulebu/NickNack.git</connection>
 		<developerConnection>scm:git:ssh://github.com/NickNack.git</developerConnection>
 		<url>https://github.com/kmbulebu/NickNack</url>
 	</scm>
+	
+	<ciManagement>
+	    <url>https://travis-ci.org/kmbulebu/NickNack</url>
+	    <system>travis</system>
+	</ciManagement>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
