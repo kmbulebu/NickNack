@@ -1,9 +1,9 @@
-package com.oakcity.nicknack.filters;
+package com.oakcity.nicknack.events.filters;
 
-import com.oakcity.nicknack.AttributeFilter;
-import com.oakcity.nicknack.AttributeFilterSettings;
-import com.oakcity.nicknack.Event.AttributeDefinition;
-import com.oakcity.nicknack.Event.AttributeDefinition.Unit;
+import com.oakcity.nicknack.events.AttributeFilter;
+import com.oakcity.nicknack.events.AttributeFilterSettings;
+import com.oakcity.nicknack.events.Event.AttributeDefinition;
+import com.oakcity.nicknack.events.Event.AttributeDefinition.Unit;
 
 public class AttributeFilterSettingsImpl<U extends AttributeDefinition<V , ValueType>, V extends Unit<ValueType>,  ValueType> implements AttributeFilterSettings<ValueType> {
 	

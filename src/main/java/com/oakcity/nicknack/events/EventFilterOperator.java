@@ -1,8 +1,8 @@
-package com.oakcity.nicknack;
+package com.oakcity.nicknack.events;
 
 import java.util.List;
 
-import com.oakcity.nicknack.Event.EventDefinition;
+import com.oakcity.nicknack.events.Event.EventDefinition;
 
 /**
  * User created.

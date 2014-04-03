@@ -1,9 +1,10 @@
-package com.oakcity.nicknack;
+package com.oakcity.nicknack.events;
 
 import java.util.Comparator;
 import java.util.List;
 
-import com.oakcity.nicknack.Event.AttributeDefinition.Unit;
+import com.oakcity.nicknack.events.Event.AttributeDefinition.Unit;
+
 
 
 /**

@@ -1,4 +1,4 @@
-package com.oakcity.nicknack;
+package com.oakcity.nicknack.events;
 
 public interface AttributeFilterSettings<ValueType> {
 	

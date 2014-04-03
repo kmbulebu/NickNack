@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.oakcity.nicknack.Event;
-import com.oakcity.nicknack.Event.AttributeDefinition;
-import com.oakcity.nicknack.Event.EventDefinition;
-import com.oakcity.nicknack.attributes.OnOffPositionAttributeDefinition;
+import com.oakcity.nicknack.events.Event;
+import com.oakcity.nicknack.events.Event.AttributeDefinition;
+import com.oakcity.nicknack.events.Event.EventDefinition;
+import com.oakcity.nicknack.events.attributes.OnOffPositionAttributeDefinition;
 
 /**
  * Event generated when a switch is moved.

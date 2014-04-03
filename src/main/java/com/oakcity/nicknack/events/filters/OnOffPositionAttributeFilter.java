@@ -1,10 +1,10 @@
-package com.oakcity.nicknack.filters;
+package com.oakcity.nicknack.events.filters;
 
-import com.oakcity.nicknack.AttributeFilter;
-import com.oakcity.nicknack.AttributeFilterSettings;
-import com.oakcity.nicknack.Event.Attribute;
-import com.oakcity.nicknack.attributes.OnOffPositionAttributeDefinition;
-import com.oakcity.nicknack.units.BooleanUnit;
+import com.oakcity.nicknack.events.AttributeFilter;
+import com.oakcity.nicknack.events.AttributeFilterSettings;
+import com.oakcity.nicknack.events.Event.Attribute;
+import com.oakcity.nicknack.events.attributes.OnOffPositionAttributeDefinition;
+import com.oakcity.nicknack.events.attributes.units.BooleanUnit;
 
 public class OnOffPositionAttributeFilter implements AttributeFilter<OnOffPositionAttributeDefinition, BooleanUnit, Boolean> {
 

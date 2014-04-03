@@ -4,9 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.oakcity.nicknack.attributes.OnOffPositionAttributeDefinition;
-import com.oakcity.nicknack.filters.EventFilterAndOperator;
-import com.oakcity.nicknack.filters.OnOffPositionAttributeFilter;
+import com.oakcity.nicknack.events.AttributeFilterSettings;
+import com.oakcity.nicknack.events.Event;
+import com.oakcity.nicknack.events.attributes.OnOffPositionAttributeDefinition;
+import com.oakcity.nicknack.events.filters.EventFilterAndOperator;
+import com.oakcity.nicknack.events.filters.OnOffPositionAttributeFilter;
 
 public class _CoreApiTest {
 	

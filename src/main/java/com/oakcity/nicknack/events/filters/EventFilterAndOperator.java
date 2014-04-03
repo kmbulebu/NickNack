@@ -1,17 +1,17 @@
-package com.oakcity.nicknack.filters;
+package com.oakcity.nicknack.events.filters;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.oakcity.nicknack.AttributeFilter;
-import com.oakcity.nicknack.AttributeFilterSettings;
-import com.oakcity.nicknack.Event;
-import com.oakcity.nicknack.Event.Attribute;
-import com.oakcity.nicknack.Event.AttributeDefinition;
-import com.oakcity.nicknack.Event.EventDefinition;
-import com.oakcity.nicknack.EventFilterOperator;
+import com.oakcity.nicknack.events.AttributeFilter;
+import com.oakcity.nicknack.events.AttributeFilterSettings;
+import com.oakcity.nicknack.events.Event;
+import com.oakcity.nicknack.events.EventFilterOperator;
+import com.oakcity.nicknack.events.Event.Attribute;
+import com.oakcity.nicknack.events.Event.AttributeDefinition;
+import com.oakcity.nicknack.events.Event.EventDefinition;
 
 public class EventFilterAndOperator implements EventFilterOperator {
 	

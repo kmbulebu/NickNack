@@ -1,8 +1,8 @@
-package com.oakcity.nicknack.attributes;
+package com.oakcity.nicknack.events.attributes;
 
-import com.oakcity.nicknack.Event.Attribute;
-import com.oakcity.nicknack.Event.AttributeDefinition;
-import com.oakcity.nicknack.units.BooleanUnit;
+import com.oakcity.nicknack.events.Event.Attribute;
+import com.oakcity.nicknack.events.Event.AttributeDefinition;
+import com.oakcity.nicknack.events.attributes.units.BooleanUnit;
 
 /** 
  * Provided by device API

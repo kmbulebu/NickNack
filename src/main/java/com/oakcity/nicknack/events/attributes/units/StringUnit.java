@@ -1,6 +1,6 @@
-package com.oakcity.nicknack.units;
+package com.oakcity.nicknack.events.attributes.units;
 
-import com.oakcity.nicknack.Event.AttributeDefinition.Unit;
+import com.oakcity.nicknack.events.Event.AttributeDefinition.Unit;
 
 public class StringUnit implements Unit<String> {
 
