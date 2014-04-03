@@ -7,21 +7,33 @@
 
 	<artifactId>NickNack</artifactId>
 
+	<url>https://github.com/kmbulebu/NickNack</url>
+	<inceptionYear>2014</inceptionYear>
+	<developers>
+		<developer>
+			<id>kmbulebu</id>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:https://github.com/kmbulebu/NickNack.git</connection>
+		<developerConnection>scm:git:ssh://github.com/NickNack.git</developerConnection>
+		<url>https://github.com/kmbulebu/NickNack</url>
+	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-
 	<dependencies>
-		<dependency>
-			<groupId>com.oakcity.dsc</groupId>
-			<artifactId>dsc-it100-library</artifactId>
-			<version>0.1-SNAPSHOT</version>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.3.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.11</version>
+		    <scope>test</scope>
 		</dependency>
 	</dependencies>
 
