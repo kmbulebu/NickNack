@@ -1,8 +1,8 @@
 package com.oakcity.nicknack.events;
 
+import com.oakcity.nicknack.Unit;
 import com.oakcity.nicknack.events.Event.Attribute;
 import com.oakcity.nicknack.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.events.Event.AttributeDefinition.Unit;
 
 public interface AttributeFilter<AttributeType extends AttributeDefinition<UnitType, ValueType>, UnitType extends Unit<ValueType>, ValueType> {
 

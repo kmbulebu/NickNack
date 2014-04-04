@@ -1,9 +1,8 @@
 package com.oakcity.nicknack.events;
 
-import java.util.Comparator;
 import java.util.List;
 
-import com.oakcity.nicknack.events.Event.AttributeDefinition.Unit;
+import com.oakcity.nicknack.Unit;
 
 
 
@@ -46,20 +45,6 @@ public interface Event {
 		public String getDisplayValue(ValueType value);
 		
 		public UnitType getUnits();
-		
-		public interface Unit<ValueType> extends Comparator<ValueType> {
-			
-			public String getName();
-			
-			public Class<ValueType> getType();
-			
-			public ValueType getMin();
-			
-			public ValueType getMax();
-			
-			// Is this where we store acceptable ranges?
-			
-		}
 	}
 	
 	
