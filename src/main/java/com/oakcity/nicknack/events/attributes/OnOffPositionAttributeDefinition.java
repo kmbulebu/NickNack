@@ -4,6 +4,7 @@ import com.oakcity.nicknack.events.Event.Attribute;
 import com.oakcity.nicknack.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.events.attributes.units.BooleanUnit;
 
+
 /** 
  * Provided by device API
  * @author kmbulebu

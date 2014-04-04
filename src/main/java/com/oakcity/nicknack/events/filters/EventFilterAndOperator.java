@@ -8,10 +8,10 @@ import java.util.Map;
 import com.oakcity.nicknack.events.AttributeFilter;
 import com.oakcity.nicknack.events.AttributeFilterSettings;
 import com.oakcity.nicknack.events.Event;
-import com.oakcity.nicknack.events.EventFilterOperator;
 import com.oakcity.nicknack.events.Event.Attribute;
 import com.oakcity.nicknack.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.events.Event.EventDefinition;
+import com.oakcity.nicknack.events.EventFilterOperator;
 
 public class EventFilterAndOperator implements EventFilterOperator {
 	
