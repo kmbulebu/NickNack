@@ -6,6 +6,7 @@ import com.oakcity.nicknack.events.Event.Attribute;
 import com.oakcity.nicknack.events.attributes.OnOffPositionAttributeDefinition;
 import com.oakcity.nicknack.events.attributes.units.BooleanUnit;
 
+
 public class OnOffPositionAttributeFilter implements AttributeFilter<OnOffPositionAttributeDefinition, BooleanUnit, Boolean> {
 
 	@Override
@@ -40,7 +41,8 @@ public class OnOffPositionAttributeFilter implements AttributeFilter<OnOffPositi
 	@SuppressWarnings("unchecked")
 	@Override
 	public AttributeFilterSettings<Boolean> newFilterSettings() {
-		return new AttributeFilterSettingsImpl<OnOffPositionAttributeDefinition, BooleanUnit, Boolean>((Class<AttributeFilter<?, ?, Boolean>>) this.getClass());
+		final Class<? extends AttributeFilter<?, ?, Boolean>> theClass = this.getClass();
+		return new AttributeFilterSettingsImpl<OnOffPositionAttributeDefinition, BooleanUnit, Boolean>((Class<AttributeFilter<?, ?, Boolean>>) theClass);
 	}
 
 }
