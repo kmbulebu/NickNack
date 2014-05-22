@@ -1,6 +1,8 @@
 package com.oakcity.nicknack.events;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import com.oakcity.nicknack.Unit;
 
@@ -13,38 +15,34 @@ import com.oakcity.nicknack.Unit;
  */
 public interface Event {
 	
-	public List<Attribute<?,?>> getAttributes();
+	// Are we adequately tying Events to their definition?
+	
+	// Attribute definition to Attribute Value map.
+	public Map<AttributeDefinition, String> getAttributes();
 	
 	public EventDefinition getEventDefinition();
 	
 	public interface EventDefinition {
 		
+		public UUID getUUID();
+		
 		public String getName();
 		
 		// Group or 'parent'. The plugin or device that owns this.
 		
-		public List<AttributeDefinition<?, ?>> getAttributeDefinitions();
+		public List<AttributeDefinition> getAttributeDefinitions();
 		
-		public Event newInstance();
 	}
 	
-	public interface Attribute<UnitType extends Unit<ValueType>, ValueType> {
+	public interface AttributeDefinition {
 		
-		public AttributeDefinition<UnitType, ValueType> getAttributeDefinition();
-		
-		public ValueType getValue();
-
-	}
-	
-	public interface AttributeDefinition<UnitType extends Unit<ValueType>, ValueType> {
-		
-		public Attribute<UnitType, ValueType> newInstance(ValueType value);
+		public UUID getUUID();
 		
 		public String getName();
 		
-		public String getDisplayValue(ValueType value);
+		public Unit<?> getUnits();
 		
-		public UnitType getUnits();
+		public boolean isOptional();
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.oakcity.nicknack.events.attributes.units;
 
 import com.oakcity.nicknack.Unit;
+import com.oakcity.nicknack.events.filters.operators.Operator;
 
 public class BooleanUnit implements Unit<Boolean> {
 
@@ -27,6 +28,32 @@ public class BooleanUnit implements Unit<Boolean> {
 	@Override
 	public Boolean getMax() {
 		return Boolean.TRUE;
+	}
+
+	@Override
+	public Boolean parse(String input) {
+		return Boolean.parseBoolean(input);
+	}
+
+	@Override
+	public String toString(Boolean input) {
+		return input.toString();
+	}
+
+	@Override
+	public Boolean evaluate(Operator operator, Boolean operand1, Boolean operand2) {
+		switch(operator) {
+		case EQUALS:
+			return operand1.equals(operand2);
+		default:
+			return null;
+			//throw new UnsupportedOperationException(operator.getName() + " operator is not supported by " + getName());
+		}
+	}
+
+	@Override
+	public Operator[] getSupportedOperators() {
+		return new Operator[] {Operator.EQUALS};
 	} 
 
 }
