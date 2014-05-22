@@ -1,8 +1,8 @@
-package com.oakcity.nicknack.actions;
+package com.oakcity.nicknack.core.actions;
 
 import java.util.List;
 
-import com.oakcity.nicknack.Unit;
+import com.oakcity.nicknack.core.Unit;
 
 
 public interface Action {

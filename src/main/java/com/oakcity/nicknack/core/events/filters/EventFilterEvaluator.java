@@ -1,8 +1,8 @@
-package com.oakcity.nicknack.events.filters;
+package com.oakcity.nicknack.core.events.filters;
 
-import com.oakcity.nicknack.Unit;
-import com.oakcity.nicknack.events.Event;
-import com.oakcity.nicknack.events.filters.EventFilter.AttributeFilter;
+import com.oakcity.nicknack.core.Unit;
+import com.oakcity.nicknack.core.events.Event;
+import com.oakcity.nicknack.core.events.filters.EventFilter.AttributeFilter;
 
 public class EventFilterEvaluator {
 	

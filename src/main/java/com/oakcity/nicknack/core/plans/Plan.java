@@ -1,10 +1,10 @@
-package com.oakcity.nicknack.plans;
+package com.oakcity.nicknack.core.plans;
 
 import java.util.List;
 import java.util.UUID;
 
-import com.oakcity.nicknack.actions.Action;
-import com.oakcity.nicknack.events.filters.EventFilter;
+import com.oakcity.nicknack.core.actions.Action;
+import com.oakcity.nicknack.core.events.filters.EventFilter;
 
 public interface Plan {
 	

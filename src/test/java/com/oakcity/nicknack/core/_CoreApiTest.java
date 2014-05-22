@@ -1,4 +1,4 @@
-package com.oakcity.nicknack;
+package com.oakcity.nicknack.core;
 
 import static org.junit.Assert.*;
 
@@ -10,15 +10,15 @@ import java.util.UUID;
 
 import org.junit.Test;
 
-import com.oakcity.nicknack.SwitchChangeEvent.SwitchPositionAttribute;
-import com.oakcity.nicknack.actions.Action;
-import com.oakcity.nicknack.events.Event;
-import com.oakcity.nicknack.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.events.Event.EventDefinition;
-import com.oakcity.nicknack.events.filters.EventFilter;
-import com.oakcity.nicknack.events.filters.EventFilterEvaluator;
-import com.oakcity.nicknack.events.filters.operators.Operator;
-import com.oakcity.nicknack.plans.Plan;
+import com.oakcity.nicknack.core.SwitchChangeEvent.SwitchPositionAttribute;
+import com.oakcity.nicknack.core.actions.Action;
+import com.oakcity.nicknack.core.events.Event;
+import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
+import com.oakcity.nicknack.core.events.Event.EventDefinition;
+import com.oakcity.nicknack.core.events.filters.EventFilter;
+import com.oakcity.nicknack.core.events.filters.EventFilterEvaluator;
+import com.oakcity.nicknack.core.events.filters.operators.Operator;
+import com.oakcity.nicknack.core.plans.Plan;
 
 public class _CoreApiTest {
 	

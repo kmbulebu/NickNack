@@ -1,8 +1,8 @@
-package com.oakcity.nicknack;
+package com.oakcity.nicknack.core;
 
 import java.util.Comparator;
 
-import com.oakcity.nicknack.events.filters.operators.Operator;
+import com.oakcity.nicknack.core.events.filters.operators.Operator;
 
 public interface Unit<ValueType> extends Comparator<ValueType> {
 	

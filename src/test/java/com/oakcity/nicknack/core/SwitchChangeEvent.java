@@ -1,12 +1,12 @@
-package com.oakcity.nicknack;
+package com.oakcity.nicknack.core;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import com.oakcity.nicknack.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.events.Event.EventDefinition;
-import com.oakcity.nicknack.events.attributes.units.BooleanUnit;
+import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
+import com.oakcity.nicknack.core.events.Event.EventDefinition;
+import com.oakcity.nicknack.core.events.attributes.units.BooleanUnit;
 
 public class SwitchChangeEvent implements EventDefinition {
 	

@@ -1,7 +1,7 @@
-package com.oakcity.nicknack.events.attributes.units;
+package com.oakcity.nicknack.core.events.attributes.units;
 
-import com.oakcity.nicknack.Unit;
-import com.oakcity.nicknack.events.filters.operators.Operator;
+import com.oakcity.nicknack.core.Unit;
+import com.oakcity.nicknack.core.events.filters.operators.Operator;
 
 public class StringUnit implements Unit<String> {
 

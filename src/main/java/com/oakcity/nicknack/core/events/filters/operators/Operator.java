@@ -1,4 +1,4 @@
-package com.oakcity.nicknack.events.filters.operators;
+package com.oakcity.nicknack.core.events.filters.operators;
 
 
 public enum Operator {

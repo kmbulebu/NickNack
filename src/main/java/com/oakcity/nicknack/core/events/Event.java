@@ -1,10 +1,10 @@
-package com.oakcity.nicknack.events;
+package com.oakcity.nicknack.core.events;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.oakcity.nicknack.Unit;
+import com.oakcity.nicknack.core.Unit;
 
 
 

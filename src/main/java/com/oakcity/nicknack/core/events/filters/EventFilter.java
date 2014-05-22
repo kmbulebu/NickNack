@@ -1,10 +1,10 @@
-package com.oakcity.nicknack.events.filters;
+package com.oakcity.nicknack.core.events.filters;
 
 import java.util.List;
 
-import com.oakcity.nicknack.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.events.Event.EventDefinition;
-import com.oakcity.nicknack.events.filters.operators.Operator;
+import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
+import com.oakcity.nicknack.core.events.Event.EventDefinition;
+import com.oakcity.nicknack.core.events.filters.operators.Operator;
 
 
 public interface EventFilter {
