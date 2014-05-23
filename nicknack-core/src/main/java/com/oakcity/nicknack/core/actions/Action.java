@@ -1,6 +1,7 @@
 package com.oakcity.nicknack.core.actions;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.oakcity.nicknack.core.Unit;
 
@@ -8,6 +9,8 @@ import com.oakcity.nicknack.core.Unit;
 public interface Action {
 	
 	public interface ActionDefinition {
+		
+		public UUID getUUID();
 		
 		public String getName();
 		

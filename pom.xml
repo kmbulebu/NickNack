@@ -35,6 +35,7 @@
 	<modules>
 		<module>nicknack-core</module>
 		<module>nicknack-server</module>
+		<module>example-provider</module>
 	</modules>
 
 	<dependencyManagement>
