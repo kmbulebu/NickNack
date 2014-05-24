@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="debug">
+    <Properties>
+		<Property name="consoleLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level %logger %msg %location [%mdc] %throwable%n</Property>
+	</Properties>
+	<appenders>
+		<Console name="Console" target="SYSTEM_ERR">
+			<PatternLayout pattern="${consoleLogPattern}" />
+		</Console>
+	</appenders>
+	<loggers>
+	    <!-- Error log -->
+		<root level="all" includeLocation="true" additivity="true">
+			<appender-ref ref="Console" />
+		</root>	
+	</loggers>
+</configuration>
