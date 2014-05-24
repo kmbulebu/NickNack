@@ -8,6 +8,10 @@ import com.oakcity.nicknack.core.events.Event.EventDefinition;
 
 public interface Provider {
 	
+	public String getName();
+	
+	public int getVersion();
+	
 	public List<Unit<?>> getUnits();
 	
 	//public List<AttributeDefinition> getAttributeDefinitions();

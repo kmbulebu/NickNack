@@ -38,4 +38,16 @@ public class ExampleProvider implements Provider {
 		return Collections.emptyList();
 	}
 
+
+	@Override
+	public String getName() {
+		return "Example Light Bulb and Switch Provider";
+	}
+
+
+	@Override
+	public int getVersion() {
+		return 1;
+	}
+
 }
