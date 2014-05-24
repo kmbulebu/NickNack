@@ -12,7 +12,7 @@ public class BooleanUnit implements Unit<Boolean> {
 
 	@Override
 	public String getName() {
-		return "";
+		return "True/False";
 	}
 
 	@Override

@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 import com.oakcity.nicknack.server.AppConfiguration;
+import com.oakcity.nicknack.server.model.AttributeDefinitionResource;
 import com.oakcity.nicknack.server.model.EventDefinitionResource;
 import com.oakcity.nicknack.server.services.EventDefinitionService;
 
@@ -39,6 +41,8 @@ public class EventDefinitionsController {
 	@Autowired
 	private EntityLinks entityLinks;
 	
+	// TODO Refactor HATEOAS link building. Time for ResourceAssembler or moving this stuff up the service. Although moving it up will create a circular dep.
+	
 	@RequestMapping(value="")
 	public Resources<EventDefinitionResource> getEventDefinitions() {
 		if (LOG.isTraceEnabled()) {
@@ -50,8 +54,9 @@ public class EventDefinitionsController {
 		final List<EventDefinitionResource> eventDefinitionResources = new ArrayList<EventDefinitionResource>(eventDefinitions.size());
 		
 		for (EventDefinition eventDefinition : eventDefinitions) {
-			EventDefinitionResource resource = new EventDefinitionResource(eventDefinition);
+			final EventDefinitionResource resource = new EventDefinitionResource(eventDefinition);
 			resource.add(linkTo(methodOn(EventDefinitionsController.class).getEventDefinition(eventDefinition.getUUID())).withSelfRel());
+			resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitions(eventDefinition.getUUID())).withRel("attributeDefinitions"));
 			eventDefinitionResources.add(resource);
 		}
 		
@@ -74,9 +79,63 @@ public class EventDefinitionsController {
 		final EventDefinition eventDefinition = eventDefinitionService.getEventDefinition(uuid);
 		final EventDefinitionResource resource = new EventDefinitionResource(eventDefinition);
 		resource.add(linkTo(methodOn(EventDefinitionsController.class).getEventDefinition(eventDefinition.getUUID())).withSelfRel());
+		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitions(uuid)).withRel("attributeDefinitions"));
+		
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resource);
+		}
+		return resource;
+	}
+	
+	@RequestMapping(value="/{eventUuid}/attributeDefinitions")
+	public Resources<AttributeDefinitionResource> getAttributeDefinitions(@PathVariable UUID eventUuid) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(eventUuid);
+		}
+		
+		final EventDefinition eventDefinition = eventDefinitionService.getEventDefinition(eventUuid);
+		final List<AttributeDefinitionResource> attributeDefinitionResources = new ArrayList<AttributeDefinitionResource>(eventDefinition.getAttributeDefinitions().size());
+		
+		
+		for (AttributeDefinition attributeDefinition : eventDefinition.getAttributeDefinitions()) {
+			final AttributeDefinitionResource resource = new AttributeDefinitionResource(attributeDefinition);
+			resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinition(eventDefinition.getUUID(), attributeDefinition.getUUID())).withSelfRel());
+	
+			attributeDefinitionResources.add(resource);
+		}
+		
+		final Resources<AttributeDefinitionResource> resources = new Resources<AttributeDefinitionResource>(attributeDefinitionResources);
+		resources.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitions(eventUuid)).withSelfRel());
+	
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resources);	
+		}
+		return resources;
+	}
+	
+	@RequestMapping(value="/{eventUuid}/attributeDefinitions/{uuid}")
+	public AttributeDefinitionResource getAttributeDefinition(@PathVariable UUID eventUuid, @PathVariable UUID uuid) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(eventUuid, uuid);
+		}
+		
+		final EventDefinition eventDefinition = eventDefinitionService.getEventDefinition(eventUuid);
+		
+		AttributeDefinition attributeDefinition = null;
+		
+		for (AttributeDefinition anAttributeDefinition : eventDefinition.getAttributeDefinitions()) {
+			if (uuid.equals(anAttributeDefinition.getUUID())) {
+				attributeDefinition = anAttributeDefinition;
+				break;
+			}
+		}
+		
+		final AttributeDefinitionResource resource = new AttributeDefinitionResource(attributeDefinition);
+		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinition(eventDefinition.getUUID(), attributeDefinition.getUUID())).withSelfRel());
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resource);	
 		}
 		return resource;
 	}

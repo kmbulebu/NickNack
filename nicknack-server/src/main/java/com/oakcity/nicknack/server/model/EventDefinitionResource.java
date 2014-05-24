@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.hateoas.ResourceSupport;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 
@@ -27,6 +28,7 @@ public class EventDefinitionResource extends ResourceSupport implements EventDef
 	}
 
 	@Override
+	@JsonIgnore
 	public List<AttributeDefinition> getAttributeDefinitions() {
 		return eventDefinition.getAttributeDefinitions();
 	}

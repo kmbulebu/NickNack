@@ -12,7 +12,7 @@ public class StringUnit implements Unit<String> {
 
 	@Override
 	public String getName() {
-		return "";
+		return "Text";
 	}
 
 	@Override
