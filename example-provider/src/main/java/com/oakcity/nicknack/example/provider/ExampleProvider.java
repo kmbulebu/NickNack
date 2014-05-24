@@ -12,12 +12,15 @@ import com.oakcity.nicknack.core.providers.Provider;
 public class ExampleProvider implements Provider {
 	
 	private final List<EventDefinition> eventDefinitions;
+	private final List<ActionDefinition> actionDefinitions;
 	
 	public ExampleProvider () {
 		eventDefinitions = new ArrayList<EventDefinition>();
+		actionDefinitions = new ArrayList<ActionDefinition>();
 		
 		// Switch change event.
 		eventDefinitions.add(new SwitchChangeEventDefinition());
+		actionDefinitions.add(new LightBulbActionDefinition());
 	}
 	
 
@@ -29,13 +32,12 @@ public class ExampleProvider implements Provider {
 
 	@Override
 	public List<EventDefinition> getEventDefinitions() {
-		return eventDefinitions;
+		return Collections.unmodifiableList(eventDefinitions);
 	}
 
 	@Override
 	public List<ActionDefinition> getActionDefinitions() {
-		// Does not provide any actions.
-		return Collections.emptyList();
+		return Collections.unmodifiableList(actionDefinitions);
 	}
 
 
