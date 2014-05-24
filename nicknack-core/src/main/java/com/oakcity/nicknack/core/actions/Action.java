@@ -14,29 +14,27 @@ public interface Action {
 		
 		public String getName();
 		
-		public List<ParameterDefinition<?, ?>> getParameterDefinitions();
-		
-		public Action newInstance();
+		public List<ParameterDefinition> getParameterDefinitions();
 		
 	}
 	
 	public interface Parameter<UnitType extends Unit<ValueType>, ValueType> {
 		
-		public ParameterDefinition<UnitType, ValueType> getParameterDefinition();
+		//public ParameterDefinition<UnitType, ValueType> getParameterDefinition();
 		
 		public ValueType getValue();
 
 	}
 	
-	public interface ParameterDefinition<UnitType extends Unit<ValueType>, ValueType> {
+	public interface ParameterDefinition {
 		
-		public Parameter<UnitType, ValueType> newInstance(ValueType value);
+		public UUID getUUID();
 		
 		public String getName();
 		
-		public String getDisplayValue(ValueType value);
+		public Unit<?> getUnits();
 		
-		public UnitType getUnits();
+		public boolean isRequired();
 
 	}
 
