@@ -1,37 +1,106 @@
 package com.oakcity.nicknack.server.services.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.oakcity.nicknack.core.events.BasicAttributeDefinition;
-import com.oakcity.nicknack.core.events.BasicEventDefinition;
+import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
-import com.oakcity.nicknack.core.events.attributes.units.BooleanUnit;
-import com.oakcity.nicknack.core.events.attributes.units.StringUnit;
+import com.oakcity.nicknack.core.providers.ProviderService;
+import com.oakcity.nicknack.server.AppConfiguration;
 import com.oakcity.nicknack.server.services.EventDefinitionService;
 
 
 @Service
 public class EventDefinitionServiceImpl implements EventDefinitionService {
+	
+	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
+	
+	@Autowired
+	private ProviderService providerService;
+
 
 	@Override
 	public List<EventDefinition> getEventDefinitions() {
-		List<EventDefinition> defs = new ArrayList<EventDefinition>();
-		defs.add(getEventDefinition(UUID.randomUUID()));
-		defs.add(getEventDefinition(UUID.randomUUID()));
-		defs.add(getEventDefinition(UUID.randomUUID()));
-		return defs;
+		if (LOG.isTraceEnabled()) {
+			LOG.entry();
+		}
+		
+		final Collection<EventDefinition> set = providerService.getEventDefinitions().values();
+		
+		// TODO Add exceptions for not found, etc.
+		
+		final List<EventDefinition> eventDefinitions = new ArrayList<EventDefinition>(set);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(eventDefinitions);
+		}
+		return eventDefinitions;
+		
 	}
 
 	@Override
 	public EventDefinition getEventDefinition(final UUID uuid) {
-		return new BasicEventDefinition(uuid, 
-				"Switch Changed", 
-				new BasicAttributeDefinition(UUID.fromString("320c68e0-d662-11e3-9c1a-0800200d9a66"), "position", new BooleanUnit(), false),
-				new BasicAttributeDefinition(UUID.fromString("920c68e0-d662-31e3-9c1a-0800200d9a66"), "macAddress", new StringUnit(), false));
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(uuid);
+		}
+		
+		final EventDefinition eventDefinition = providerService.getEventDefinitions().get(uuid);
+		
+		// TODO Add exceptions for not found, etc.
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(eventDefinition);
+		}
+		return eventDefinition;
+	}
+	
+	@Override
+	public List<AttributeDefinition> getAttributeDefinitions(final UUID eventUUID) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(eventUUID);
+		}
+		
+		final EventDefinition eventDefinition = getEventDefinition(eventUUID);
+				
+		// TODO Add exceptions for not found, etc.
+		
+		final List<AttributeDefinition> attributeDefinitions = Collections.unmodifiableList(eventDefinition.getAttributeDefinitions());
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(attributeDefinitions);
+		}
+		return attributeDefinitions;
+	}
+	
+	@Override
+	public AttributeDefinition getAttributeDefinition(final UUID eventUUID, final UUID uuid) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(eventUUID, uuid);
+		}
+		
+		final List<AttributeDefinition> attributeDefinitions = getAttributeDefinitions(eventUUID);
+		
+		AttributeDefinition attributeDefinition = null;
+		
+		for (AttributeDefinition anAttributeDefinition : attributeDefinitions) {
+			if (uuid.equals(anAttributeDefinition.getUUID())) {
+				attributeDefinition = anAttributeDefinition;
+				break;
+			}
+		}
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(attributeDefinition);
+		}
+		return attributeDefinition;
 	}
 
 }

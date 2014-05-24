@@ -94,13 +94,13 @@ public class EventDefinitionsController {
 			LOG.entry(eventUuid);
 		}
 		
-		final EventDefinition eventDefinition = eventDefinitionService.getEventDefinition(eventUuid);
-		final List<AttributeDefinitionResource> attributeDefinitionResources = new ArrayList<AttributeDefinitionResource>(eventDefinition.getAttributeDefinitions().size());
+		final List<AttributeDefinition> attributeDefinitions = eventDefinitionService.getAttributeDefinitions(eventUuid);
+		final List<AttributeDefinitionResource> attributeDefinitionResources = new ArrayList<AttributeDefinitionResource>(attributeDefinitions.size());
 		
 		
-		for (AttributeDefinition attributeDefinition : eventDefinition.getAttributeDefinitions()) {
+		for (AttributeDefinition attributeDefinition : attributeDefinitions) {
 			final AttributeDefinitionResource resource = new AttributeDefinitionResource(attributeDefinition);
-			resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinition(eventDefinition.getUUID(), attributeDefinition.getUUID())).withSelfRel());
+			resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinition(eventUuid, attributeDefinition.getUUID())).withSelfRel());
 	
 			attributeDefinitionResources.add(resource);
 		}
@@ -120,19 +120,10 @@ public class EventDefinitionsController {
 			LOG.entry(eventUuid, uuid);
 		}
 		
-		final EventDefinition eventDefinition = eventDefinitionService.getEventDefinition(eventUuid);
-		
-		AttributeDefinition attributeDefinition = null;
-		
-		for (AttributeDefinition anAttributeDefinition : eventDefinition.getAttributeDefinitions()) {
-			if (uuid.equals(anAttributeDefinition.getUUID())) {
-				attributeDefinition = anAttributeDefinition;
-				break;
-			}
-		}
-		
+		final AttributeDefinition attributeDefinition = eventDefinitionService.getAttributeDefinition(eventUuid, uuid);
+
 		final AttributeDefinitionResource resource = new AttributeDefinitionResource(attributeDefinition);
-		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinition(eventDefinition.getUUID(), attributeDefinition.getUUID())).withSelfRel());
+		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinition(eventUuid, attributeDefinition.getUUID())).withSelfRel());
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resource);	
