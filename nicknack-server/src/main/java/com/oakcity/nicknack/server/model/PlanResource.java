@@ -8,10 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 import org.springframework.hateoas.ResourceSupport;
 
 import com.oakcity.nicknack.core.actions.Action;
@@ -32,7 +32,8 @@ public class PlanResource extends ResourceSupport implements Plan {
 	@OneToMany(targetEntity=EventFilterResource.class)
 	private List<EventFilter> eventFilters = new ArrayList<EventFilter>();
 	
-	//private ActionResource action;
+	@OneToOne(targetEntity=ActionResource.class)
+	private Action action;
 
 	@Override
 	public UUID getUUID() {
@@ -51,8 +52,7 @@ public class PlanResource extends ResourceSupport implements Plan {
 
 	@Override
 	public Action getAction() {
-		//return action;
-		return null;
+		return action;
 	}
 
 	public void setUuid(UUID uuid) {
@@ -67,10 +67,10 @@ public class PlanResource extends ResourceSupport implements Plan {
 		this.eventFilters = eventFilters;
 	}
 
-	/*
+	
 	public void setAction(Action action) {
 		this.action = action;
-	}*/
+	}
 	
 	
 
