@@ -11,7 +11,7 @@ public interface Plan {
 	public UUID getUUID();
 	
 	// Needed? We can probably generate a good name.
-	public String name();
+	public String getName();
 	
 	public List<EventFilter> getEventFilters();
 	

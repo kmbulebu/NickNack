@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.hateoas.ResourceSupport;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.events.filters.EventFilter;
 import com.oakcity.nicknack.core.plans.Plan;
@@ -30,9 +31,11 @@ public class PlanResource extends ResourceSupport implements Plan {
 	private String name;
 	
 	@OneToMany(targetEntity=EventFilterResource.class)
+	@JsonIgnore
 	private List<EventFilter> eventFilters = new ArrayList<EventFilter>();
 	
 	@OneToOne(targetEntity=ActionResource.class)
+	@JsonIgnore
 	private Action action;
 
 	@Override
@@ -41,7 +44,7 @@ public class PlanResource extends ResourceSupport implements Plan {
 	}
 
 	@Override
-	public String name() {
+	public String getName() {
 		return name;
 	}
 
@@ -71,6 +74,8 @@ public class PlanResource extends ResourceSupport implements Plan {
 	public void setAction(Action action) {
 		this.action = action;
 	}
+
+
 	
 	
 
