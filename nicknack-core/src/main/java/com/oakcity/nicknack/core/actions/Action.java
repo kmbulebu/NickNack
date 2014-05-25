@@ -8,6 +8,11 @@ import com.oakcity.nicknack.core.Unit;
 
 public interface Action {
 	
+	public UUID getAppliesToActionDefinition();
+	
+	// Need to fulfill all the parameters specified in parameter definition.
+	public List<Parameter> getParameters();
+	
 	public interface ActionDefinition {
 		
 		public UUID getUUID();
@@ -18,11 +23,11 @@ public interface Action {
 		
 	}
 	
-	public interface Parameter<UnitType extends Unit<ValueType>, ValueType> {
+	public interface Parameter {
 		
-		//public ParameterDefinition<UnitType, ValueType> getParameterDefinition();
+		public UUID getAppliesToParameterDefinition();
 		
-		public ValueType getValue();
+		public String getValue();
 
 	}
 	
