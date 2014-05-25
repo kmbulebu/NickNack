@@ -18,7 +18,7 @@ public interface Event {
 	// Are we adequately tying Events to their definition?
 	
 	// Attribute definition to Attribute Value map.
-	public Map<AttributeDefinition, String> getAttributes();
+	public Map<UUID, String> getAttributes();
 	
 	public EventDefinition getEventDefinition();
 	

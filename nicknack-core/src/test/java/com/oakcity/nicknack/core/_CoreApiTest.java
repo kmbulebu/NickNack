@@ -50,8 +50,9 @@ public class _CoreApiTest {
 					}
 					
 					@Override
-					public AttributeDefinition getAppliesTo() {
-						return new SwitchPositionAttribute();
+					public UUID getAppliesToAttributeDefinition() {
+						// TODO Clean up all these unnecessary attribute instantiations. A by-product of refactoring.
+						return new SwitchPositionAttribute().getUUID();
 					}
 					
 				};
@@ -59,8 +60,8 @@ public class _CoreApiTest {
 			}
 
 			@Override
-			public EventDefinition getAppliesTo() {
-				return new SwitchChangeEvent();
+			public UUID getAppliesToEventDefinition() {
+				return new SwitchChangeEvent().getUUID();
 			}
 			
 		};
@@ -98,9 +99,9 @@ public class _CoreApiTest {
 		Event switchOnEvent = new Event() {
 
 			@Override
-			public Map<AttributeDefinition, String> getAttributes() {
-				Map<AttributeDefinition, String> attributes = new HashMap<AttributeDefinition, String>();
-				attributes.put(new SwitchPositionAttribute(), "true");
+			public Map<UUID, String> getAttributes() {
+				Map<UUID, String> attributes = new HashMap<UUID, String>();
+				attributes.put(new SwitchPositionAttribute().getUUID(), "true");
 				return attributes;
 			}
 
@@ -114,9 +115,9 @@ public class _CoreApiTest {
 		Event switchOffEvent = new Event() {
 
 			@Override
-			public Map<AttributeDefinition, String> getAttributes() {
-				Map<AttributeDefinition, String> attributes = new HashMap<AttributeDefinition, String>();
-				attributes.put(new SwitchPositionAttribute(), "false");
+			public Map<UUID, String> getAttributes() {
+				Map<UUID, String> attributes = new HashMap<UUID, String>();
+				attributes.put(new SwitchPositionAttribute().getUUID(), "false");
 				return attributes;
 			}
 
