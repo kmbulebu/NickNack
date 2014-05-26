@@ -7,11 +7,14 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.hateoas.ResourceSupport;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.oakcity.nicknack.core.events.filters.EventFilter;
 import com.oakcity.nicknack.core.events.filters.EventFilter.AttributeFilter;
 import com.oakcity.nicknack.core.events.filters.operators.Operator;
 
@@ -30,6 +33,10 @@ public class AttributeFilterResource extends ResourceSupport implements Attribut
 	private Operator operator;
 	
 	private String operand;
+	
+	@ManyToOne(targetEntity=EventFilterResource.class)
+	@JsonIgnore
+	private EventFilter eventFilter;
 
 	@Override
 	public UUID getAppliesToAttributeDefinition() {
@@ -45,5 +52,35 @@ public class AttributeFilterResource extends ResourceSupport implements Attribut
 	public String getOperand() {
 		return operand;
 	}
+
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
+	}
+
+	public EventFilter getEventFilter() {
+		return eventFilter;
+	}
+
+	public void setEventFilter(EventFilter eventFilter) {
+		this.eventFilter = eventFilter;
+	}
+
+	public void setAppliesToAttributeDefinition(UUID appliesToAttributeDefinition) {
+		this.appliesToAttributeDefinition = appliesToAttributeDefinition;
+	}
+
+	public void setOperator(Operator operator) {
+		this.operator = operator;
+	}
+
+	public void setOperand(String operand) {
+		this.operand = operand;
+	}
+	
+	
 
 }

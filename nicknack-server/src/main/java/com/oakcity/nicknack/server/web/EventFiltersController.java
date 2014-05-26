@@ -106,6 +106,8 @@ public class EventFiltersController {
 	
 	private void addLinks(UUID planUuid, EventFilterResource resource) {
 		resource.add(linkTo(methodOn(EventFiltersController.class).getEventFilter(planUuid, resource.getUuid())).withSelfRel());
+		resource.add(linkTo(methodOn(AttributeFiltersController.class).getAttributeFilters(planUuid, resource.getUuid())).withRel("attributeFilters"));
+		
 	}
 	
 	private void addLinks(UUID planUuid, Resources<EventFilterResource> resources) {
