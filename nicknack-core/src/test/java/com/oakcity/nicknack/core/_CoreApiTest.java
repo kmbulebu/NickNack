@@ -77,7 +77,7 @@ public class _CoreApiTest {
 			}
 
 			@Override
-			public String name() {
+			public String getName() {
 				return "My Plan";
 			}
 
