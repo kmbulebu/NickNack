@@ -87,7 +87,7 @@ public class _CoreApiTest {
 			}
 
 			@Override
-			public Action getAction() {
+			public List<Action> getActions() {
 				return null; // Not yet implemented.
 			}
 			

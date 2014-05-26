@@ -1,5 +1,8 @@
 package com.oakcity.nicknack.server.web;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,8 +25,6 @@ import com.oakcity.nicknack.server.AppConfiguration;
 import com.oakcity.nicknack.server.model.AttributeDefinitionResource;
 import com.oakcity.nicknack.server.model.EventDefinitionResource;
 import com.oakcity.nicknack.server.services.EventDefinitionService;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @RestController
 @RequestMapping(value="/eventDefinitions", produces={MediaType.APPLICATION_JSON_VALUE})

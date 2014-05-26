@@ -15,6 +15,6 @@ public interface Plan {
 	
 	public List<EventFilter> getEventFilters();
 	
-	public Action getAction();
+	public List<Action> getActions();
 
 }

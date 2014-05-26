@@ -21,18 +21,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.server.AppConfiguration;
-import com.oakcity.nicknack.server.model.PlanResource;
-import com.oakcity.nicknack.server.services.PlansService;
+import com.oakcity.nicknack.server.model.ActionResource;
+import com.oakcity.nicknack.server.services.ActionsService;
 
 @RestController
-@RequestMapping(value="/plans", produces={MediaType.APPLICATION_JSON_VALUE})
-@ExposesResourceFor(PlanResource.class)
-public class PlansController {
+@RequestMapping(value="/plans/{planUuid}/actions", produces={MediaType.APPLICATION_JSON_VALUE})
+@ExposesResourceFor(ActionResource.class)
+public class ActionsController {
 	
 	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
 	
 	@Autowired
-	private PlansService plansService;
+	private ActionsService actionsService;
 	
 	@Autowired
 	private RelProvider relProvider;
@@ -41,17 +41,17 @@ public class PlansController {
 	private EntityLinks entityLinks;
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<PlanResource> getPlans() {
+	public Resources<ActionResource> getActions(@PathVariable UUID planUuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
 		
-		final List<PlanResource> planResources = plansService.getPlans();
+		final List<ActionResource> actionResources = actionsService.getActions(planUuid);
 				
-		final Resources<PlanResource> resources = new Resources<PlanResource>(planResources);
+		final Resources<ActionResource> resources = new Resources<ActionResource>(actionResources);
 		
 		// Add links
-		addLinks(resources);
+		addLinks(planUuid, resources);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resources);
@@ -60,14 +60,14 @@ public class PlansController {
 	}
 	
 	@RequestMapping(value="", method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE})
-	public PlanResource createPlan(@RequestBody PlanResource newPlan) {
+	public ActionResource createAction(@PathVariable UUID planUuid, @RequestBody ActionResource newAction) {
 		if (LOG.isTraceEnabled()) {
-			LOG.entry(newPlan);
+			LOG.entry(newAction);
 		}
 		
-		final PlanResource resource = plansService.createPlan(newPlan);
+		final ActionResource resource = actionsService.createAction(planUuid, newAction);
 		
-		addLinks(resource);
+		addLinks(planUuid, resource);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resource);
@@ -76,14 +76,14 @@ public class PlansController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public PlanResource getPlan(@PathVariable UUID uuid) {
+	public ActionResource getAction(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
 		
-		final PlanResource resource = plansService.getPlan(uuid);
+		final ActionResource resource = actionsService.getAction(uuid);
 		
-		addLinks(resource);
+		addLinks(planUuid, resource);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resource);
@@ -92,29 +92,29 @@ public class PlansController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.DELETE})
-	public void deletePlan(@PathVariable UUID uuid) {
+	public void deleteAction(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
 		
-		plansService.deletePlan(uuid);
+		actionsService.deleteAction(uuid);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit();
 		}
 	}
 	
-	private void addLinks(PlanResource resource) {
-		resource.add(linkTo(methodOn(PlansController.class).getPlan(resource.getUUID())).withSelfRel());
-		resource.add(linkTo(methodOn(EventFiltersController.class).getEventFilters(resource.getUUID())).withRel("eventFilters"));
-		resource.add(linkTo(methodOn(ActionsController.class).getActions(resource.getUUID())).withRel("actions"));
+	private void addLinks(UUID planUuid, ActionResource resource) {
+		resource.add(linkTo(methodOn(ActionsController.class).getAction(planUuid, resource.getUuid())).withSelfRel());
+		resource.add(linkTo(methodOn(ParametersController.class).getParameters(planUuid, resource.getUuid())).withRel("parameters"));
+		
 	}
 	
-	private void addLinks(Resources<PlanResource> resources) {
-		resources.add(entityLinks.linkToCollectionResource(PlanResource.class));
+	private void addLinks(UUID planUuid, Resources<ActionResource> resources) {
+		resources.add(linkTo(methodOn(ActionsController.class).getActions(planUuid)).withSelfRel());
 		
-		for (PlanResource resource : resources.getContent()) {
-			addLinks(resource);
+		for (ActionResource resource : resources.getContent()) {
+			addLinks(planUuid, resource);
 		}
 	}
 

@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -34,9 +33,9 @@ public class PlanResource extends ResourceSupport implements Plan {
 	@JsonIgnore
 	private List<EventFilter> eventFilters = new ArrayList<EventFilter>();
 	
-	@OneToOne(targetEntity=ActionResource.class)
+	@OneToMany(targetEntity=ActionResource.class)
 	@JsonIgnore
-	private Action action;
+	private List<Action> actions;
 
 	@Override
 	public UUID getUUID() {
@@ -53,11 +52,6 @@ public class PlanResource extends ResourceSupport implements Plan {
 		return eventFilters;
 	}
 
-	@Override
-	public Action getAction() {
-		return action;
-	}
-
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
 	}
@@ -70,10 +64,15 @@ public class PlanResource extends ResourceSupport implements Plan {
 		this.eventFilters = eventFilters;
 	}
 
-	
-	public void setAction(Action action) {
-		this.action = action;
+	public List<Action> getActions() {
+		return actions;
 	}
+
+	public void setActions(List<Action> actions) {
+		this.actions = actions;
+	}
+
+
 
 
 	
