@@ -21,18 +21,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.server.AppConfiguration;
-import com.oakcity.nicknack.server.model.PlanResource;
-import com.oakcity.nicknack.server.services.PlansService;
+import com.oakcity.nicknack.server.model.EventFilterResource;
+import com.oakcity.nicknack.server.services.EventFiltersService;
 
 @RestController
-@RequestMapping(value="/plans", produces={MediaType.APPLICATION_JSON_VALUE})
-@ExposesResourceFor(PlanResource.class)
-public class PlansController {
+@RequestMapping(value="/plans/{planUuid}/eventFilters", produces={MediaType.APPLICATION_JSON_VALUE})
+@ExposesResourceFor(EventFilterResource.class)
+public class EventFiltersController {
 	
 	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
 	
 	@Autowired
-	private PlansService plansService;
+	private EventFiltersService eventFiltersService;
 	
 	@Autowired
 	private RelProvider relProvider;
@@ -41,17 +41,17 @@ public class PlansController {
 	private EntityLinks entityLinks;
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<PlanResource> getPlans() {
+	public Resources<EventFilterResource> getEventFilters(@PathVariable UUID planUuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
 		
-		final List<PlanResource> planResources = plansService.getPlans();
+		final List<EventFilterResource> eventFilterResources = eventFiltersService.getEventFilters(planUuid);
 				
-		final Resources<PlanResource> resources = new Resources<PlanResource>(planResources);
+		final Resources<EventFilterResource> resources = new Resources<EventFilterResource>(eventFilterResources);
 		
 		// Add links
-		addLinks(resources);
+		addLinks(planUuid, resources);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resources);
@@ -60,14 +60,14 @@ public class PlansController {
 	}
 	
 	@RequestMapping(value="", method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE})
-	public PlanResource createPlan(@RequestBody PlanResource newPlan) {
+	public EventFilterResource createEventFilter(@PathVariable UUID planUuid, @RequestBody EventFilterResource newEventFilter) {
 		if (LOG.isTraceEnabled()) {
-			LOG.entry(newPlan);
+			LOG.entry(newEventFilter);
 		}
 		
-		final PlanResource resource = plansService.createPlan(newPlan);
+		final EventFilterResource resource = eventFiltersService.createEventFilter(planUuid, newEventFilter);
 		
-		addLinks(resource);
+		addLinks(planUuid, resource);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resource);
@@ -76,14 +76,14 @@ public class PlansController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public PlanResource getPlan(@PathVariable UUID uuid) {
+	public EventFilterResource getEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
 		
-		final PlanResource resource = plansService.getPlan(uuid);
+		final EventFilterResource resource = eventFiltersService.getEventFilter(uuid);
 		
-		addLinks(resource);
+		addLinks(planUuid, resource);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resource);
@@ -92,28 +92,27 @@ public class PlansController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.DELETE})
-	public void deletePlan(@PathVariable UUID uuid) {
+	public void deleteEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
 		
-		plansService.deletePlan(uuid);
+		eventFiltersService.deleteEventFilter(uuid);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit();
 		}
 	}
 	
-	private void addLinks(PlanResource resource) {
-		resource.add(linkTo(methodOn(PlansController.class).getPlan(resource.getUUID())).withSelfRel());
-		resource.add(linkTo(methodOn(EventFiltersController.class).getEventFilters(resource.getUUID())).withRel("eventFilters"));
+	private void addLinks(UUID planUuid, EventFilterResource resource) {
+		resource.add(linkTo(methodOn(EventFiltersController.class).getEventFilter(planUuid, resource.getUuid())).withSelfRel());
 	}
 	
-	private void addLinks(Resources<PlanResource> resources) {
-		resources.add(entityLinks.linkToCollectionResource(PlanResource.class));
+	private void addLinks(UUID planUuid, Resources<EventFilterResource> resources) {
+		resources.add(linkTo(methodOn(EventFiltersController.class).getEventFilters(planUuid)).withSelfRel());
 		
-		for (PlanResource resource : resources.getContent()) {
-			addLinks(resource);
+		for (EventFilterResource resource : resources.getContent()) {
+			addLinks(planUuid, resource);
 		}
 	}
 

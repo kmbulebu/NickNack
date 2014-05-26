@@ -30,7 +30,7 @@ public class PlanResource extends ResourceSupport implements Plan {
 	
 	private String name;
 	
-	@OneToMany(targetEntity=EventFilterResource.class)
+	@OneToMany(targetEntity=EventFilterResource.class, mappedBy="plan")
 	@JsonIgnore
 	private List<EventFilter> eventFilters = new ArrayList<EventFilter>();
 	
