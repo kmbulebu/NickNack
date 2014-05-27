@@ -21,7 +21,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class HerokuDatabaseConfiguration {
 	
 	@Value("${DATABASE_URL}")
-	private URL databaseUrl;
+	private String databaseUrlStr;
 	
 	@Bean
 	public PlatformTransactionManager transactionManager() throws Exception {
@@ -32,10 +32,11 @@ public class HerokuDatabaseConfiguration {
 
 	@Bean
 	public DataSource dataSource() throws Exception {
+		final URL databaseUrl = new URL(databaseUrlStr);
 		final PGSimpleDataSource ds = new PGSimpleDataSource();
 		ds.setServerName(databaseUrl.getHost());
 		ds.setPortNumber(databaseUrl.getPort());
-		String[] userInfo = databaseUrl.getUserInfo().split(":");
+		final String[] userInfo = databaseUrl.getUserInfo().split(":");
 		ds.setUser(userInfo[0]);
 		ds.setPassword(userInfo[1]);
 		return ds;
