@@ -32,7 +32,8 @@ public class HerokuDatabaseConfiguration {
 
 	@Bean
 	public DataSource dataSource() throws Exception {
-		final URL databaseUrl = new URL(databaseUrlStr);
+		// FIXME Replace this dumb hack when patience is restored.
+		final URL databaseUrl = new URL(databaseUrlStr.replaceFirst("postgres:", "http:"));
 		final PGSimpleDataSource ds = new PGSimpleDataSource();
 		ds.setServerName(databaseUrl.getHost());
 		ds.setPortNumber(databaseUrl.getPort());
