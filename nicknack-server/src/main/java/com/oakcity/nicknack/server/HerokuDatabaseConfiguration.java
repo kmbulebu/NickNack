@@ -1,6 +1,6 @@
 package com.oakcity.nicknack.server;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -32,15 +32,14 @@ public class HerokuDatabaseConfiguration {
 
 	@Bean
 	public DataSource dataSource() throws Exception {
-		// FIXME Replace this dumb hack when patience is restored.
-		final URL databaseUrl = new URL(databaseUrlStr.replaceFirst("postgres:", "http:"));
+		final URI databaseUrl = new URI(databaseUrlStr);
 		final PGSimpleDataSource ds = new PGSimpleDataSource();
 		ds.setServerName(databaseUrl.getHost());
 		ds.setPortNumber(databaseUrl.getPort());
 		final String[] userInfo = databaseUrl.getUserInfo().split(":");
 		ds.setUser(userInfo[0]);
 		ds.setPassword(userInfo[1]);
-		ds.setDatabaseName(databaseUrl.getPath());
+		ds.setDatabaseName(databaseUrl.getPath().replace("/", ""));
 		return ds;
 	}
 
