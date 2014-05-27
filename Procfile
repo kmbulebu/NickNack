@@ -1,0 +1,1 @@
+web:    mvn $JAVA_OPTS -f nicknack-server/pom.xml jetty:run-war
