@@ -40,6 +40,7 @@ public class HerokuDatabaseConfiguration {
 		final String[] userInfo = databaseUrl.getUserInfo().split(":");
 		ds.setUser(userInfo[0]);
 		ds.setPassword(userInfo[1]);
+		ds.setDatabaseName(databaseUrl.getPath());
 		return ds;
 	}
 
