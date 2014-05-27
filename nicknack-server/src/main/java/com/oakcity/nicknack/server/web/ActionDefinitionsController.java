@@ -17,6 +17,7 @@ import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
@@ -44,7 +45,7 @@ public class ActionDefinitionsController {
 	
 	// TODO Refactor HATEOAS link building. Time for ResourceAssembler or moving this stuff up the service. Although moving it up will create a circular dep.
 	
-	@RequestMapping(value="")
+	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
 	public Resources<ActionDefinitionResource> getActionDefinitions() {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
@@ -71,7 +72,7 @@ public class ActionDefinitionsController {
 		return resources;
 	}
 	
-	@RequestMapping(value="/{uuid}")
+	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
 	public ActionDefinitionResource getActionDefinition(@PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
@@ -89,7 +90,7 @@ public class ActionDefinitionsController {
 		return resource;
 	}
 	
-	@RequestMapping(value="/{actionUuid}/parameterDefinitions")
+	@RequestMapping(value="/{actionUuid}/parameterDefinitions", method={RequestMethod.GET, RequestMethod.HEAD})
 	public Resources<ParameterDefinitionResource> getParameterDefinitions(@PathVariable UUID actionUuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUuid);
@@ -115,7 +116,7 @@ public class ActionDefinitionsController {
 		return resources;
 	}
 	
-	@RequestMapping(value="/{actionUuid}/parameterDefinitions/{uuid}")
+	@RequestMapping(value="/{actionUuid}/parameterDefinitions/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
 	public ParameterDefinitionResource getParameterDefinition(@PathVariable UUID actionUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUuid, uuid);

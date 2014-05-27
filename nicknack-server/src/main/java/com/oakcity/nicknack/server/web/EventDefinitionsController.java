@@ -17,6 +17,7 @@ import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
@@ -44,7 +45,7 @@ public class EventDefinitionsController {
 	
 	// TODO Refactor HATEOAS link building. Time for ResourceAssembler or moving this stuff up the service. Although moving it up will create a circular dep.
 	
-	@RequestMapping(value="")
+	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
 	public Resources<EventDefinitionResource> getEventDefinitions() {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
@@ -71,7 +72,7 @@ public class EventDefinitionsController {
 		return resources;
 	}
 	
-	@RequestMapping(value="/{uuid}")
+	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
 	public EventDefinitionResource getEventDefinition(@PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
@@ -89,7 +90,7 @@ public class EventDefinitionsController {
 		return resource;
 	}
 	
-	@RequestMapping(value="/{eventUuid}/attributeDefinitions")
+	@RequestMapping(value="/{eventUuid}/attributeDefinitions", method={RequestMethod.GET, RequestMethod.HEAD})
 	public Resources<AttributeDefinitionResource> getAttributeDefinitions(@PathVariable UUID eventUuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUuid);
@@ -115,7 +116,7 @@ public class EventDefinitionsController {
 		return resources;
 	}
 	
-	@RequestMapping(value="/{eventUuid}/attributeDefinitions/{uuid}")
+	@RequestMapping(value="/{eventUuid}/attributeDefinitions/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
 	public AttributeDefinitionResource getAttributeDefinition(@PathVariable UUID eventUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUuid, uuid);
