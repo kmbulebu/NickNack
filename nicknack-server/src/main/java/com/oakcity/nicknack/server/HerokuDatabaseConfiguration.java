@@ -1,12 +1,13 @@
 package com.oakcity.nicknack.server;
 
+import java.net.URL;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class HerokuDatabaseConfiguration {
 	
 	@Value("${DATABASE_URL}")
-	private String databaseUrl;
+	private URL databaseUrl;
 	
 	@Bean
 	public PlatformTransactionManager transactionManager() throws Exception {
@@ -31,8 +32,12 @@ public class HerokuDatabaseConfiguration {
 
 	@Bean
 	public DataSource dataSource() throws Exception {
-		BasicDataSource ds = new BasicDataSource();
-		ds.setUrl(databaseUrl);
+		final PGSimpleDataSource ds = new PGSimpleDataSource();
+		ds.setServerName(databaseUrl.getHost());
+		ds.setPortNumber(databaseUrl.getPort());
+		String[] userInfo = databaseUrl.getUserInfo().split(":");
+		ds.setUser(userInfo[0]);
+		ds.setPassword(userInfo[1]);
 		return ds;
 	}
 
