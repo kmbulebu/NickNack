@@ -42,7 +42,7 @@ public class HerokuDatabaseConfiguration {
 		ds.setDatabaseName(databaseUrl.getPath().replace("/", ""));
 		return ds;
 	}
-
+	
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws Exception {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -58,7 +58,7 @@ public class HerokuDatabaseConfiguration {
 		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_FORMAT_SQL, "true");
 		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY, ImprovedNamingStrategy.class.getName());
 		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_SHOW_SQL, "true");
-		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, "create");
+		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, "validate");
 
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
