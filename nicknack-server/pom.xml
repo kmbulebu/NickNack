@@ -21,6 +21,7 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
 				<version>4.0.5.RELEASE</version>
+				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
@@ -55,6 +56,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.mangofactory</groupId>
+			<artifactId>swagger-springmvc</artifactId>
+			<version>0.8.3</version>
+		</dependency>
+		<dependency>
 			<groupId>com.oakcity.nicknack</groupId>
 			<artifactId>nicknack-core</artifactId>
 		</dependency>
@@ -67,7 +73,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>4.0.5.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
