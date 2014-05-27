@@ -14,8 +14,6 @@ public interface Provider {
 	
 	public List<Unit<?>> getUnits();
 	
-	//public List<AttributeDefinition> getAttributeDefinitions();
-	
 	public List<EventDefinition> getEventDefinitions();
 	
 	public List<ActionDefinition> getActionDefinitions();
