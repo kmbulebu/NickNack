@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-	        <groupId>com.oakcity.nicknack</groupId>
-        	<version>0.0.1-SNAPSHOT</version>
-        	<artifactId>nicknack-parent</artifactId>
+		<groupId>com.oakcity.nicknack</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>nicknack-parent</artifactId>
 	</parent>
 
 	<artifactId>example-provider</artifactId>
@@ -21,9 +21,14 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>junit</groupId>
-		    <artifactId>junit</artifactId>
-		    <scope>test</scope>
+			<groupId>com.netflix.rxjava</groupId>
+			<artifactId>rxjava-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

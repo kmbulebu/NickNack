@@ -1,1 +1,1 @@
-web:    mvn $JAVA_OPTS -Djetty.port=$PORT -f nicknack-server/pom.xml jetty:run-war
+web:    java $JAVA_OPTS -jar nicknack-server/target/dependency/jetty-runner.jar --port $PORT nicknack-server/target/*.war
