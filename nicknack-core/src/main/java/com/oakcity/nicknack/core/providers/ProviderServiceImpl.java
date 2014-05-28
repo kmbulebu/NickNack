@@ -6,14 +6,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.UUID;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.observables.ConnectableObservable;
+
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
+import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 
-public class ProviderServiceImpl implements ProviderService {
+public class ProviderServiceImpl implements ProviderService, OnEventListener, rx.Observable.OnSubscribe<Event> {
 	
 	private static ProviderServiceImpl service;
     private ServiceLoader<Provider> loader;
@@ -21,8 +25,14 @@ public class ProviderServiceImpl implements ProviderService {
     private final Map<UUID, EventDefinition> eventDefinitions = new HashMap<UUID, EventDefinition>();
     private final Map<UUID, ActionDefinition> actionDefinitions = new HashMap<UUID, ActionDefinition>();
 
+    private ConnectableObservable<Event> eventStream;
+    private Subscriber<? super Event> subscriber;
+    
     private ProviderServiceImpl() {
         loader = ServiceLoader.load(Provider.class);
+        eventStream = Observable.create(this).publish();
+        eventStream.connect();
+        // TODO Do something smart with the errors.
         initializeProviders();
     }
 
@@ -49,14 +59,16 @@ public class ProviderServiceImpl implements ProviderService {
     	return Collections.unmodifiableMap(eventDefinitions);
     }
     
-    protected List<ServiceConfigurationError> initializeProviders() {
+    protected List<Exception> initializeProviders() {
     	Iterator<Provider> providers = loader.iterator();
     	
     	Provider provider = null;
-    	List<ServiceConfigurationError> errors = new ArrayList<ServiceConfigurationError>();
+    	List<Exception> errors = new ArrayList<Exception>();
 		while (provider == null && providers.hasNext()) {
 			try {
 				provider = providers.next();
+				
+				provider.init(this);
 				
 				if (provider.getEventDefinitions() != null) {
 					for (EventDefinition eventDef : provider.getEventDefinitions()) {
@@ -79,7 +91,7 @@ public class ProviderServiceImpl implements ProviderService {
 						}
 					}
 				}
-			} catch (ServiceConfigurationError e) {
+			} catch (Exception e) {
 	    		errors.add(e);
 	    	}
 		}
@@ -87,5 +99,22 @@ public class ProviderServiceImpl implements ProviderService {
 		return errors;
     	
     }
+
+	@Override
+	public void onEvent(Event event) {
+		if (subscriber != null) {
+			subscriber.onNext(event);
+		}
+	}
+
+	@Override
+	public Observable<Event> getEvents() {
+		return eventStream;
+	}
+
+	@Override
+	public void call(Subscriber<? super Event> subscriber) {
+		this.subscriber = subscriber;
+	}
 
 }

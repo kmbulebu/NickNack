@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.oakcity.nicknack.core.events.BasicAttributeDefinition;
 import com.oakcity.nicknack.core.events.BasicEventDefinition;
+import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.core.events.attributes.units.BooleanUnit;
 import com.oakcity.nicknack.core.events.attributes.units.StringUnit;
 
@@ -18,11 +19,18 @@ import com.oakcity.nicknack.core.events.attributes.units.StringUnit;
  */
 public class SwitchChangeEventDefinition extends BasicEventDefinition {
 	
+	public static AttributeDefinition POSITION_ATTRIBUTE_DEF = new BasicAttributeDefinition(UUID.fromString("320c68e0-d662-11e3-9c1a-0800200d9a66"), "position", new BooleanUnit(), false);
+	public static AttributeDefinition MAC_ADDRESS_ATTRIBUTE_DEF = new BasicAttributeDefinition(UUID.fromString("920c68e0-d662-31e3-9c1a-0800200d9a66"), "macAddress", new StringUnit(), false);
+	
+	public static UUID INSTANCE_UUID = UUID.fromString("320c68e0-d662-11e3-9c1a-0800200c9a66");
+
+	public static SwitchChangeEventDefinition INSTANCE = new SwitchChangeEventDefinition();
+	
 	public SwitchChangeEventDefinition() {
-		super(UUID.fromString("320c68e0-d662-11e3-9c1a-0800200c9a66"), 
+		super(INSTANCE_UUID, 
 				"Switch Changed", 
-				new BasicAttributeDefinition(UUID.fromString("320c68e0-d662-11e3-9c1a-0800200d9a66"), "position", new BooleanUnit(), false),
-				new BasicAttributeDefinition(UUID.fromString("920c68e0-d662-31e3-9c1a-0800200d9a66"), "macAddress", new StringUnit(), false));
+				POSITION_ATTRIBUTE_DEF,
+				MAC_ADDRESS_ATTRIBUTE_DEF);
 	}
 	
 }

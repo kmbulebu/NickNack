@@ -20,6 +20,7 @@ public interface Event {
 	// Attribute definition to Attribute Value map.
 	public Map<UUID, String> getAttributes();
 	
+	// TODO Switch to just UUID?
 	public EventDefinition getEventDefinition();
 	
 	public interface EventDefinition {
