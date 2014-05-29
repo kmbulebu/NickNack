@@ -13,6 +13,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.observables.ConnectableObservable;
 
+import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
@@ -24,7 +25,8 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     
     private final Map<UUID, EventDefinition> eventDefinitions = new HashMap<UUID, EventDefinition>();
     private final Map<UUID, ActionDefinition> actionDefinitions = new HashMap<UUID, ActionDefinition>();
-
+    private final Map<UUID, Provider> providers = new HashMap<UUID, Provider>();
+    
     private ConnectableObservable<Event> eventStream;
     private Subscriber<? super Event> subscriber;
     
@@ -59,6 +61,11 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     	return Collections.unmodifiableMap(eventDefinitions);
     }
     
+    @Override
+    public Map<UUID, Provider> getProviders() {
+    	return Collections.unmodifiableMap(providers);
+    }
+    
     protected List<Exception> initializeProviders() {
     	Iterator<Provider> providers = loader.iterator();
     	
@@ -67,7 +74,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 		while (provider == null && providers.hasNext()) {
 			try {
 				provider = providers.next();
-				
+				this.providers.put(provider.getUuid(), provider);
 				provider.init(this);
 				
 				if (provider.getEventDefinitions() != null) {
@@ -115,6 +122,23 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	@Override
 	public void call(Subscriber<? super Event> subscriber) {
 		this.subscriber = subscriber;
+	}
+
+	@Override
+	public void run(Action action) {
+		final UUID actionDefinitionUuid = action.getAppliesToActionDefinition();
+		final ActionDefinition actionDefinition = actionDefinitions.get(actionDefinitionUuid);
+		final UUID providerUuid = actionDefinition.getProviderUUID();
+		
+		final Provider provider = providers.get(providerUuid);
+		
+		try {
+			// TODO Run action on executor
+			provider.run(action);
+		} catch (Exception e) {
+			// TODO Log.
+			e.printStackTrace();
+		}
 	}
 
 }

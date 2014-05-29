@@ -18,7 +18,7 @@ import com.oakcity.nicknack.core.events.attributes.units.StringUnit;
 public class LightBulbActionDefinition extends BasicActionDefinition {
 
 	public LightBulbActionDefinition() {
-		super(UUID.fromString("d30f0828-e356-11e3-918b-f365e95fde44"), 
+		super(UUID.fromString("d30f0828-e356-11e3-918b-f365e95fde44"), ExampleProvider.PROVIDER_UUID,
 				"Control Light Bulb", 
 				new BasicParameterDefinition(UUID.fromString("e87cfada-e356-11e3-a8a4-c7fd038daf35"), "switch", new BooleanUnit(), true),
 				new BasicParameterDefinition(UUID.fromString("920c68e0-d662-31e3-9c1a-0800200d9a66"), "macAddress", new StringUnit(), true));

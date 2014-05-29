@@ -11,18 +11,20 @@ import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
 public class BasicActionDefinition implements ActionDefinition {
 	
 	private final UUID uuid;
+	private final UUID providerUuid;
 	private final String name;
 	private final List<ParameterDefinition> parameterDefinitions;
 
-	public BasicActionDefinition(UUID uuid, String name, List<ParameterDefinition> parameterDefinitions) {
+	public BasicActionDefinition(UUID uuid, UUID providerUuid, String name, List<ParameterDefinition> parameterDefinitions) {
 		super();
 		this.uuid = uuid;
+		this.providerUuid = providerUuid;
 		this.name = name;
 		this.parameterDefinitions = parameterDefinitions;
 	}
 	
-	public BasicActionDefinition(UUID uuid, String name, ParameterDefinition... parameterDefinitions) {
-		this(uuid, name, Arrays.asList(parameterDefinitions));
+	public BasicActionDefinition(UUID uuid, UUID providerUuid, String name, ParameterDefinition... parameterDefinitions) {
+		this(uuid, providerUuid, name, Arrays.asList(parameterDefinitions));
 	}
 
 	@Override
@@ -67,8 +69,13 @@ public class BasicActionDefinition implements ActionDefinition {
 
 	@Override
 	public String toString() {
-		return "BasicActionDefinition [uuid=" + uuid + ", name=" + name + ", parameterDefinitions="
-				+ parameterDefinitions + "]";
+		return "BasicActionDefinition [uuid=" + uuid + ", providerUuid=" + providerUuid + ", name=" + name
+				+ ", parameterDefinitions=" + parameterDefinitions + "]";
+	}
+
+	@Override
+	public UUID getProviderUUID() {
+		return providerUuid;
 	}
 	
 	

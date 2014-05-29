@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.actions.Action;
@@ -15,6 +16,8 @@ import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
 
 public class ExampleProvider implements Provider {
+	
+	public static final UUID PROVIDER_UUID = UUID.fromString("766bac6a-e6d1-11e3-a880-8fb61c8a7442");
 	
 	private final List<EventDefinition> eventDefinitions;
 	private final List<ActionDefinition> actionDefinitions;
@@ -87,6 +90,12 @@ public class ExampleProvider implements Provider {
 			}
 			
 		}, 10000, 10000);
+	}
+
+
+	@Override
+	public UUID getUuid() {
+		return PROVIDER_UUID;
 	}
 
 }

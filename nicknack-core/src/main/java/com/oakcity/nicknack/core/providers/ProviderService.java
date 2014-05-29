@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import rx.Observable;
 
+import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
@@ -15,6 +16,10 @@ public interface ProviderService {
 
 	public Map<UUID, EventDefinition> getEventDefinitions();
 	
+	public Map<UUID, Provider> getProviders();
+	
 	public Observable<Event> getEvents();
+	
+	public void run(Action action);
 
 }

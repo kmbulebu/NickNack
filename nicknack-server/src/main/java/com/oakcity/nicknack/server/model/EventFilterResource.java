@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -31,7 +32,7 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	
 	private String description;
 	
-	@OneToMany(targetEntity=AttributeFilterResource.class)
+	@OneToMany(targetEntity=AttributeFilterResource.class, fetch=FetchType.EAGER)
 	private List<AttributeFilter> attributeFilters = new ArrayList<AttributeFilter>();
 	
 	@ManyToOne(targetEntity=PlanResource.class)

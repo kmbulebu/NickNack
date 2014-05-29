@@ -1,6 +1,7 @@
 package com.oakcity.nicknack.core.providers;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.actions.Action;
@@ -15,6 +16,8 @@ import com.oakcity.nicknack.core.events.Event.EventDefinition;
  *
  */
 public interface Provider {
+	
+	public UUID getUuid();
 	
 	/**
 	 * 

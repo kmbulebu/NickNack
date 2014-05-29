@@ -17,6 +17,8 @@ public interface Action {
 		
 		public UUID getUUID();
 		
+		public UUID getProviderUUID();
+		
 		public String getName();
 		
 		public List<ParameterDefinition> getParameterDefinitions();
