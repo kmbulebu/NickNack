@@ -128,13 +128,10 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	public void run(Action action) {
 		final UUID actionDefinitionUuid = action.getAppliesToActionDefinition();
 		final ActionDefinition actionDefinition = actionDefinitions.get(actionDefinitionUuid);
-		final UUID providerUuid = actionDefinition.getProviderUUID();
-		
-		final Provider provider = providers.get(providerUuid);
 		
 		try {
 			// TODO Run action on executor
-			provider.run(action);
+			actionDefinition.run(action);
 		} catch (Exception e) {
 			// TODO Log.
 			e.printStackTrace();

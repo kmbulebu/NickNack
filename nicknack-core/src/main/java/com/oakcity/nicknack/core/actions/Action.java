@@ -1,6 +1,7 @@
 package com.oakcity.nicknack.core.actions;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.oakcity.nicknack.core.Unit;
@@ -11,7 +12,8 @@ public interface Action {
 	public UUID getAppliesToActionDefinition();
 	
 	// Need to fulfill all the parameters specified in parameter definition.
-	public List<Parameter> getParameters();
+	//public List<Parameter> getParameters();
+	public Map<UUID, String> getParameters();
 	
 	public interface ActionDefinition {
 		
@@ -23,15 +25,18 @@ public interface Action {
 		
 		public List<ParameterDefinition> getParameterDefinitions();
 		
+		// TODO Create some exceptions to differentiate problems with user input (bad parameters) vs problems during execution of the action.
+		public void run(Action action);
+		
 	}
 	
-	public interface Parameter {
+	/*public interface Parameter {
 		
 		public UUID getAppliesToParameterDefinition();
 		
 		public String getValue();
 
-	}
+	}*/
 	
 	public interface ParameterDefinition {
 		

@@ -1,14 +1,14 @@
 package com.oakcity.nicknack.server.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -29,9 +29,8 @@ public class ActionResource extends ResourceSupport implements Action {
 	
 	private UUID appliesToActionDefinition;
 	
-	@OneToMany(targetEntity=ParameterResource.class)
-	@JsonIgnore
-	private List<Parameter> parameters = new ArrayList<Parameter>();
+	@ElementCollection
+	private Map<UUID, String> parameters = new HashMap<UUID, String>();
 	
 	@ManyToOne(targetEntity=PlanResource.class)
 	@JsonIgnore
@@ -40,11 +39,6 @@ public class ActionResource extends ResourceSupport implements Action {
 	@Override
 	public UUID getAppliesToActionDefinition() {
 		return appliesToActionDefinition;
-	}
-
-	@Override
-	public List<Parameter> getParameters() {
-		return parameters;
 	}
 
 	public UUID getUuid() {
@@ -67,8 +61,15 @@ public class ActionResource extends ResourceSupport implements Action {
 		this.plan = plan;
 	}
 
-	public void setParameters(List<Parameter> parameters) {
+	@Override
+	public Map<UUID, String> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(Map<UUID, String> parameters) {
 		this.parameters = parameters;
 	}
+	
+	
 	
 }

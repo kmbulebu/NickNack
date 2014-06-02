@@ -8,7 +8,7 @@ import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
 
 
-public class BasicActionDefinition implements ActionDefinition {
+public abstract class BasicActionDefinition implements ActionDefinition {
 	
 	private final UUID uuid;
 	private final UUID providerUuid;

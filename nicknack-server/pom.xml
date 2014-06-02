@@ -147,6 +147,7 @@
 					<artifactId>jetty-maven-plugin</artifactId>
 					<version>9.1.5.v20140505</version>
 					<configuration>
+						<useProvidedScope>true</useProvidedScope>
 					</configuration>
 				</plugin>
 			</plugins>

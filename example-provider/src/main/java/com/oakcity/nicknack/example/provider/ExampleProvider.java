@@ -69,12 +69,6 @@ public class ExampleProvider implements Provider {
 	public String getAuthor() {
 		return "NickNack";
 	}
-
-	@Override
-	public void run(Action action) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public void init(final OnEventListener onEvent) throws Exception {

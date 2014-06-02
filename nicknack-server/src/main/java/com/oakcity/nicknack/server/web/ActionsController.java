@@ -106,8 +106,6 @@ public class ActionsController {
 	
 	private void addLinks(UUID planUuid, ActionResource resource) {
 		resource.add(linkTo(methodOn(ActionsController.class).getAction(planUuid, resource.getUuid())).withSelfRel());
-		resource.add(linkTo(methodOn(ParametersController.class).getParameters(planUuid, resource.getUuid())).withRel("parameters"));
-		
 	}
 	
 	private void addLinks(UUID planUuid, Resources<ActionResource> resources) {

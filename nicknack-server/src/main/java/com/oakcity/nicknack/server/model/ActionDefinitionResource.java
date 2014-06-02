@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.hateoas.ResourceSupport;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
 
@@ -36,6 +37,11 @@ public class ActionDefinitionResource extends ResourceSupport implements ActionD
 	@Override
 	public UUID getProviderUUID() {
 		return actionDefinition.getProviderUUID();
+	}
+
+	@Override
+	public void run(Action action) {
+		actionDefinition.run(action);
 	}
 
 }
