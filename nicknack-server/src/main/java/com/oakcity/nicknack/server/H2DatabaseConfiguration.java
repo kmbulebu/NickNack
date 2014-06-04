@@ -50,7 +50,7 @@ public class H2DatabaseConfiguration {
 		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_FORMAT_SQL, "true");
 		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY, ImprovedNamingStrategy.class.getName());
 		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_SHOW_SQL, "false");
-		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, "update");
+		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, "create");
 
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 

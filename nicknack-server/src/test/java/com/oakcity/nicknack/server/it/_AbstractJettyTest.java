@@ -1,8 +1,10 @@
 package com.oakcity.nicknack.server.it;
 
-import static com.jayway.restassured.RestAssured.get;
-import static org.hamcrest.Matchers.equalTo;
+import static com.jayway.restassured.RestAssured.*;
+import static com.jayway.restassured.matcher.RestAssuredMatchers.*;
+import static org.hamcrest.Matchers.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.jayway.restassured.RestAssured;
@@ -19,12 +21,17 @@ public abstract class _AbstractJettyTest {
 		}
 		
 		this.httpPort = Integer.parseInt(httpPort);
-		
+	}
+	
+	@Before
+	public void setupRestAssured() {
 		RestAssured.port = this.httpPort;
+		RestAssured.responseContentType("application/hal+json");
 	}
 	
 	@Test
 	public void basicConnectivityTest() {
+		RestAssured.responseContentType("text/html");
 		get("/").then().assertThat().statusCode(equalTo(200));
 	}
 

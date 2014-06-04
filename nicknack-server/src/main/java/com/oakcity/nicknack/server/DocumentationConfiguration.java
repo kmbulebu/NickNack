@@ -138,7 +138,7 @@ public class DocumentationConfiguration {
 	
 	@Bean
 	public SwaggerPathProvider relativeSwaggerPathProvider() {
-		return new NickNackSwaggerPathProvider("http://nicknack.herokuapp.com");
+		return new NickNackSwaggerPathProvider("http://127.0.0.1:8080");
 	}
 
 	public static class NickNackSwaggerPathProvider extends DefaultSwaggerPathProvider {

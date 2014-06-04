@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.events.filters.EventFilter;
@@ -20,6 +21,7 @@ import com.oakcity.nicknack.core.events.filters.operators.Operator;
 
 @Entity
 @Table(name="AttributeFilters")
+@Relation(value="AttributeFilter", collectionRelation="AttributeFilters")
 public class AttributeFilterResource extends ResourceSupport implements AttributeFilter {
 	
 	@Id

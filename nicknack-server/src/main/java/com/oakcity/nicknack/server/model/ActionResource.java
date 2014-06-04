@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.actions.Action;
@@ -20,6 +21,7 @@ import com.oakcity.nicknack.core.plans.Plan;
 
 @Entity
 @Table(name="Actions")
+@Relation(value="Action", collectionRelation="Actions")
 public class ActionResource extends ResourceSupport implements Action {
 	
 	@Id

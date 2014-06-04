@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 
+@Relation(value="EventDefinition", collectionRelation="EventDefinitions")
 public class EventDefinitionResource extends ResourceSupport implements EventDefinition {
 	
 	private final EventDefinition eventDefinition;

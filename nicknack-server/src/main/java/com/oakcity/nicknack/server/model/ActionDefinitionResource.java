@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
 
+@Relation(value="ActionDefinition", collectionRelation="ActionDefinitions")
 public class ActionDefinitionResource extends ResourceSupport implements ActionDefinition {
 	
 	private final ActionDefinition actionDefinition;

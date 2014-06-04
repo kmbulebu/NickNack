@@ -11,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.events.filters.EventFilter;
@@ -21,6 +23,7 @@ import com.oakcity.nicknack.core.plans.Plan;
 
 @Entity
 @Table(name="EventFilters")
+@Relation(value="EventFilter", collectionRelation="EventFilters")
 public class EventFilterResource extends ResourceSupport implements EventFilter {
 	
 	@Id
@@ -28,6 +31,7 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private UUID uuid;
 	
+	@NotNull
 	private UUID appliesToEventDefinition;
 	
 	private String description;

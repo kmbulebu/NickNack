@@ -13,11 +13,13 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.RelProvider;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.server.AppConfiguration;
@@ -25,7 +27,7 @@ import com.oakcity.nicknack.server.model.PlanResource;
 import com.oakcity.nicknack.server.services.PlansService;
 
 @RestController
-@RequestMapping(value="/plans", produces={MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value="/plans", produces={"application/hal+json"})
 @ExposesResourceFor(PlanResource.class)
 public class PlansController {
 	
@@ -60,6 +62,7 @@ public class PlansController {
 	}
 	
 	@RequestMapping(value="", method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(HttpStatus.CREATED)
 	public PlanResource createPlan(@RequestBody PlanResource newPlan) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(newPlan);
@@ -92,6 +95,7 @@ public class PlansController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.DELETE})
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deletePlan(@PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);

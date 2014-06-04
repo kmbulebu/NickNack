@@ -13,11 +13,13 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.RelProvider;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.server.AppConfiguration;
@@ -25,7 +27,7 @@ import com.oakcity.nicknack.server.model.EventFilterResource;
 import com.oakcity.nicknack.server.services.EventFiltersService;
 
 @RestController
-@RequestMapping(value="/plans/{planUuid}/eventFilters", produces={MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value="/plans/{planUuid}/eventFilters", produces={"application/hal+json"})
 @ExposesResourceFor(EventFilterResource.class)
 public class EventFiltersController {
 	
@@ -60,6 +62,7 @@ public class EventFiltersController {
 	}
 	
 	@RequestMapping(value="", method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(HttpStatus.CREATED)
 	public EventFilterResource createEventFilter(@PathVariable UUID planUuid, @RequestBody EventFilterResource newEventFilter) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(newEventFilter);
@@ -92,6 +95,7 @@ public class EventFiltersController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.DELETE})
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);

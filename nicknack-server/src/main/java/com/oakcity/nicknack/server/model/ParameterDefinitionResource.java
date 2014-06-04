@@ -3,10 +3,12 @@ package com.oakcity.nicknack.server.model;
 import java.util.UUID;
 
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.core.Relation;
 
 import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
 
+@Relation(value="ParameterDefinition", collectionRelation="ParameterDefinitions")
 public class ParameterDefinitionResource extends ResourceSupport implements ParameterDefinition {
 		
 	public final ParameterDefinition parameterDefinition;

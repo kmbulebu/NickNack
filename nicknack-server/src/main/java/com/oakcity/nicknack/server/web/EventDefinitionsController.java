@@ -14,7 +14,6 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.RelProvider;
 import org.springframework.hateoas.Resources;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +27,7 @@ import com.oakcity.nicknack.server.model.EventDefinitionResource;
 import com.oakcity.nicknack.server.services.EventDefinitionService;
 
 @RestController
-@RequestMapping(value="/eventDefinitions", produces={MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value="/eventDefinitions", produces={"application/hal+json"})
 @ExposesResourceFor(EventDefinitionResource.class)
 public class EventDefinitionsController {
 	

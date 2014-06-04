@@ -18,7 +18,7 @@ import com.oakcity.nicknack.core.providers.ProviderServiceImpl;
 
 @EnableWebMvc
 @EnableEntityLinks
-@EnableHypermediaSupport(type = { HypermediaType.HAL })
+@EnableHypermediaSupport(type =  HypermediaType.HAL )
 @EnableJpaRepositories
 @EnableTransactionManagement
 @EnableSpringDataWebSupport
