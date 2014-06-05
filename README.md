@@ -21,7 +21,7 @@ Action Parameters are provided by users to tell Nick Nack the details of how to 
 ###Plans
 Plans are how a user gives Nick Nack instructions. Simplifying slightly, each Plan may read, "When Event, perform Action". However, a single Plan can state that multiple Events may trigger one or more Actions. 
 
-##What is it?
+##What's In the Box?
 
 ### Nick Nack Core
 Nick Nack Core provides the core framework of Nick Nack, without an user interface. It defines Actions, Events, Filters, and Plans and how each of those interact with eachother. Most importantly, it defines the API that providers should implement to offer new Events and Actions in Nick Nack. 
@@ -29,5 +29,6 @@ Nick Nack Core provides the core framework of Nick Nack, without an user interfa
 ### Nick Nack Rest Server
 The Rest Server extends the core framework to the web as RESTful web services. These services may be used to power an AJAX web app, mobile apps, or integrate with other systems. 
 
-
+### Nick Nack Web App (Planned)
+A Web 2.0 application for creating Plans, configuring providers, and viewing event and action history. 
 
