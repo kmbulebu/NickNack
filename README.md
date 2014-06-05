@@ -13,7 +13,21 @@ Providers create Events in Nick Nack to let us know when interesting things happ
 Events alone have very little associated data. They include only a name and description, such as "TV Changed Channel". Event Attributes provide us with additional details about the event. At a minimum, the Event Attributes will identify what generated the event, and additional details about the event, such as the new state. A "TV Changed Channel" event should have attributes that tell us which TV changed channels (IP Address or some other identifier), and what channel number is now showing on the TV. An even richer TV provider may give additional details, such as the name of the program on the new channel, HD or SD, etc. It is important that providers create a rich set of Event Attributes, as these attributes may be used to filter Events, or may even be passed as parameters to Actions. 
 
 ###Actions
+When a desired Event is detected, it's time to perform an Action. Actions are the 'doers' of Nick Nack. For example, a "set switch position" Action will turn a power (light) switch on, or off.
 
 ####Action Parameters
+Action Parameters are provided by users to tell Nick Nack the details of how to carry out an action. The "set switch position" action will have a parameter that tells Nick Nack, and ultimately the provider whether to set the switch to the "on" or "off" position. The "set switch position" action will also likely have a parameter to identify which switch to instruct to change position. Parameters may have static values, such as "On", or it may use dynamic values, such as Event Attributes from the Event that caused the Action to run. 
+
+###Plans
+Plans are how a user gives Nick Nack instructions. Simplifying slightly, each Plan may read, "When Event, perform Action". However, a single Plan can state that multiple Events may trigger one or more Actions. 
+
+##What is it?
+
+### Nick Nack Core
+Nick Nack Core provides the core framework of Nick Nack, without an user interface. It defines Actions, Events, Filters, and Plans and how each of those interact with eachother. Most importantly, it defines the API that providers should implement to offer new Events and Actions in Nick Nack. 
+
+### Nick Nack Rest Server
+The Rest Server extends the core framework to the web as RESTful web services. These services may be used to power an AJAX web app, mobile apps, or integrate with other systems. 
+
 
 
