@@ -26,6 +26,9 @@ Plans are how a user gives Nick Nack instructions. Simplifying slightly, each Pl
 ### Nick Nack Core
 Nick Nack Core provides the core framework of Nick Nack, without an user interface. It defines Actions, Events, Filters, and Plans and how each of those interact with eachother. Most importantly, it defines the Java API that providers should implement to offer new Events and Actions in Nick Nack. 
 
+### Nick Nack Core Providers
+Various providers offered by the developers of Nick Nack.
+
 ### Nick Nack Rest Server
 The Rest Server extends the core framework to the web as RESTful web services. These services may be used to power an AJAX web app, mobile apps, or integrate with other systems. 
 
