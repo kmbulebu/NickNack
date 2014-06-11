@@ -5,11 +5,13 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.oakcity.nicknack.core.plans.Plan;
 import com.oakcity.nicknack.server.model.EventFilterRepository;
 import com.oakcity.nicknack.server.model.EventFilterResource;
 import com.oakcity.nicknack.server.model.PlanRepository;
+import com.oakcity.nicknack.server.model.PlanResource;
 import com.oakcity.nicknack.server.services.EventFiltersService;
 
 @Service
@@ -38,11 +40,15 @@ public class EventFiltersServiceImpl implements EventFiltersService {
 	}
 
 	@Override
+	@Transactional
 	public EventFilterResource createEventFilter(UUID planUuid, EventFilterResource newEventFilter) {
 		final Plan plan = planRepo.findOne(planUuid);
 		newEventFilter.setPlan(plan);
 		
 		final EventFilterResource resource = eventFilterRepo.save(newEventFilter);
+		plan.getEventFilters().add(resource);
+		planRepo.save((PlanResource) plan);
+		
 		return resource;
 	}
 

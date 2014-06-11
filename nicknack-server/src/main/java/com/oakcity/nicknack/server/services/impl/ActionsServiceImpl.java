@@ -5,11 +5,13 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.oakcity.nicknack.core.plans.Plan;
 import com.oakcity.nicknack.server.model.ActionRepository;
 import com.oakcity.nicknack.server.model.ActionResource;
 import com.oakcity.nicknack.server.model.PlanRepository;
+import com.oakcity.nicknack.server.model.PlanResource;
 import com.oakcity.nicknack.server.services.ActionsService;
 
 @Service
@@ -38,11 +40,15 @@ public class ActionsServiceImpl implements ActionsService {
 	}
 
 	@Override
+	@Transactional
 	public ActionResource createAction(UUID planUuid, ActionResource newAction) {
 		final Plan plan = planRepo.findOne(planUuid);
 		newAction.setPlan(plan);
 		
 		final ActionResource resource = actionRepo.save(newAction);
+		plan.getActions().add(resource);
+		
+		planRepo.save((PlanResource) plan);
 		return resource;
 	}
 

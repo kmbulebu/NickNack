@@ -27,6 +27,7 @@ public abstract class _AbstractJettyTest {
 	public void setupRestAssured() {
 		RestAssured.port = this.httpPort;
 		RestAssured.responseContentType("application/hal+json");
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 	}
 	
 	@Test

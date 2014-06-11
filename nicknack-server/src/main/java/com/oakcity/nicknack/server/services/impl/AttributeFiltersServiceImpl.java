@@ -5,11 +5,13 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.oakcity.nicknack.core.events.filters.EventFilter;
 import com.oakcity.nicknack.server.model.AttributeFilterRepository;
 import com.oakcity.nicknack.server.model.AttributeFilterResource;
 import com.oakcity.nicknack.server.model.EventFilterRepository;
+import com.oakcity.nicknack.server.model.EventFilterResource;
 import com.oakcity.nicknack.server.services.AttributeFiltersService;
 
 @Service
@@ -38,11 +40,15 @@ public class AttributeFiltersServiceImpl implements AttributeFiltersService {
 	}
 
 	@Override
+	@Transactional
 	public AttributeFilterResource createAttributeFilter(UUID eventUuid, AttributeFilterResource newAttributeFilter) {
 		final EventFilter eventFilter = eventRepo.findOne(eventUuid);
 		newAttributeFilter.setEventFilter(eventFilter);
 		
+		
 		final AttributeFilterResource resource = attributeFilterRepo.save(newAttributeFilter);
+		eventFilter.getAttributeFilters().add(newAttributeFilter);
+		eventRepo.save((EventFilterResource) eventFilter);
 		return resource;
 	}
 

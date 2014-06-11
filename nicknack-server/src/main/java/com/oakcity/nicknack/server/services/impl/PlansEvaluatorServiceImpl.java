@@ -100,13 +100,17 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>{
 		}
 		
 		boolean match = false;
+		
 		final Iterator<EventFilterResource> iterator = eventFiltersService.getEventFilters(plan.getUUID()).iterator();
+		
+		// If any event filter matches, then this plan is match.
 		while (!match && iterator.hasNext()) {
 			final EventFilter filter = iterator.next();
 			
-			if (eventFilterEvaluator.evaluate(filter, event)) {
-				// LOG
-				match = true;
+			match = eventFilterEvaluator.evaluate(filter, event);
+			
+			if (LOG.isInfoEnabled() && match) {
+				LOG.info("EventFilter matched: " + ((EventFilterResource) filter).getUuid());
 			}
 		}
 		

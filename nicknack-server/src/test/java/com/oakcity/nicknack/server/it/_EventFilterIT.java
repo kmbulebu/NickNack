@@ -32,9 +32,17 @@ public class _EventFilterIT extends _AbstractJettyTest {
 		
 		System.out.println(eventFilterJson);
 		Link eventFilterLink = linkDiscoverer.findLinkWithRel("self", eventFilterJson);
+		Link attributeFiltersLink = linkDiscoverer.findLinkWithRel("attributeFilters", eventFilterJson);
 		
 		//  Check that it exists.
 		get(eventFiltersLink.getHref()).then().assertThat().statusCode(200).body("_embedded.EventFilters", hasSize(1));
+		
+		// Create some attribute filters to check if a particular switch is switched to on
+		final String macAttributeFilterJson = given().contentType("application/json").body("{\"appliesToAttributeDefinition\":\"920c68e0-d662-31e3-9c1a-0800200d9a66\",\"operator\":\"EQUALS\",\"operand\":\"0b:41:c1:3a:89:36\"}").post(attributeFiltersLink.getHref()).then().assertThat().statusCode(201).extract().asString();
+		final String positionAttributeFilterJson = given().contentType("application/json").body("{\"appliesToAttributeDefinition\":\"320c68e0-d662-11e3-9c1a-0800200d9a66\",\"operator\":\"EQUALS\",\"operand\":\"true\"}").post(attributeFiltersLink.getHref()).then().assertThat().statusCode(201).extract().asString();
+		
+		System.out.println(macAttributeFilterJson);
+		System.out.println(positionAttributeFilterJson);
 	}
 	
 	

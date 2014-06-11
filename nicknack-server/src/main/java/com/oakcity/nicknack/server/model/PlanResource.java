@@ -37,7 +37,7 @@ public class PlanResource extends ResourceSupport implements Plan {
 	
 	@OneToMany(targetEntity=ActionResource.class)
 	@JsonIgnore
-	private List<Action> actions;
+	private List<Action> actions = new ArrayList<Action>();
 
 	@Override
 	public UUID getUUID() {
