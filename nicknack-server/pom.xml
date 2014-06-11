@@ -60,9 +60,14 @@
 		</dependency>
 		<dependency>
 			<groupId>com.oakcity.nicknack</groupId>
+			<artifactId>nicknack-basic-provider</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oakcity.nicknack</groupId>
 			<artifactId>example-provider</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>runtime</scope>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>

@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.core;
 
+import java.text.ParseException;
 import java.util.Comparator;
 
 import com.oakcity.nicknack.core.events.filters.operators.Operator;
@@ -14,7 +15,7 @@ public interface Unit<ValueType> extends Comparator<ValueType> {
 	
 	public ValueType getMax();
 	
-	public ValueType parse(String input);
+	public ValueType parse(String input) throws ParseException;
 	
 	public String toString(ValueType input);
 	

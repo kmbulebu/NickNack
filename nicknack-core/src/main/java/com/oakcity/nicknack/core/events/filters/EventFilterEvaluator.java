@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.core.events.filters;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -66,7 +67,14 @@ public class EventFilterEvaluator {
 		}
 		
 		final Unit unit = attributeDefinition.getUnits();
-		return unit.evaluate(attributeFilter.getOperator(), unit.parse(attributeValue), unit.parse(attributeFilter.getOperand()));
+		try {
+			Object attributeValueObj = unit.parse(attributeValue);
+			Object operandObj = unit.parse(attributeFilter.getOperand());
+			return unit.evaluate(attributeFilter.getOperator(), attributeValueObj, operandObj);
+		} catch (ParseException e) {
+			// TODO Better unchecked exception
+			throw new RuntimeException("Could not parse attribute values for comparison. " + e.getMessage(), e);
+		}
 	}
 	
 	

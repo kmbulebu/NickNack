@@ -36,6 +36,7 @@
 		<module>nicknack-core</module>
 		<module>nicknack-server</module>
 		<module>example-provider</module>
+		<module>nicknack-basic-providers</module>
 	</modules>
 
 	<dependencyManagement>
@@ -43,6 +44,11 @@
 			<dependency>
 				<groupId>com.oakcity.nicknack</groupId>
 				<artifactId>nicknack-core</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oakcity.nicknack</groupId>
+				<artifactId>nicknack-basic-provider</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
