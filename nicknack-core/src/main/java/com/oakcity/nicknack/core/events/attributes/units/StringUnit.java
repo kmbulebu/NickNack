@@ -4,6 +4,8 @@ import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.events.filters.operators.Operator;
 
 public class StringUnit implements Unit<String> {
+	
+	public static final StringUnit INSTANCE = new StringUnit();
 
 	@Override
 	public int compare(String o1, String o2) {

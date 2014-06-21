@@ -17,7 +17,7 @@ import com.oakcity.nicknack.core.events.attributes.units.DateTimeUnit;
  */
 public class ClockTickEventDefinition extends BasicEventDefinition {
 	
-public static AttributeDefinition DATETIME_ATTRIBUTE_DEF = new BasicAttributeDefinition(UUID.fromString("5c94d39c-f10e-11e3-ae7d-7719884a01c5"), "dateTime", DateTimeUnit.INSTANCE, false);
+	public static AttributeDefinition DATETIME_ATTRIBUTE_DEF = new BasicAttributeDefinition(UUID.fromString("5c94d39c-f10e-11e3-ae7d-7719884a01c5"), "dateTime", DateTimeUnit.INSTANCE, false);
 	
 	public static UUID INSTANCE_UUID = UUID.fromString("541ce254-f10e-11e3-bac5-a75fc2793419");
 

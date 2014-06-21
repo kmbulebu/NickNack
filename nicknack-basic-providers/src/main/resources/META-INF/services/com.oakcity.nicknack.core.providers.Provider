@@ -1,1 +1,2 @@
 com.oakcity.nicknack.basicproviders.clock.ClockProvider
+com.oakcity.nicknack.basicproviders.wol.WakeOnLanProvider

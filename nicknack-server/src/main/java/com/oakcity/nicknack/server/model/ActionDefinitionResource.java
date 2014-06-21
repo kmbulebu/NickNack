@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
+import com.oakcity.nicknack.core.actions.ActionFailureException;
+import com.oakcity.nicknack.core.actions.ActionParameterException;
 
 @Relation(value="ActionDefinition", collectionRelation="ActionDefinitions")
 public class ActionDefinitionResource extends ResourceSupport implements ActionDefinition {
@@ -42,7 +44,7 @@ public class ActionDefinitionResource extends ResourceSupport implements ActionD
 	}
 
 	@Override
-	public void run(Action action) {
+	public void run(Action action) throws ActionFailureException, ActionParameterException {
 		actionDefinition.run(action);
 	}
 

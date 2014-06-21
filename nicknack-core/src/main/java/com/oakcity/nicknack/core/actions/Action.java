@@ -25,8 +25,7 @@ public interface Action {
 		
 		public List<ParameterDefinition> getParameterDefinitions();
 		
-		// TODO Create some exceptions to differentiate problems with user input (bad parameters) vs problems during execution of the action.
-		public void run(Action action);
+		public void run(Action action) throws ActionFailureException, ActionParameterException;
 		
 	}
 	
