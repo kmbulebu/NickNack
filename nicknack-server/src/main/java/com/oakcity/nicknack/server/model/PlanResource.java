@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.hateoas.ResourceSupport;
@@ -31,10 +32,12 @@ public class PlanResource extends ResourceSupport implements Plan {
 	
 	private String name;
 	
+	@NotNull
 	@OneToMany(targetEntity=EventFilterResource.class, mappedBy="plan")
 	@JsonIgnore
 	private List<EventFilter> eventFilters = new ArrayList<EventFilter>();
 	
+	@NotNull
 	@OneToMany(targetEntity=ActionResource.class)
 	@JsonIgnore
 	private List<Action> actions = new ArrayList<Action>();

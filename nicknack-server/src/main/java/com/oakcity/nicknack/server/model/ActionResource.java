@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.hateoas.ResourceSupport;
@@ -29,8 +30,10 @@ public class ActionResource extends ResourceSupport implements Action {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private UUID uuid;
 	
+	@NotNull
 	private UUID appliesToActionDefinition;
 	
+	@NotNull
 	@ElementCollection
 	private Map<UUID, String> parameters = new HashMap<UUID, String>();
 	

@@ -9,8 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
@@ -29,11 +31,14 @@ public class AttributeFilterResource extends ResourceSupport implements Attribut
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private UUID uuid;
 	
+	@NotNull
 	private UUID appliesToAttributeDefinition;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Operator operator;
 	
+	@NotBlank
 	private String operand;
 	
 	@ManyToOne(targetEntity=EventFilterResource.class)

@@ -36,6 +36,7 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	
 	private String description;
 	
+	@NotNull
 	@OneToMany(targetEntity=AttributeFilterResource.class, fetch=FetchType.EAGER)
 	private List<AttributeFilter> attributeFilters = new ArrayList<AttributeFilter>();
 	
