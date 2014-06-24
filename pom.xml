@@ -37,6 +37,7 @@
 		<module>nicknack-server</module>
 		<module>example-provider</module>
 		<module>nicknack-basic-providers</module>
+		<module>xbmc-provider</module>
 	</modules>
 
 	<dependencyManagement>

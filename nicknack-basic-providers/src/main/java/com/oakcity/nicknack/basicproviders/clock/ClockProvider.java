@@ -81,6 +81,7 @@ public class ClockProvider implements Provider, Runnable {
 		final long nextSecond = ((System.currentTimeMillis() + 2000)/1000)*1000;
 		final long initialDelay = nextSecond - System.currentTimeMillis();
 		executorService.scheduleAtFixedRate(this, initialDelay, 1000, TimeUnit.MILLISECONDS);
+		this.onEventListener = onEventListener;
 	}
 
 	@Override

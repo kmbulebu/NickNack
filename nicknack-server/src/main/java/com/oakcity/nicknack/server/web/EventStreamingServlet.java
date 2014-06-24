@@ -76,7 +76,13 @@ public class EventStreamingServlet extends HttpRequestHandlerServlet implements 
 			}
 		});
 
-		while (!isDestroyed && !ioError.get());
+		while (!isDestroyed && !ioError.get()) {
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// Don't care.
+			}
+		}
 		
 		subscription.unsubscribe();
 		

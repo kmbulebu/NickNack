@@ -71,9 +71,11 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     	
     	Provider provider = null;
     	List<Exception> errors = new ArrayList<Exception>();
-		while (provider == null && providers.hasNext()) {
+    	System.out.println("Loading providers...");
+		while (providers.hasNext()) {
 			try {
 				provider = providers.next();
+				System.out.println("Initializing " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
 				this.providers.put(provider.getUuid(), provider);
 				provider.init(this);
 				
@@ -99,6 +101,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 					}
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 	    		errors.add(e);
 	    	}
 		}

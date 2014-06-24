@@ -63,12 +63,14 @@
 			<artifactId>nicknack-basic-provider</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- Temporary -->
 		<dependency>
 			<groupId>com.oakcity.nicknack</groupId>
-			<artifactId>example-provider</artifactId>
+			<artifactId>xbmc-provider</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>test</scope>
+			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
