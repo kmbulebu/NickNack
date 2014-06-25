@@ -3,9 +3,9 @@ package com.oakcity.nicknack.core.providers;
 import java.util.List;
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
+import com.oakcity.nicknack.core.units.Unit;
 
 /**
  * Provider Interface. Main entry point for extending NickNack. 
@@ -40,7 +40,8 @@ public interface Provider {
 	 * 
 	 * @return A list of Unit instances created by this Provider.
 	 */
-	public List<Unit<?>> getUnits();
+	// TODO Remove?
+	public List<Unit> getUnits();
 	
 	/**
 	 * 

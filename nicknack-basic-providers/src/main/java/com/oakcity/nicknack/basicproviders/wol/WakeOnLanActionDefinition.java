@@ -7,8 +7,7 @@ import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.ActionFailureException;
 import com.oakcity.nicknack.core.actions.ActionParameterException;
 import com.oakcity.nicknack.core.actions.BasicActionDefinition;
-import com.oakcity.nicknack.core.actions.BasicParameterDefinition;
-import com.oakcity.nicknack.core.events.attributes.units.StringUnit;
+import com.oakcity.nicknack.core.actions.parameters.MacAddressParameterDefinition;
 
 public class WakeOnLanActionDefinition extends BasicActionDefinition {
 	
@@ -16,7 +15,7 @@ public class WakeOnLanActionDefinition extends BasicActionDefinition {
 	public static final WakeOnLanActionDefinition INSTANCE = new WakeOnLanActionDefinition();
 	
 	public WakeOnLanActionDefinition() {
-		super(WOL_ACTION_UUID, WakeOnLanProvider.PROVIDER_UUID, "Wake Up Network Device", MacAddressParameterDefinition.INSTANCE);
+		super(WOL_ACTION_UUID, WakeOnLanProvider.PROVIDER_UUID, "Wake Up Network Device", DeviceMacAddressParameterDefinition.INSTANCE);
 	}
 
 	@Override
@@ -25,9 +24,9 @@ public class WakeOnLanActionDefinition extends BasicActionDefinition {
 			throw new ActionParameterException("Parameters are required.");
 		}
 		
-		final String macAddress = action.getParameters().get(MacAddressParameterDefinition.MAC_ADDRESS_PARAMETER_UUID);
+		final String macAddress = action.getParameters().get(DeviceMacAddressParameterDefinition.MAC_ADDRESS_PARAMETER_UUID);
 		if (macAddress == null) {
-			throw new ActionParameterException(MacAddressParameterDefinition.INSTANCE.getName() + " is required.");
+			throw new ActionParameterException(DeviceMacAddressParameterDefinition.INSTANCE.getName() + " is required.");
 		}
 		
 		final WakeOnLan wol = new WakeOnLan(macAddress);
@@ -39,13 +38,13 @@ public class WakeOnLanActionDefinition extends BasicActionDefinition {
 		}
 	}
 	
-	public static class MacAddressParameterDefinition extends BasicParameterDefinition<StringUnit> {
+	public static class DeviceMacAddressParameterDefinition extends MacAddressParameterDefinition {
 
 		public static final UUID MAC_ADDRESS_PARAMETER_UUID = UUID.fromString("e178a7a1-c0c8-4233-98fb-4be49978b501");
-		public static final MacAddressParameterDefinition INSTANCE = new MacAddressParameterDefinition();
+		public static final DeviceMacAddressParameterDefinition INSTANCE = new DeviceMacAddressParameterDefinition();
 		
-		public MacAddressParameterDefinition() {
-			super(MAC_ADDRESS_PARAMETER_UUID, "Device Mac Address", StringUnit.INSTANCE, true);
+		public DeviceMacAddressParameterDefinition() {
+			super(MAC_ADDRESS_PARAMETER_UUID, "Device Mac Address", true);
 		}
 		
 	}

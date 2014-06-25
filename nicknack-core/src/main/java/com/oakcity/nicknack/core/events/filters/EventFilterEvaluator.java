@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.core.events.filters.EventFilter.AttributeFilter;
+import com.oakcity.nicknack.core.units.Unit;
 
 public class EventFilterEvaluator {
 	
@@ -48,7 +48,6 @@ public class EventFilterEvaluator {
 		return attributeDefinition;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	// Evaluate single attribute filter
 	protected boolean evaluate(final AttributeFilter attributeFilter, final Map<UUID, String> eventAttributes, final List<AttributeDefinition> attributeDefinitions) {
 		// Find a matching attribute
@@ -68,9 +67,7 @@ public class EventFilterEvaluator {
 		
 		final Unit unit = attributeDefinition.getUnits();
 		try {
-			Object attributeValueObj = unit.parse(attributeValue);
-			Object operandObj = unit.parse(attributeFilter.getOperand());
-			return unit.evaluate(attributeFilter.getOperator(), attributeValueObj, operandObj);
+			return unit.evaluate(attributeFilter.getOperator(), attributeValue, attributeFilter.getOperand());
 		} catch (ParseException e) {
 			// TODO Better unchecked exception
 			throw new RuntimeException("Could not parse attribute values for comparison. " + e.getMessage(), e);

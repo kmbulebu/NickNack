@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.Unit;
+import com.oakcity.nicknack.core.units.Unit;
 
 
 
@@ -41,7 +41,7 @@ public interface Event {
 		
 		public String getName();
 		
-		public Unit<?> getUnits();
+		public Unit getUnits();
 		
 		public boolean isOptional();
 	}

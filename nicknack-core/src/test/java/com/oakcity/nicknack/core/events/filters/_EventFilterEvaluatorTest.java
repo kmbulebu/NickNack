@@ -15,11 +15,11 @@ import com.oakcity.nicknack.core.events.BasicAttributeDefinition;
 import com.oakcity.nicknack.core.events.BasicEventDefinition;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.core.events.attributes.units.BooleanUnit;
-import com.oakcity.nicknack.core.events.attributes.units.StringUnit;
 import com.oakcity.nicknack.core.events.filters.EventFilter.AttributeFilter;
 import com.oakcity.nicknack.core.events.filters.EventFilterEvaluator;
 import com.oakcity.nicknack.core.events.filters.operators.Operator;
+import com.oakcity.nicknack.core.units.BooleanUnit;
+import com.oakcity.nicknack.core.units.StringUnit;
 
 public class _EventFilterEvaluatorTest {
 	

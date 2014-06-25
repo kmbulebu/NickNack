@@ -3,7 +3,7 @@ package com.oakcity.nicknack.providers.xbmc.events;
 import java.util.UUID;
 
 import com.oakcity.nicknack.core.events.BasicAttributeDefinition;
-import com.oakcity.nicknack.core.events.attributes.units.StringUnit;
+import com.oakcity.nicknack.core.units.StringUnit;
 
 public class PlayerItemTypeAttributeDefinition extends BasicAttributeDefinition {
 	

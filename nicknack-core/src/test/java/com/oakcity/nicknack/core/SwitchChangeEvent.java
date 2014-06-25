@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
-import com.oakcity.nicknack.core.events.attributes.units.BooleanUnit;
+import com.oakcity.nicknack.core.units.BooleanUnit;
 
 public class SwitchChangeEvent implements EventDefinition {
 	

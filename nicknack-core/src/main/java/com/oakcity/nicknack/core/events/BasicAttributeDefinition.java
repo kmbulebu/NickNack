@@ -2,17 +2,17 @@ package com.oakcity.nicknack.core.events;
 
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
+import com.oakcity.nicknack.core.units.Unit;
 
 public class BasicAttributeDefinition implements AttributeDefinition {
 	
 	private final UUID uuid;
 	private final String name;
-	private final Unit<?> units;
+	private final Unit units;
 	private final boolean isOptional;
 	
-	public BasicAttributeDefinition(UUID uuid, String name, Unit<?> units, boolean isOptional) {
+	public BasicAttributeDefinition(UUID uuid, String name, Unit units, boolean isOptional) {
 		this.uuid = uuid;
 		this.name = name;
 		this.units = units;
@@ -30,7 +30,7 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 	}
 
 	@Override
-	public Unit<?> getUnits() {
+	public Unit getUnits() {
 		return units;
 	}
 

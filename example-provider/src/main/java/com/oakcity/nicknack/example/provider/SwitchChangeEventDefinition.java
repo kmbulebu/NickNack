@@ -5,8 +5,8 @@ import java.util.UUID;
 import com.oakcity.nicknack.core.events.BasicAttributeDefinition;
 import com.oakcity.nicknack.core.events.BasicEventDefinition;
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.core.events.attributes.units.BooleanUnit;
-import com.oakcity.nicknack.core.events.attributes.units.StringUnit;
+import com.oakcity.nicknack.core.units.BooleanUnit;
+import com.oakcity.nicknack.core.units.StringUnit;
 
 /**
  * Our 'switch' acts like a normal light switch. It's up or down (on or off) and is connected to a network.

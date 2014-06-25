@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
+import com.oakcity.nicknack.core.units.Unit;
 
 /**
  * Provides real time clock capabilities to Nick Nack.
@@ -49,7 +49,7 @@ public class WakeOnLanProvider implements Provider {
 	}
 	
 	@Override
-	public List<Unit<?>> getUnits() {
+	public List<Unit> getUnits() {
 		// TODO Auto-generated method stub
 		return null;
 	}

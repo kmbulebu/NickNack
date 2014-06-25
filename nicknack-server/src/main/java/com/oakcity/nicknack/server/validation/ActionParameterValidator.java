@@ -1,6 +1,5 @@
 package com.oakcity.nicknack.server.validation;
 
-import java.text.ParseException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,21 +48,9 @@ public class ActionParameterValidator implements ConstraintValidator<ValidAction
     	}
     	
     	// Value can be parsed.
-    	try {
-			Object parsed = def.getUnits().parse(value);
-			
-			Object min = def.getUnits().getMin();
-			Object max = def.getUnits().getMax();
-			
-			// TODO Rethink Unit class/model. This isn't making it easy to validate.
-			//if (min != null && def.getUnits().compare(def.getUnits().getMin(), def.getUnits().parse(value)) >= 0) {
-			//	
-			//}
-		} catch (ParseException e) {
-			return false;
-		}
-    	
-    	
+    	if (def.validate(value).size() == 0) {
+    		return false;
+    	}
     	
     	return true;
     }

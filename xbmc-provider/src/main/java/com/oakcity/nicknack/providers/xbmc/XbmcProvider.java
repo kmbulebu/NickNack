@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
+import com.oakcity.nicknack.core.units.Unit;
 import com.oakcity.nicknack.providers.xbmc.events.PauseEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PlayEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.StopEventDefinition;
@@ -61,7 +61,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	}
 	
 	@Override
-	public List<Unit<?>> getUnits() {
+	public List<Unit> getUnits() {
 		// TODO Auto-generated method stub
 		return null;
 	}

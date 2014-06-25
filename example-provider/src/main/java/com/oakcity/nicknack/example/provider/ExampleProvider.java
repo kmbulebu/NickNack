@@ -8,12 +8,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.Unit;
-import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
+import com.oakcity.nicknack.core.units.Unit;
 
 public class ExampleProvider implements Provider {
 	
@@ -37,7 +36,7 @@ public class ExampleProvider implements Provider {
 	
 
 	@Override
-	public List<Unit<?>> getUnits() {
+	public List<Unit> getUnits() {
 		// Does not define any new Units.
 		return Collections.emptyList();
 	}

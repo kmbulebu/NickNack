@@ -5,8 +5,8 @@ import java.util.UUID;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
-import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
+import com.oakcity.nicknack.core.units.Unit;
 
 @Relation(value="AttributeDefinition", collectionRelation="AttributeDefinitions")
 public class AttributeDefinitionResource extends ResourceSupport implements AttributeDefinition {
@@ -28,7 +28,7 @@ public class AttributeDefinitionResource extends ResourceSupport implements Attr
 	}
 
 	@Override
-	public Unit<?> getUnits() {
+	public Unit getUnits() {
 		return attributeDefinition.getUnits();
 	}
 

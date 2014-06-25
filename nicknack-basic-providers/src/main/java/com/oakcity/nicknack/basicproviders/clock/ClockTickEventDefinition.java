@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.oakcity.nicknack.core.events.BasicAttributeDefinition;
 import com.oakcity.nicknack.core.events.BasicEventDefinition;
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.core.events.attributes.units.DateTimeUnit;
+import com.oakcity.nicknack.core.units.DateTimeUnit;
 
 /**
  * Creates a new 'Time Changed' event every second, nearest to the top of the second as possible.

@@ -12,12 +12,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.oakcity.nicknack.core.Unit;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
+import com.oakcity.nicknack.core.units.Unit;
 
 /**
  * Provides real time clock capabilities to Nick Nack.
@@ -61,7 +61,7 @@ public class ClockProvider implements Provider, Runnable {
 	}
 	
 	@Override
-	public List<Unit<?>> getUnits() {
+	public List<Unit> getUnits() {
 		// TODO Auto-generated method stub
 		return null;
 	}
