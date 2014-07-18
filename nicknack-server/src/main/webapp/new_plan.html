@@ -1,0 +1,39 @@
+<html ng-app="newplanApp">
+<head>
+   <script src="bower_components/angular/angular.js"></script>
+   <script src="bower_components/rfc6570/rfc6570.js"></script>
+   <script src="bower_components/angular-hal/angular-hal.js"></script>
+   <script src="js/controllers.js"></script>
+   <script src="js/services.js"></script>
+</head>
+<body ng-controller="NewPlanCtrl">
+  <h1>New Plan</h1>
+
+  <h2>Event</h3>
+  <select ng-model="eventType">
+  	<option ng-repeat="eventDefinition in eventDefinitions track by $index" value="{{eventDefinition.uuid}}">{{eventDefinition.name}}</option>
+  </select>
+  
+  <h3>Filters</h3>
+  <div>When <select name="event_filter_1_type">
+  	<option>Attribute 1</option>
+  	<option>Attribute 2</option>
+  </select> is 
+  <select name="event_filter_1_operator">
+  	<option>equal to</option>
+  </select>
+  <input type="text" name="event_filter_1_operand"></input>
+  <button>Delete</button>
+  </div>
+  <button>And...</button>
+  
+  <h2>Action</h3>
+  <select name="action_type">
+  	<option>Action 1</option>
+  	<option>Action 2</option>
+  </select>
+  
+  <h3>Parameters</h3>
+  <label>New Position</label><checkbox>  
+</body>
+</html>

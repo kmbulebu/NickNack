@@ -84,37 +84,11 @@ public class XbmcClient {
 	 public void setListener(OnMessageReceivedListener listener) {
 		this.listener = listener;
 	}
-	
+
 	public interface OnMessageReceivedListener {
 		
 		public void onMessageReceived(JsonRpc message);
 		
-	}
-	
-	public static void main(String[] args) {
-		String destUri = "ws://192.168.69.2:9090/jsonrpc";
-        if (args.length > 0) {
-            destUri = args[0];
-        }
-        WebSocketClient client = new WebSocketClient();
-        XbmcClient socket = new XbmcClient();
-        try {
-            client.start();
-            URI echoUri = new URI(destUri);
-            ClientUpgradeRequest request = new ClientUpgradeRequest();
-            client.connect(socket, echoUri, request);
-            System.out.printf("Connecting to : %s%n", echoUri);
-            Thread.sleep(1000000);
-           // socket.awaitClose(5, TimeUnit.SECONDS);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        } finally {
-            try {
-                client.stop();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 	}
 
 }
