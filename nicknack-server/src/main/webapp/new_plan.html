@@ -10,14 +10,13 @@
   <h1>New Plan</h1>
 
   <h2>Event</h3>
-  <select ng-model="eventType">
+  <select ng-model="eventType" ng-change="updateAttributeDefinitions()">
   	<option ng-repeat="eventDefinition in eventDefinitions track by $index" value="{{eventDefinition.uuid}}">{{eventDefinition.name}}</option>
   </select>
   
   <h3>Filters</h3>
-  <div>When <select name="event_filter_1_type">
-  	<option>Attribute 1</option>
-  	<option>Attribute 2</option>
+  <div>When <select ng-model="eventAttributeType">
+  	<option ng-repeat="eventAttributeDefinition in eventAttributeDefinitions track by $index" value="{{eventAttributeDefinition.uuid}}">{{eventAttributeDefinition.name}}</option>
   </select> is 
   <select name="event_filter_1_operator">
   	<option>equal to</option>

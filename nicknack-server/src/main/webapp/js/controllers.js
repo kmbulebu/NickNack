@@ -5,13 +5,25 @@ newplanApp.controller('NewPlanCtrl', ['$scope', 'WebsiteService',
 function ($scope, WebsiteService) {
 	$scope.eventDefinitions = "test";
 	WebsiteService
-            .load()
+            .loadEventDefinitions()
             .then( function( websiteResource ) {
                 return websiteResource.$get('EventDefinitions');
             })
-            .then( function( blogPostList )
+            .then( function( eventDefinitionList )
             {
-            	$scope.eventDefinitions = blogPostList;
+            	$scope.eventDefinitions = eventDefinitionList;
             })
             ;
+	$scope.updateAttributeDefinitions = function() {
+		WebsiteService
+        .loadAttributeDefinitions($scope.eventType)
+        .then( function(websiteResource) {
+                return websiteResource.$get('AttributeDefinitions');
+            })
+        .then(function( attributeDefinitionList )
+        {
+        	$scope.eventAttributeDefinitions = attributeDefinitionList;
+        })
+        ;
+	};
 }]);
