@@ -1,10 +1,40 @@
 
-var newplanApp = angular.module('newplanApp', ['newplanService']);
+var nicknackApp = angular.module('nicknackApp', ['newplanService']);
 
-newplanApp.controller('NewPlanCtrl', ['$scope', 'WebsiteService', 
+nicknackApp.controller('PlansCtrl', ['$scope', 'WebsiteService', 
+                                       function ($scope, WebsiteService) {
+	
+	$scope.plans = {};
+	
+	$scope.refresh = function() {
+		WebsiteService
+	    .loadPlans()
+	    .then( function( websiteResource ) {
+	    	if (websiteResource.$has('Plans')) 
+	    		return websiteResource.$get('Plans');
+	    })
+	    .then( function( plansList )
+	    {
+	    	$scope.plans = plansList;
+	    });
+	};
+	
+	$scope.refresh();
+	
+	$scope.deletePlan = function(planUuid) {
+		WebsiteService.deletePlan(planUuid).then(function () {
+			$scope.refresh();
+		});
+		
+	};
+	
+}]);
+
+nicknackApp.controller('NewPlanCtrl', ['$scope', 'WebsiteService', 
 function ($scope, WebsiteService) {
 	$scope.actionParameterValues = {};
 	$scope.formData = {};
+	$scope.newPlanName = 'New Plan';
 	$scope.formData.eventAttributeFilters = [
 	                 	                    { 
 	                 	                    	appliesToAttributeDefinition: '',
@@ -84,7 +114,7 @@ function ($scope, WebsiteService) {
 	$scope.submit = function() {
 		// Step 1: Create the plan resource.
 		var plan = { 
-             	name:'New Plan'
+             	name:$scope.newPlanName
               };
 		
 		
@@ -119,6 +149,8 @@ function ($scope, WebsiteService) {
 				newPlanResource.$post('actions', null, action);
 				
 				
+			}).then( function() {
+				window.location = "plans.html";
 			});
 
 	};

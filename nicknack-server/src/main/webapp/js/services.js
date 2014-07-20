@@ -1,6 +1,14 @@
 angular.module('newplanService', ['angular-hal']).factory('WebsiteService', [ 'halClient', function(halClient) {
 
     return {
+    	'loadPlans' :
+            function() {
+                return halClient.$get('api/plans');
+            },
+        'deletePlan' :
+            function(uuid) {
+                return halClient.$del('api/plans/' + uuid);
+            },
         'loadEventDefinitions' :
             function() {
                 return halClient.$get('api/eventDefinitions');

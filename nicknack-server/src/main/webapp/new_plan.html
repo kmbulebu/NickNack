@@ -1,4 +1,4 @@
-<html ng-app="newplanApp">
+<html ng-app="nicknackApp">
 <head>
    <script src="bower_components/angular/angular.js"></script>
    <script src="bower_components/rfc6570/rfc6570.js"></script>
@@ -10,6 +10,8 @@
   <h1>New Plan</h1>
 
   <form name="newPlanForm" ng-submit="submit()">
+  	  <label>Name</label><input type="text" ng-model="newPlanName">
+  
 	  <h2>Event</h3>
 	  <select ng-model="eventType" ng-change="updateAttributeDefinitions()">
 	  	<option ng-repeat="eventDefinition in eventDefinitions track by $index" value="{{eventDefinition}}">{{eventDefinition.name}}</option>

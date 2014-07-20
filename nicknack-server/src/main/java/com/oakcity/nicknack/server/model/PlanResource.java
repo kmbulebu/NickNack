@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,12 +34,12 @@ public class PlanResource extends ResourceSupport implements Plan {
 	private String name;
 	
 	@NotNull
-	@OneToMany(targetEntity=EventFilterResource.class, mappedBy="plan")
+	@OneToMany(targetEntity=EventFilterResource.class, mappedBy="plan", cascade=CascadeType.ALL)
 	@JsonIgnore
 	private List<EventFilter> eventFilters = new ArrayList<EventFilter>();
 	
 	@NotNull
-	@OneToMany(targetEntity=ActionResource.class)
+	@OneToMany(targetEntity=ActionResource.class, cascade=CascadeType.ALL)
 	@JsonIgnore
 	private List<Action> actions = new ArrayList<Action>();
 
