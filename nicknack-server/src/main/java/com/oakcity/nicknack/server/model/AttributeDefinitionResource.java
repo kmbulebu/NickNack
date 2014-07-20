@@ -5,12 +5,14 @@ import java.util.UUID;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.core.units.Unit;
 
 @Relation(value="AttributeDefinition", collectionRelation="AttributeDefinitions")
 public class AttributeDefinitionResource extends ResourceSupport implements AttributeDefinition {
 		
+	@JsonIgnore
 	public final AttributeDefinition attributeDefinition;
 	
 	public AttributeDefinitionResource(AttributeDefinition attributeDefinition) {

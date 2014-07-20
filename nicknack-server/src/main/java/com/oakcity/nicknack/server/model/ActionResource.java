@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -34,7 +35,7 @@ public class ActionResource extends ResourceSupport implements Action {
 	private UUID appliesToActionDefinition;
 	
 	@NotNull
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<UUID, String> parameters = new HashMap<UUID, String>();
 	
 	@ManyToOne(targetEntity=PlanResource.class)

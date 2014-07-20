@@ -13,6 +13,7 @@ import com.oakcity.nicknack.core.events.Event.EventDefinition;
 @Relation(value="EventDefinition", collectionRelation="EventDefinitions")
 public class EventDefinitionResource extends ResourceSupport implements EventDefinition {
 	
+	@JsonIgnore
 	private final EventDefinition eventDefinition;
 	
 	public EventDefinitionResource(EventDefinition eventDefinition) {

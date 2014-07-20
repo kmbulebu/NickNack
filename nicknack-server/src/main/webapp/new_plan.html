@@ -9,30 +9,41 @@
 <body ng-controller="NewPlanCtrl">
   <h1>New Plan</h1>
 
-  <h2>Event</h3>
-  <select ng-model="eventType" ng-change="updateAttributeDefinitions()">
-  	<option ng-repeat="eventDefinition in eventDefinitions track by $index" value="{{eventDefinition.uuid}}">{{eventDefinition.name}}</option>
-  </select>
-  
-  <h3>Filters</h3>
-  <div>When <select ng-model="eventAttributeType">
-  	<option ng-repeat="eventAttributeDefinition in eventAttributeDefinitions track by $index" value="{{eventAttributeDefinition.uuid}}">{{eventAttributeDefinition.name}}</option>
-  </select> is 
-  <select name="event_filter_1_operator">
-  	<option>equal to</option>
-  </select>
-  <input type="text" name="event_filter_1_operand"></input>
-  <button>Delete</button>
-  </div>
-  <button>And...</button>
-  
-  <h2>Action</h3>
-  <select name="action_type">
-  	<option>Action 1</option>
-  	<option>Action 2</option>
-  </select>
-  
-  <h3>Parameters</h3>
-  <label>New Position</label><checkbox>  
+  <form name="newPlanForm" ng-submit="submit()">
+	  <h2>Event</h3>
+	  <select ng-model="eventType" ng-change="updateAttributeDefinitions()">
+	  	<option ng-repeat="eventDefinition in eventDefinitions track by $index" value="{{eventDefinition}}">{{eventDefinition.name}}</option>
+	  </select>
+	  
+	  <h3>Filters</h3>
+	  <div ng-repeat="eventAttributeFilter in formData.eventAttributeFilters">
+	  	<ng-form name="eventFiltersForm">
+		  	When 
+		  	<select ng-model="eventAttributeType" ng-change="onAttributeFilterTypeChange()">
+		  		<option ng-repeat="eventAttributeDefinition in eventAttributeDefinitions track by $index" value="{{eventAttributeDefinition}}">{{eventAttributeDefinition.name}}</option>
+		 	</select> is 
+		 	<select ng-model="eventAttributeFilter.operator">
+		  		<option ng-repeat="eventAttributeOperator in eventAttributeOperators track by $index" value="{{eventAttributeOperator}}">{{eventAttributeOperator}}</option>
+		  	</select>
+		 	<input type="text" ng-model="eventAttributeFilter.operand"></input>
+		  	<button ng-click="deleteEventAttributeFilter()">Delete</button>
+	  	</ng-form>
+	  </div>
+	  <button ng-click="addEventAttributeFilter()">And...</button>
+	  
+	  <h2>Action</h3>
+	  <select ng-model="actionType" ng-change="onActionTypeChange()">
+	  	<option ng-repeat="actionDefinition in actionDefinitions track by $index" value="{{actionDefinition}}">{{actionDefinition.name}}</option>
+	  </select>
+	  
+	  <h3>Parameters</h3>
+	 	 <div ng-repeat="actionParameterDefinition in actionParameterDefinitions track by $index">
+	  		<ng-form name="actionParametersForm">
+	  			<label>{{actionParameterDefinition.name}}</label><input type="text" ng-model="actionParameterValues[$index]"/> 
+  			</ng-form>
+  		</div>
+  		
+  	<button type="submit">Save Plan</button>	
+  </form>
 </body>
 </html>

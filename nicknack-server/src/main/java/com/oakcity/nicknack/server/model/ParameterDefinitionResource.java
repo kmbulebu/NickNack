@@ -7,12 +7,14 @@ import java.util.UUID;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
 import com.oakcity.nicknack.core.units.Unit;
 
 @Relation(value="ParameterDefinition", collectionRelation="ParameterDefinitions")
 public class ParameterDefinitionResource extends ResourceSupport implements ParameterDefinition {
 		
+	@JsonIgnore
 	public final ParameterDefinition parameterDefinition;
 	
 	public ParameterDefinitionResource(ParameterDefinition parameterDefinition) {

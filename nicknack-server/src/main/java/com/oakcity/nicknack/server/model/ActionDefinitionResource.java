@@ -16,6 +16,7 @@ import com.oakcity.nicknack.core.actions.ActionParameterException;
 @Relation(value="ActionDefinition", collectionRelation="ActionDefinitions")
 public class ActionDefinitionResource extends ResourceSupport implements ActionDefinition {
 	
+	@JsonIgnore
 	private final ActionDefinition actionDefinition;
 	
 	public ActionDefinitionResource(ActionDefinition actionDefinition) {
