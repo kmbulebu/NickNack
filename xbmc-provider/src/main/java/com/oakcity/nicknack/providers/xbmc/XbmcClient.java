@@ -18,7 +18,7 @@ import com.oakcity.nicknack.providers.xbmc.json.JsonRpc;
 public class XbmcClient {
 
 	// Used for sending messages.
-	private Session session;
+	//private Session session;
 	private final ObjectMapper mapper = new ObjectMapper();
 	private final WebSocketClient client = new WebSocketClient();
 	private URI websocketUri = null;
@@ -29,7 +29,7 @@ public class XbmcClient {
 
 	@OnWebSocketClose
 	public void onClose(int statusCode, String reason) throws Exception {
-		this.session = null;
+		//this.session = null;
 		if (!stopRequested && websocketUri != null) {
 			connect(websocketUri);
 		}
@@ -37,8 +37,7 @@ public class XbmcClient {
 
 	@OnWebSocketConnect
 	public void onConnect(Session session) {
-		System.out.println("Connected to XBMC!");
-		this.session = session;
+		//this.session = session;
 	}
 	
 	@OnWebSocketMessage
@@ -51,7 +50,7 @@ public class XbmcClient {
 				
 				@Override
 				public void run() {
-					listenerFinal.onMessageReceived(message);
+					listenerFinal.onMessageReceived(websocketUri, message);
 				}
 				
 			}.start();
@@ -87,7 +86,7 @@ public class XbmcClient {
 
 	public interface OnMessageReceivedListener {
 		
-		public void onMessageReceived(JsonRpc message);
+		public void onMessageReceived(URI uri, JsonRpc message);
 		
 	}
 

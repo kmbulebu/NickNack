@@ -3,6 +3,8 @@ package com.oakcity.nicknack.core.providers;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.configuration.Configuration;
+
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 import com.oakcity.nicknack.core.units.Unit;
@@ -60,8 +62,8 @@ public interface Provider {
 	 * @throws Exception
 	 */
 	// TODO Pass in a configuration object that tells the provide where to store config files, what version of nicknack, etc.
-	public void init(OnEventListener onEventListener) throws Exception;
+	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception;
 	
-	
+	// TODO public void onConfigurationChange(Configuration configuration);
 	
 }

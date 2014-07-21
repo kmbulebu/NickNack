@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.UUID;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.XMLConfiguration;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.observables.ConnectableObservable;
@@ -30,7 +33,10 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     private ConnectableObservable<Event> eventStream;
     private Subscriber<? super Event> subscriber;
     
-    private ProviderServiceImpl() {
+    private final XMLConfiguration configuration;
+    
+    private ProviderServiceImpl(final XMLConfiguration configuration) {
+    	this.configuration = configuration;
         loader = ServiceLoader.load(Provider.class);
         eventStream = Observable.create(this).publish();
         eventStream.connect();
@@ -38,9 +44,9 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
         initializeProviders();
     }
 
-    public static synchronized ProviderServiceImpl getInstance() {
+    public static synchronized ProviderServiceImpl getInstance(final XMLConfiguration configuration) {
         if (service == null) {
-            service = new ProviderServiceImpl();
+            service = new ProviderServiceImpl(configuration);
         }
         return service;
     }
@@ -77,7 +83,13 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 				provider = providers.next();
 				System.out.println("Initializing " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
 				this.providers.put(provider.getUuid(), provider);
-				provider.init(this);
+				final String configKey = "providers.uuid" + provider.getUuid().toString().replaceAll("-", "");
+				System.out.println(configKey);
+				if (!configuration.containsKey(configKey + ".name")) {
+					configuration.addProperty(configKey + ".name", provider.getName());
+				}
+				final Configuration providerConfig = configuration.configurationAt(configKey, true);
+				provider.init(providerConfig, this);
 				
 				if (provider.getEventDefinitions() != null) {
 					for (EventDefinition eventDef : provider.getEventDefinitions()) {

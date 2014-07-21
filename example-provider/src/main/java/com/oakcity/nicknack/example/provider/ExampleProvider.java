@@ -8,6 +8,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import org.apache.commons.configuration.Configuration;
+
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 import com.oakcity.nicknack.core.providers.OnEventListener;
@@ -70,7 +72,7 @@ public class ExampleProvider implements Provider {
 	}
 	
 	@Override
-	public void init(final OnEventListener onEvent) throws Exception {
+	public void init(Configuration configuration, final OnEventListener onEvent) throws Exception {
 		// Every 30 seconds, the light switch is randomly turned on or off.
 		final Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {

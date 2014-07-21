@@ -1,9 +1,12 @@
 package com.oakcity.nicknack.providers.xbmc;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import org.apache.commons.configuration.Configuration;
 
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event;
@@ -29,7 +32,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	private final List<ActionDefinition> actionDefinitions;
 	private final XbmcMessageMapper messageMapper;
 	private OnEventListener onEventListener = null;
-	private XbmcClient xbmcClient;
+	private List<XbmcClient> xbmcClients;
 	
 	public XbmcProvider() {
 		eventDefinitions = new ArrayList<EventDefinition>(3);
@@ -40,7 +43,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 		actionDefinitions = new ArrayList<ActionDefinition>(0);
 		
 		messageMapper = new XbmcMessageMapper();
-
+	
 	}
 	
 	@Override
@@ -77,16 +80,27 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	}
 	
 	@Override
-	public void init(OnEventListener onEventListener) throws Exception {
-		xbmcClient = new XbmcClient();
-		xbmcClient.setListener(this);
-		xbmcClient.connect("192.168.69.2", 9090);
+	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
+		xbmcClients = new ArrayList<>();
+		
+		int i = 0;
+		// TODO Switch to string array
+		while (configuration.containsKey("host" + i)) {
+			String[] split = configuration.getString("host" + i).split(":");
+			if (split.length == 2 && split[1].matches("\\d+")) {
+				XbmcClient client = new XbmcClient();
+				client.setListener(this);
+				client.connect(split[0], Integer.parseInt(split[1]));
+				xbmcClients.add(client);
+			}
+			i++;
+		}
 		
 		this.onEventListener = onEventListener;
 	}
 
 	@Override
-	public void onMessageReceived(JsonRpc message) {
+	public void onMessageReceived(URI uri, JsonRpc message) {
 		if (onEventListener != null) {
 			final Event event = messageMapper.map(message);
 			

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.configuration.Configuration;
+
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 import com.oakcity.nicknack.core.providers.OnEventListener;
@@ -65,7 +67,7 @@ public class WakeOnLanProvider implements Provider {
 	}
 	
 	@Override
-	public void init(OnEventListener onEventListener) throws Exception {
+	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
 	}
 
 }
