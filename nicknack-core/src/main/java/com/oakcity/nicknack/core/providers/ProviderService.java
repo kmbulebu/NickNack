@@ -7,6 +7,8 @@ import rx.Observable;
 
 import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
+import com.oakcity.nicknack.core.actions.ActionFailureException;
+import com.oakcity.nicknack.core.actions.ActionParameterException;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 
@@ -20,6 +22,6 @@ public interface ProviderService {
 	
 	public Observable<Event> getEvents();
 	
-	public void run(Action action);
+	public void run(Action action) throws ActionFailureException, ActionParameterException;
 
 }

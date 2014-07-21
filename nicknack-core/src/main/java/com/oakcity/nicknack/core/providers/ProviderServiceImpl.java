@@ -11,6 +11,8 @@ import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -18,10 +20,14 @@ import rx.observables.ConnectableObservable;
 
 import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
+import com.oakcity.nicknack.core.actions.ActionFailureException;
+import com.oakcity.nicknack.core.actions.ActionParameterException;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.Event.EventDefinition;
 
 public class ProviderServiceImpl implements ProviderService, OnEventListener, rx.Observable.OnSubscribe<Event> {
+	
+	private static final Logger LOG = LogManager.getLogger();
 	
 	private static ProviderServiceImpl service;
     private ServiceLoader<Provider> loader;
@@ -45,8 +51,14 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     }
 
     public static synchronized ProviderServiceImpl getInstance(final XMLConfiguration configuration) {
+    	if (LOG.isTraceEnabled()) {
+    		LOG.entry(configuration);
+    	}
         if (service == null) {
             service = new ProviderServiceImpl(configuration);
+        }
+        if (LOG.isTraceEnabled()) {
+        	LOG.exit(service);
         }
         return service;
     }
@@ -73,18 +85,25 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     }
     
     protected List<Exception> initializeProviders() {
+    	if (LOG.isTraceEnabled()) {
+    		LOG.entry();
+    	}
+    	
     	Iterator<Provider> providers = loader.iterator();
     	
     	Provider provider = null;
     	List<Exception> errors = new ArrayList<Exception>();
-    	System.out.println("Loading providers...");
+    	if (LOG.isInfoEnabled()) {
+    		LOG.info("Loading providers.");
+    	}
 		while (providers.hasNext()) {
 			try {
 				provider = providers.next();
-				System.out.println("Initializing " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
+				if (LOG.isInfoEnabled()) {
+					LOG.info("Initializing provider: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
+				}
 				this.providers.put(provider.getUuid(), provider);
 				final String configKey = "providers.uuid" + provider.getUuid().toString().replaceAll("-", "");
-				System.out.println(configKey);
 				if (!configuration.containsKey(configKey + ".name")) {
 					configuration.addProperty(configKey + ".name", provider.getName());
 				}
@@ -95,7 +114,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 					for (EventDefinition eventDef : provider.getEventDefinitions()) {
 						UUID uuid = eventDef.getUUID();
 						if (uuid == null) {
-							// Log error.
+							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Event Definition with null UUID.");
 						} else {
 							eventDefinitions.put(uuid, eventDef);
 						}
@@ -106,14 +125,14 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 					for (ActionDefinition actionDef : provider.getActionDefinitions()) {
 						UUID uuid = actionDef.getUUID();
 						if (uuid == null) {
-							// Log error.
+							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Action Definition with null UUID.");
 						} else {
 							actionDefinitions.put(uuid, actionDef);
 						}
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Failed to initialize provider, " + provider.getName() + " (" + provider.getUuid() + "):" + e.getMessage(), e);
 	    		errors.add(e);
 	    	}
 		}
@@ -124,8 +143,16 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 
 	@Override
 	public void onEvent(Event event) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(event);
+		}
+		
 		if (subscriber != null) {
 			subscriber.onNext(event);
+		}
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit();
 		}
 	}
 
@@ -140,16 +167,28 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	}
 
 	@Override
-	public void run(Action action) {
+	public void run(Action action) throws ActionFailureException, ActionParameterException {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(action);
+		}
+		
 		final UUID actionDefinitionUuid = action.getAppliesToActionDefinition();
 		final ActionDefinition actionDefinition = actionDefinitions.get(actionDefinitionUuid);
 		
 		try {
-			// TODO Run action on executor
 			actionDefinition.run(action);
+		} catch (ActionFailureException | ActionParameterException e) {
+			LOG.throwing(e);
+			throw e;
 		} catch (Exception e) {
-			// TODO Log.
-			e.printStackTrace();
+			// Any unknown or unexpected exceptions are wrapped as a failure and thrown.
+			final ActionFailureException afe = new ActionFailureException(e);
+			LOG.throwing(afe);
+			throw afe;
+		}
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit();
 		}
 	}
 

@@ -2,6 +2,7 @@ package com.oakcity.nicknack.core.events.filters;
 
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import com.oakcity.nicknack.core.units.StringUnit;
 public class _EventFilterEvaluatorTest {
 	
 	@Test
-	public void testAttributeFilterEvaluate() {
+	public void testAttributeFilterEvaluate() throws ParseException {
 		EventFilterEvaluator evaluator = new EventFilterEvaluator();
 		
 		final Map<UUID, String> attributeValues = new HashMap<UUID, String>();
@@ -74,7 +75,7 @@ public class _EventFilterEvaluatorTest {
 	}
 	
 	@Test
-	public void testEvaluate() {
+	public void testEvaluate() throws ParseException {
 		EventFilterEvaluator evaluator = new EventFilterEvaluator();
 		
 		final Event event = new Event() {

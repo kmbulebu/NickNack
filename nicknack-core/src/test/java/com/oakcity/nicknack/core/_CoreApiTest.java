@@ -2,6 +2,7 @@ package com.oakcity.nicknack.core;
 
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ import com.oakcity.nicknack.core.plans.Plan;
 public class _CoreApiTest {
 	
 	@Test
-	public void testEventFiltering() {
+	public void testEventFiltering() throws ParseException {
 		
 		// Step 2: User creates an Event Filter
 		final EventFilter switchEventFilter = new EventFilter() {

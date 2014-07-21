@@ -47,7 +47,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	public XMLConfiguration configuration() throws ConfigurationException {
 		// For now, a hard coded file.
 		final Path configFilePath = Paths.get("nicknack_config.xml");
-		System.out.println(configFilePath.toAbsolutePath().toString());
 		final XMLConfiguration configuration = new XMLConfiguration(configFilePath.toFile());
 		return configuration;
 	}

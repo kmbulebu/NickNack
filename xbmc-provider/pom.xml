@@ -9,7 +9,6 @@
 	</parent>
 
 	<artifactId>xbmc-provider</artifactId>
-	<name>XBMC NickNack Provider</name>
 	<description>Provides XBMC Events and Actions to NickNack</description>
 
 	<properties>

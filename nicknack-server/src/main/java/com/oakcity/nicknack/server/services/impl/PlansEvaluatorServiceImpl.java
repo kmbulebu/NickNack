@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.server.services.impl;
 
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import rx.Subscription;
 import rx.functions.Action1;
 
 import com.oakcity.nicknack.core.actions.Action;
+import com.oakcity.nicknack.core.actions.ActionFailureException;
+import com.oakcity.nicknack.core.actions.ActionParameterException;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.filters.EventFilter;
 import com.oakcity.nicknack.core.events.filters.EventFilterEvaluator;
@@ -107,7 +110,13 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>{
 		while (!match && iterator.hasNext()) {
 			final EventFilter filter = iterator.next();
 			
-			match = eventFilterEvaluator.evaluate(filter, event);
+			try {
+				match = eventFilterEvaluator.evaluate(filter, event);
+			} catch (ParseException e) {
+				LOG.warn("Error parsing some text while evalutaing an event filter. " + e.getMessage(), e);
+				// TODO Generate an error event
+				match = false;
+			}
 			
 			if (LOG.isInfoEnabled() && match) {
 				LOG.info("EventFilter matched: " + ((EventFilterResource) filter).getUuid());
@@ -118,7 +127,12 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>{
 			LOG.info("Plan " + plan.getUUID() + " matches event " + event);
 			for (Action action : actionsService.getActions(plan.getUUID())) {
 				LOG.info("Performing action " + action);
-				providerService.run(action);
+				try {
+					providerService.run(action);
+				} catch (ActionFailureException | ActionParameterException e) {
+					LOG.warn("Failed to perform action. " + e.getMessage() + " " + action);
+					// TODO Generate and fire an Event for this error.
+				} 
 			}
 		}
 		

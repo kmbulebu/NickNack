@@ -9,7 +9,6 @@
 	</parent>
 
 	<artifactId>nicknack-basic-provider</artifactId>
-	<name>NickNack Basic Providers</name>
 	<description>Commonly used, basic providers to include with NickNack, such as a Clock events provider.</description>
 
 	<properties>
