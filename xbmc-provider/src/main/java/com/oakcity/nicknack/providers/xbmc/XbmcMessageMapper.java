@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.providers.xbmc;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,27 +13,37 @@ import com.oakcity.nicknack.providers.xbmc.events.PauseEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PlayEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PlayerItemTitleAttributeDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PlayerItemTypeAttributeDefinition;
+import com.oakcity.nicknack.providers.xbmc.events.SourceHostAttributeDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.StopEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.json.JsonRpc;
 
 public class XbmcMessageMapper {
 	
-	public Event map(JsonRpc message) {
+	public Event map(URI uri, JsonRpc message) {
 		if (message != null && message.getMethod() != null) {
 			switch (message.getMethod()) {
 				case "Player.OnPlay":
-					return mapToPlayerEvent(message, PlayEventDefinition.INSTANCE);
+					return mapToPlayerEvent(uri, message, PlayEventDefinition.INSTANCE);
 				case "Player.OnStop":
-					return mapToPlayerEvent(message, StopEventDefinition.INSTANCE);
+					return mapToPlayerEvent(uri, message, StopEventDefinition.INSTANCE);
 				case "Player.OnPause":
-					return mapToPlayerEvent(message, PauseEventDefinition.INSTANCE);
+					return mapToPlayerEvent(uri, message, PauseEventDefinition.INSTANCE);
 			}
 		}
 		return null;
 	}
 	
-	protected Event mapToPlayerEvent(JsonRpc message, final EventDefinition eventDefinition) {
+	protected Event mapToPlayerEvent(URI uri, JsonRpc message, final EventDefinition eventDefinition) {
+		if (uri == null) {
+			System.out.println("URI null");
+			return null;
+		}
+		
 		final Map<UUID, String> attributes = new HashMap<>();
+		
+		// Add the sender's host to the attributes
+		attributes.put(SourceHostAttributeDefinition.INSTANCE.getUUID(), uri.getHost());
+			
 		
 		// Verify params is not null.
 		if (message.getParams() == null) {

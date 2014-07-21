@@ -102,8 +102,8 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	@Override
 	public void onMessageReceived(URI uri, JsonRpc message) {
 		if (onEventListener != null) {
-			final Event event = messageMapper.map(message);
-			
+			final Event event = messageMapper.map(uri, message);
+					
 			if (event != null) {
 				onEventListener.onEvent(event);
 			}

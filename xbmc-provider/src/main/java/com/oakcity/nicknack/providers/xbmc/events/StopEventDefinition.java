@@ -2,9 +2,7 @@ package com.oakcity.nicknack.providers.xbmc.events;
 
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.events.BasicEventDefinition;
-
-public class StopEventDefinition extends BasicEventDefinition {
+public class StopEventDefinition extends BaseEventDefinition {
 
 	public static final StopEventDefinition INSTANCE = new StopEventDefinition();
 	

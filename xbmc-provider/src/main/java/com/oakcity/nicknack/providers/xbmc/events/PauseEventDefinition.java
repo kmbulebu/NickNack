@@ -2,9 +2,7 @@ package com.oakcity.nicknack.providers.xbmc.events;
 
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.events.BasicEventDefinition;
-
-public class PauseEventDefinition extends BasicEventDefinition {
+public class PauseEventDefinition extends BaseEventDefinition {
 	
 	public static final PauseEventDefinition INSTANCE = new PauseEventDefinition();
 

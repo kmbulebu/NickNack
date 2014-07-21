@@ -2,9 +2,7 @@ package com.oakcity.nicknack.providers.xbmc.events;
 
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.events.BasicEventDefinition;
-
-public class PlayEventDefinition extends BasicEventDefinition {
+public class PlayEventDefinition extends BaseEventDefinition {
 	
 	public static final PlayEventDefinition INSTANCE = new PlayEventDefinition();
 
