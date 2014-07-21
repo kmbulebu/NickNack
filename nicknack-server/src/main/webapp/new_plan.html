@@ -19,7 +19,7 @@
 	  
 	  <h3>Filters</h3>
 	  <div ng-repeat="eventAttributeFilter in formData.eventAttributeFilters">
-	  	<ng-form name="eventFiltersForm">
+	  	<ng-form name="attributeFilterForm">
 		  	When 
 		  	<select ng-model="eventAttributeType" ng-change="onAttributeFilterTypeChange()">
 		  		<option ng-repeat="eventAttributeDefinition in eventAttributeDefinitions track by $index" value="{{eventAttributeDefinition}}">{{eventAttributeDefinition.name}}</option>
@@ -31,7 +31,7 @@
 		  	<button ng-click="deleteEventAttributeFilter()">Delete</button>
 	  	</ng-form>
 	  </div>
-	  <button ng-click="addEventAttributeFilter()">And...</button>
+	  <button form="nada" ng-click="addEventAttributeFilter()">And...</button>
 	  
 	  <h2>Action</h3>
 	  <select ng-model="actionType" ng-change="onActionTypeChange()">

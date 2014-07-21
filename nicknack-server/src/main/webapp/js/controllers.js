@@ -150,7 +150,8 @@ function ($scope, WebsiteService) {
 				
 				
 			}).then( function() {
-				window.location = "plans.html";
+				// This is redirecting before the posts finish, causing them to be cancelled.
+				//window.location = "plans.html";
 			});
 
 	};
