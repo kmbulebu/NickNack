@@ -3,8 +3,8 @@ package com.oakcity.nicknack.providers.xbmc.events;
 import java.util.Arrays;
 import java.util.UUID;
 
+import com.oakcity.nicknack.core.events.AttributeDefinition;
 import com.oakcity.nicknack.core.events.BasicEventDefinition;
-import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
 
 public abstract class BaseEventDefinition extends BasicEventDefinition {
 

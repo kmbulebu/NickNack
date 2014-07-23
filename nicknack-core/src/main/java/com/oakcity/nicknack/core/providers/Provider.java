@@ -5,8 +5,8 @@ import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
 
-import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
-import com.oakcity.nicknack.core.events.Event.EventDefinition;
+import com.oakcity.nicknack.core.actions.ActionDefinition;
+import com.oakcity.nicknack.core.events.EventDefinition;
 import com.oakcity.nicknack.core.units.Unit;
 
 /**

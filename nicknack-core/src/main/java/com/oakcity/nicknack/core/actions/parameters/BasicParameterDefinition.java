@@ -3,7 +3,7 @@ package com.oakcity.nicknack.core.actions.parameters;
 import java.util.Collection;
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
+import com.oakcity.nicknack.core.actions.ParameterDefinition;
 import com.oakcity.nicknack.core.units.Unit;
 
 // TODO Make this an abstract class

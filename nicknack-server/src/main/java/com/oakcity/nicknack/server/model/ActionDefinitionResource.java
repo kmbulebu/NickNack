@@ -8,10 +8,10 @@ import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oakcity.nicknack.core.actions.Action;
-import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
-import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
+import com.oakcity.nicknack.core.actions.ActionDefinition;
 import com.oakcity.nicknack.core.actions.ActionFailureException;
 import com.oakcity.nicknack.core.actions.ActionParameterException;
+import com.oakcity.nicknack.core.actions.ParameterDefinition;
 
 @Relation(value="ActionDefinition", collectionRelation="ActionDefinitions")
 public class ActionDefinitionResource extends ResourceSupport implements ActionDefinition {

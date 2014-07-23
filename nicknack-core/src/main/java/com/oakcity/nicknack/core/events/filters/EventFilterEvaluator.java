@@ -8,9 +8,8 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.oakcity.nicknack.core.events.AttributeDefinition;
 import com.oakcity.nicknack.core.events.Event;
-import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.core.events.filters.EventFilter.AttributeFilter;
 import com.oakcity.nicknack.core.units.Unit;
 
 public class EventFilterEvaluator {

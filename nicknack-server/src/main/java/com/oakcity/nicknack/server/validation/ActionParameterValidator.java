@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.oakcity.nicknack.core.actions.Action;
-import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
+import com.oakcity.nicknack.core.actions.ParameterDefinition;
 import com.oakcity.nicknack.server.services.ActionDefinitionService;
 
 @Component

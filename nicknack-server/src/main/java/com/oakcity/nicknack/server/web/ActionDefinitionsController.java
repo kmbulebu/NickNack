@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
-import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
+import com.oakcity.nicknack.core.actions.ActionDefinition;
+import com.oakcity.nicknack.core.actions.ParameterDefinition;
 import com.oakcity.nicknack.server.AppConfiguration;
 import com.oakcity.nicknack.server.model.ActionDefinitionResource;
 import com.oakcity.nicknack.server.model.ParameterDefinitionResource;

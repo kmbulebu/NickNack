@@ -3,8 +3,8 @@ package com.oakcity.nicknack.server.services;
 import java.util.List;
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
-import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
+import com.oakcity.nicknack.core.actions.ActionDefinition;
+import com.oakcity.nicknack.core.actions.ParameterDefinition;
 
 public interface ActionDefinitionService {
 	

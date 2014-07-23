@@ -3,8 +3,8 @@ package com.oakcity.nicknack.server.services;
 import java.util.List;
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.core.events.Event.EventDefinition;
+import com.oakcity.nicknack.core.events.AttributeDefinition;
+import com.oakcity.nicknack.core.events.EventDefinition;
 
 public interface EventDefinitionService {
 	

@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
-import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
+import com.oakcity.nicknack.core.actions.ActionDefinition;
+import com.oakcity.nicknack.core.actions.ParameterDefinition;
 import com.oakcity.nicknack.core.providers.ProviderService;
 import com.oakcity.nicknack.server.AppConfiguration;
 import com.oakcity.nicknack.server.services.ActionDefinitionService;

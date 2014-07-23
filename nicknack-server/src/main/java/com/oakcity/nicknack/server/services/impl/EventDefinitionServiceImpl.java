@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.core.events.Event.EventDefinition;
+import com.oakcity.nicknack.core.events.AttributeDefinition;
+import com.oakcity.nicknack.core.events.EventDefinition;
 import com.oakcity.nicknack.core.providers.ProviderService;
 import com.oakcity.nicknack.server.AppConfiguration;
 import com.oakcity.nicknack.server.services.EventDefinitionService;

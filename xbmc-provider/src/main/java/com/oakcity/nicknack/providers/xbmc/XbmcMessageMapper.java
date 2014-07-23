@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.oakcity.nicknack.core.events.Event;
-import com.oakcity.nicknack.core.events.Event.EventDefinition;
+import com.oakcity.nicknack.core.events.EventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PauseEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PlayEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PlayerItemTitleAttributeDefinition;

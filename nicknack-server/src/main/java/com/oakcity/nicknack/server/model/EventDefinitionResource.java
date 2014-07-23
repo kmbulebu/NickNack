@@ -7,8 +7,8 @@ import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.core.events.Event.EventDefinition;
+import com.oakcity.nicknack.core.events.AttributeDefinition;
+import com.oakcity.nicknack.core.events.EventDefinition;
 
 @Relation(value="EventDefinition", collectionRelation="EventDefinitions")
 public class EventDefinitionResource extends ResourceSupport implements EventDefinition {

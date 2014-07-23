@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.oakcity.nicknack.core.events.Event;
+import com.oakcity.nicknack.core.events.EventDefinition;
 
 public class SwitchChangeEventFactory {
 	

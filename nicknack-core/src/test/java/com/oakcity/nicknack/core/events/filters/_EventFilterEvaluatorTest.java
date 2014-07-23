@@ -12,11 +12,11 @@ import java.util.UUID;
 
 import org.junit.Test;
 
+import com.oakcity.nicknack.core.events.AttributeDefinition;
 import com.oakcity.nicknack.core.events.BasicAttributeDefinition;
 import com.oakcity.nicknack.core.events.BasicEventDefinition;
 import com.oakcity.nicknack.core.events.Event;
-import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
-import com.oakcity.nicknack.core.events.filters.EventFilter.AttributeFilter;
+import com.oakcity.nicknack.core.events.EventDefinition;
 import com.oakcity.nicknack.core.events.filters.EventFilterEvaluator;
 import com.oakcity.nicknack.core.events.filters.operators.Operator;
 import com.oakcity.nicknack.core.units.BooleanUnit;

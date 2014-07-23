@@ -2,9 +2,9 @@ package com.oakcity.nicknack.basicproviders.clock;
 
 import java.util.UUID;
 
+import com.oakcity.nicknack.core.events.AttributeDefinition;
 import com.oakcity.nicknack.core.events.BasicAttributeDefinition;
 import com.oakcity.nicknack.core.events.BasicEventDefinition;
-import com.oakcity.nicknack.core.events.Event.AttributeDefinition;
 import com.oakcity.nicknack.core.units.DateTimeUnit;
 
 /**

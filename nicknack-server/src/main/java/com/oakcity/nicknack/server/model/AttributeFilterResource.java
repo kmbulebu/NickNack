@@ -17,8 +17,8 @@ import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.oakcity.nicknack.core.events.filters.AttributeFilter;
 import com.oakcity.nicknack.core.events.filters.EventFilter;
-import com.oakcity.nicknack.core.events.filters.EventFilter.AttributeFilter;
 import com.oakcity.nicknack.core.events.filters.operators.Operator;
 
 @Entity

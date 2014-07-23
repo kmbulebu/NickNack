@@ -19,11 +19,11 @@ import rx.Subscriber;
 import rx.observables.ConnectableObservable;
 
 import com.oakcity.nicknack.core.actions.Action;
-import com.oakcity.nicknack.core.actions.Action.ActionDefinition;
+import com.oakcity.nicknack.core.actions.ActionDefinition;
 import com.oakcity.nicknack.core.actions.ActionFailureException;
 import com.oakcity.nicknack.core.actions.ActionParameterException;
 import com.oakcity.nicknack.core.events.Event;
-import com.oakcity.nicknack.core.events.Event.EventDefinition;
+import com.oakcity.nicknack.core.events.EventDefinition;
 
 public class ProviderServiceImpl implements ProviderService, OnEventListener, rx.Observable.OnSubscribe<Event> {
 	

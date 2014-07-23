@@ -8,7 +8,7 @@ import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oakcity.nicknack.core.actions.Action.ParameterDefinition;
+import com.oakcity.nicknack.core.actions.ParameterDefinition;
 import com.oakcity.nicknack.core.units.Unit;
 
 @Relation(value="ParameterDefinition", collectionRelation="ParameterDefinitions")
