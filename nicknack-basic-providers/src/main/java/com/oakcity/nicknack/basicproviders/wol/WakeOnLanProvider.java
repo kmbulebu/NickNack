@@ -3,6 +3,7 @@ package com.oakcity.nicknack.basicproviders.wol;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
@@ -68,6 +69,11 @@ public class WakeOnLanProvider implements Provider {
 	
 	@Override
 	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
+	}
+
+	@Override
+	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+		return null;
 	}
 
 }

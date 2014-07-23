@@ -1,6 +1,7 @@
 package com.oakcity.nicknack.server.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.oakcity.nicknack.core.events.AttributeDefinition;
@@ -15,5 +16,7 @@ public interface EventDefinitionService {
 	public List<AttributeDefinition> getAttributeDefinitions(UUID eventUUID);
 
 	public AttributeDefinition getAttributeDefinition(UUID eventUUID, UUID uuid);
+
+	public Map<String, String> getAttributeDefinitionValues(UUID eventUuid, UUID uuid);
 
 }

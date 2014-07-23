@@ -5,6 +5,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.RelProvider;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -125,6 +127,24 @@ public class EventDefinitionsController {
 
 		final AttributeDefinitionResource resource = new AttributeDefinitionResource(attributeDefinition);
 		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinition(eventUuid, attributeDefinition.getUUID())).withSelfRel());
+		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitionValues(eventUuid, attributeDefinition.getUUID())).withRel("values"));
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resource);	
+		}
+		return resource;
+	}
+	
+	@RequestMapping(value="/{eventUuid}/attributeDefinitions/{uuid}/values", method={RequestMethod.GET, RequestMethod.HEAD})
+	public Resource<Map<String, String>> getAttributeDefinitionValues(@PathVariable UUID eventUuid, @PathVariable UUID uuid) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(eventUuid, uuid);
+		}
+		
+		final Map<String, String> attributeDefinitionValues = eventDefinitionService.getAttributeDefinitionValues(eventUuid, uuid);
+
+		final Resource<Map<String, String>> resource = new Resource<Map<String, String>>(attributeDefinitionValues);
+		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitionValues(eventUuid, uuid)).withSelfRel());
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resource);	

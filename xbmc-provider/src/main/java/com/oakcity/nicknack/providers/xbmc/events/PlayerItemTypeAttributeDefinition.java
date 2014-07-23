@@ -1,5 +1,7 @@
 package com.oakcity.nicknack.providers.xbmc.events;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import com.oakcity.nicknack.core.events.BasicAttributeDefinition;
@@ -13,16 +15,16 @@ public class PlayerItemTypeAttributeDefinition extends BasicAttributeDefinition 
 		super(UUID.fromString("01309847-cd0f-4170-b0cc-3010dbf1f566"), "Media Type", StringUnit.INSTANCE, false);
 	}
 	
-	/*private static final Map<String, String> buildChoices() {
-		final Map<String, String> choices = new HashMap<>();
-		choices.put("Unknown", "unknown");
-		choices.put("Movie", "movie");
-		choices.put("Episode", "episode");
-		choices.put("Music Video", "musicvideo");
-		choices.put("Song", "song");
-		choices.put("Picture", "picture");
-		choices.put("TV Channel", "channel");
-		return choices;
-	};*/
+	public static final Map<String, String> VALUES = new HashMap<>();
+	
+	static {
+		VALUES.put("unknown", "Unknown");
+		VALUES.put("movie", "Movie");
+		VALUES.put("episode", "Episode");
+		VALUES.put("musicivideo", "Music Video");
+		VALUES.put("song", "Song");
+		VALUES.put("picture", "Picture");
+		VALUES.put("channel", "TV Channel");
+	};
 
 }

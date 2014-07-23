@@ -20,6 +20,10 @@ public interface ProviderService {
 	
 	public Map<UUID, Provider> getProviders();
 	
+	public Provider getProviderByActionDefinitionUuid(UUID actionDefinitionUuid);
+	
+	public Provider getProviderByEventDefinitionUuid(UUID eventDefinitionUuid);
+	
 	public Observable<Event> getEvents();
 	
 	public void run(Action action) throws ActionFailureException, ActionParameterException;

@@ -1,6 +1,7 @@
 package com.oakcity.nicknack.core.providers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
@@ -56,6 +57,17 @@ public interface Provider {
 	 * @return A list of all possible actions this provider may perform.
 	 */
 	public List<ActionDefinition> getActionDefinitions();
+	
+	/**
+	 * 
+	 * Key is the value, Value is the displayName
+	 * 
+	 * @return A Map of possible values for the given attribute definition or null if the given
+	 * attribute does not have a discrete list of possible values. Used only for
+	 * populating a list of choices to the user while creating attribute filters. 
+	 */
+	// Should we use UUID or attribute definition here?
+	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid);
 	
 	/**
 	 * Initializes the provider. Called when NickNack finds the provider, but before it interrogates for event definitions and action definitions.

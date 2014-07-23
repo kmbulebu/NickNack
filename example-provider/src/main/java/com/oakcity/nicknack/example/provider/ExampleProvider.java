@@ -3,6 +3,7 @@ package com.oakcity.nicknack.example.provider;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,6 +92,13 @@ public class ExampleProvider implements Provider {
 	@Override
 	public UUID getUuid() {
 		return PROVIDER_UUID;
+	}
+
+
+	@Override
+	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

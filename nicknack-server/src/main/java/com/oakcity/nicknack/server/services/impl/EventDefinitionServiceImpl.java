@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.oakcity.nicknack.core.events.AttributeDefinition;
 import com.oakcity.nicknack.core.events.EventDefinition;
+import com.oakcity.nicknack.core.providers.Provider;
 import com.oakcity.nicknack.core.providers.ProviderService;
 import com.oakcity.nicknack.server.AppConfiguration;
 import com.oakcity.nicknack.server.services.EventDefinitionService;
@@ -101,6 +103,22 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 			LOG.exit(attributeDefinition);
 		}
 		return attributeDefinition;
+	}
+
+	@Override
+	public Map<String, String> getAttributeDefinitionValues(UUID eventUuid, UUID uuid) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(eventUuid, uuid);
+		}
+		
+		final Provider provider = providerService.getProviderByEventDefinitionUuid(eventUuid);
+		
+		final Map<String, String> values = provider.getAttributeDefinitionValues(eventUuid, uuid);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(values);
+		}
+		return values;
 	}
 
 }

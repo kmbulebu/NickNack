@@ -116,5 +116,10 @@ public class ClockProvider implements Provider, Runnable {
 		return event;
 	}
 
+	@Override
+	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+		return null;
+	}
+
 
 }

@@ -35,6 +35,9 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     private final Map<UUID, EventDefinition> eventDefinitions = new HashMap<UUID, EventDefinition>();
     private final Map<UUID, ActionDefinition> actionDefinitions = new HashMap<UUID, ActionDefinition>();
     private final Map<UUID, Provider> providers = new HashMap<UUID, Provider>();
+    private final Map<UUID, UUID> eventDefinitionToProvider = new HashMap<UUID, UUID>();
+    private final Map<UUID, UUID> actionDefinitionToProvider = new HashMap<UUID, UUID>();
+    
     
     private ConnectableObservable<Event> eventStream;
     private Subscriber<? super Event> subscriber;
@@ -117,6 +120,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Event Definition with null UUID.");
 						} else {
 							eventDefinitions.put(uuid, eventDef);
+							eventDefinitionToProvider.put(uuid, provider.getUuid());
 						}
 					}
 				}
@@ -128,6 +132,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Action Definition with null UUID.");
 						} else {
 							actionDefinitions.put(uuid, actionDef);
+							actionDefinitionToProvider.put(uuid, provider.getUuid());
 						}
 					}
 				}
@@ -190,6 +195,28 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 		if (LOG.isTraceEnabled()) {
 			LOG.exit();
 		}
+	}
+
+	@Override
+	public Provider getProviderByActionDefinitionUuid(UUID actionDefinitionUuid) {
+		UUID providerUuid = actionDefinitionToProvider.get(actionDefinitionUuid);
+		
+		if (providerUuid == null) {
+			return null;
+		}
+		
+		return providers.get(providerUuid);
+	}
+
+	@Override
+	public Provider getProviderByEventDefinitionUuid(UUID eventDefinitionUuid) {
+		UUID providerUuid = eventDefinitionToProvider.get(eventDefinitionUuid);
+		
+		if (providerUuid == null) {
+			return null;
+		}
+		
+		return providers.get(providerUuid);
 	}
 
 }
