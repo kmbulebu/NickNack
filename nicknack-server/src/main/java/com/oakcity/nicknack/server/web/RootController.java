@@ -17,6 +17,7 @@ import com.oakcity.nicknack.server.AppConfiguration;
 import com.oakcity.nicknack.server.model.ActionDefinitionResource;
 import com.oakcity.nicknack.server.model.EventDefinitionResource;
 import com.oakcity.nicknack.server.model.PlanResource;
+import com.oakcity.nicknack.server.model.ProviderResource;
 
 @RestController
 @RequestMapping(value="/", produces={"application/hal+json"})
@@ -40,6 +41,7 @@ public class RootController {
 		
 		rootResource.add(linkTo(RootController.class).withSelfRel());
 		rootResource.add(getCollectionResourceLink(PlanResource.class));
+		rootResource.add(getCollectionResourceLink(ProviderResource.class));
 		rootResource.add(getCollectionResourceLink(EventDefinitionResource.class));
 		rootResource.add(getCollectionResourceLink(ActionDefinitionResource.class));
 

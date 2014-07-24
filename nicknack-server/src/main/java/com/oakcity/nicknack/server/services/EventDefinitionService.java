@@ -11,6 +11,8 @@ public interface EventDefinitionService {
 	
 	public List<EventDefinition> getEventDefinitions();
 	
+	public List<EventDefinition> getEventDefinitionsByProvider(UUID providerUuid);
+	
 	public EventDefinition getEventDefinition(UUID uuid);
 
 	public List<AttributeDefinition> getAttributeDefinitions(UUID eventUUID);

@@ -17,6 +17,7 @@ import org.springframework.hateoas.Resources;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.core.actions.ActionDefinition;
@@ -50,7 +51,32 @@ public class ActionDefinitionsController {
 			LOG.entry();
 		}
 		
-		final List<ActionDefinition> actionDefinitions = actionDefinitionService.getActionDefinitions();
+		final Resources<ActionDefinitionResource> resources = getActionDefinitions(actionDefinitionService.getActionDefinitions());
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resources);	
+		}
+		return resources;
+	}
+	
+	@RequestMapping(value="", params="provider", method={RequestMethod.GET, RequestMethod.HEAD})
+	public Resources<ActionDefinitionResource> getActionDefinitions(@RequestParam UUID provider) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry();
+		}
+		
+		final Resources<ActionDefinitionResource> resources = getActionDefinitions(actionDefinitionService.getActionDefinitionsByProvider(provider));
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resources);	
+		}
+		return resources;
+	}
+	
+	private Resources<ActionDefinitionResource> getActionDefinitions(List<ActionDefinition> actionDefinitions) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(actionDefinitions);
+		}
 		
 		final List<ActionDefinitionResource> actionDefinitionResources = new ArrayList<ActionDefinitionResource>(actionDefinitions.size());
 		

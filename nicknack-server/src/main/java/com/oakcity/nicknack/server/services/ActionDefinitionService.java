@@ -10,6 +10,8 @@ public interface ActionDefinitionService {
 	
 	public List<ActionDefinition> getActionDefinitions();
 	
+	public List<ActionDefinition> getActionDefinitionsByProvider(UUID providerUuid);
+	
 	public ActionDefinition getActionDefinition(UUID uuid);
 
 	public List<ParameterDefinition> getParameterDefinitions(UUID actionUUID);

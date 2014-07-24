@@ -19,6 +19,7 @@ import org.springframework.hateoas.Resources;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.core.events.AttributeDefinition;
@@ -52,8 +53,34 @@ public class EventDefinitionsController {
 			LOG.entry();
 		}
 		
-		final List<EventDefinition> eventDefinitions = eventDefinitionService.getEventDefinitions();
+		final Resources<EventDefinitionResource> resources = getEventDefinitions(eventDefinitionService.getEventDefinitions());
 		
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resources);	
+		}
+		return resources;
+	}
+	
+	@RequestMapping(value="", params="provider", method={RequestMethod.GET, RequestMethod.HEAD})
+	public Resources<EventDefinitionResource> getEventDefinitions(@RequestParam UUID provider) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry();
+		}
+		
+		final Resources<EventDefinitionResource> resources = getEventDefinitions(eventDefinitionService.getEventDefinitionsByProvider(provider));
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resources);	
+		}
+		return resources;
+	}
+	
+	private Resources<EventDefinitionResource> getEventDefinitions(List<EventDefinition> eventDefinitions) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(eventDefinitions);
+		}
+
 		final List<EventDefinitionResource> eventDefinitionResources = new ArrayList<EventDefinitionResource>(eventDefinitions.size());
 		
 		for (EventDefinition eventDefinition : eventDefinitions) {
