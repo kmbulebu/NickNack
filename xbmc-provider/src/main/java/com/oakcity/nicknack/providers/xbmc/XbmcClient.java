@@ -2,6 +2,7 @@ package com.oakcity.nicknack.providers.xbmc;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.concurrent.Future;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -18,7 +19,7 @@ import com.oakcity.nicknack.providers.xbmc.json.JsonRpc;
 public class XbmcClient {
 
 	// Used for sending messages.
-	//private Session session;
+	private Session session;
 	private final ObjectMapper mapper = new ObjectMapper();
 	private final WebSocketClient client = new WebSocketClient();
 	private URI websocketUri = null;
@@ -29,7 +30,7 @@ public class XbmcClient {
 
 	@OnWebSocketClose
 	public void onClose(int statusCode, String reason) throws Exception {
-		//this.session = null;
+		this.session = null;
 		if (!stopRequested && websocketUri != null) {
 			connect(websocketUri);
 		}
@@ -37,11 +38,12 @@ public class XbmcClient {
 
 	@OnWebSocketConnect
 	public void onConnect(Session session) {
-		//this.session = session;
+		this.session = session;
 	}
 	
 	@OnWebSocketMessage
     public void onMessage(String msg) throws IOException {
+		System.out.println(msg);
 		final JsonRpc message = mapper.readValue(msg, JsonRpc.class);
 		if (listener != null) {
 			final OnMessageReceivedListener listenerFinal = listener;
@@ -80,8 +82,12 @@ public class XbmcClient {
 		return listener;
 	}
 	 
-	 public void setListener(OnMessageReceivedListener listener) {
+	public void setListener(OnMessageReceivedListener listener) {
 		this.listener = listener;
+	}
+	 
+	public Future<Void> sendMessage(String message) {
+		return session.getRemote().sendStringByFuture(message);
 	}
 
 	public interface OnMessageReceivedListener {
@@ -89,5 +95,6 @@ public class XbmcClient {
 		public void onMessageReceived(URI uri, JsonRpc message);
 		
 	}
+	
 
 }
