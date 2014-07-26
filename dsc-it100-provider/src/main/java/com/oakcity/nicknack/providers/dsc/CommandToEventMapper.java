@@ -8,16 +8,22 @@ import java.util.UUID;
 import com.oakcity.dsc.it100.Labels;
 import com.oakcity.dsc.it100.commands.read.BasePartitionCommand;
 import com.oakcity.dsc.it100.commands.read.BaseZoneCommand;
+import com.oakcity.dsc.it100.commands.read.EntryDelayInProgressCommand;
+import com.oakcity.dsc.it100.commands.read.ExitDelayInProgressCommand;
 import com.oakcity.dsc.it100.commands.read.PartitionArmedCommand;
 import com.oakcity.dsc.it100.commands.read.PartitionDisarmedCommand;
+import com.oakcity.dsc.it100.commands.read.PartitionInAlarmCommand;
 import com.oakcity.dsc.it100.commands.read.ReadCommand;
 import com.oakcity.dsc.it100.commands.read.ZoneOpenCommand;
 import com.oakcity.dsc.it100.commands.read.ZoneRestoredCommand;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.EventDefinition;
+import com.oakcity.nicknack.providers.dsc.events.EntryDelayInProgressEventDefinition;
+import com.oakcity.nicknack.providers.dsc.events.ExitDelayInProgressEventDefinition;
 import com.oakcity.nicknack.providers.dsc.events.PartitionArmedEventDefinition;
 import com.oakcity.nicknack.providers.dsc.events.PartitionArmedModeAttributeDefinition;
 import com.oakcity.nicknack.providers.dsc.events.PartitionDisarmedEventDefinition;
+import com.oakcity.nicknack.providers.dsc.events.PartitionInAlarmEventDefinition;
 import com.oakcity.nicknack.providers.dsc.events.PartitionLabelAttributeDefinition;
 import com.oakcity.nicknack.providers.dsc.events.PartitionNumberAttributeDefinition;
 import com.oakcity.nicknack.providers.dsc.events.ZoneLabelAttributeDefinition;
@@ -42,11 +48,29 @@ public class CommandToEventMapper {
 			return toEvent((PartitionArmedCommand) readCommand);
 		} else if (readCommand instanceof PartitionDisarmedCommand) {
 			return toEvent((PartitionDisarmedCommand) readCommand);
+		} else if (readCommand instanceof PartitionInAlarmCommand) {
+			return toEvent((PartitionInAlarmCommand) readCommand);
+		} else if (readCommand instanceof EntryDelayInProgressCommand) {
+			return toEvent((EntryDelayInProgressCommand) readCommand);
+		} else if (readCommand instanceof ExitDelayInProgressCommand) {
+			return toEvent((ExitDelayInProgressCommand) readCommand);
 		}
 		
 		return null;
 	}
 	
+	private Event toEvent(EntryDelayInProgressCommand partitionCommand) {
+		return buildEvent(getAttributes(partitionCommand), EntryDelayInProgressEventDefinition.INSTANCE);
+	}
+	
+	private Event toEvent(ExitDelayInProgressCommand partitionCommand) {
+		return buildEvent(getAttributes(partitionCommand), ExitDelayInProgressEventDefinition.INSTANCE);
+	}
+
+	private Event toEvent(PartitionInAlarmCommand partitionCommand) {
+		return buildEvent(getAttributes(partitionCommand), PartitionInAlarmEventDefinition.INSTANCE);
+	}
+
 	protected Event toEvent(ZoneOpenCommand zoneCommand) {
 		return buildEvent(getAttributes(zoneCommand, true), ZoneOpenCloseEventDefinition.INSTANCE);
 	}

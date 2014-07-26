@@ -26,6 +26,16 @@ import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
 import com.oakcity.nicknack.core.units.Unit;
 import com.oakcity.nicknack.providers.dsc.actions.CommandOutputActionDefinition;
+import com.oakcity.nicknack.providers.dsc.actions.PartitionArmAwayActionDefinition;
+import com.oakcity.nicknack.providers.dsc.actions.PartitionArmNoEntryDelayActionDefinition;
+import com.oakcity.nicknack.providers.dsc.actions.PartitionArmStayActionDefinition;
+import com.oakcity.nicknack.providers.dsc.actions.PartitionArmWithCodeActionDefinition;
+import com.oakcity.nicknack.providers.dsc.actions.PartitionDisarmActionDefinition;
+import com.oakcity.nicknack.providers.dsc.events.EntryDelayInProgressEventDefinition;
+import com.oakcity.nicknack.providers.dsc.events.ExitDelayInProgressEventDefinition;
+import com.oakcity.nicknack.providers.dsc.events.PartitionArmedEventDefinition;
+import com.oakcity.nicknack.providers.dsc.events.PartitionDisarmedEventDefinition;
+import com.oakcity.nicknack.providers.dsc.events.PartitionInAlarmEventDefinition;
 import com.oakcity.nicknack.providers.dsc.events.ZoneOpenCloseEventDefinition;
 
 public class DscProvider implements Provider, Action1<ReadCommand> {
@@ -43,8 +53,14 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	private Labels labels;
 	
 	public DscProvider() {
-		this.eventDefinitions = new ArrayList<>(1);
+		this.eventDefinitions = new ArrayList<>(6);
 		this.eventDefinitions.add(ZoneOpenCloseEventDefinition.INSTANCE);
+		this.eventDefinitions.add(PartitionArmedEventDefinition.INSTANCE);
+		this.eventDefinitions.add(PartitionInAlarmEventDefinition.INSTANCE);
+		this.eventDefinitions.add(PartitionDisarmedEventDefinition.INSTANCE);
+		this.eventDefinitions.add(EntryDelayInProgressEventDefinition.INSTANCE);
+		this.eventDefinitions.add(ExitDelayInProgressEventDefinition.INSTANCE);
+		
 		this.actionDefinitions = new ArrayList<>();
 	}
 	
@@ -117,6 +133,11 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		this.onEventListener = onEventListener;
 		
 		this.actionDefinitions.add(new CommandOutputActionDefinition(writeObservable));
+		this.actionDefinitions.add(new PartitionArmAwayActionDefinition(writeObservable));
+		this.actionDefinitions.add(new PartitionArmStayActionDefinition(writeObservable));
+		this.actionDefinitions.add(new PartitionDisarmActionDefinition(writeObservable));
+		this.actionDefinitions.add(new PartitionArmNoEntryDelayActionDefinition(writeObservable));
+		this.actionDefinitions.add(new PartitionArmWithCodeActionDefinition(writeObservable));
 		
 		readObservable.ofType(ReadCommand.class).subscribe(this);
 
