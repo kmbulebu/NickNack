@@ -38,6 +38,7 @@
 		<module>example-provider</module>
 		<module>nicknack-basic-providers</module>
 		<module>xbmc-provider</module>
+		<module>dsc-it100-provider</module>
 	</modules>
 
 	<dependencyManagement>
