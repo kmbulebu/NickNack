@@ -108,7 +108,6 @@ public class XbmcClient {
 	public Future<Void> sendMessage(JsonRpc jsonRpc) throws JsonProcessingException {
 		final ObjectMapper mapper = new ObjectMapper();
 		String message = mapper.writeValueAsString(jsonRpc);
-		System.out.println(message);
 		return session.getRemote().sendStringByFuture(message);
 	}
 	

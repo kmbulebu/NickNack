@@ -148,6 +148,8 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>{
 
 	}
 	
+	// TODO I'd like to push a lot of this down into NickNack-core.
+	
 	protected Action processVariables(Action origAction, Event cause) {
 		final ActionResource newAction = new ActionResource();
 		final Map<UUID, String> newParameters = new HashMap<>();
