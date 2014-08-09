@@ -104,12 +104,12 @@ public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 	}
 
 	@Override
-	public List<ActionDefinition> getActionDefinitionsByProvider(UUID providerUuid) {
+	public Collection<ActionDefinition> getActionDefinitionsByProvider(UUID providerUuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
 		
-		final List<ActionDefinition> actionDefinitions = Collections.unmodifiableList(providerService.getProviders().get(providerUuid).getActionDefinitions());
+		final Collection<ActionDefinition> actionDefinitions = Collections.unmodifiableCollection(providerService.getProviders().get(providerUuid).getActionDefinitions());
 	
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(actionDefinitions);

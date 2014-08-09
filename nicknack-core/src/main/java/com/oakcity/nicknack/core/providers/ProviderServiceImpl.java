@@ -178,10 +178,12 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 		}
 		
 		final UUID actionDefinitionUuid = action.getAppliesToActionDefinition();
-		final ActionDefinition actionDefinition = actionDefinitions.get(actionDefinitionUuid);
+		final UUID providerUuid = actionDefinitionToProvider.get(actionDefinitionUuid);
+		
+		final Provider provider = providers.get(providerUuid);
 		
 		try {
-			actionDefinition.run(action);
+			provider.run(action);
 		} catch (ActionFailureException | ActionParameterException e) {
 			LOG.throwing(e);
 			throw e;

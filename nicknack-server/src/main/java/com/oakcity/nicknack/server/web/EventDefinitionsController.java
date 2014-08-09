@@ -4,6 +4,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -76,7 +77,7 @@ public class EventDefinitionsController {
 		return resources;
 	}
 	
-	private Resources<EventDefinitionResource> getEventDefinitions(List<EventDefinition> eventDefinitions) {
+	private Resources<EventDefinitionResource> getEventDefinitions(Collection<EventDefinition> eventDefinitions) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventDefinitions);
 		}

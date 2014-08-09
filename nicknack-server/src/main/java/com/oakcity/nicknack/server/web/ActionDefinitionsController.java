@@ -4,6 +4,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,7 +74,7 @@ public class ActionDefinitionsController {
 		return resources;
 	}
 	
-	private Resources<ActionDefinitionResource> getActionDefinitions(List<ActionDefinition> actionDefinitions) {
+	private Resources<ActionDefinitionResource> getActionDefinitions(Collection<ActionDefinition> actionDefinitions) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionDefinitions);
 		}

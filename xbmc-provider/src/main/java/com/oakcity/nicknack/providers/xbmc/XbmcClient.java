@@ -12,6 +12,9 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oakcity.nicknack.providers.xbmc.json.JsonRpc;
 
@@ -43,16 +46,28 @@ public class XbmcClient {
 	
 	@OnWebSocketMessage
     public void onMessage(String msg) throws IOException {
+		if (msg == null || msg.isEmpty()) {
+			return;
+		}
 		System.out.println(msg);
-		final JsonRpc message = mapper.readValue(msg, JsonRpc.class);
+		JsonRpc message;
+		try {
+			message = mapper.readValue(msg, JsonRpc.class);
+		} catch (JsonParseException | JsonMappingException e) {
+			System.out.println(msg);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
 		if (listener != null) {
 			final OnMessageReceivedListener listenerFinal = listener;
+			final JsonRpc finalMessage = message;
 			// TODO Consider upgrading this to an Observable or use an executor. May not be necessary if this doesn't block the client.
 			new Thread() {
 				
 				@Override
 				public void run() {
-					listenerFinal.onMessageReceived(websocketUri, message);
+					listenerFinal.onMessageReceived(websocketUri, finalMessage);
 				}
 				
 			}.start();
@@ -88,6 +103,22 @@ public class XbmcClient {
 	 
 	public Future<Void> sendMessage(String message) {
 		return session.getRemote().sendStringByFuture(message);
+	}
+	
+	public Future<Void> sendMessage(JsonRpc jsonRpc) throws JsonProcessingException {
+		final ObjectMapper mapper = new ObjectMapper();
+		String message = mapper.writeValueAsString(jsonRpc);
+		System.out.println(message);
+		return session.getRemote().sendStringByFuture(message);
+	}
+	
+	
+	public URI getWebsocketUri() {
+		return websocketUri;
+	}
+	
+	public String getHost() {
+		return websocketUri.getHost();
 	}
 
 	public interface OnMessageReceivedListener {

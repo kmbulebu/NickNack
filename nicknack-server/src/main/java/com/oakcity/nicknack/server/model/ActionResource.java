@@ -75,6 +75,12 @@ public class ActionResource extends ResourceSupport implements Action {
 	public void setParameters(Map<UUID, String> parameters) {
 		this.parameters = parameters;
 	}
+
+	@Override
+	public String toString() {
+		return "ActionResource [uuid=" + uuid + ", appliesToActionDefinition=" + appliesToActionDefinition
+				+ ", parameters=" + parameters + ", plan=" + plan + "]";
+	}
 	
 	
 	

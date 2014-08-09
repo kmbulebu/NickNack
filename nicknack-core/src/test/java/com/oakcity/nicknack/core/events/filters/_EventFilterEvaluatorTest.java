@@ -1,6 +1,9 @@
 package com.oakcity.nicknack.core.events.filters;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -17,7 +20,6 @@ import com.oakcity.nicknack.core.events.BasicAttributeDefinition;
 import com.oakcity.nicknack.core.events.BasicEventDefinition;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.EventDefinition;
-import com.oakcity.nicknack.core.events.filters.EventFilterEvaluator;
 import com.oakcity.nicknack.core.events.filters.operators.Operator;
 import com.oakcity.nicknack.core.units.BooleanUnit;
 import com.oakcity.nicknack.core.units.StringUnit;

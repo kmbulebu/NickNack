@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.server.services;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,9 +9,9 @@ import com.oakcity.nicknack.core.actions.ParameterDefinition;
 
 public interface ActionDefinitionService {
 	
-	public List<ActionDefinition> getActionDefinitions();
+	public Collection<ActionDefinition> getActionDefinitions();
 	
-	public List<ActionDefinition> getActionDefinitionsByProvider(UUID providerUuid);
+	public Collection<ActionDefinition> getActionDefinitionsByProvider(UUID providerUuid);
 	
 	public ActionDefinition getActionDefinition(UUID uuid);
 

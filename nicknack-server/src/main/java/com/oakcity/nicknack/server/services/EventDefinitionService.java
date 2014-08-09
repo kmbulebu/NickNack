@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.server.services;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -9,9 +10,9 @@ import com.oakcity.nicknack.core.events.EventDefinition;
 
 public interface EventDefinitionService {
 	
-	public List<EventDefinition> getEventDefinitions();
+	public Collection<EventDefinition> getEventDefinitions();
 	
-	public List<EventDefinition> getEventDefinitionsByProvider(UUID providerUuid);
+	public Collection<EventDefinition> getEventDefinitionsByProvider(UUID providerUuid);
 	
 	public EventDefinition getEventDefinition(UUID uuid);
 

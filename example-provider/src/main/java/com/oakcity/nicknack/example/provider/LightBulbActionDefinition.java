@@ -2,7 +2,6 @@ package com.oakcity.nicknack.example.provider;
 
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.BasicActionDefinition;
 import com.oakcity.nicknack.core.actions.parameters.BasicParameterDefinition;
 import com.oakcity.nicknack.core.actions.parameters.MacAddressParameterDefinition;
@@ -28,27 +27,6 @@ public class LightBulbActionDefinition extends BasicActionDefinition {
 				"Control Light Bulb", 
 				SWITCH_PARAMETER_DEFINITION,
 				MAC_ADDRESS_PARAMETER_DEFINITION);
-	}
-
-	@Override
-	public void run(Action action) {
-		String macAddress = action.getParameters().get(MAC_ADDRESS_PARAMETER_DEFINITION.getUUID());
-		
-		String switchStr = action.getParameters().get(SWITCH_PARAMETER_DEFINITION.getUUID()); 
-		
-		if (switchStr == null) {
-			// TODO Use our own exception
-			throw new IllegalArgumentException(SWITCH_PARAMETER_DEFINITION.getName() + " is required.");
-		}
-		
-		if (macAddress == null) {
-			// TODO Use our own exception
-			throw new IllegalArgumentException(MAC_ADDRESS_PARAMETER_DEFINITION.getName() + " is required.");
-		}
-		
-		// Our dummy action
-		System.out.println("Switch changing to " + switchStr);
-		
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.basicproviders.wol;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,11 +9,14 @@ import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
 
+import com.oakcity.nicknack.basicproviders.wol.WakeOnLanActionDefinition.DeviceMacAddressParameterDefinition;
+import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.ActionDefinition;
+import com.oakcity.nicknack.core.actions.ActionFailureException;
+import com.oakcity.nicknack.core.actions.ActionParameterException;
 import com.oakcity.nicknack.core.events.EventDefinition;
 import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
-import com.oakcity.nicknack.core.units.Unit;
 
 /**
  * Provides real time clock capabilities to Nick Nack.
@@ -52,12 +56,6 @@ public class WakeOnLanProvider implements Provider {
 	}
 	
 	@Override
-	public List<Unit> getUnits() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
 	public List<EventDefinition> getEventDefinitions() {
 		return Collections.unmodifiableList(eventDefinitions);
 	}
@@ -74,6 +72,28 @@ public class WakeOnLanProvider implements Provider {
 	@Override
 	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
 		return null;
+	}
+	
+	@Override
+	public void run(Action action) throws ActionParameterException, ActionFailureException {
+		if (WakeOnLanActionDefinition.WOL_ACTION_UUID.equals(action.getAppliesToActionDefinition())) {
+			if (action.getParameters() == null) {
+				throw new ActionParameterException("Parameters are required.");
+			}
+			
+			final String macAddress = action.getParameters().get(DeviceMacAddressParameterDefinition.MAC_ADDRESS_PARAMETER_UUID);
+			if (macAddress == null) {
+				throw new ActionParameterException(DeviceMacAddressParameterDefinition.INSTANCE.getName() + " is required.");
+			}
+			
+			final WakeOnLan wol = new WakeOnLan(macAddress);
+			
+			try {
+				wol.send();
+			} catch (IOException e) {
+				throw new ActionFailureException(e);
+			}
+		}
 	}
 
 }

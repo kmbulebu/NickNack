@@ -14,12 +14,14 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
 
+import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.ActionDefinition;
+import com.oakcity.nicknack.core.actions.ActionFailureException;
+import com.oakcity.nicknack.core.actions.ActionParameterException;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.EventDefinition;
 import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
-import com.oakcity.nicknack.core.units.Unit;
 
 /**
  * Provides real time clock capabilities to Nick Nack.
@@ -60,12 +62,6 @@ public class ClockProvider implements Provider, Runnable {
 	@Override
 	public int getVersion() {
 		return 1;
-	}
-	
-	@Override
-	public List<Unit> getUnits() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override
@@ -119,6 +115,12 @@ public class ClockProvider implements Provider, Runnable {
 	@Override
 	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
 		return null;
+	}
+
+	@Override
+	public void run(Action action) throws ActionFailureException, ActionParameterException {
+		// Do nothing
+		return;
 	}
 
 

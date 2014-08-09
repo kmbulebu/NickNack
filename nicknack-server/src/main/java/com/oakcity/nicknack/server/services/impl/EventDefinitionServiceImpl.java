@@ -122,12 +122,12 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 	}
 
 	@Override
-	public List<EventDefinition> getEventDefinitionsByProvider(UUID providerUuid) {
+	public Collection<EventDefinition> getEventDefinitionsByProvider(UUID providerUuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(providerUuid);
 		}
 		
-		final List<EventDefinition> eventDefinitions = Collections.unmodifiableList(providerService.getProviders().get(providerUuid).getEventDefinitions());
+		final Collection<EventDefinition> eventDefinitions = Collections.unmodifiableCollection(providerService.getProviders().get(providerUuid).getEventDefinitions());
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(eventDefinitions);

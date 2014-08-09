@@ -13,6 +13,6 @@ public interface ActionDefinition {
 	
 	public List<ParameterDefinition> getParameterDefinitions();
 	
-	public void run(Action action) throws ActionFailureException, ActionParameterException;
+	//public void run(Action action) throws ActionFailureException, ActionParameterException;
 	
 }

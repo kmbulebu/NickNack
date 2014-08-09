@@ -1,14 +1,16 @@
 package com.oakcity.nicknack.core.providers;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
 
+import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.ActionDefinition;
+import com.oakcity.nicknack.core.actions.ActionFailureException;
+import com.oakcity.nicknack.core.actions.ActionParameterException;
 import com.oakcity.nicknack.core.events.EventDefinition;
-import com.oakcity.nicknack.core.units.Unit;
 
 /**
  * Provider Interface. Main entry point for extending NickNack. 
@@ -41,22 +43,15 @@ public interface Provider {
 	
 	/**
 	 * 
-	 * @return A list of Unit instances created by this Provider.
-	 */
-	// TODO Remove?
-	public List<Unit> getUnits();
-	
-	/**
-	 * 
 	 * @return A list of all possible events this provider may broadcast.
 	 */
-	public List<EventDefinition> getEventDefinitions();
+	public Collection<EventDefinition> getEventDefinitions();
 	
 	/**
 	 * 
 	 * @return A list of all possible actions this provider may perform.
 	 */
-	public List<ActionDefinition> getActionDefinitions();
+	public Collection<ActionDefinition> getActionDefinitions();
 	
 	/**
 	 * 
@@ -68,6 +63,8 @@ public interface Provider {
 	 */
 	// Should we use UUID or attribute definition here?
 	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid);
+	
+	public void run(Action action) throws ActionFailureException, ActionParameterException;
 	
 	/**
 	 * Initializes the provider. Called when NickNack finds the provider, but before it interrogates for event definitions and action definitions.

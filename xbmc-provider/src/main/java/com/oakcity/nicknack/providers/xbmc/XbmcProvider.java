@@ -10,12 +10,16 @@ import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
 
+import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.ActionDefinition;
+import com.oakcity.nicknack.core.actions.ActionFailureException;
+import com.oakcity.nicknack.core.actions.ActionParameterException;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.EventDefinition;
 import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
-import com.oakcity.nicknack.core.units.Unit;
+import com.oakcity.nicknack.providers.xbmc.actions.ShowNotificationActionDefinition;
+import com.oakcity.nicknack.providers.xbmc.actions.parameters.HostParameterDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PauseEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PlayEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PlayerItemTypeAttributeDefinition;
@@ -46,7 +50,8 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 		eventDefinitions.add(PauseEventDefinition.INSTANCE);
 		eventDefinitions.add(StopEventDefinition.INSTANCE);
 		
-		actionDefinitions = new ArrayList<ActionDefinition>(0);
+		actionDefinitions = new ArrayList<ActionDefinition>(1);
+		actionDefinitions.add(ShowNotificationActionDefinition.INSTANCE);
 		
 		messageMapper = new XbmcMessageMapper();
 	
@@ -67,12 +72,6 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	@Override
 	public int getVersion() {
 		return 1;
-	}
-	
-	@Override
-	public List<Unit> getUnits() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override
@@ -140,6 +139,31 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 			i++;
 		}
 		return values;
+	}
+
+	@Override
+	public void run(Action action) throws ActionFailureException, ActionParameterException {
+		if (ShowNotificationActionDefinition.INSTANCE.getUUID().equals(action.getAppliesToActionDefinition())) {
+			final String host = action.getParameters().get(HostParameterDefinition.DEF_UUID);
+			if (host == null) {
+				throw new ActionParameterException(HostParameterDefinition.INSTANCE.getName() + " is missing.");
+			}
+			final XbmcClient client = findClient(host);
+			if (client == null) {
+				throw new ActionParameterException("Host " + host + " could not be found.");
+			}
+			ShowNotificationActionDefinition.INSTANCE.run(action, client);
+		}
+		
+	}
+	
+	protected XbmcClient findClient(String host) {
+		for (XbmcClient aClient : xbmcClients) {
+			if (aClient.getHost().equalsIgnoreCase(host)) {
+				return aClient;
+			}
+		}
+		return null;
 	}
 
 }

@@ -11,11 +11,11 @@ import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
 
+import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.ActionDefinition;
 import com.oakcity.nicknack.core.events.EventDefinition;
 import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
-import com.oakcity.nicknack.core.units.Unit;
 
 public class ExampleProvider implements Provider {
 	
@@ -35,13 +35,6 @@ public class ExampleProvider implements Provider {
 		// Switch change event.
 		eventDefinitions.add(SwitchChangeEventDefinition.INSTANCE);
 		actionDefinitions.add(new LightBulbActionDefinition());
-	}
-	
-
-	@Override
-	public List<Unit> getUnits() {
-		// Does not define any new Units.
-		return Collections.emptyList();
 	}
 
 	@Override
@@ -99,6 +92,27 @@ public class ExampleProvider implements Provider {
 	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public void run(Action action) {
+		String macAddress = action.getParameters().get(LightBulbActionDefinition.MAC_ADDRESS_PARAMETER_DEFINITION.getUUID());
+		
+		String switchStr = action.getParameters().get(LightBulbActionDefinition.SWITCH_PARAMETER_DEFINITION.getUUID()); 
+		
+		if (switchStr == null) {
+			// TODO Use our own exception
+			throw new IllegalArgumentException(LightBulbActionDefinition.SWITCH_PARAMETER_DEFINITION.getName() + " is required.");
+		}
+		
+		if (macAddress == null) {
+			// TODO Use our own exception
+			throw new IllegalArgumentException(LightBulbActionDefinition.MAC_ADDRESS_PARAMETER_DEFINITION.getName() + " is required.");
+		}
+		
+		// Our dummy action
+		System.out.println("Switch changing to " + switchStr);
+		
 	}
 
 }
