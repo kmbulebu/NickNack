@@ -148,11 +148,17 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 			if (host == null) {
 				throw new ActionParameterException(HostParameterDefinition.INSTANCE.getName() + " is missing.");
 			}
-			final XbmcClient client = findClient(host);
-			if (client == null) {
-				throw new ActionParameterException("Host " + host + " could not be found.");
+			if ("all".equalsIgnoreCase(host)) {
+				for (XbmcClient client : xbmcClients) {
+					ShowNotificationActionDefinition.INSTANCE.run(action, client);
+				}
+			} else {
+				final XbmcClient client = findClient(host);
+				if (client == null) {
+					throw new ActionParameterException("Host " + host + " could not be found.");
+				}
+				ShowNotificationActionDefinition.INSTANCE.run(action, client);
 			}
-			ShowNotificationActionDefinition.INSTANCE.run(action, client);
 		}
 		
 	}
