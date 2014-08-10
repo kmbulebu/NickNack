@@ -1,39 +1,39 @@
 package com.oakcity.nicknack.server.it;
 
-import static com.jayway.restassured.RestAssured.*;
-import static com.jayway.restassured.matcher.RestAssuredMatchers.*;
-import static org.hamcrest.Matchers.*;
+import static com.jayway.restassured.RestAssured.get;
+import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.IntegrationTest;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.jayway.restassured.RestAssured;
+import com.oakcity.nicknack.server.Application;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
+@IntegrationTest({"server.port=0", "management.port=0"})
 public abstract class _AbstractJettyTest {
 	
-	protected int httpPort;
-	
-	public _AbstractJettyTest() {
-		final String httpPort = System.getProperty("http.port");
-		
-		if (httpPort == null || !httpPort.matches("\\d+")) {
-			throw new IllegalArgumentException("http.port system property must be set to the http server port number.");
-		}
-		
-		this.httpPort = Integer.parseInt(httpPort);
-	}
+	@Value("${local.server.port}")
+    int port;
 	
 	@Before
 	public void setupRestAssured() {
-		RestAssured.port = this.httpPort;
+		RestAssured.port = this.port;
 		RestAssured.responseContentType("application/hal+json");
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 	}
 	
 	@Test
 	public void basicConnectivityTest() {
-		RestAssured.responseContentType("text/html");
-		get("/").then().assertThat().statusCode(equalTo(200));
+		get("/api").then().assertThat().statusCode(equalTo(200));
 	}
 
 }

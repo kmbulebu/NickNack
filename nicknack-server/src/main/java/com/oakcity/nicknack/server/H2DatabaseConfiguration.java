@@ -9,15 +9,19 @@ import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@Profile(value="!heroku")
 public class H2DatabaseConfiguration {
 
+	protected static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
+	protected static final String PROPERTY_NAME_HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
+	protected static final String PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY = "hibernate.ejb.naming_strategy";
+	protected static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
+	protected static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
+	
 	
 	@Bean
 	public PlatformTransactionManager transactionManager() throws Exception {
@@ -46,11 +50,11 @@ public class H2DatabaseConfiguration {
 
 		Properties jpaProperties = new Properties();
 
-		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_DIALECT, org.hibernate.dialect.H2Dialect.class.getName());
-		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_FORMAT_SQL, "true");
-		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY, ImprovedNamingStrategy.class.getName());
-		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_SHOW_SQL, "false");
-		jpaProperties.put(WebConfiguration.PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, "update");
+		jpaProperties.put(PROPERTY_NAME_HIBERNATE_DIALECT, org.hibernate.dialect.H2Dialect.class.getName());
+		jpaProperties.put(PROPERTY_NAME_HIBERNATE_FORMAT_SQL, "true");
+		jpaProperties.put(PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY, ImprovedNamingStrategy.class.getName());
+		jpaProperties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, "false");
+		jpaProperties.put(PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, "update");
 
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 

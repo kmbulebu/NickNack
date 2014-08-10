@@ -27,7 +27,7 @@ import com.oakcity.nicknack.server.model.PlanResource;
 import com.oakcity.nicknack.server.services.PlansService;
 
 @RestController
-@RequestMapping(value="/plans", produces={"application/hal+json"})
+@RequestMapping(value="/api/plans", produces={"application/hal+json"})
 @ExposesResourceFor(PlanResource.class)
 public class PlansController {
 	

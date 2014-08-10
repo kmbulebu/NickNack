@@ -5,8 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-@ComponentScan(basePackages={"com.oakcity.nicknack.server","com.mangofactory.swagger.controllers","com.mangofactory.swagger.configuration"})
-//@EnableAutoConfiguration
+@ComponentScan
 @Configuration
 public class AppConfiguration {
 	

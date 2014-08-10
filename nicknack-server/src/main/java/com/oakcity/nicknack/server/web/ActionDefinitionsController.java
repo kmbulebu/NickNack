@@ -29,7 +29,7 @@ import com.oakcity.nicknack.server.model.ParameterDefinitionResource;
 import com.oakcity.nicknack.server.services.ActionDefinitionService;
 
 @RestController
-@RequestMapping(value="/actionDefinitions", produces={"application/hal+json"})
+@RequestMapping(value="/api/actionDefinitions", produces={"application/hal+json"})
 @ExposesResourceFor(ActionDefinitionResource.class)
 public class ActionDefinitionsController {
 	

@@ -20,7 +20,7 @@ import com.oakcity.nicknack.server.model.PlanResource;
 import com.oakcity.nicknack.server.model.ProviderResource;
 
 @RestController
-@RequestMapping(value="/", produces={"application/hal+json"})
+@RequestMapping(value="/api", produces={"application/hal+json"})
 public class RootController {
 	
 	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);

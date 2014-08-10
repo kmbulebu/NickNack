@@ -31,7 +31,7 @@ import com.oakcity.nicknack.server.model.EventDefinitionResource;
 import com.oakcity.nicknack.server.services.EventDefinitionService;
 
 @RestController
-@RequestMapping(value="/eventDefinitions", produces={"application/hal+json"})
+@RequestMapping(value="/api/eventDefinitions", produces={"application/hal+json"})
 @ExposesResourceFor(EventDefinitionResource.class)
 public class EventDefinitionsController {
 	

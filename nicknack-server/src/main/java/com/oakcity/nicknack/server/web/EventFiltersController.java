@@ -27,7 +27,7 @@ import com.oakcity.nicknack.server.model.EventFilterResource;
 import com.oakcity.nicknack.server.services.EventFiltersService;
 
 @RestController
-@RequestMapping(value="/plans/{planUuid}/eventFilters", produces={"application/hal+json"})
+@RequestMapping(value="/api/plans/{planUuid}/eventFilters", produces={"application/hal+json"})
 @ExposesResourceFor(EventFilterResource.class)
 public class EventFiltersController {
 	

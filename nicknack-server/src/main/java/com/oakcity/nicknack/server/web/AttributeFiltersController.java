@@ -27,7 +27,7 @@ import com.oakcity.nicknack.server.model.AttributeFilterResource;
 import com.oakcity.nicknack.server.services.AttributeFiltersService;
 
 @RestController
-@RequestMapping(value="/plans/{planUuid}/eventFilters/{eventFilterUuid}/attributeFilters", produces={"application/hal+json"})
+@RequestMapping(value="/api/plans/{planUuid}/eventFilters/{eventFilterUuid}/attributeFilters", produces={"application/hal+json"})
 @ExposesResourceFor(AttributeFilterResource.class)
 public class AttributeFiltersController {
 	

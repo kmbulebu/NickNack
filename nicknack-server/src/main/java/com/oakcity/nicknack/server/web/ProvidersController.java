@@ -29,7 +29,7 @@ import com.oakcity.nicknack.server.model.ProviderResource;
 
 
 @RestController
-@RequestMapping(value="/providers", produces={"application/hal+json"})
+@RequestMapping(value="/api/providers", produces={"application/hal+json"})
 @ExposesResourceFor(ProviderResource.class)
 public class ProvidersController {
 	
