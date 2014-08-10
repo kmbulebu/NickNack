@@ -18,7 +18,7 @@ import com.oakcity.nicknack.server.Application;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-@IntegrationTest({"server.port=0", "management.port=0"})
+@IntegrationTest({"server.port=0", "management.port=0", "nicknack.user.config=./target/config/nicknack_config.xml", "nicknack.db.path=./target/db/nicknack"})
 public abstract class _AbstractJettyTest {
 	
 	@Value("${local.server.port}")

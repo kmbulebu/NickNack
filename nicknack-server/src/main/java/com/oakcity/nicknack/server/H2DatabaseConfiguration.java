@@ -1,5 +1,7 @@
 package com.oakcity.nicknack.server;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -7,6 +9,7 @@ import javax.sql.DataSource;
 import org.h2.jdbcx.JdbcDataSource;
 import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -22,6 +25,8 @@ public class H2DatabaseConfiguration {
 	protected static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
 	protected static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
 	
+	@Value(value = "${nicknack.db.path:./db/nicknack}")
+	private String dbPathProperty;
 	
 	@Bean
 	public PlatformTransactionManager transactionManager() throws Exception {
@@ -32,8 +37,10 @@ public class H2DatabaseConfiguration {
 
 	@Bean
 	public DataSource dataSource() throws Exception {
+		final Path absoluteDbPath = Paths.get(dbPathProperty).toAbsolutePath();
+		
 		JdbcDataSource ds = new JdbcDataSource();
-		ds.setURL("jdbc:h2:~/.nicknack/nicknack");
+		ds.setURL("jdbc:h2:" + absoluteDbPath.toString());
 		ds.setUser("sa");
 		ds.setPassword("sa");
 		return ds;

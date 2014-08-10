@@ -16,14 +16,14 @@ import com.oakcity.nicknack.core.events.AttributeDefinition;
 import com.oakcity.nicknack.core.events.EventDefinition;
 import com.oakcity.nicknack.core.providers.Provider;
 import com.oakcity.nicknack.core.providers.ProviderService;
-import com.oakcity.nicknack.server.AppConfiguration;
+import com.oakcity.nicknack.server.Application;
 import com.oakcity.nicknack.server.services.EventDefinitionService;
 
 
 @Service
 public class EventDefinitionServiceImpl implements EventDefinitionService {
 	
-	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
+	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
 	@Autowired
 	private ProviderService providerService;

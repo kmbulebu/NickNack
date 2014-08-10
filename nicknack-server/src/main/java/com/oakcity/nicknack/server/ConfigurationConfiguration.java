@@ -7,6 +7,7 @@ import javax.annotation.PreDestroy;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,11 +17,14 @@ import com.oakcity.nicknack.core.providers.ProviderServiceImpl;
 
 @Configuration
 public class ConfigurationConfiguration {
+	
+	@Value(value = "${nicknack.user.config:./config/nicknack_config.xml}")
+	private String configFilePathProperty;
 
 	@Bean
 	public XMLConfiguration configuration() throws ConfigurationException {
 		// For now, a hard coded file.
-		final Path configFilePath = Paths.get("nicknack_config.xml");
+		final Path configFilePath = Paths.get(configFilePathProperty);
 		final XMLConfiguration configuration = new XMLConfiguration(configFilePath.toFile());
 		return configuration;
 	}

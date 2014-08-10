@@ -28,7 +28,7 @@ import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.filters.EventFilter;
 import com.oakcity.nicknack.core.events.filters.EventFilterEvaluator;
 import com.oakcity.nicknack.core.providers.ProviderService;
-import com.oakcity.nicknack.server.AppConfiguration;
+import com.oakcity.nicknack.server.Application;
 import com.oakcity.nicknack.server.model.ActionResource;
 import com.oakcity.nicknack.server.model.EventFilterResource;
 import com.oakcity.nicknack.server.model.PlanResource;
@@ -39,7 +39,7 @@ import com.oakcity.nicknack.server.services.PlansService;
 @Service
 public class PlansEvaluatorServiceImpl implements Action1<Event>{
 	
-	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
+	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
 	@Autowired
 	private ProviderService providerService;

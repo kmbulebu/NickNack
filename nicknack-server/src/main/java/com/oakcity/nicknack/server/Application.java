@@ -6,6 +6,8 @@ import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.hateoas.config.EnableEntityLinks;
@@ -23,8 +25,12 @@ import com.oakcity.nicknack.server.web.EventStreamingServlet;
 @EnableTransactionManagement
 @EnableSpringDataWebSupport
 @ComponentScan
+@PropertySource(value = { "file:${nicknack.configfile}" }, ignoreResourceNotFound=true)
 public class Application {
 	
+	public static final String APP_LOGGER_NAME = "nicknack-server";
+
+
 	@Bean
 	public ServletRegistrationBean servletRegistrationBean(EventStreamingServlet eventStreamingServlet){
 	    return new ServletRegistrationBean(eventStreamingServlet, "/api/eventsStream");
@@ -36,6 +42,12 @@ public class Application {
 	}
 	
 	
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer properties() {
+	    PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+	    return propertySourcesPlaceholderConfigurer;
+	}
+
 	public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

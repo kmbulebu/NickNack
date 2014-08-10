@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.core.providers.Provider;
 import com.oakcity.nicknack.core.providers.ProviderService;
-import com.oakcity.nicknack.server.AppConfiguration;
+import com.oakcity.nicknack.server.Application;
 import com.oakcity.nicknack.server.model.ActionDefinitionResource;
 import com.oakcity.nicknack.server.model.EventDefinitionResource;
 import com.oakcity.nicknack.server.model.ProviderResource;
@@ -33,7 +33,7 @@ import com.oakcity.nicknack.server.model.ProviderResource;
 @ExposesResourceFor(ProviderResource.class)
 public class ProvidersController {
 	
-	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
+	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
 	@Autowired
 	private ProviderService providerService;

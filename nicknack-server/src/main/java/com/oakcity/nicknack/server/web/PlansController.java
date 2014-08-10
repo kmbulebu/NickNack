@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oakcity.nicknack.server.AppConfiguration;
+import com.oakcity.nicknack.server.Application;
 import com.oakcity.nicknack.server.model.PlanResource;
 import com.oakcity.nicknack.server.services.PlansService;
 
@@ -31,7 +31,7 @@ import com.oakcity.nicknack.server.services.PlansService;
 @ExposesResourceFor(PlanResource.class)
 public class PlansController {
 	
-	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
+	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
 	@Autowired
 	private PlansService plansService;

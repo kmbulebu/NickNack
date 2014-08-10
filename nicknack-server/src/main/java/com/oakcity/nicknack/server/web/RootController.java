@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oakcity.nicknack.server.AppConfiguration;
+import com.oakcity.nicknack.server.Application;
 import com.oakcity.nicknack.server.model.ActionDefinitionResource;
 import com.oakcity.nicknack.server.model.EventDefinitionResource;
 import com.oakcity.nicknack.server.model.PlanResource;
@@ -23,7 +23,7 @@ import com.oakcity.nicknack.server.model.ProviderResource;
 @RequestMapping(value="/api", produces={"application/hal+json"})
 public class RootController {
 	
-	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
+	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
 	@Autowired
 	private RelProvider relProvider;

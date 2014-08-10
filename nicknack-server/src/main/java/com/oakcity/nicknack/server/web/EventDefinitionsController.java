@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.core.events.AttributeDefinition;
 import com.oakcity.nicknack.core.events.EventDefinition;
-import com.oakcity.nicknack.server.AppConfiguration;
+import com.oakcity.nicknack.server.Application;
 import com.oakcity.nicknack.server.model.AttributeDefinitionResource;
 import com.oakcity.nicknack.server.model.EventDefinitionResource;
 import com.oakcity.nicknack.server.services.EventDefinitionService;
@@ -35,7 +35,7 @@ import com.oakcity.nicknack.server.services.EventDefinitionService;
 @ExposesResourceFor(EventDefinitionResource.class)
 public class EventDefinitionsController {
 	
-	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
+	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
 	@Autowired
 	private EventDefinitionService eventDefinitionService;

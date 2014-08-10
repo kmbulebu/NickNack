@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oakcity.nicknack.server.AppConfiguration;
+import com.oakcity.nicknack.server.Application;
 import com.oakcity.nicknack.server.model.AttributeFilterResource;
 import com.oakcity.nicknack.server.services.AttributeFiltersService;
 
@@ -31,7 +31,7 @@ import com.oakcity.nicknack.server.services.AttributeFiltersService;
 @ExposesResourceFor(AttributeFilterResource.class)
 public class AttributeFiltersController {
 	
-	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
+	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
 	@Autowired
 	private AttributeFiltersService attributeFiltersService;

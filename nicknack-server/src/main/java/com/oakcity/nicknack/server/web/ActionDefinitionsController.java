@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oakcity.nicknack.core.actions.ActionDefinition;
 import com.oakcity.nicknack.core.actions.ParameterDefinition;
-import com.oakcity.nicknack.server.AppConfiguration;
+import com.oakcity.nicknack.server.Application;
 import com.oakcity.nicknack.server.model.ActionDefinitionResource;
 import com.oakcity.nicknack.server.model.ParameterDefinitionResource;
 import com.oakcity.nicknack.server.services.ActionDefinitionService;
@@ -33,7 +33,7 @@ import com.oakcity.nicknack.server.services.ActionDefinitionService;
 @ExposesResourceFor(ActionDefinitionResource.class)
 public class ActionDefinitionsController {
 	
-	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
+	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
 	@Autowired
 	private ActionDefinitionService actionDefinitionService;

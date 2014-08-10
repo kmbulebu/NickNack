@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 import com.oakcity.nicknack.core.actions.ActionDefinition;
 import com.oakcity.nicknack.core.actions.ParameterDefinition;
 import com.oakcity.nicknack.core.providers.ProviderService;
-import com.oakcity.nicknack.server.AppConfiguration;
+import com.oakcity.nicknack.server.Application;
 import com.oakcity.nicknack.server.services.ActionDefinitionService;
 
 
 @Service
 public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 	
-	private static final Logger LOG = LogManager.getLogger(AppConfiguration.APP_LOGGER_NAME);
+	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
 	@Autowired
 	private ProviderService providerService;
