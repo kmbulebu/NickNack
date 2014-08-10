@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="warn">
-    <Properties>
-		<Property name="consoleLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level %logger %msg %location [%mdc] %throwable%n</Property>
+	<Properties>
+		<Property name="consoleLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level
+			%logger %msg %location [%mdc] %throwable%n</Property>
+		<Property name="fileLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level
+			%logger %msg %location [%mdc] %throwable%n</Property>
+		<Property name="nicknackLogDir">./logs</Property>
 	</Properties>
 	<appenders>
-		<Console name="Console" target="SYSTEM_ERR">
+		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="${consoleLogPattern}" />
 		</Console>
+		<RollingRandomAccessFile name="nicknackLogFile"
+			fileName="${sys:nicknackLogDir}/nicknack.log" filePattern="nicknack-%i.log.gz">
+			<PatternLayout>
+				<Pattern>${fileLogPattern}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="5 MB" />
+			</Policies>
+		</RollingRandomAccessFile>
+		<Async name="nicknackLogFile-async">
+			<AppenderRef ref="nicknackLogFile" />
+		</Async>
 	</appenders>
 	<loggers>
-	    <!-- Error log -->
-		<root level="info" includeLocation="true" additivity="true">
+		<!-- Error log -->
+		<root level="warn">
 			<appender-ref ref="Console" />
-		</root>	
+		</root>
+		<logger name="nicknack-server" level="debug" additivity="false">
+		    <appender-ref ref="nicknackLogFile-async" />
+		</logger>
 	</loggers>
 </configuration>

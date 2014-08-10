@@ -1,5 +1,7 @@
 package com.oakcity.nicknack.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -29,6 +31,8 @@ import com.oakcity.nicknack.server.web.EventStreamingServlet;
 public class Application {
 	
 	public static final String APP_LOGGER_NAME = "nicknack-server";
+	
+	private static final Logger LOG = LogManager.getLogger(APP_LOGGER_NAME);
 
 
 	@Bean
@@ -47,8 +51,10 @@ public class Application {
 	    PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 	    return propertySourcesPlaceholderConfigurer;
 	}
+	
 
 	public static void main(String[] args) {
+		LOG.info("Starting NickNack server.");
         SpringApplication.run(Application.class, args);
     }
 	
