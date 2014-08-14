@@ -78,7 +78,7 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-		<!-- Temporary -->
+		<!-- Temporary 
 		<dependency>
 			<groupId>com.oakcity.nicknack</groupId>
 			<artifactId>xbmc-provider</artifactId>
@@ -90,12 +90,12 @@
 			<artifactId>dsc-it100-provider</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>com.oakcity.nicknack</groupId>
 			<artifactId>nicknack-basic-provider</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency>-->
 
 		<dependency>
 			<groupId>org.aspectj</groupId>

@@ -1,12 +1,13 @@
 package com.oakcity.nicknack.core.providers;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
@@ -30,7 +31,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	private static final Logger LOG = LogManager.getLogger();
 	
 	private static ProviderServiceImpl service;
-    private ServiceLoader<Provider> loader;
+    private ProviderLoader loader;
     
     private final Map<UUID, EventDefinition> eventDefinitions = new HashMap<UUID, EventDefinition>();
     private final Map<UUID, ActionDefinition> actionDefinitions = new HashMap<UUID, ActionDefinition>();
@@ -44,21 +45,21 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     
     private final XMLConfiguration configuration;
     
-    private ProviderServiceImpl(final XMLConfiguration configuration) {
+    private ProviderServiceImpl(final Path providersDirectory, final XMLConfiguration configuration) {
     	this.configuration = configuration;
-        loader = ServiceLoader.load(Provider.class);
+        loader = new ProviderLoader(providersDirectory);
         eventStream = Observable.create(this).publish();
         eventStream.connect();
         // TODO Do something smart with the errors.
         initializeProviders();
     }
 
-    public static synchronized ProviderServiceImpl getInstance(final XMLConfiguration configuration) {
+    public static synchronized ProviderServiceImpl getInstance(final Path providersDirectory, final XMLConfiguration configuration) {
     	if (LOG.isTraceEnabled()) {
     		LOG.entry(configuration);
     	}
         if (service == null) {
-            service = new ProviderServiceImpl(configuration);
+            service = new ProviderServiceImpl(providersDirectory, configuration);
         }
         if (LOG.isTraceEnabled()) {
         	LOG.exit(service);
@@ -92,7 +93,13 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     		LOG.entry();
     	}
     	
-    	Iterator<Provider> providers = loader.iterator();
+    	Iterator<Provider> providers;
+		try {
+			providers = loader.loadProviders().iterator();
+		} catch (IOException e) {
+			LOG.error("Could not load providers. " + e.getMessage(), e);
+			return Collections.emptyList();
+		}
     	
     	Provider provider = null;
     	List<Exception> errors = new ArrayList<Exception>();

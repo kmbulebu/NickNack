@@ -22,7 +22,6 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator.Feature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oakcity.nicknack.basicproviders.clock.ClockTickEventDefinition;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.providers.ProviderService;
 
@@ -58,7 +57,7 @@ public class EventStreamingServlet extends HttpRequestHandlerServlet implements 
 
 			@Override
 			public void call(Event event) {
-				if (!event.getEventDefinition().equals(ClockTickEventDefinition.INSTANCE)) {
+				if (!event.getEventDefinition().equals("541ce254-f10e-11e3-bac5-a75fc2793419")) {
 					try {
 						final PrintWriter writer = response.getWriter();
 						writer.write("data: ");

@@ -1,5 +1,7 @@
 package com.oakcity.nicknack.server;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -20,6 +22,9 @@ public class ConfigurationConfiguration {
 	
 	@Value(value = "${nicknack.user.config:./config/nicknack_config.xml}")
 	private String configFilePathProperty;
+	
+	@Value(value = "${nicknack.providers.path:./providers}")
+	private String providersPathProperty;
 
 	@Bean
 	public XMLConfiguration configuration() throws ConfigurationException {
@@ -30,9 +35,13 @@ public class ConfigurationConfiguration {
 	}
 
 	@Bean
-	public ProviderService providerService() throws ConfigurationException {
-		XMLConfiguration configuration = configuration();
-		final ProviderService providerService = ProviderServiceImpl.getInstance(configuration);
+	public ProviderService providerService() throws ConfigurationException, IOException {
+		final XMLConfiguration configuration = configuration();
+		final Path providersPath = Paths.get(providersPathProperty);
+		if (Files.notExists(providersPath)) {
+			Files.createDirectory(providersPath);
+		}
+		final ProviderService providerService = ProviderServiceImpl.getInstance(providersPath, configuration);
 		configuration.save();
 		return providerService;
 	}
