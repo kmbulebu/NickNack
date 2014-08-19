@@ -70,11 +70,6 @@
 			<artifactId>nicknack-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.oakcity.nicknack</groupId>
-			<artifactId>nicknack-basic-provider</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
