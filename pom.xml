@@ -27,17 +27,10 @@
 		<url>https://travis-ci.org/kmbulebu/NickNack</url>
 		<system>travis</system>
 	</ciManagement>
-
-	<distributionManagement>
-		<repository>
-			<id>internal.repo</id>
-			<name>Temporary Staging Repository</name>
-			<url>file://${project.reporting.outputDirectory}</url>
-		</repository>
-	</distributionManagement>
-
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<internalRepo>file://${project.reporting.outputDirectory}</internalRepo>
 	</properties>
 
 	<modules>
@@ -149,6 +142,15 @@
 						<target>1.7</target>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>com.github.github</groupId>
+					<artifactId>site-maven-plugin</artifactId>
+					<version>0.9</version>
+					<inherited>true</inherited>
+					<configuration>
+					    <merge>true</merge>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -168,24 +170,36 @@
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.8.1</version>
 				<configuration>
-					<altDeploymentRepository>internal.repo::default::file://${project.reporting.outputDirectory}/</altDeploymentRepository>
-					<deployAtEnd>true</deployAtEnd>
+					<altDeploymentRepository>internal.repo::default::${internalRepo}</altDeploymentRepository>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
-				<version>0.9</version>
 				<configuration>
 					<message>Maven artifacts for ${project.version}</message>
 					<noJekyll>true</noJekyll>
 				</configuration>
 				<executions>
 					<execution>
+					    <id>first</id>
 						<goals>
 							<goal>site</goal>
 						</goals>
 						<phase>site</phase>
+						<configuration>
+						    <merge>false</merge>
+						</configuration>
+						<inherited>false</inherited>
+					</execution>
+					<!-- This will run twice for the parent. Unfortunately. -->
+					<execution>
+					    <id>others</id>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site</phase>
+						<inherited>true</inherited>
 					</execution>
 				</executions>
 			</plugin>
