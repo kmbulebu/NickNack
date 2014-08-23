@@ -38,6 +38,14 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<internalRepo>file://${project.reporting.outputDirectory}</internalRepo>
 	</properties>
+	
+	<licenses>
+	    <license>
+	        <name>Apache License, Version 2.0</name>
+        	<distribution>repo</distribution>
+        	<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+	    </license>
+	</licenses>
 
 	<modules>
 		<module>nicknack-core</module>
@@ -183,7 +191,7 @@
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
 				<configuration>
-					<message>Maven artifacts for ${project.version}</message>
+					<message>Maven artifacts and site for ${project.artifactId} ${project.version}</message>
 					<noJekyll>true</noJekyll>
 				</configuration>
 				<executions>
