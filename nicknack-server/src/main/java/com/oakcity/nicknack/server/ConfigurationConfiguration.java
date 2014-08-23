@@ -20,7 +20,7 @@ import com.oakcity.nicknack.core.providers.ProviderServiceImpl;
 @Configuration
 public class ConfigurationConfiguration {
 	
-	@Value(value = "${nicknack.user.config:./config/nicknack_config.xml}")
+	@Value(value = "${nicknack.user.config:./conf/nicknack_config.xml}")
 	private String configFilePathProperty;
 	
 	@Value(value = "${nicknack.providers.path:./providers}")
