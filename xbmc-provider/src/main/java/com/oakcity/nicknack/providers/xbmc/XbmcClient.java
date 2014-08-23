@@ -2,7 +2,10 @@ package com.oakcity.nicknack.providers.xbmc;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -106,9 +109,41 @@ public class XbmcClient {
 	}
 	
 	public Future<Void> sendMessage(JsonRpc jsonRpc) throws JsonProcessingException {
-		final ObjectMapper mapper = new ObjectMapper();
-		String message = mapper.writeValueAsString(jsonRpc);
-		return session.getRemote().sendStringByFuture(message);
+		if (session != null) {
+			final ObjectMapper mapper = new ObjectMapper();
+			String message = mapper.writeValueAsString(jsonRpc);
+			return session.getRemote().sendStringByFuture(message);
+		} else {
+			return new Future<Void>() {
+
+				@Override
+				public boolean cancel(boolean mayInterruptIfRunning) {
+					return false;
+				}
+
+				@Override
+				public boolean isCancelled() {
+					return false;
+				}
+
+				@Override
+				public boolean isDone() {
+					return true;
+				}
+
+				@Override
+				public Void get() throws InterruptedException, ExecutionException {
+					throw new ExecutionException("Session is null.", new NullPointerException());
+				}
+
+				@Override
+				public Void get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException,
+						TimeoutException {
+					throw new ExecutionException("Session is null.", new NullPointerException());
+				}
+				
+			};
+		}
 	}
 	
 	
