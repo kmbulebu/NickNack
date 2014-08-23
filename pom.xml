@@ -16,6 +16,12 @@
 			<id>kmbulebu</id>
 		</developer>
 	</developers>
+	
+	<distributionManagement>
+	    <site>
+	        <url>/</url>
+	    </site>
+	</distributionManagement>
 
 	<scm>
 		<connection>scm:git:https://github.com/kmbulebu/NickNack.git</connection>
@@ -221,13 +227,6 @@
 					<reportSet><!-- by default, id = "default" -->
 						<reports><!-- select non-aggregate reports -->
 							<report>javadoc</report>
-						</reports>
-					</reportSet>
-					<reportSet><!-- aggregate reportSet, to define in poms having modules -->
-						<id>aggregate</id>
-						<inherited>false</inherited><!-- don't run aggregate in child modules -->
-						<reports>
-							<report>aggregate</report>
 						</reports>
 					</reportSet>
 				</reportSets>
