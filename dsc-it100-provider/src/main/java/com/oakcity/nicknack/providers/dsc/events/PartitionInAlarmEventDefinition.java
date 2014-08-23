@@ -2,9 +2,9 @@ package com.oakcity.nicknack.providers.dsc.events;
 
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.events.BasicEventDefinition;
+import com.oakcity.nicknack.core.events.impl.BasicTimestampedEventDefinition;
 
-public class PartitionInAlarmEventDefinition extends BasicEventDefinition {
+public class PartitionInAlarmEventDefinition extends BasicTimestampedEventDefinition {
 	
 	public static final PartitionInAlarmEventDefinition INSTANCE = new PartitionInAlarmEventDefinition();
 

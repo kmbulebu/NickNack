@@ -2,7 +2,7 @@ package com.oakcity.nicknack.basicproviders.clock;
 
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.events.BasicEventDefinition;
+import com.oakcity.nicknack.core.events.impl.BasicTimestampedEventDefinition;
 
 /**
  * Creates a new 'Time Changed' event every second, nearest to the top of the second as possible.
@@ -12,22 +12,14 @@ import com.oakcity.nicknack.core.events.BasicEventDefinition;
  * @author kmbulebu
  *
  */
-public class ClockTickEventDefinition extends BasicEventDefinition {
-	
+public class ClockTickEventDefinition extends BasicTimestampedEventDefinition {
+
 	public static UUID INSTANCE_UUID = UUID.fromString("541ce254-f10e-11e3-bac5-a75fc2793419");
 
 	public static ClockTickEventDefinition INSTANCE = new ClockTickEventDefinition();
 	
 	public ClockTickEventDefinition() {
-		super(INSTANCE_UUID, 
-				"Time Changed", 
-				YearAttributeDefinition.INSTANCE,
-				MonthOfYearNumericalAttributeDefinition.INSTANCE,
-				DayOfMonthAttributeDefinition.INSTANCE,
-				DayOfWeekAttributeDefinition.INSTANCE,
-				HourOfDayAttributeDefinition.INSTANCE,
-				MinuteOfHourAttributeDefinition.INSTANCE,
-				SecondOfMinuteAttributeDefinition.INSTANCE);
+		super(INSTANCE_UUID, "Time Changed");
 	}
 	
 }

@@ -1,6 +1,5 @@
 package com.oakcity.nicknack.providers.dsc;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -18,6 +17,7 @@ import com.oakcity.dsc.it100.commands.read.ZoneOpenCommand;
 import com.oakcity.dsc.it100.commands.read.ZoneRestoredCommand;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.EventDefinition;
+import com.oakcity.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.oakcity.nicknack.providers.dsc.events.EntryDelayInProgressEventDefinition;
 import com.oakcity.nicknack.providers.dsc.events.ExitDelayInProgressEventDefinition;
 import com.oakcity.nicknack.providers.dsc.events.PartitionArmedEventDefinition;
@@ -80,21 +80,8 @@ public class CommandToEventMapper {
 	}
 	
 	private Event buildEvent(final Map<UUID, String> attributes, final EventDefinition eventDefinition) {
-		final Map<UUID, String> unmodifiableMap = Collections.unmodifiableMap(attributes);
-		final Event event = new Event() {
-
-			@Override
-			public Map<UUID, String> getAttributes() {
-				return unmodifiableMap;
-			}
-
-			@Override
-			public EventDefinition getEventDefinition() {
-				return eventDefinition;
-			}
-			
-		};
-		
+		final BasicTimestampedEvent event = new BasicTimestampedEvent(eventDefinition);
+		event.setAttributes(attributes);
 		return event;
 	}
 	

@@ -1,14 +1,11 @@
 package com.oakcity.nicknack.providers.xbmc;
 
 import java.net.URI;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.EventDefinition;
+import com.oakcity.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.oakcity.nicknack.providers.xbmc.events.PauseEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PlayEventDefinition;
 import com.oakcity.nicknack.providers.xbmc.events.PlayerItemTitleAttributeDefinition;
@@ -39,10 +36,10 @@ public class XbmcMessageMapper {
 			return null;
 		}
 		
-		final Map<UUID, String> attributes = new HashMap<>();
+		final BasicTimestampedEvent event = new BasicTimestampedEvent(eventDefinition);
 		
 		// Add the sender's host to the attributes
-		attributes.put(SourceHostAttributeDefinition.INSTANCE.getUUID(), uri.getHost());
+		event.setAttribute(SourceHostAttributeDefinition.INSTANCE, uri.getHost());
 			
 		
 		// Verify params is not null.
@@ -65,7 +62,7 @@ public class XbmcMessageMapper {
 		
 		final JsonNode titleNode = item.get("title");
 		if (titleNode != null) {
-			attributes.put(PlayerItemTitleAttributeDefinition.INSTANCE.getUUID(), titleNode.asText());
+			event.setAttribute(PlayerItemTitleAttributeDefinition.INSTANCE, titleNode.asText());
 		}
 		
 		final JsonNode typeNode = item.get("type");
@@ -73,22 +70,8 @@ public class XbmcMessageMapper {
 			System.out.println("Type null");
 			return null;
 		}
-		attributes.put(PlayerItemTypeAttributeDefinition.INSTANCE.getUUID(), typeNode.asText());
+		event.setAttribute(PlayerItemTypeAttributeDefinition.INSTANCE, typeNode.asText());
 		
-		final Map<UUID, String> attributesImmutable = Collections.unmodifiableMap(attributes);
-		final Event event = new Event() {
-
-			@Override
-			public Map<UUID, String> getAttributes() {
-				return Collections.unmodifiableMap(attributesImmutable);
-			}
-
-			@Override
-			public EventDefinition getEventDefinition() {
-				return eventDefinition;
-			}
-			
-		};
 		return event;
 	}
 

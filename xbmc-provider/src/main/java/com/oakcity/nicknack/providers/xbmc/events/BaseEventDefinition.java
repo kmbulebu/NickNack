@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import com.oakcity.nicknack.core.events.AttributeDefinition;
-import com.oakcity.nicknack.core.events.BasicEventDefinition;
+import com.oakcity.nicknack.core.events.impl.BasicTimestampedEventDefinition;
 
-public abstract class BaseEventDefinition extends BasicEventDefinition {
+public abstract class BaseEventDefinition extends BasicTimestampedEventDefinition {
 
 	public BaseEventDefinition(UUID uuid, String name, AttributeDefinition... attributeDefinitions) {
 		super(uuid, name, addAttributeDefinition(SourceHostAttributeDefinition.INSTANCE, attributeDefinitions));

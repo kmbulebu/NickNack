@@ -1,4 +1,4 @@
-package com.oakcity.nicknack.basicproviders.clock;
+package com.oakcity.nicknack.core.events.impl;
 
 import java.util.UUID;
 

@@ -2,9 +2,9 @@ package com.oakcity.nicknack.providers.dsc.events;
 
 import java.util.UUID;
 
-import com.oakcity.nicknack.core.events.BasicEventDefinition;
+import com.oakcity.nicknack.core.events.impl.BasicTimestampedEventDefinition;
 
-public class EntryDelayInProgressEventDefinition extends BasicEventDefinition {
+public class EntryDelayInProgressEventDefinition extends BasicTimestampedEventDefinition {
 	
 	public static final EntryDelayInProgressEventDefinition INSTANCE = new EntryDelayInProgressEventDefinition();
 

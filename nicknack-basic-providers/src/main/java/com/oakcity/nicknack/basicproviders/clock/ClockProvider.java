@@ -1,12 +1,8 @@
 package com.oakcity.nicknack.basicproviders.clock;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -19,8 +15,8 @@ import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.ActionDefinition;
 import com.oakcity.nicknack.core.actions.ActionFailureException;
 import com.oakcity.nicknack.core.actions.ActionParameterException;
-import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.EventDefinition;
+import com.oakcity.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
 
@@ -87,37 +83,9 @@ public class ClockProvider implements Provider, Runnable {
 	public void run() {
 		// Fire off an Event.
 		if (onEventListener != null) {
-			onEventListener.onEvent(newEvent());
+			onEventListener.onEvent(new BasicTimestampedEvent(ClockTickEventDefinition.INSTANCE));
 		}
 	}	
-	
-	protected static final Event newEvent() {
-		
-		final Map<UUID, String> attributes = new HashMap<UUID, String>();
-		final GregorianCalendar cal = new GregorianCalendar();
-		attributes.put(YearAttributeDefinition.INSTANCE.getUUID(), Integer.toString(cal.get(Calendar.YEAR)));
-		attributes.put(MonthOfYearNumericalAttributeDefinition.INSTANCE.getUUID(), Integer.toString(cal.get(Calendar.MONTH)));
-		attributes.put(DayOfMonthAttributeDefinition.INSTANCE.getUUID(), Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
-		attributes.put(DayOfWeekAttributeDefinition.INSTANCE.getUUID(), cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
-		attributes.put(HourOfDayAttributeDefinition.INSTANCE.getUUID(), Integer.toString(cal.get(Calendar.HOUR_OF_DAY)));
-		attributes.put(MinuteOfHourAttributeDefinition.INSTANCE.getUUID(), Integer.toString(cal.get(Calendar.MINUTE)));
-		attributes.put(SecondOfMinuteAttributeDefinition.INSTANCE.getUUID(), Integer.toString(cal.get(Calendar.SECOND)));
-		
-		final Event event = new Event() {
-
-			@Override
-			public Map<UUID, String> getAttributes() {
-				return Collections.unmodifiableMap(attributes);
-			}
-
-			@Override
-			public EventDefinition getEventDefinition() {
-				return ClockTickEventDefinition.INSTANCE;
-			}
-			
-		};
-		return event;
-	}
 
 	@Override
 	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
