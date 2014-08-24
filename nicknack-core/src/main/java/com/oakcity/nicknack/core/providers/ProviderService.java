@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.core.providers;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,5 +28,7 @@ public interface ProviderService {
 	public Observable<Event> getEvents();
 	
 	public void run(Action action) throws ActionFailureException, ActionParameterException;
+	
+	public List<Exception> addProvider(Provider provider);
 
 }

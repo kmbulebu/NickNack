@@ -29,6 +29,7 @@ import com.oakcity.nicknack.core.events.filters.EventFilter;
 import com.oakcity.nicknack.core.events.filters.EventFilterEvaluator;
 import com.oakcity.nicknack.core.providers.ProviderService;
 import com.oakcity.nicknack.server.Application;
+import com.oakcity.nicknack.server.NickNackServerProvider;
 import com.oakcity.nicknack.server.model.ActionResource;
 import com.oakcity.nicknack.server.model.EventFilterResource;
 import com.oakcity.nicknack.server.model.PlanResource;
@@ -57,11 +58,17 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>{
 	
 	private EventFilterEvaluator eventFilterEvaluator = new EventFilterEvaluator();
 	
+	private NickNackServerProvider nickNackServerProvider = new NickNackServerProvider();
+	
 	@PostConstruct
 	public void init() {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
+		
+		// Manually register our NickNack Server Provider
+		// TOOD Do something useful with exceptions.
+		providerService.addProvider(nickNackServerProvider);
 		
 		final Observable<Event> events = providerService.getEvents();
 		eventsSubscription = events.subscribe(this);
@@ -133,11 +140,15 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>{
 			LOG.info("Plan " + plan.getUUID() + " matches event " + event);
 			for (Action action : actionsService.getActions(plan.getUUID())) {
 				LOG.info("Performing action " + action);
+				final Action processedAction = processVariables(action, event);
+				final String actionName = providerService.getActionDefinitions().get(processedAction.getAppliesToActionDefinition()).getName();
+				final String actionUuid = processedAction.getAppliesToActionDefinition().toString();
 				try {
-					providerService.run(processVariables(action, event));
+					providerService.run(processedAction);
+					nickNackServerProvider.fireActionCompletedEvent(actionUuid, actionName);
 				} catch (ActionFailureException | ActionParameterException e) {
 					LOG.warn("Failed to perform action. " + e.getMessage() + " " + action);
-					// TODO Generate and fire an Event for this error.
+					nickNackServerProvider.fireActionFailedEvent(actionUuid, actionName);
 				} 
 			}
 		}

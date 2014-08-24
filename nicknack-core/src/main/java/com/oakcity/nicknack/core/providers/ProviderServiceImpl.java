@@ -107,50 +107,58 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     		LOG.info("Loading providers.");
     	}
 		while (providers.hasNext()) {
-			try {
-				provider = providers.next();
-				if (LOG.isInfoEnabled()) {
-					LOG.info("Initializing provider: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
-				}
-				this.providers.put(provider.getUuid(), provider);
-				final String configKey = "providers.uuid" + provider.getUuid().toString().replaceAll("-", "");
-				if (!configuration.containsKey(configKey + ".name")) {
-					configuration.addProperty(configKey + ".name", provider.getName());
-				}
-				final Configuration providerConfig = configuration.configurationAt(configKey, true);
-				provider.init(providerConfig, this);
-				
-				if (provider.getEventDefinitions() != null) {
-					for (EventDefinition eventDef : provider.getEventDefinitions()) {
-						UUID uuid = eventDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Event Definition with null UUID.");
-						} else {
-							eventDefinitions.put(uuid, eventDef);
-							eventDefinitionToProvider.put(uuid, provider.getUuid());
-						}
-					}
-				}
-				
-				if (provider.getActionDefinitions() != null) {
-					for (ActionDefinition actionDef : provider.getActionDefinitions()) {
-						UUID uuid = actionDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Action Definition with null UUID.");
-						} else {
-							actionDefinitions.put(uuid, actionDef);
-							actionDefinitionToProvider.put(uuid, provider.getUuid());
-						}
-					}
-				}
-			} catch (Exception e) {
-				LOG.error("Failed to initialize provider, " + provider.getName() + " (" + provider.getUuid() + "):" + e.getMessage(), e);
-	    		errors.add(e);
-	    	}
+			provider = providers.next();
+			errors.addAll(initializeProvider(provider));
 		}
 		
 		return errors;
     	
+    }
+    
+    protected List<Exception> initializeProvider(Provider provider) {
+    	List<Exception> errors = new ArrayList<Exception>();
+    	
+    	try {
+			if (LOG.isInfoEnabled()) {
+				LOG.info("Initializing provider: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
+			}
+			this.providers.put(provider.getUuid(), provider);
+			final String configKey = "providers.uuid" + provider.getUuid().toString().replaceAll("-", "");
+			if (!configuration.containsKey(configKey + ".name")) {
+				configuration.addProperty(configKey + ".name", provider.getName());
+			}
+			final Configuration providerConfig = configuration.configurationAt(configKey, true);
+			provider.init(providerConfig, this);
+			
+			if (provider.getEventDefinitions() != null) {
+				for (EventDefinition eventDef : provider.getEventDefinitions()) {
+					UUID uuid = eventDef.getUUID();
+					if (uuid == null) {
+						LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Event Definition with null UUID.");
+					} else {
+						eventDefinitions.put(uuid, eventDef);
+						eventDefinitionToProvider.put(uuid, provider.getUuid());
+					}
+				}
+			}
+			
+			if (provider.getActionDefinitions() != null) {
+				for (ActionDefinition actionDef : provider.getActionDefinitions()) {
+					UUID uuid = actionDef.getUUID();
+					if (uuid == null) {
+						LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Action Definition with null UUID.");
+					} else {
+						actionDefinitions.put(uuid, actionDef);
+						actionDefinitionToProvider.put(uuid, provider.getUuid());
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Failed to initialize provider, " + provider.getName() + " (" + provider.getUuid() + "):" + e.getMessage(), e);
+    		errors.add(e);
+    	}
+    	
+    	return errors;
     }
 
 	@Override
@@ -226,6 +234,11 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 		}
 		
 		return providers.get(providerUuid);
+	}
+
+	@Override
+	public List<Exception> addProvider(Provider provider) {
+		return initializeProvider(provider);
 	}
 
 }
