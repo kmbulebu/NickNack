@@ -14,6 +14,7 @@ import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import rx.Observable;
@@ -33,12 +34,13 @@ import com.oakcity.nicknack.server.NickNackServerProvider;
 import com.oakcity.nicknack.server.model.ActionResource;
 import com.oakcity.nicknack.server.model.EventFilterResource;
 import com.oakcity.nicknack.server.model.PlanResource;
+import com.oakcity.nicknack.server.services.ActionRunnerService;
 import com.oakcity.nicknack.server.services.ActionsService;
 import com.oakcity.nicknack.server.services.EventFiltersService;
 import com.oakcity.nicknack.server.services.PlansService;
 
 @Service
-public class PlansEvaluatorServiceImpl implements Action1<Event>{
+public class PlansEvaluatorServiceImpl implements Action1<Event>, ActionRunnerService {
 	
 	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
@@ -141,15 +143,8 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>{
 			for (Action action : actionsService.getActions(plan.getUUID())) {
 				LOG.info("Performing action " + action);
 				final Action processedAction = processVariables(action, event);
-				final String actionName = providerService.getActionDefinitions().get(processedAction.getAppliesToActionDefinition()).getName();
-				final String actionUuid = processedAction.getAppliesToActionDefinition().toString();
-				try {
-					providerService.run(processedAction);
-					nickNackServerProvider.fireActionCompletedEvent(actionUuid, actionName);
-				} catch (ActionFailureException | ActionParameterException e) {
-					LOG.warn("Failed to perform action. " + e.getMessage() + " " + action);
-					nickNackServerProvider.fireActionFailedEvent(actionUuid, actionName);
-				} 
+				// Should not run as async when calling from same service class
+				runActionNow(processedAction);
 			}
 		}
 		
@@ -157,6 +152,20 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>{
 			LOG.exit();
 		}
 
+	}
+	
+	@Async
+	@Override
+	public void runActionNow(Action action) {
+		final String actionName = providerService.getActionDefinitions().get(action.getAppliesToActionDefinition()).getName();
+		final String actionUuid = action.getAppliesToActionDefinition().toString();
+		try {
+			providerService.run(action);
+			nickNackServerProvider.fireActionCompletedEvent(actionUuid, actionName);
+		} catch (ActionFailureException | ActionParameterException e) {
+			LOG.warn("Failed to perform action. " + e.getMessage() + " " + action);
+			nickNackServerProvider.fireActionFailedEvent(actionUuid, actionName);
+		} 
 	}
 	
 	// TODO I'd like to push a lot of this down into NickNack-core.
@@ -188,6 +197,8 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>{
 		
 		return substitutor.replace(value);
 	}
+	
+	
 	
 	
 

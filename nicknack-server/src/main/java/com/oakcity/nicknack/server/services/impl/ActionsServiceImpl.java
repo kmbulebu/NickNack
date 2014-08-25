@@ -21,7 +21,7 @@ public class ActionsServiceImpl implements ActionsService {
 	private PlanRepository planRepo;
 	
 	@Autowired
-	private ActionRepository actionRepo;;
+	private ActionRepository actionRepo;
 
 	@Override
 	public List<ActionResource> getActions(UUID planUuid) {

@@ -1,0 +1,29 @@
+<html ng-app="nicknackApp">
+<head>
+   <script src="bower_components/angular/angular.js"></script>
+   <script src="bower_components/rfc6570/rfc6570.js"></script>
+   <script src="bower_components/angular-hal/angular-hal.js"></script>
+   <script src="js/controllers.js"></script>
+   <script src="js/services.js"></script>
+</head>
+<body ng-controller="RunActionCtrl">
+  <h1>Run Action</h1>
+
+  <form name="newPlanForm" ng-submit="submit()">
+ 
+	  <h2>Action</h3>
+	  <select ng-model="actionType" ng-change="onActionTypeChange()">
+	  	<option ng-repeat="actionDefinition in actionDefinitions track by $index" value="{{actionDefinition}}">{{actionDefinition.name}}</option>
+	  </select>
+	  
+	  <h3>Parameters</h3>
+	 	 <div ng-repeat="actionParameterDefinition in actionParameterDefinitions track by $index">
+	  		<ng-form name="actionParametersForm">
+	  			<label>{{actionParameterDefinition.name}}</label><input type="text" ng-model="actionParameterValues[$index]"/> 
+  			</ng-form>
+  		</div>
+  		
+  	<button type="submit">Do it!</button>	
+  </form>
+</body>
+</html>

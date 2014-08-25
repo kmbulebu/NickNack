@@ -29,5 +29,9 @@ angular.module('newplanService', ['angular-hal']).factory('WebsiteService', [ 'h
                     function(plan) {
                         return halClient.$post('api/plans/', null, plan);
                     },
+        'runActionNow' :
+            function(action) {
+                return halClient.$post('api/instantactions/', null, action);
+            },
     };
 }]);
