@@ -20,6 +20,7 @@
       <binaries>
         <outputDirectory>lib/</outputDirectory>
         <unpack>false</unpack>
+        <outputFileNameMapping>${module.artifactId}.${module.extension}</outputFileNameMapping>
       </binaries>
     </moduleSet>
     <moduleSet>
