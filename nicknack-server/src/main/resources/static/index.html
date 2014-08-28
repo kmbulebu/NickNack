@@ -1,0 +1,17 @@
+<html ng-app="nicknackApp">
+<head>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/rfc6570/rfc6570.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-hal/angular-hal.js"></script>
+<script src="js/apps.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/services.js"></script>
+</head>
+<body>
+	<h1>NickNack</h1>
+	<a href="#/plans">Plans</a> <a href="#/newPlan">New Plan</a> <a href="#/runAction">Run an Action</a>
+
+	<div ng-view></div>
+</body>
+</html>

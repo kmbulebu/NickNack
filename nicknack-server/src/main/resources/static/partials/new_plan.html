@@ -1,14 +1,4 @@
-<html ng-app="nicknackApp">
-<head>
-   <script src="bower_components/angular/angular.js"></script>
-   <script src="bower_components/rfc6570/rfc6570.js"></script>
-   <script src="bower_components/angular-hal/angular-hal.js"></script>
-   <script src="js/controllers.js"></script>
-   <script src="js/services.js"></script>
-</head>
-<body ng-controller="NewPlanCtrl">
-  <h1>New Plan</h1>
-
+<h2><b>New Plan</b></h2>
   <form name="newPlanForm" ng-submit="submit()">
   	  <label>Name</label><input type="text" ng-model="newPlanName">
   
@@ -47,5 +37,3 @@
   		
   	<button type="submit">Save Plan</button>	
   </form>
-</body>
-</html>

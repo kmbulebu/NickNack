@@ -1,0 +1,8 @@
+<h2><b>Plans</b></h2>
+  
+  <div ng-repeat="plan in plans track by $index">
+  	{{plan.name}} 
+  	<button ng-click="deletePlan(plan.uuid)">Delete</button>
+  </div>
+  
+  

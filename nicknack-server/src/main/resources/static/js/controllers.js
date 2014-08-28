@@ -1,7 +1,6 @@
+var nicknackControllers = angular.module('nicknackControllers', []);
 
-var nicknackApp = angular.module('nicknackApp', ['newplanService']);
-
-nicknackApp.controller('PlansCtrl', ['$scope', 'WebsiteService', 
+nicknackControllers.controller('PlansCtrl', ['$scope', 'WebsiteService', 
                                        function ($scope, WebsiteService) {
 	
 	$scope.plans = {};
@@ -28,9 +27,9 @@ nicknackApp.controller('PlansCtrl', ['$scope', 'WebsiteService',
 		
 	};
 	
-}]);
+}]);	
 
-nicknackApp.controller('NewPlanCtrl', ['$scope', 'WebsiteService', 
+nicknackControllers.controller('NewPlanCtrl', ['$scope', 'WebsiteService', 
 function ($scope, WebsiteService) {
 	$scope.actionParameterValues = {};
 	$scope.formData = {};
@@ -157,7 +156,7 @@ function ($scope, WebsiteService) {
 	};
 }]);
 
-nicknackApp.controller('NewPlanCtrl', ['$scope', 'WebsiteService', 
+nicknackControllers.controller('NewPlanCtrl', ['$scope', 'WebsiteService', 
    function ($scope, WebsiteService) {
    	$scope.actionParameterValues = {};
    	$scope.formData = {};
@@ -283,7 +282,7 @@ nicknackApp.controller('NewPlanCtrl', ['$scope', 'WebsiteService',
 
    	};
    }]);
-nicknackApp.controller('RunActionCtrl', ['$scope', 'WebsiteService', 
+nicknackControllers.controller('RunActionCtrl', ['$scope', 'WebsiteService', 
    function ($scope, WebsiteService) {
    	$scope.actionParameterValues = {};
    	$scope.formData = {};
@@ -333,7 +332,7 @@ nicknackApp.controller('RunActionCtrl', ['$scope', 'WebsiteService',
    	};
    }]);
 
-   nicknackApp.controller('NewPlanCtrl', ['$scope', 'WebsiteService', 
+   nicknackControllers.controller('NewPlanCtrl', ['$scope', 'WebsiteService', 
       function ($scope, WebsiteService) {
       	$scope.actionParameterValues = {};
       	$scope.formData = {};
