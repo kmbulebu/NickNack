@@ -1,4 +1,4 @@
-var nicknackApp = angular.module('nicknackApp', [ 'ngRoute',
+var nicknackApp = angular.module('nicknackApp', ['ngRoute',
 		'nicknackControllers', 'newplanService' ]);
 
 nicknackApp.config([ '$routeProvider', function($routeProvider) {
@@ -11,7 +11,11 @@ nicknackApp.config([ '$routeProvider', function($routeProvider) {
 	}).when('/runAction', {
 		templateUrl : 'partials/run_action.html',
 		controller : 'RunActionCtrl'
+	}).when('/liveEvents', {
+		templateUrl : 'partials/events.html',
+		controller : 'EventsCtrl'
 	}).otherwise({
 		redirectTo : '/plans'
 	});
 } ]);
+

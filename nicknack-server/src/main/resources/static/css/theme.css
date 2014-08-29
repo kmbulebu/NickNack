@@ -1,0 +1,25 @@
+.nicknack_header{
+	width: 100%;
+
+}
+
+.nicknack_header_title {
+	background-color: gray;
+	vertical-align: baseline;
+}
+
+.nicknack_header_links {
+	background-color: aqua;
+	vertical-align: baseline;
+	text-indent: 1%;
+}
+
+.nicknack_header_title h1 {
+	text-align: left;
+	color: white;
+	text-indent: 1%;
+}
+
+.nicknack_view {
+	text-indent:1%
+}

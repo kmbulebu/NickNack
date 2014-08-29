@@ -1,0 +1,23 @@
+{
+  "name": "NickNack",
+  "version": "0.0.0",
+  "homepage": "https://github.com/kmbulebu/NickNack",
+  "authors": [
+    "Kevin Bulebush <kmbulebu@gmail.com>"
+  ],
+  "license": "Apache 2.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-hal": "~0.1.5",
+    "angular-resource": "~1.2.20",
+    "angular-route": "~1.2.20",
+    "angular": "~1.2.20"
+  }
+}

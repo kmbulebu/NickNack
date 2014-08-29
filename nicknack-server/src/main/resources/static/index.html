@@ -1,5 +1,6 @@
 <html ng-app="nicknackApp">
 <head>
+<link rel="stylesheet" type="text/css" href="css/theme.css">
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/rfc6570/rfc6570.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
@@ -9,9 +10,18 @@
 <script src="js/services.js"></script>
 </head>
 <body>
-	<h1>NickNack</h1>
-	<a href="#/plans">Plans</a> <a href="#/newPlan">New Plan</a> <a href="#/runAction">Run an Action</a>
-
-	<div ng-view></div>
+	<table class="nicknack_header">
+		<tr class="nicknack_header_title">
+			<td>
+				<h1>NickNack</h1>
+			</td>
+		</tr>
+		<tr class="nicknack_header_links">
+			<td>
+				<a href="#/plans">Plans</a> <a href="#/newPlan">New Plan</a> <a href="#/runAction">Run an Action</a> <a href="#/liveEvents">Live Events</a>
+			</td>
+		</tr>
+	</table>
+	<div ng-view class="nicknack_view"></div>
 </body>
 </html>
