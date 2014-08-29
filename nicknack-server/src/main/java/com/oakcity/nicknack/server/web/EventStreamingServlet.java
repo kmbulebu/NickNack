@@ -57,7 +57,7 @@ public class EventStreamingServlet extends HttpRequestHandlerServlet implements 
 
 			@Override
 			public void call(Event event) {
-				if (!event.getEventDefinition().equals("541ce254-f10e-11e3-bac5-a75fc2793419")) {
+				if (!"541ce254-f10e-11e3-bac5-a75fc2793419".equals(event.getEventDefinition().getUUID().toString())) {
 					try {
 						final PrintWriter writer = response.getWriter();
 						writer.write("data: ");
