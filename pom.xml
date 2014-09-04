@@ -200,7 +200,7 @@
 						<goals>
 							<goal>site</goal>
 						</goals>
-						<phase>site</phase>
+						<phase>none</phase>
 						<configuration>
 						    <merge>false</merge>
 						</configuration>
