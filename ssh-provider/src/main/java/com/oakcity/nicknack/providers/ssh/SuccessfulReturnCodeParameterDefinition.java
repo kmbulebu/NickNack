@@ -9,11 +9,10 @@ import com.oakcity.nicknack.core.units.IntegerUnit;
 
 public class SuccessfulReturnCodeParameterDefinition extends BasicParameterDefinition<IntegerUnit> {
 
-	public static final SuccessfulReturnCodeParameterDefinition INSTANCE = new SuccessfulReturnCodeParameterDefinition();
-	
 	public static final UUID DEF_UUID = UUID.fromString("df897502-4ac3-4b88-89c6-f596a4beb5bc");
 	
-
+	public static final SuccessfulReturnCodeParameterDefinition INSTANCE = new SuccessfulReturnCodeParameterDefinition();
+	
 	public SuccessfulReturnCodeParameterDefinition() {
 		super(DEF_UUID, "Successful Return Code", IntegerUnit.INSTANCE, false);
 	}

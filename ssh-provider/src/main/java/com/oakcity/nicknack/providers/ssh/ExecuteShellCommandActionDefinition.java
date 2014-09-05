@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.providers.ssh;
 
+import java.util.Properties;
 import java.util.UUID;
 
 import com.jcraft.jsch.ChannelExec;
@@ -59,13 +60,18 @@ public class ExecuteShellCommandActionDefinition extends SshActionDefinition {
 			expectedReturnCode = Integer.parseInt(returnCodeStr);
 		}
 		final JSch jsch = new JSch();
+		final Properties config = new Properties(); 
+		// TODO Come up with a more secure way of handling initial host key verification.
+		config.put("StrictHostKeyChecking", "no");
 		Session session;
+		
 		try {
 			session = jsch.getSession(userName, host, port);
 		} catch (JSchException e) {
 			throw new ActionFailureException("Could not configure SSH client.", e);
 		}
 		
+		session.setConfig(config);
 		session.setPassword(password);
 		try {
 			session.connect();

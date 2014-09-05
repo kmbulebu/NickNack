@@ -9,10 +9,9 @@ import com.oakcity.nicknack.core.units.StringUnit;
 
 public class HostParameterDefinition extends BasicParameterDefinition<StringUnit> {
 
-	public static final HostParameterDefinition INSTANCE = new HostParameterDefinition();
-	
 	public static final UUID DEF_UUID = UUID.fromString("f0e20833-d1fc-4359-a009-04d835fac390");
 	
+	public static final HostParameterDefinition INSTANCE = new HostParameterDefinition();
 
 	public HostParameterDefinition() {
 		super(DEF_UUID, "Hostname or IP Address", StringUnit.INSTANCE, true);

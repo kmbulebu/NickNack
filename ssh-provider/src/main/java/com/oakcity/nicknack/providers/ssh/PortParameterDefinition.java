@@ -9,11 +9,10 @@ import com.oakcity.nicknack.core.units.IntegerUnit;
 
 public class PortParameterDefinition extends BasicParameterDefinition<IntegerUnit> {
 
-	public static final PortParameterDefinition INSTANCE = new PortParameterDefinition();
-	
 	public static final UUID DEF_UUID = UUID.fromString("71105ee0-5711-4907-bffc-32e14c3e78ca");
 	
-
+	public static final PortParameterDefinition INSTANCE = new PortParameterDefinition();
+	
 	public PortParameterDefinition() {
 		super(DEF_UUID, "SSH port number", IntegerUnit.INSTANCE, false);
 	}

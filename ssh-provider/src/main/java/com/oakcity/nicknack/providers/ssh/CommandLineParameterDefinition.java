@@ -9,10 +9,9 @@ import com.oakcity.nicknack.core.units.StringUnit;
 
 public class CommandLineParameterDefinition extends BasicParameterDefinition<StringUnit> {
 
-	public static final CommandLineParameterDefinition INSTANCE = new CommandLineParameterDefinition();
-	
 	public static final UUID DEF_UUID = UUID.fromString("8a2afea6-36a3-4058-a615-194ba7660382");
 	
+	public static final CommandLineParameterDefinition INSTANCE = new CommandLineParameterDefinition();
 
 	public CommandLineParameterDefinition() {
 		super(DEF_UUID, "Command Line", StringUnit.INSTANCE, true);
