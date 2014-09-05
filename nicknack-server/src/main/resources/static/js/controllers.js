@@ -229,6 +229,7 @@ nicknackControllers.controller('RunActionCtrl', ['$scope', 'WebsiteService',
                }
                $scope.events.unshift({
             	  "eventName":json.eventDefinition.name,
+            	  "created":json.created,
             	  "attributes":attributes
                });
            });

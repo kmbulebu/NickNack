@@ -53,6 +53,7 @@
 		<module>example-provider</module>
 		<module>nicknack-basic-providers</module>
 		<module>xbmc-provider</module>
+		<module>ssh-provider</module>
 		<module>dsc-it100-provider</module>
 
 		<module>nicknack-server-assembly</module>
@@ -73,6 +74,11 @@
 			<dependency>
 				<groupId>com.oakcity.nicknack</groupId>
 				<artifactId>xbmc-provider</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oakcity.nicknack</groupId>
+				<artifactId>ssh-provider</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>

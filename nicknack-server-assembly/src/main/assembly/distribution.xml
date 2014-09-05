@@ -32,6 +32,7 @@
       <includes>
         <include>com.oakcity.nicknack:nicknack-basic-providers</include>
         <include>com.oakcity.nicknack:xbmc-provider</include>
+        <include>com.oakcity.nicknack:ssh-provider</include>
         <include>com.oakcity.nicknack:dsc-it100-provider</include>
       </includes>
       <binaries>

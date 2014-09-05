@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +95,12 @@ public class _EventFilterEvaluatorTest {
 			public EventDefinition getEventDefinition() {
 				return SWITCH_CHANGE_EVENT_DEF;
 			}
+
+			@Override
+			public Date getCreated() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 			
 		};
 		
@@ -114,6 +121,12 @@ public class _EventFilterEvaluatorTest {
 			public EventDefinition getEventDefinition() {
 				return SWITCH_CHANGE_EVENT_DEF;
 			}
+
+			@Override
+			public Date getCreated() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 			
 		};
 		
@@ -133,6 +146,12 @@ public class _EventFilterEvaluatorTest {
 			@Override
 			public EventDefinition getEventDefinition() {
 				return SWITCH_CHANGE_EVENT_DEF;
+			}
+
+			@Override
+			public Date getCreated() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 			
 		};

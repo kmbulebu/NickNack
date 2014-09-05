@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.example.provider;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -15,6 +16,8 @@ public class SwitchChangeEventFactory {
 		attributes.put(SwitchChangeEventDefinition.POSITION_ATTRIBUTE_DEF.getUUID(), Boolean.toString(position));
 		attributes.put(SwitchChangeEventDefinition.MAC_ADDRESS_ATTRIBUTE_DEF.getUUID(), macAddress);
 		
+		final Date timeStamp = new Date();
+		
 		return new Event() {
 
 			@Override
@@ -25,6 +28,11 @@ public class SwitchChangeEventFactory {
 			@Override
 			public EventDefinition getEventDefinition() {
 				return SwitchChangeEventDefinition.INSTANCE;
+			}
+
+			@Override
+			public Date getCreated() {
+				return timeStamp;
 			}
 			
 		};

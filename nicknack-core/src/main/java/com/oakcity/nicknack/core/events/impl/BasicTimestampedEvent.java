@@ -19,11 +19,14 @@ public class BasicTimestampedEvent implements Event {
 	
 	final EventDefinition eventDefinition;
 	
+	final Date created;
+	
 	public BasicTimestampedEvent(EventDefinition eventDefinition) {
 		this(eventDefinition, new Date());
 	}
 	
 	public BasicTimestampedEvent(EventDefinition eventDefinition, Date timestamp) {
+		this.created = timestamp;
 		this.eventDefinition = eventDefinition;
 		final GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(timestamp);
@@ -59,6 +62,11 @@ public class BasicTimestampedEvent implements Event {
 	@Override
 	public EventDefinition getEventDefinition() {
 		return eventDefinition;
+	}
+
+	@Override
+	public Date getCreated() {
+		return created;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.oakcity.nicknack.core.events;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,5 +21,6 @@ public interface Event {
 	// TODO Switch to just UUID?
 	public EventDefinition getEventDefinition();
 	
+	public Date getCreated();
 	
 }

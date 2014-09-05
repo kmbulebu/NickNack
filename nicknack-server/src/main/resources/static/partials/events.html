@@ -1,7 +1,7 @@
 <h2><b>Events</b></h2>
 
 <div ng-repeat="event in events">
-	<h3>{{event.eventName}}</h3>
+	<h3>{{event.eventName}} @ {{event.created | date:'yyyy-MM-dd HH:mm:ss'}}</h3>
  	<div ng-repeat="attribute in event.attributes">
  		<label>{{attribute.name}}: </label>{{attribute.value}}
  	</div>

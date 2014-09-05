@@ -1,0 +1,33 @@
+package com.oakcity.nicknack.providers.ssh;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.UUID;
+
+import com.oakcity.nicknack.core.actions.parameters.BasicParameterDefinition;
+import com.oakcity.nicknack.core.units.IntegerUnit;
+
+public class SuccessfulReturnCodeParameterDefinition extends BasicParameterDefinition<IntegerUnit> {
+
+	public static final SuccessfulReturnCodeParameterDefinition INSTANCE = new SuccessfulReturnCodeParameterDefinition();
+	
+	public static final UUID DEF_UUID = UUID.fromString("df897502-4ac3-4b88-89c6-f596a4beb5bc");
+	
+
+	public SuccessfulReturnCodeParameterDefinition() {
+		super(DEF_UUID, "Successful Return Code", IntegerUnit.INSTANCE, false);
+	}
+
+	@Override
+	public String format(String rawValue) {
+		return rawValue;
+	}
+
+	@Override
+	public Collection<String> validate(String value) {
+		return Collections.emptyList();
+	}
+	
+	
+
+}

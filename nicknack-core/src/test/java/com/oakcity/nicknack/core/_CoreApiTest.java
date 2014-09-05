@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +113,12 @@ public class _CoreApiTest {
 				return new SwitchChangeEvent();
 			}
 			
+			@Override
+			public Date getCreated() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
 		};
 		
 		Event switchOffEvent = new Event() {
@@ -126,6 +133,12 @@ public class _CoreApiTest {
 			@Override
 			public EventDefinition getEventDefinition() {
 				return new SwitchChangeEvent();
+			}
+
+			@Override
+			public Date getCreated() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 			
 		};
