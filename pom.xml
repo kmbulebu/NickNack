@@ -218,7 +218,7 @@
 						<goals>
 							<goal>site</goal>
 						</goals>
-						<phase>site</phase>
+						<phase>none</phase>
 						<inherited>true</inherited>
 					</execution>
 				</executions>
