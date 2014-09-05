@@ -15,6 +15,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.hateoas.config.EnableEntityLinks;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.oakcity.nicknack.server.web.EventStreamingServlet;
@@ -26,6 +27,7 @@ import com.oakcity.nicknack.server.web.EventStreamingServlet;
 @EnableJpaRepositories
 @EnableTransactionManagement
 @EnableSpringDataWebSupport
+@EnableAsync
 @ComponentScan
 @PropertySource(value = { "file:${nicknack.configfile}" }, ignoreResourceNotFound=true)
 public class Application {

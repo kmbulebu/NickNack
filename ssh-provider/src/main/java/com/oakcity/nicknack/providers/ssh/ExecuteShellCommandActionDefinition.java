@@ -76,21 +76,21 @@ public class ExecuteShellCommandActionDefinition extends SshActionDefinition {
 		try {
 			session.connect();
 		} catch (JSchException e) {
-			throw new ActionFailureException("Could not connect to SSH server.", e);
+			throw new ActionFailureException("Could not connect to SSH server:" + e.getMessage(), e);
 		}
 
 		ChannelExec channelExec;
         try {
 			channelExec = (ChannelExec) session.openChannel("exec");
 		} catch (JSchException e) {
-			throw new ActionFailureException("Could not open a channel with SSH server.", e);
+			throw new ActionFailureException("Could not open a channel with SSH server:" + e.getMessage(), e);
 		}
         
         channelExec.setCommand(commandLine);
         try {
 			channelExec.connect();
 		} catch (JSchException e) {
-			throw new ActionFailureException("Could not execute command on SSH server.", e);
+			throw new ActionFailureException("Could not execute command on SSH server:" + e.getMessage(), e);
 		}
         
         int rc = -1;

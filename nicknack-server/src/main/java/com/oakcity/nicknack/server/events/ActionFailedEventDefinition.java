@@ -13,7 +13,8 @@ public class ActionFailedEventDefinition extends BasicTimestampedEventDefinition
 	public ActionFailedEventDefinition() {
 		super(DEF_UUID, NAME,
 				ActionDefinitionAttributeDefinition.INSTANCE,
-				ActionNameAttributeDefinition.INSTANCE);
+				ActionNameAttributeDefinition.INSTANCE,
+				ActionErrorMessageAttributeDefinition.INSTANCE);
 	}
 	
 }

@@ -19,6 +19,7 @@ import com.oakcity.nicknack.core.providers.OnEventListener;
 import com.oakcity.nicknack.core.providers.Provider;
 import com.oakcity.nicknack.server.events.ActionCompletedEventDefinition;
 import com.oakcity.nicknack.server.events.ActionDefinitionAttributeDefinition;
+import com.oakcity.nicknack.server.events.ActionErrorMessageAttributeDefinition;
 import com.oakcity.nicknack.server.events.ActionFailedEventDefinition;
 import com.oakcity.nicknack.server.events.ActionNameAttributeDefinition;
 
@@ -89,11 +90,12 @@ public class NickNackServerProvider implements Provider {
 		}
 	}
 	
-	public void fireActionFailedEvent(String actionDefUuid, String actionDefName) {
+	public void fireActionFailedEvent(String actionDefUuid, String actionDefName, String errorMessage) {
 		if (onEventListener != null) {
 			final BasicTimestampedEvent event = new BasicTimestampedEvent(ActionFailedEventDefinition.INSTANCE);
 			event.setAttribute(ActionDefinitionAttributeDefinition.INSTANCE, actionDefUuid);
 			event.setAttribute(ActionNameAttributeDefinition.INSTANCE, actionDefName);
+			event.setAttribute(ActionErrorMessageAttributeDefinition.INSTANCE, errorMessage);
 			onEventListener.onEvent(event);
 		}
 	}

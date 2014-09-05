@@ -164,7 +164,7 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>, ActionRunnerSe
 			nickNackServerProvider.fireActionCompletedEvent(actionUuid, actionName);
 		} catch (ActionFailureException | ActionParameterException e) {
 			LOG.warn("Failed to perform action. " + e.getMessage() + " " + action);
-			nickNackServerProvider.fireActionFailedEvent(actionUuid, actionName);
+			nickNackServerProvider.fireActionFailedEvent(actionUuid, actionName, e.getMessage());
 		} 
 	}
 	
