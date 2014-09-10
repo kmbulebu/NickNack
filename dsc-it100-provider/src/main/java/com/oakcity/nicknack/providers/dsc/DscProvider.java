@@ -16,11 +16,11 @@ import rx.Observable;
 import rx.functions.Action1;
 import rx.subjects.PublishSubject;
 
-import com.oakcity.dsc.it100.ConfigurationBuilder;
-import com.oakcity.dsc.it100.IT100;
-import com.oakcity.dsc.it100.Labels;
-import com.oakcity.dsc.it100.commands.read.ReadCommand;
-import com.oakcity.dsc.it100.commands.write.WriteCommand;
+import com.github.kmbulebu.dsc.it100.ConfigurationBuilder;
+import com.github.kmbulebu.dsc.it100.IT100;
+import com.github.kmbulebu.dsc.it100.Labels;
+import com.github.kmbulebu.dsc.it100.commands.read.ReadCommand;
+import com.github.kmbulebu.dsc.it100.commands.write.WriteCommand;
 import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.ActionDefinition;
 import com.oakcity.nicknack.core.actions.ActionFailureException;

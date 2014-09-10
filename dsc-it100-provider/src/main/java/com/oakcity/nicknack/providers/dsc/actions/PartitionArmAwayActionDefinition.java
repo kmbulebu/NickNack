@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import rx.subjects.PublishSubject;
 
-import com.oakcity.dsc.it100.commands.write.PartitionArmAwayCommand;
-import com.oakcity.dsc.it100.commands.write.WriteCommand;
+import com.github.kmbulebu.dsc.it100.commands.write.PartitionArmAwayCommand;
+import com.github.kmbulebu.dsc.it100.commands.write.WriteCommand;
 import com.oakcity.nicknack.core.actions.Action;
 import com.oakcity.nicknack.core.actions.ActionFailureException;
 import com.oakcity.nicknack.core.actions.ActionParameterException;
