@@ -2,8 +2,10 @@
 <div class="panel panel-default" ng-repeat="plan in plans track by $index">
   <div class="panel-body">
    	{{plan.name}} 
-   	<span class="glyphicon glyphicon-trash pull-right" ng-click="deletePlan(plan.uuid)"></span>
-   	<span class="glyphicon glyphicon-pencil pull-right" ng-click=""></span>
+   	<div class="pull-right">
+   		<span class="glyphicon glyphicon-pencil" ng-click=""></span>'
+   		<span class="glyphicon glyphicon-trash" ng-click="deletePlan(plan.uuid)"></span>
+   	</div>
   </div>
 </div>  
 

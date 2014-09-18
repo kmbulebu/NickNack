@@ -1,8 +1,16 @@
-<h2><b>Events</b></h2>
 
-<div ng-repeat="event in events">
-	<h3>{{event.eventName}} @ {{event.created | date:'yyyy-MM-dd HH:mm:ss'}}</h3>
- 	<div ng-repeat="attribute in event.attributes">
- 		<label>{{attribute.name}}: </label>{{attribute.value}}
- 	</div>
+<div class="panel-body">
+	<div class="panel panel-default" ng-repeat="event in events">
+		<div class="panel-heading">{{event.eventName}} @ {{event.created
+			| date:'yyyy-MM-dd HH:mm:ss'}}</div>
+		<div class="panel-body">
+			<table class="table table-striped">
+				<tr ng-repeat="attribute in event.attributes">
+					<td>{{attribute.name}}</td>
+					<td>{{attribute.value}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
 </div>
