@@ -33,7 +33,7 @@ nicknackControllers.controller('NewPlanCtrl', ['$scope', 'WebsiteService',
 function ($scope, WebsiteService) {
 	$scope.actionParameterValues = {};
 	$scope.formData = {};
-	$scope.newPlanName = 'New Plan';
+	$scope.newPlanName = "";
 	$scope.formData.eventAttributeFilters = [
 	                 	                    { 
 	                 	                    	appliesToAttributeDefinition: '',

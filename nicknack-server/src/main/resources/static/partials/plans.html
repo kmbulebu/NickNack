@@ -1,8 +1,10 @@
-<h2><b>Plans</b></h2>
-  
-  <div ng-repeat="plan in plans track by $index">
-  	{{plan.name}} 
-  	<button ng-click="deletePlan(plan.uuid)">Delete</button>
+<h2 class="sub-header">Plans</h2>
+<div class="panel panel-default" ng-repeat="plan in plans track by $index">
+  <div class="panel-body">
+   	{{plan.name}} 
+   	<span class="glyphicon glyphicon-trash pull-right" ng-click="deletePlan(plan.uuid)"></span>
+   	<span class="glyphicon glyphicon-pencil pull-right" ng-click=""></span>
   </div>
-  
+</div>  
+
   

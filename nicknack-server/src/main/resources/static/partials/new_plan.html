@@ -1,39 +1,57 @@
-<h2><b>New Plan</b></h2>
-  <form name="newPlanForm" ng-submit="submit()">
-  	  <label>Name</label><input type="text" ng-model="newPlanName">
-  
-	  <h2>Event</h3>
-	  <select ng-model="eventType" ng-change="updateAttributeDefinitions()">
-	  	<option ng-repeat="eventDefinition in eventDefinitions track by $index" value="{{eventDefinition}}">{{eventDefinition.name}}</option>
-	  </select>
-	  
-	  <h3>Filters</h3>
-	  <div ng-repeat="eventAttributeFilter in formData.eventAttributeFilters">
-	  	<ng-form name="attributeFilterForm">
-		  	When 
-		  	<select ng-model="eventAttributeType" ng-change="onAttributeFilterTypeChange()">
-		  		<option ng-repeat="eventAttributeDefinition in eventAttributeDefinitions track by $index" value="{{eventAttributeDefinition}}">{{eventAttributeDefinition.name}}</option>
-		 	</select> is 
-		 	<select ng-model="eventAttributeFilter.operator">
-		  		<option ng-repeat="eventAttributeOperator in eventAttributeOperators track by $index" value="{{eventAttributeOperator}}">{{eventAttributeOperator}}</option>
-		  	</select>
-		 	<input type="text" ng-model="eventAttributeFilter.operand"></input>
-		  	<button ng-click="deleteEventAttributeFilter()">Delete</button>
-	  	</ng-form>
-	  </div>
-	  <button form="nada" ng-click="addEventAttributeFilter()">And...</button>
-	  
-	  <h2>Action</h3>
-	  <select ng-model="actionType" ng-change="onActionTypeChange()">
-	  	<option ng-repeat="actionDefinition in actionDefinitions track by $index" value="{{actionDefinition}}">{{actionDefinition.name}}</option>
-	  </select>
-	  
-	  <h3>Parameters</h3>
-	 	 <div ng-repeat="actionParameterDefinition in actionParameterDefinitions track by $index">
-	  		<ng-form name="actionParametersForm">
-	  			<label>{{actionParameterDefinition.name}}</label><input type="text" ng-model="actionParameterValues[$index]"/> 
-  			</ng-form>
-  		</div>
-  		
-  	<button type="submit">Save Plan</button>	
-  </form>
+<form name="newPlanForm" ng-submit="submit()">
+	<div class="form-group">
+		<label for="newPlanName">Description</label> <input type="text"
+			class="form-control" id="newPlanName" ng-model="newPlanName"
+			placeholder="Describe your plan...">
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>When</b> this event occurs:</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label for="eventType">Event</label> <select id="eventType"
+					ng-model="eventType" ng-change="updateAttributeDefinitions()">
+					<option
+						ng-repeat="eventDefinition in eventDefinitions track by $index"
+						value="{{eventDefinition}}">{{eventDefinition.name}}</option>
+				</select>
+			</div>
+			<div class="form-group form-inline" ng-repeat="eventAttributeFilter in formData.eventAttributeFilters">
+				<label for="eventAttributeType">Only If</label>
+				<select id="eventAttributeType"
+					ng-model="eventAttributeType"
+					ng-change="onAttributeFilterTypeChange()">
+					<option
+						ng-repeat="eventAttributeDefinition in eventAttributeDefinitions track by $index"
+						value="{{eventAttributeDefinition}}">{{eventAttributeDefinition.name}}</option>
+				</select>
+
+				<select ng-model="eventAttributeFilter.operator">
+					<option
+						ng-repeat="eventAttributeOperator in eventAttributeOperators track by $index"
+						value="{{eventAttributeOperator}}">{{eventAttributeOperator}}</option>
+				</select> <input type="text" ng-model="eventAttributeFilter.operand"></input>
+				<span class="glyphicon glyphicon-trash" ng-click="deleteEventAttributeFilter()"></span>
+			</div>
+			<span class="glyphicon glyphicon-plus" ng-click="addEventAttributeFilter()"></span>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>Do</b> this action:</div>
+		<div class="panel-body">
+			<div class="form-group">
+			<label for="actionType">Action</label>
+			<select id="actionType" ng-model="actionType" ng-change="onActionTypeChange()">
+				<option
+					ng-repeat="actionDefinition in actionDefinitions track by $index"
+					value="{{actionDefinition}}">{{actionDefinition.name}}</option>
+			</select>
+			</div>
+			<div class="form-group"
+				ng-repeat="actionParameterDefinition in actionParameterDefinitions track by $index">
+				<ng-form name="actionParametersForm"> <label>{{actionParameterDefinition.name}}</label>
+				<input type="text" ng-model="actionParameterValues[$index]" /> </ng-form>
+			</div>
+		</div>
+	</div>
+	<button type="submit" class="btn btn-primary">Save Plan</button>
+</form>
