@@ -1,11 +1,8 @@
 <form name="newPlanForm" ng-submit="submit()">
-	<div class="form-group">
-		<label for="newPlanName">Description</label> <input type="text"
-			class="form-control" id="newPlanName" ng-model="newPlanName"
-			placeholder="Describe your plan...">
-	</div>
 	<div class="panel panel-default">
-		<div class="panel-heading"><b>When</b> this event occurs:</div>
+		<div class="panel-heading">
+			<b>When</b> this event occurs:
+		</div>
 		<div class="panel-body">
 			<div class="form-group">
 				<label for="eventType">Event</label> <select id="eventType"
@@ -15,41 +12,52 @@
 						value="{{eventDefinition}}">{{eventDefinition.name}}</option>
 				</select>
 			</div>
-			<div class="form-group form-inline" ng-repeat="eventAttributeFilter in formData.eventAttributeFilters">
-				<label for="eventAttributeType">Only If</label>
-				<select id="eventAttributeType"
-					ng-model="eventAttributeType"
+			<div class="form-group form-inline"
+				ng-repeat="eventAttributeFilter in formData.eventAttributeFilters">
+				<label for="eventAttributeType">Only If</label> <select
+					id="eventAttributeType" ng-model="eventAttributeType"
 					ng-change="onAttributeFilterTypeChange()">
 					<option
 						ng-repeat="eventAttributeDefinition in eventAttributeDefinitions track by $index"
 						value="{{eventAttributeDefinition}}">{{eventAttributeDefinition.name}}</option>
-				</select>
-
-				<select ng-model="eventAttributeFilter.operator">
+				</select> <select ng-model="eventAttributeFilter.operator">
 					<option
 						ng-repeat="eventAttributeOperator in eventAttributeOperators track by $index"
 						value="{{eventAttributeOperator}}">{{eventAttributeOperator}}</option>
 				</select> <input type="text" ng-model="eventAttributeFilter.operand"></input>
-				<span class="glyphicon glyphicon-trash" ng-click="deleteEventAttributeFilter()"></span>
+				<span class="glyphicon glyphicon-trash"
+					ng-click="deleteEventAttributeFilter()"></span>
 			</div>
-			<span class="glyphicon glyphicon-plus" ng-click="addEventAttributeFilter()"></span>
+			<span class="glyphicon glyphicon-plus"
+				ng-click="addEventAttributeFilter()"></span>
 		</div>
 	</div>
 	<div class="panel panel-default">
-		<div class="panel-heading"><b>Do</b> this action:</div>
+		<div class="panel-heading">
+			<b>Do</b> this action:
+		</div>
 		<div class="panel-body">
 			<div class="form-group">
-			<label for="actionType">Action</label>
-			<select id="actionType" ng-model="actionType" ng-change="onActionTypeChange()">
-				<option
-					ng-repeat="actionDefinition in actionDefinitions track by $index"
-					value="{{actionDefinition}}">{{actionDefinition.name}}</option>
-			</select>
+				<label for="actionType">Action</label> <select id="actionType"
+					ng-model="actionType" ng-change="onActionTypeChange()">
+					<option
+						ng-repeat="actionDefinition in actionDefinitions track by $index"
+						value="{{actionDefinition}}">{{actionDefinition.name}}</option>
+				</select>
 			</div>
 			<div class="form-group"
 				ng-repeat="actionParameterDefinition in actionParameterDefinitions track by $index">
 				<ng-form name="actionParametersForm"> <label>{{actionParameterDefinition.name}}</label>
 				<input type="text" ng-model="actionParameterValues[$index]" /> </ng-form>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="form-group">
+				<label for="newPlanName">Description</label> <input type="text"
+					class="form-control" id="newPlanName" ng-model="newPlanName"
+					placeholder="Describe your plan...">
 			</div>
 		</div>
 	</div>
