@@ -1,18 +1,23 @@
-<h2><b>Run an Action</b></h2>
-
   <form name="newPlanForm" ng-submit="submit()">
- 
-	  <h2>Action</h3>
-	  <select ng-model="actionType" ng-change="onActionTypeChange()">
-	  	<option ng-repeat="actionDefinition in actionDefinitions track by $index" value="{{actionDefinition}}">{{actionDefinition.name}}</option>
-	  </select>
-	  
-	  <h3>Parameters</h3>
-	 	 <div ng-repeat="actionParameterDefinition in actionParameterDefinitions track by $index">
-	  		<ng-form name="actionParametersForm">
-	  			<label>{{actionParameterDefinition.name}}</label><input type="text" ng-model="actionParameterValues[$index]"/> 
-  			</ng-form>
-  		</div>
-  		
-  	<button type="submit">Do it!</button>	
+ <div class="panel panel-default">
+		<div class="panel-heading">
+			<b>Do</b> this action:
+		</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label for="actionType">Action</label> <select id="actionType"
+					ng-model="actionType" ng-change="onActionTypeChange()">
+					<option
+						ng-repeat="actionDefinition in actionDefinitions track by $index"
+						value="{{actionDefinition}}">{{actionDefinition.name}}</option>
+				</select>
+			</div>
+			<div class="form-group"
+				ng-repeat="actionParameterDefinition in actionParameterDefinitions track by $index">
+				<ng-form name="actionParametersForm"> <label>{{actionParameterDefinition.name}}</label>
+				<input type="text" ng-model="actionParameterValues[$index]" /> </ng-form>
+			</div>
+		</div>
+	</div>  		
+	<button type="submit" class="btn btn-primary">Run</button>
   </form>
