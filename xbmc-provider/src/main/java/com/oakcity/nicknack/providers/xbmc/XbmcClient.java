@@ -77,7 +77,9 @@ public class XbmcClient {
 			}
 			return;
 		}
-		System.out.println(msg);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Received message from " + websocketUri + ". Message: " + msg);
+		}
 		JsonRpc message;
 		try {
 			message = mapper.readValue(msg, JsonRpc.class);
