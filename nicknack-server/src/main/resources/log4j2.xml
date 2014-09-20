@@ -26,10 +26,10 @@
 	</appenders>
 	<loggers>
 		<!-- Error log -->
-		<root level="warn">
+		<root level="info">
 			<appender-ref ref="Console" />
 		</root>
-		<logger name="nicknack-server" level="debug" additivity="false">
+		<logger name="nicknack-server" level="trace" additivity="true">
 		    <appender-ref ref="nicknackLogFile-async" />
 		</logger>
 	</loggers>

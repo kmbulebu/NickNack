@@ -2,6 +2,9 @@ package com.oakcity.nicknack.providers.xbmc;
 
 import java.net.URI;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.oakcity.nicknack.core.events.Event;
 import com.oakcity.nicknack.core.events.EventDefinition;
@@ -16,23 +19,38 @@ import com.oakcity.nicknack.providers.xbmc.json.JsonRpc;
 
 public class XbmcMessageMapper {
 	
+	private static final Logger logger = LogManager.getLogger(XbmcProvider.LOGGER_NAME);
+	
 	public Event map(URI uri, JsonRpc message) {
+		if (logger.isTraceEnabled()) {
+			logger.entry(uri, message);
+		}
+		Event event = null;
 		if (message != null && message.getMethod() != null) {
 			switch (message.getMethod()) {
 				case "Player.OnPlay":
-					return mapToPlayerEvent(uri, message, PlayEventDefinition.INSTANCE);
+					event = mapToPlayerEvent(uri, message, PlayEventDefinition.INSTANCE);
 				case "Player.OnStop":
-					return mapToPlayerEvent(uri, message, StopEventDefinition.INSTANCE);
+					event = mapToPlayerEvent(uri, message, StopEventDefinition.INSTANCE);
 				case "Player.OnPause":
-					return mapToPlayerEvent(uri, message, PauseEventDefinition.INSTANCE);
+					event = mapToPlayerEvent(uri, message, PauseEventDefinition.INSTANCE);
 			}
 		}
-		return null;
+		if (logger.isTraceEnabled()) {
+			logger.exit(event);
+		}
+		return event;
 	}
 	
 	protected Event mapToPlayerEvent(URI uri, JsonRpc message, final EventDefinition eventDefinition) {
+		if (logger.isTraceEnabled()) {
+			logger.entry(uri, message, eventDefinition);
+		}
 		if (uri == null) {
-			System.out.println("URI null");
+			logger.error("URI is null");
+			if (logger.isTraceEnabled()) {
+				logger.exit(null);
+			}
 			return null;
 		}
 		
@@ -44,20 +62,28 @@ public class XbmcMessageMapper {
 		
 		// Verify params is not null.
 		if (message.getParams() == null) {
-			System.out.println("Params null");
+			logger.error("Params is null");
+			if (logger.isTraceEnabled()) {
+				logger.exit(null);
+			}
 			return null;
 		}
 		
 		final JsonNode data = message.getParams().get("data");
 		if (data == null) {
-			System.out.println("Data null");
+			logger.error("Data is null");
+			if (logger.isTraceEnabled()) {
+				logger.exit(null);
+			}
 			return null;
 		}
 		
 		final JsonNode item = data.get("item");
 		if (item == null) {
-			System.out.println("Item null");
-			return null;
+			logger.error("Item is null");
+			if (logger.isTraceEnabled()) {
+				logger.exit(null);
+			}
 		}
 		
 		final JsonNode titleNode = item.get("title");
@@ -67,11 +93,16 @@ public class XbmcMessageMapper {
 		
 		final JsonNode typeNode = item.get("type");
 		if (typeNode == null) {
-			System.out.println("Type null");
-			return null;
+			logger.error("Type is null");
+			if (logger.isTraceEnabled()) {
+				logger.exit(null);
+			}
 		}
 		event.setAttribute(PlayerItemTypeAttributeDefinition.INSTANCE, typeNode.asText());
 		
+		if (logger.isTraceEnabled()) {
+			logger.exit(event);
+		}
 		return event;
 	}
 

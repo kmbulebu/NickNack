@@ -2,11 +2,14 @@ package com.oakcity.nicknack.providers.xbmc;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -23,6 +26,8 @@ import com.oakcity.nicknack.providers.xbmc.json.JsonRpc;
 
 @WebSocket
 public class XbmcClient {
+	
+	private static final Logger logger = LogManager.getLogger(XbmcProvider.LOGGER_NAME);
 
 	// Used for sending messages.
 	private Session session;
@@ -33,23 +38,43 @@ public class XbmcClient {
 	private boolean stopRequested = false;
 	
 	private OnMessageReceivedListener listener;
+	
+	private static final long RETRY_SLOT_INTERVAL = 1000;
 
 	@OnWebSocketClose
 	public void onClose(int statusCode, String reason) throws Exception {
+		if (logger.isTraceEnabled()) {
+			logger.entry(statusCode, reason);
+		}
 		this.session = null;
 		if (!stopRequested && websocketUri != null) {
 			connect(websocketUri);
+		}
+		if (logger.isTraceEnabled()) {
+			logger.exit();
 		}
 	}
 
 	@OnWebSocketConnect
 	public void onConnect(Session session) {
+		if (logger.isTraceEnabled()) {
+			logger.entry(session);
+		}
 		this.session = session;
+		if (logger.isTraceEnabled()) {
+			logger.exit();
+		}
 	}
 	
 	@OnWebSocketMessage
     public void onMessage(String msg) throws IOException {
+		if (logger.isTraceEnabled()) {
+			logger.entry(msg);
+		}
 		if (msg == null || msg.isEmpty()) {
+			if (logger.isTraceEnabled()) {
+				logger.exit();
+			}
 			return;
 		}
 		System.out.println(msg);
@@ -57,9 +82,10 @@ public class XbmcClient {
 		try {
 			message = mapper.readValue(msg, JsonRpc.class);
 		} catch (JsonParseException | JsonMappingException e) {
-			System.out.println(msg);
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Could not parse XBMC message. " + e.getMessage(), e);
+			if (logger.isTraceEnabled()) {
+				logger.exit();
+			}
 			return;
 		}
 		if (listener != null) {
@@ -75,25 +101,87 @@ public class XbmcClient {
 				
 			}.start();
 		}
+		if (logger.isTraceEnabled()) {
+			logger.exit();
+		}
     }
 	
-	private void connect(URI uri) throws Exception {
+	private synchronized void connect(final URI uri) throws Exception {
+		if (logger.isTraceEnabled()) {
+			logger.entry(uri);
+		}
 		stopRequested = false;
 		websocketUri = uri;
 		client.start();
-	    ClientUpgradeRequest request = new ClientUpgradeRequest();
-	    client.connect(this, uri, request);
+	    
+	    
+	    new Thread() {
+
+			@Override
+			public void run() {
+				final ClientUpgradeRequest request = new ClientUpgradeRequest();
+				IOException lastException = null;
+			    int retries = 1;
+			    Random random = new Random();
+			    do {
+			    	logger.info("Connecting to " + uri);
+				    try {
+				    	client.connect(this, uri, request);
+				    	logger.info("Connected to " + uri);
+				    	lastException = null;
+				    } catch (IOException e) {
+				    	logger.error("Could not connect to " + uri + ". " + e.getMessage(), e);
+				    	lastException = e;
+				    	int slotsToSleep = random.nextInt((2 << retries) - 1);
+				    	try {
+				    		final long sleep = slotsToSleep * RETRY_SLOT_INTERVAL;
+				    		if (logger.isDebugEnabled()) {
+				    			logger.debug("Waiting " + sleep + " ms to try connecting again.");
+				    		}
+				    		Thread.sleep(sleep);
+				    	} catch (InterruptedException e2) {
+				    		logger.error("Connection retry interrupted. Stopping.");
+				    		// Interrupted
+				    		stopRequested = true;
+				    	}
+				    	if (retries > 10) {
+				    		retries = 1;
+				    	} else {
+				    		retries++;
+				    	}
+				    }
+			    } while (!stopRequested && lastException != null);
+			}
+	    	
+	    }.start();
+	    if (logger.isTraceEnabled()) {
+			logger.exit();
+		}
 	}
 	
-	public void connect(String hostname, int port) throws Exception {
+	public synchronized void connect(String hostname, int port) throws Exception {
+		if (logger.isTraceEnabled()) {
+			logger.entry(hostname, port);
+		}
 		final String uriString = "ws://" + hostname + ":" + port + "/jsonrpc";
 		final URI uri = new URI(uriString);
         connect(uri);
+        if (logger.isTraceEnabled()) {
+			logger.exit();
+		}
 	}
 	
-	public void disconnect() throws Exception {
+	public synchronized void disconnect() throws Exception {
+		if (logger.isTraceEnabled()) {
+			logger.entry();
+		}
 		stopRequested = true;
-		client.stop();
+		if (client.isRunning()) {
+			client.stop();
+		}
+		if (logger.isTraceEnabled()) {
+			logger.exit();
+		}
 	}
 	
 	 public OnMessageReceivedListener getListener() {
@@ -105,16 +193,27 @@ public class XbmcClient {
 	}
 	 
 	public Future<Void> sendMessage(String message) {
-		return session.getRemote().sendStringByFuture(message);
+		if (logger.isTraceEnabled()) {
+			logger.entry(message);
+		}
+		final Future<Void> result = session.getRemote().sendStringByFuture(message);
+		if (logger.isTraceEnabled()) {
+			logger.exit(result);
+		}
+		return result;
 	}
 	
 	public Future<Void> sendMessage(JsonRpc jsonRpc) throws JsonProcessingException {
+		if (logger.isTraceEnabled()) {
+			logger.entry(jsonRpc);
+		}
+		Future<Void> result;
 		if (session != null) {
 			final ObjectMapper mapper = new ObjectMapper();
 			String message = mapper.writeValueAsString(jsonRpc);
-			return session.getRemote().sendStringByFuture(message);
+			result = session.getRemote().sendStringByFuture(message);
 		} else {
-			return new Future<Void>() {
+			result = new Future<Void>() {
 
 				@Override
 				public boolean cancel(boolean mayInterruptIfRunning) {
@@ -144,6 +243,10 @@ public class XbmcClient {
 				
 			};
 		}
+		if (logger.isTraceEnabled()) {
+			logger.exit(result);
+		}
+		return result;
 	}
 	
 	

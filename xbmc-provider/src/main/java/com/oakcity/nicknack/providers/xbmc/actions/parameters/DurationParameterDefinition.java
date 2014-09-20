@@ -4,10 +4,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.oakcity.nicknack.core.actions.parameters.BasicParameterDefinition;
 import com.oakcity.nicknack.core.units.IntegerUnit;
+import com.oakcity.nicknack.providers.xbmc.XbmcProvider;
 
 public class DurationParameterDefinition extends BasicParameterDefinition<IntegerUnit> {
+	
+	private static final Logger logger = LogManager.getLogger(XbmcProvider.LOGGER_NAME);
 	
 	public static final UUID DEF_UUID = UUID.fromString("f9ffe599-6208-41f7-a6fa-124ec4c19576");
 	
@@ -26,6 +32,9 @@ public class DurationParameterDefinition extends BasicParameterDefinition<Intege
 
 	@Override
 	public Collection<String> validate(String value) {
+		if (logger.isTraceEnabled()) {
+			logger.entry(value);
+		}
 		if (!value.matches("\\d+")) {
 			return Collections.singletonList(VALIDATE_ERROR);
 		}
