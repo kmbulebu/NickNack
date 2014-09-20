@@ -114,46 +114,41 @@ public class XbmcClient {
 		websocketUri = uri;
 		client.start();
 	    
+		final ClientUpgradeRequest request = new ClientUpgradeRequest();
+		IOException lastException = null;
+	    int retries = 1;
+	    Random random = new Random();
+	    // TODO See how jetty websockets handles the threading. We may need to do this in a separate thread.
+	    do {
+	    	logger.info("Connecting to " + uri);
+		    try {
+		    	client.connect(this, uri, request);
+		    	logger.info("Connected to " + uri);
+		    	lastException = null;
+		    } catch (IOException e) {
+		    	logger.error("Could not connect to " + uri + ". " + e.getMessage(), e);
+		    	lastException = e;
+		    	int slotsToSleep = random.nextInt((2 << retries) - 1);
+		    	try {
+		    		final long sleep = slotsToSleep * RETRY_SLOT_INTERVAL;
+		    		if (logger.isDebugEnabled()) {
+		    			logger.debug("Waiting " + sleep + " ms to try connecting again.");
+		    		}
+		    		Thread.sleep(sleep);
+		    	} catch (InterruptedException e2) {
+		    		logger.error("Connection retry interrupted. Stopping.");
+		    		// Interrupted
+		    		stopRequested = true;
+		    	}
+		    	if (retries > 10) {
+		    		retries = 1;
+		    	} else {
+		    		retries++;
+		    	}
+		    }
+	    } while (!stopRequested && lastException != null);
 	    
-	    new Thread() {
 
-			@Override
-			public void run() {
-				final ClientUpgradeRequest request = new ClientUpgradeRequest();
-				IOException lastException = null;
-			    int retries = 1;
-			    Random random = new Random();
-			    do {
-			    	logger.info("Connecting to " + uri);
-				    try {
-				    	client.connect(this, uri, request);
-				    	logger.info("Connected to " + uri);
-				    	lastException = null;
-				    } catch (IOException e) {
-				    	logger.error("Could not connect to " + uri + ". " + e.getMessage(), e);
-				    	lastException = e;
-				    	int slotsToSleep = random.nextInt((2 << retries) - 1);
-				    	try {
-				    		final long sleep = slotsToSleep * RETRY_SLOT_INTERVAL;
-				    		if (logger.isDebugEnabled()) {
-				    			logger.debug("Waiting " + sleep + " ms to try connecting again.");
-				    		}
-				    		Thread.sleep(sleep);
-				    	} catch (InterruptedException e2) {
-				    		logger.error("Connection retry interrupted. Stopping.");
-				    		// Interrupted
-				    		stopRequested = true;
-				    	}
-				    	if (retries > 10) {
-				    		retries = 1;
-				    	} else {
-				    		retries++;
-				    	}
-				    }
-			    } while (!stopRequested && lastException != null);
-			}
-	    	
-	    }.start();
 	    if (logger.isTraceEnabled()) {
 			logger.exit();
 		}

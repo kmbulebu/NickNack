@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="warn">
 	<Properties>
-		<Property name="consoleLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level
-			%logger %msg %location [%mdc] %throwable%n</Property>
-		<Property name="fileLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level
-			%logger %msg %location [%mdc] %throwable%n</Property>
+		<Property name="consoleLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level %logger %msg %location [%mdc] %throwable%n</Property>
+		<Property name="fileLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level %logger %msg %location [%mdc] %throwable%n</Property>
 		<Property name="nicknackLogDir">./logs</Property>
 	</Properties>
 	<appenders>
@@ -12,25 +10,22 @@
 			<PatternLayout pattern="${consoleLogPattern}" />
 		</Console>
 		<RollingRandomAccessFile name="nicknackLogFile"
-			fileName="${sys:nicknackLogDir}/nicknack.log" filePattern="nicknack-%i.log.gz">
+			fileName="${sys:nicknackLogDir}/nicknack.log" filePattern="${sys:nicknackLogDir}/nicknack-%i.log.gz">
 			<PatternLayout>
 				<Pattern>${fileLogPattern}</Pattern>
 			</PatternLayout>
 			<Policies>
-				<SizeBasedTriggeringPolicy size="5 MB" />
+				<SizeBasedTriggeringPolicy size="20 MB" />
 			</Policies>
 		</RollingRandomAccessFile>
-		<Async name="nicknackLogFile-async">
+		<Async name="nicknackLogFile-async" includeLocation="true">
 			<AppenderRef ref="nicknackLogFile" />
 		</Async>
 	</appenders>
 	<loggers>
 		<!-- Error log -->
-		<root level="info">
-			<appender-ref ref="Console" />
+		<root level="trace">
+			<appender-ref ref="nicknackLogFile-async" />
 		</root>
-		<logger name="nicknack-server" level="trace" additivity="true">
-		    <appender-ref ref="nicknackLogFile-async" />
-		</logger>
 	</loggers>
 </configuration>
