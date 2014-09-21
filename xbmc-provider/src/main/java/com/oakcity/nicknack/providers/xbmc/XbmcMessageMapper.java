@@ -30,10 +30,13 @@ public class XbmcMessageMapper {
 			switch (message.getMethod()) {
 				case "Player.OnPlay":
 					event = mapToPlayerEvent(uri, message, PlayEventDefinition.INSTANCE);
+					break;
 				case "Player.OnStop":
 					event = mapToPlayerEvent(uri, message, StopEventDefinition.INSTANCE);
+					break;
 				case "Player.OnPause":
 					event = mapToPlayerEvent(uri, message, PauseEventDefinition.INSTANCE);
+					break;
 			}
 		}
 		if (logger.isTraceEnabled()) {
