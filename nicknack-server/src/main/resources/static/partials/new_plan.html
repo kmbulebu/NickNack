@@ -5,31 +5,25 @@
 		</div>
 		<div class="panel-body">
 			<div class="form-group">
-				<label for="eventType">Event</label> <select id="eventType"
-					ng-model="eventType" ng-change="updateAttributeDefinitions()">
-					<option
-						ng-repeat="eventDefinition in eventDefinitions track by $index"
-						value="{{eventDefinition}}">{{eventDefinition.name}}</option>
+				<label for="eventType" class="control-label">Event</label> <select id="eventType" class="form-control"
+					ng-model="eventType" ng-change="updateAttributeDefinitions()" ng-options="eventDefinition.name for eventDefinition in eventDefinitions">
 				</select>
 			</div>
-			<div class="form-group form-inline"
-				ng-repeat="eventAttributeFilter in formData.eventAttributeFilters">
-				<label for="eventAttributeType">Only If</label> <select
-					id="eventAttributeType" ng-model="eventAttributeType"
-					ng-change="onAttributeFilterTypeChange()">
-					<option
-						ng-repeat="eventAttributeDefinition in eventAttributeDefinitions track by $index"
-						value="{{eventAttributeDefinition}}">{{eventAttributeDefinition.name}}</option>
-				</select> <select ng-model="eventAttributeFilter.operator">
-					<option
-						ng-repeat="eventAttributeOperator in eventAttributeOperators track by $index"
-						value="{{eventAttributeOperator}}">{{eventAttributeOperator}}</option>
-				</select> <input type="text" ng-model="eventAttributeFilter.operand"></input>
-				<span class="glyphicon glyphicon-trash"
-					ng-click="deleteEventAttributeFilter()"></span>
+				<div class="panel panel-default form-group form-inline" ng-repeat="eventAttributeFilter in formData.eventAttributeFilters">
+					<div class="panel-heading">
+						If
+					</div>
+					<div class="panel-body">
+				 <select
+					id="eventAttributeType" class="form-control" ng-model="eventAttributeType"
+					ng-change="onAttributeFilterTypeChange()" ng-options="eventAttributeDefinition.name for eventAttributeDefinition in eventAttributeDefinitions">
+					</select> <select class="form-control" ng-model="eventAttributeFilter.operator" ng-options="eventAttributeOperator for eventAttributeOperator in eventAttributeOperators">
+				</select> <input type="text" class="form-control" ng-model="eventAttributeFilter.operand"></input>
+				<button class="btn" ng-click="deleteEventAttributeFilter()"><span class="glyphicon glyphicon-trash"></span></button>
+				</div>
 			</div>
-			<span class="glyphicon glyphicon-plus"
-				ng-click="addEventAttributeFilter()"></span>
+			<button class="btn" ng-click="addEventAttributeFilter()"><span class="glyphicon glyphicon-plus"></span></button>
+			
 		</div>
 	</div>
 	<div class="panel panel-default">
@@ -38,24 +32,21 @@
 		</div>
 		<div class="panel-body">
 			<div class="form-group">
-				<label for="actionType">Action</label> <select id="actionType"
-					ng-model="actionType" ng-change="onActionTypeChange()">
-					<option
-						ng-repeat="actionDefinition in actionDefinitions track by $index"
-						value="{{actionDefinition}}">{{actionDefinition.name}}</option>
+				<label for="actionType" class="control-label">Action</label> <select id="actionType" class="form-control"
+					ng-model="actionType" ng-change="onActionTypeChange()" ng-options="actionDefinition.name for actionDefinition in actionDefinitions">
 				</select>
 			</div>
 			<div class="form-group"
 				ng-repeat="actionParameterDefinition in actionParameterDefinitions track by $index">
 				<ng-form name="actionParametersForm"> <label>{{actionParameterDefinition.name}}</label>
-				<input type="text" ng-model="actionParameterValues[$index]" /> </ng-form>
+				<input type="text" class="form-control" ng-model="actionParameterValues[$index]" /> </ng-form>
 			</div>
 		</div>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="form-group">
-				<label for="newPlanName">Description</label> <input type="text"
+				<label for="newPlanName" class="control-label">Description</label> <input type="text"
 					class="form-control" id="newPlanName" ng-model="newPlanName"
 					placeholder="Describe your plan...">
 			</div>
