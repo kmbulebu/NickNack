@@ -3,8 +3,8 @@
   <div class="panel-body">
    	{{plan.name}} 
    	<div class="pull-right">
-   		<button class="btn" ng-click=""><span class="glyphicon glyphicon-pencil"></span></button>
-   		<button class="btn" ng-click="deletePlan(plan.uuid)"><span class="glyphicon glyphicon-trash"></span></button>
+   		<a class="btn" href="#/newPlan/{{plan.uuid}}"><span class="glyphicon glyphicon-pencil"></span></a>
+   		<a class="btn" ng-click="deletePlan(plan.uuid)"><span class="glyphicon glyphicon-trash"></span></a>
    	</div>
   </div>
 </div>  

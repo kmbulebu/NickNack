@@ -1,21 +1,14 @@
-var nicknackControllers = angular.module('nicknackControllers', []);
+var nicknackControllers = angular.module('nicknackControllers', ['staticDataService']);
 
-nicknackControllers.controller('PlansCtrl', ['$scope', 'WebsiteService', 
-                                       function ($scope, WebsiteService) {
+nicknackControllers.controller('PlansCtrl', ['$scope', 'WebsiteService', 'StaticDataService', 
+                                       function ($scope, WebsiteService, StaticDataService) {
 	
 	$scope.plans = {};
 	
 	$scope.refresh = function() {
-		WebsiteService
-	    .loadPlans()
-	    .then( function( websiteResource ) {
-	    	if (websiteResource.$has('Plans')) 
-	    		return websiteResource.$get('Plans');
-	    })
-	    .then( function( plansList )
-	    {
-	    	$scope.plans = plansList;
-	    });
+		StaticDataService.plans().then(function (plans) {
+			$scope.plans = plans;
+		});
 	};
 	
 	$scope.refresh();
@@ -29,51 +22,68 @@ nicknackControllers.controller('PlansCtrl', ['$scope', 'WebsiteService',
 	
 }]);	
 
-nicknackControllers.controller('NewPlanCtrl', ['$scope', 'WebsiteService', 
-function ($scope, WebsiteService) {
-	$scope.actionParameterValues = {};
-	$scope.formData = {};
-	$scope.newPlanName = "";
-	$scope.formData.eventAttributeFilters = [
-	                 	                    { 
-	                 	                    	appliesToAttributeDefinition: '',
-	                 	                    	operator: '',
-	                 	                    	operand:''
-	                	                      }
-	                	                  ];
+nicknackControllers.controller('NewPlanCtrl', ['$scope', '$rootScope', '$routeParams', 'WebsiteService', 'StaticDataService',
+function ($scope, $rootScope, $routeParams, WebsiteService, StaticDataService) {
+	$scope.planUuid = $routeParams.planUuid;
+	if ($scope.planUuid !== undefined) {
+		// Look up plan.
+		StaticDataService.plan($scope.planUuid)
+        .then( function( planResource )
+        {
+        	if (planResource) {
+        		$scope.planUuid = planResource.uuid;
+        		$scope.newPlanName = planResource.name;
+        		planResource.$get('eventFilters').then(function (eventFilters){
+        			eventFilters.$get('EventFilters').then( function(eventFilters) {
+        				var eventDefinitionUuid = eventFilters[0].appliesToEventDefinition;
+        				// find it.
+        				StaticDataService.eventDefinition(eventDefinitionUuid).then(function (eventDef) {
+        					$scope.eventType = eventDef;
+        				});
+        			});
+        		});
+        		planResource.$get('actions').then(function (actions){
+        			actions.$get('Actions').then( function(actions) {
+        				var actionDefUuid = actions[0].appliesToActionDefinition;
+        				// find it.
+        				StaticDataService.actionDefinition(actionDefUuid).then(function (actionDef) {
+        					$scope.actionType = actionDef;
+        				});
+        			});
+        		});
+        	} else {
+        		$scope.planUuid = undefined;
+        	}
+        })
+        ;
+	}
 	
-	WebsiteService
-            .loadEventDefinitions()
-            .then( function( websiteResource ) {
-                return websiteResource.$get('EventDefinitions');
-            })
-            .then( function( eventDefinitionList )
-            {
-            	$scope.eventDefinitions = eventDefinitionList;
-            })
-            ;
-	WebsiteService
-	    .loadActionDefinitions()
-	    .then( function( websiteResource ) {
-	        return websiteResource.$get('ActionDefinitions');
-	    })
-	    .then( function( actionDefinitionList )
-	    {
-	    	$scope.actionDefinitions = actionDefinitionList;
-	    })
-	    ;
+	if ($scope.planUuid == undefined) {
+		// Start empty for new plan.
+		$scope.actionParameterValues = {};
+		$scope.formData = {};
+		$scope.newPlanName = "";
+		$scope.formData.eventAttributeFilters = [
+	        { 
+	        	appliesToAttributeDefinition: '',
+	        	operator: '',
+	        	operand:''
+	        }];
+	} 
+	
+	StaticDataService.eventDefinitions().then(function (eventDefinitions) {
+		$scope.eventDefinitions = eventDefinitions;
+	});
+	
+	StaticDataService.actionDefinitions().then(function (actionDefinitions) {
+		$scope.actionDefinitions = actionDefinitions;
+	});
+	
 	$scope.updateAttributeDefinitions = function() {
 		var json = angular.fromJson($scope.eventType);
-		WebsiteService
-        .loadAttributeDefinitions(json.uuid)
-        .then( function(websiteResource) {
-                return websiteResource.$get('AttributeDefinitions');
-            })
-        .then(function( attributeDefinitionList )
-        {
-        	$scope.eventAttributeDefinitions = attributeDefinitionList;
-         })
-        ;
+		StaticDataService.attributeDefinitions(json.uuid).then(function (attributeDefinitions) {
+			$scope.eventAttributeDefinitions = attributeDefinitions;
+		});
 	};
 	
 	$scope.onAttributeFilterTypeChange = function() {
@@ -94,16 +104,9 @@ function ($scope, WebsiteService) {
 	
 	$scope.onActionTypeChange = function() {
 		var json = angular.fromJson($scope.actionType);
-		WebsiteService
-        .loadParameterDefinitions(json.uuid)
-        .then( function(websiteResource) {
-                return websiteResource.$get('ParameterDefinitions');
-            })
-        .then(function( parameterDefinitionList )
-        {
-        	$scope.actionParameterDefinitions = parameterDefinitionList;
-         })
-        ;
+		StaticDataService.parameterDefinitions(json.uuid).then(function (parameterDefinitions) {
+			$scope.actionParameterDefinitions = parameterDefinitions;
+		});
 	};
 	
 	$scope.deleteEventAttributeFilter = function() {
@@ -157,34 +160,20 @@ function ($scope, WebsiteService) {
 }]);
 
 
-nicknackControllers.controller('RunActionCtrl', ['$scope', 'WebsiteService', 
-   function ($scope, WebsiteService) {
-   	$scope.actionParameterValues = {};
-   	$scope.formData = {};
+nicknackControllers.controller('RunActionCtrl', ['$scope', 'StaticDataService', 
+     function ($scope, StaticDataService) {
+     	$scope.actionParameterValues = {};
+     	$scope.formData = {};
+     
+     	StaticDataService.actionDefinitions().then(function (actionDefinitions) {
+     		$scope.actionDefinitions = actionDefinitions;
+     	});
    
-   	WebsiteService
-   	    .loadActionDefinitions()
-   	    .then( function( websiteResource ) {
-   	        return websiteResource.$get('ActionDefinitions');
-   	    })
-   	    .then( function( actionDefinitionList )
-   	    {
-   	    	$scope.actionDefinitions = actionDefinitionList;
-   	    })
-   	    ;
-   	
    	$scope.onActionTypeChange = function() {
    		var json = angular.fromJson($scope.actionType);
-   		WebsiteService
-           .loadParameterDefinitions(json.uuid)
-           .then( function(websiteResource) {
-                   return websiteResource.$get('ParameterDefinitions');
-               })
-           .then(function( parameterDefinitionList )
-           {
-           	$scope.actionParameterDefinitions = parameterDefinitionList;
-            })
-           ;
+   		StaticDataService.parameterDefinitions(json.uuid).then(function (parameterDefinitions) {
+			$scope.actionParameterDefinitions = parameterDefinitions;
+		});
    	};
    	
    	$scope.submit = function() {
