@@ -247,8 +247,8 @@ function ($scope, $rootScope, $routeParams, WebsiteService, StaticDataService) {
 }]);
 
 
-nicknackControllers.controller('RunActionCtrl', ['$scope', 'StaticDataService', 
-     function ($scope, StaticDataService) {
+nicknackControllers.controller('RunActionCtrl', ['$scope', 'StaticDataService', 'WebsiteService', 
+     function ($scope, StaticDataService, WebsiteService) {
      	$scope.actionParameterValues = {};
      	$scope.formData = {};
      
