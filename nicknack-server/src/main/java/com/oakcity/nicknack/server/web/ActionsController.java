@@ -78,6 +78,27 @@ public class ActionsController {
 		return resource;
 	}
 	
+	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(HttpStatus.OK)
+	public ActionResource createAction(@PathVariable UUID planUuid, @PathVariable UUID uuid, @RequestBody ActionResource modifiedAction) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(modifiedAction);
+		}
+		
+		if (!uuid.equals(modifiedAction.getUuid())) {
+			throw new IllegalArgumentException("Action uuid did not match path.");
+		}
+		
+		final ActionResource resource = actionsService.modifyAction(modifiedAction);
+		
+		addLinks(planUuid, resource);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resource);
+		}
+		return resource;
+	}
+	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
 	public ActionResource getAction(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {

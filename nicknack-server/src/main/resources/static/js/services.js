@@ -6,9 +6,29 @@ angular.module('newplanService', ['angular-hal']).factory('WebsiteService', [ 'h
                 return halClient.$del('api/plans/' + uuid);
             },
          'createPlanResource' :
-                    function(plan) {
-                        return halClient.$post('api/plans/', null, plan);
-                    },
+            function(plan) {
+                return halClient.$post('api/plans/', null, plan);
+            },
+        'updatePlanResource' :
+            function(plan) {
+                return halClient.$put('api/plans/' + plan.uuid, null, plan);
+            },
+        'updateEventFilter' :
+            function(planUuid, eventFilter) {
+                return halClient.$put('api/plans/' + planUuid + "/eventFilters/" + eventFilter.uuid , null, eventFilter);
+            },
+        'updateAttributeFilter' :
+            function(planUuid, eventFilterUuid, attributeFilter) {
+                return halClient.$put('api/plans/' + planUuid + "/eventFilters/" + eventFilterUuid + "/attributeFilters/" + attributeFilter.uuid, null, attributeFilter);
+            },
+        'deleteAttributeFilter' :
+            function(planUuid, eventFilterUuid, attributeFilterUuid) {
+                return halClient.$del('api/plans/' + planUuid + "/eventFilters/" + eventFilterUuid + "/attributeFilters/" + attributeFilterUuid, null);
+            },
+        'updateAction' :
+            function(planUuid, action) {
+                return halClient.$put('api/plans/' + planUuid + "/actions/" + action.uuid , null, action);
+            },
         'runActionNow' :
             function(action) {
                 return halClient.$post('api/instantactions/', null, action);

@@ -78,6 +78,27 @@ public class PlansController {
 		return resource;
 	}
 	
+	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(HttpStatus.OK)
+	public PlanResource modifyPlan(@PathVariable UUID uuid, @RequestBody PlanResource plan) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(plan);
+		}
+		
+		if (!uuid.equals(plan.getUUID())) {
+			throw new IllegalArgumentException("Plan uuid did not match path.");
+		}
+		
+		final PlanResource resource = plansService.modifyPlan(plan);
+		
+		addLinks(resource);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resource);
+		}
+		return resource;
+	}
+	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
 	public PlanResource getPlan(@PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {

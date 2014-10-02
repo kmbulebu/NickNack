@@ -78,6 +78,27 @@ public class EventFiltersController {
 		return resource;
 	}
 	
+	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(HttpStatus.OK)
+	public EventFilterResource modifyEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid, @RequestBody EventFilterResource eventFilter) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(eventFilter);
+		}
+		
+		if (!uuid.equals(eventFilter.getUuid())) {
+			throw new IllegalArgumentException("Event Filter uuid did not match path.");
+		}
+		
+		final EventFilterResource resource = eventFiltersService.modifyEventFilter(eventFilter);
+		
+		addLinks(planUuid, resource);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resource);
+		}
+		return resource;
+	}
+	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
 	public EventFilterResource getEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {

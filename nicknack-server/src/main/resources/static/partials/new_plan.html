@@ -1,4 +1,4 @@
-<form name="newPlanForm" ng-submit="submit()">
+<form name="newPlanForm">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<b>When</b> this event occurs:
@@ -9,13 +9,13 @@
 					ng-model="eventType" ng-change="updateAttributeDefinitions()" ng-options="eventDefinition.name for eventDefinition in eventDefinitions">
 				</select>
 			</div>
-				<div class="panel panel-default form-group form-inline" ng-repeat="eventAttributeFilter in formData.eventAttributeFilters">
+				<div class="panel panel-default form-group form-inline" ng-repeat="eventAttributeFilter in formData.eventAttributeFilters track by $index">
 					<div class="panel-heading">
 						If
 					</div>
 					<div class="panel-body">
 				 <select
-					id="eventAttributeType" class="form-control" ng-model="eventAttributeType"
+					id="eventAttributeType" class="form-control" ng-model="eventAttributeType[$index]"
 					ng-change="onAttributeFilterTypeChange()" ng-options="eventAttributeDefinition.name for eventAttributeDefinition in eventAttributeDefinitions">
 					</select> <select class="form-control" ng-model="eventAttributeFilter.operator" ng-options="eventAttributeOperator for eventAttributeOperator in eventAttributeOperators">
 				</select> <input type="text" class="form-control" ng-model="eventAttributeFilter.operand"></input>
@@ -34,6 +34,7 @@
 			<div class="form-group">
 				<label for="actionType" class="control-label">Action</label> <select id="actionType" class="form-control"
 					ng-model="actionType" ng-change="onActionTypeChange()" ng-options="actionDefinition.name for actionDefinition in actionDefinitions">
+
 				</select>
 			</div>
 			<div class="form-group"
@@ -52,5 +53,5 @@
 			</div>
 		</div>
 	</div>
-	<button type="submit" class="btn btn-primary">Save Plan</button>
+	<button class="btn btn-primary" ng-click="submit()">Save Plan</button>
 </form>

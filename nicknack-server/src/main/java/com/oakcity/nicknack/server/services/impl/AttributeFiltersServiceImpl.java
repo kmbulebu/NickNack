@@ -35,7 +35,10 @@ public class AttributeFiltersServiceImpl implements AttributeFiltersService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteAttributeFilter(UUID uuid) {
+		final AttributeFilterResource existing = attributeFilterRepo.findOne(uuid);
+		existing.getEventFilter().getAttributeFilters().remove(existing);
 		attributeFilterRepo.delete(uuid);
 	}
 
@@ -53,7 +56,10 @@ public class AttributeFiltersServiceImpl implements AttributeFiltersService {
 	}
 
 	@Override
+	@Transactional
 	public AttributeFilterResource modifyAttributeFilter(AttributeFilterResource modifiedAttributeFilter) {
+		final AttributeFilterResource existing = attributeFilterRepo.findOne(modifiedAttributeFilter.getUuid());
+		modifiedAttributeFilter.setEventFilter(existing.getEventFilter());
 		final AttributeFilterResource resource = attributeFilterRepo.save(modifiedAttributeFilter);
 		return resource;
 	}

@@ -2,6 +2,7 @@ package com.oakcity.nicknack.server.model;
 
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,6 +28,7 @@ import com.oakcity.nicknack.core.events.filters.operators.Operator;
 public class AttributeFilterResource extends ResourceSupport implements AttributeFilter {
 	
 	@Id
+	@Column(updatable=false)
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private UUID uuid;

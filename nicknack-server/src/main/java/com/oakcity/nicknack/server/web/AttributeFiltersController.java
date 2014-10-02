@@ -78,6 +78,27 @@ public class AttributeFiltersController {
 		return resource;
 	}
 	
+	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(HttpStatus.OK)
+	public AttributeFilterResource modifyAttributeFilter(@PathVariable UUID planUuid, @PathVariable UUID eventFilterUuid, @PathVariable UUID uuid, @RequestBody AttributeFilterResource modifiedAttributeFilter) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(modifiedAttributeFilter);
+		}
+		
+		if (!uuid.equals(modifiedAttributeFilter.getUuid())) {
+			throw new IllegalArgumentException("Attribute Filter uuid did not match path.");
+		}
+		
+		final AttributeFilterResource resource = attributeFiltersService.modifyAttributeFilter(modifiedAttributeFilter);
+		
+		addLinks(planUuid, eventFilterUuid, resource);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resource);
+		}
+		return resource;
+	}
+	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
 	public AttributeFilterResource getAttributeFilter(@PathVariable UUID planUuid, @PathVariable UUID eventFilterUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {

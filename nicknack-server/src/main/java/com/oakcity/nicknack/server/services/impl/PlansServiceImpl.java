@@ -39,6 +39,9 @@ public class PlansServiceImpl implements PlansService {
 
 	@Override
 	public PlanResource modifyPlan(PlanResource modifiedPlan) {
+		final PlanResource existing = planRepo.findOne(modifiedPlan.getUUID());
+		modifiedPlan.setActions(existing.getActions());
+		modifiedPlan.setEventFilters(existing.getEventFilters());
 		return planRepo.save(modifiedPlan);
 	}
 

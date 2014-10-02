@@ -54,6 +54,9 @@ public class EventFiltersServiceImpl implements EventFiltersService {
 
 	@Override
 	public EventFilterResource modifyEventFilter(EventFilterResource modifiedEventFilter) {
+		final EventFilterResource existing = eventFilterRepo.findOne(modifiedEventFilter.getUuid());
+		modifiedEventFilter.setPlan(existing.getPlan());
+		modifiedEventFilter.setAttributeFilters(existing.getAttributeFilters());
 		final EventFilterResource resource = eventFilterRepo.save(modifiedEventFilter);
 		return resource;
 	}

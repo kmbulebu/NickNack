@@ -54,6 +54,8 @@ public class ActionsServiceImpl implements ActionsService {
 
 	@Override
 	public ActionResource modifyAction(ActionResource modifiedAction) {
+		final ActionResource existing = actionRepo.findOne(modifiedAction.getUuid());
+		modifiedAction.setPlan(existing.getPlan());
 		final ActionResource resource = actionRepo.save(modifiedAction);
 		return resource;
 	}
