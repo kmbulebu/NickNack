@@ -17,8 +17,11 @@ nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider,
 	}).when('/liveEvents', {
 		templateUrl : 'partials/events.html',
 		controller : 'EventsCtrl'
+	}).when('/home', {
+		templateUrl : 'partials/home.html',
+		controller : ''
 	}).otherwise({
-		redirectTo : '/plans'
+		redirectTo : '/home'
 	});
 } ]);
 
