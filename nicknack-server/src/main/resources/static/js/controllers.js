@@ -22,8 +22,8 @@ nicknackControllers.controller('PlansCtrl', ['$scope', 'WebsiteService', 'Static
 	
 }]);	
 
-nicknackControllers.controller('NewPlanCtrl', ['$scope', '$rootScope', '$routeParams', 'WebsiteService', 'StaticDataService',
-function ($scope, $rootScope, $routeParams, WebsiteService, StaticDataService) {
+nicknackControllers.controller('NewPlanCtrl', ['$scope', '$rootScope', '$routeParams', '$route', 'WebsiteService', 'StaticDataService',
+function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataService) {
 	$scope.planUuid = $routeParams.planUuid;
 	$scope.formData = {};
 	$scope.formData.eventAttributeFilters = [];
@@ -203,7 +203,8 @@ function ($scope, $rootScope, $routeParams, WebsiteService, StaticDataService) {
 					
 				}).then( function() {
 					// This is redirecting before the posts finish, causing them to be cancelled.
-					//window.location = "plans.html";
+					window.location = "#/plans";
+					//$route.updateParams("/plans");
 				});
 		} else {
 			var plan = { 
@@ -250,7 +251,8 @@ function ($scope, $rootScope, $routeParams, WebsiteService, StaticDataService) {
 				WebsiteService.updateAction($scope.planUuid, action);
 			}).then( function() {
 				// This is redirecting before the posts finish, causing them to be cancelled.
-				//window.location = "plans.html";
+				window.location = "#/plans";
+				//$route.updateParams("/plans");
 			});
 		}
 
