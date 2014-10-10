@@ -126,6 +126,17 @@ function ($scope, $rootScope, $routeParams, WebsiteService, StaticDataService) {
 			var json = angular.fromJson(this.eventAttributeType[this.$index]);
 			$scope.formData.eventAttributeFilters[this.$index].appliesToAttributeDefinition = json.uuid;
 			$scope.eventAttributeOperators = json.units.supportedOperators;
+			
+			// Get the list of attribute values.
+			var index = this.$index;
+			WebsiteService.getAttributeDefinitionValues($scope.eventType.uuid, this.eventAttributeType[this.$index].uuid)
+				.then(function(valuesResource) {
+					var valueArray = [];
+					for (var key in valuesResource.content) {
+						valueArray.push(valuesResource.content[key]);
+					}
+					$scope.eventAttributeType[index]['values']=valueArray;
+				});
 		}
 	};
 	

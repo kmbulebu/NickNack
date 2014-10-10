@@ -33,6 +33,10 @@ angular.module('newplanService', ['angular-hal']).factory('WebsiteService', [ 'h
             function(action) {
                 return halClient.$post('api/instantactions/', null, action);
             },
+        'getAttributeDefinitionValues' :
+            function(eventDefinitionUuid, attributeDefinitionUuid) {
+                return halClient.$get('api/eventDefinitions/' + eventDefinitionUuid + "/attributeDefinitions/" + attributeDefinitionUuid + "/values");
+            }
     };
 }]);
 
@@ -106,7 +110,7 @@ angular.module('staticDataService', ['angular-hal']).factory('StaticDataService'
 				};
 			}
 		},
-		// Returns promise of an array of Event Definitions
+		// Returns promise of an array of Action Definitions
 		'actionDefinitions': function() {
 			if ($rootScope.actionDefinitions === undefined) {
 				return RestService.api().then(function (apiResource) {

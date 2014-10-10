@@ -17,6 +17,8 @@ import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.RelProvider;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -164,20 +166,26 @@ public class EventDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{eventUuid}/attributeDefinitions/{uuid}/values", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resource<Map<String, String>> getAttributeDefinitionValues(@PathVariable UUID eventUuid, @PathVariable UUID uuid) {
+	public ResponseEntity<Resource<Map<String, String>>> getAttributeDefinitionValues(@PathVariable UUID eventUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUuid, uuid);
 		}
 		
 		final Map<String, String> attributeDefinitionValues = eventDefinitionService.getAttributeDefinitionValues(eventUuid, uuid);
 
-		final Resource<Map<String, String>> resource = new Resource<Map<String, String>>(attributeDefinitionValues);
-		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitionValues(eventUuid, uuid)).withSelfRel());
+		ResponseEntity<Resource<Map<String, String>>> response;
+		if (attributeDefinitionValues == null) {
+			response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			final Resource<Map<String, String>> resource = new Resource<Map<String, String>>(attributeDefinitionValues);
+			resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitionValues(eventUuid, uuid)).withSelfRel());
+			response = new ResponseEntity<>(resource, HttpStatus.OK);
+		} 
 		
 		if (LOG.isTraceEnabled()) {
-			LOG.exit(resource);	
+			LOG.exit(response);	
 		}
-		return resource;
+		return response;
 	}
 
 }
