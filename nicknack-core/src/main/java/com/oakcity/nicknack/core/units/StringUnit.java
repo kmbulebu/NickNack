@@ -17,6 +17,15 @@ public class StringUnit implements Unit {
 		switch(operator) {
 		case EQUALS:
 			return operand1.equals(operand2);
+		case IN:
+			final String[] split = operand2.split(",");
+			for (String token : split) {
+				final String cleanToken = token.trim();
+				if (operand1.equals(cleanToken)) {
+					return true;
+				}
+			}
+			return false;
 		default:
 			return null;
 			//throw new UnsupportedOperationException(operator.getName() + " operator is not supported by " + getName());
@@ -25,7 +34,7 @@ public class StringUnit implements Unit {
 	
 	@Override
 	public Operator[] getSupportedOperators() {
-		return new Operator[] {Operator.EQUALS};
+		return new Operator[] {Operator.EQUALS, Operator.IN};
 	}
 
 }
