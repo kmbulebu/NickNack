@@ -26,6 +26,15 @@ public class StringUnit implements Unit {
 				}
 			}
 			return false;
+		case NOT_IN:
+			final String[] split2 = operand2.split(",");
+			for (String token : split2) {
+				final String cleanToken = token.trim();
+				if (operand1.equals(cleanToken)) {
+					return false;
+				}
+			}
+			return true;
 		default:
 			return null;
 			//throw new UnsupportedOperationException(operator.getName() + " operator is not supported by " + getName());
@@ -34,7 +43,7 @@ public class StringUnit implements Unit {
 	
 	@Override
 	public Operator[] getSupportedOperators() {
-		return new Operator[] {Operator.EQUALS, Operator.IN};
+		return new Operator[] {Operator.EQUALS, Operator.IN, Operator.NOT_IN};
 	}
 
 }
