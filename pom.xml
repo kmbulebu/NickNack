@@ -11,16 +11,31 @@
 	<inceptionYear>2014</inceptionYear>
 	<description>Event driven automation engine for the Internet of Things.</description>
 
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
 	<developers>
 		<developer>
 			<id>kmbulebu</id>
+			<name>Kevin Bulebush</name>
+			<url>https://github.com/kmbulebu/</url>
 		</developer>
 	</developers>
-	
+
 	<distributionManagement>
-	    <site>
-	        <url>/</url>
-	    </site>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
 
 	<scm>
@@ -33,19 +48,11 @@
 		<url>https://travis-ci.org/kmbulebu/NickNack</url>
 		<system>travis</system>
 	</ciManagement>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<internalRepo>file://${project.reporting.outputDirectory}</internalRepo>
 	</properties>
-	
-	<licenses>
-	    <license>
-	        <name>Apache License, Version 2.0</name>
-        	<distribution>repo</distribution>
-        	<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-	    </license>
-	</licenses>
 
 	<modules>
 		<module>nicknack-core</module>
@@ -165,10 +172,20 @@
 				<plugin>
 					<groupId>com.github.github</groupId>
 					<artifactId>site-maven-plugin</artifactId>
-					<version>0.9</version>
+					<version>0.10</version>
 					<inherited>true</inherited>
 					<configuration>
-					    <merge>true</merge>
+						<merge>true</merge>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<tagNameFormat>@{project.version}</tagNameFormat>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<goals>deploy</goals>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -186,42 +203,15 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Re-enable later. plugin> <artifactId>maven-javadoc-plugin</artifactId> 
+				<version>2.9.1</version> <executions> <execution> <id>javadoc-jar</id> <goals> 
+				<goal>jar</goal> </goals> </execution> </executions> </plugin -->
 			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.8.1</version>
 				<configuration>
 					<altDeploymentRepository>internal.repo::default::${internalRepo}</altDeploymentRepository>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.github.github</groupId>
-				<artifactId>site-maven-plugin</artifactId>
-				<configuration>
-					<message>Maven artifacts and site for ${project.artifactId} ${project.version}</message>
-					<noJekyll>true</noJekyll>
-				</configuration>
-				<executions>
-					<execution>
-					    <id>first</id>
-						<goals>
-							<goal>site</goal>
-						</goals>
-						<phase>none</phase>
-						<configuration>
-						    <merge>false</merge>
-						</configuration>
-						<inherited>false</inherited>
-					</execution>
-					<!-- This will run twice for the parent. Unfortunately. -->
-					<execution>
-					    <id>others</id>
-						<goals>
-							<goal>site</goal>
-						</goals>
-						<phase>none</phase>
-						<inherited>true</inherited>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -247,5 +237,78 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<profiles>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>gpg.passphrase</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>site-deploy-github</id>
+			<activation>
+				<property>
+					<name>github.global.oauth2Token</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.github</groupId>
+						<artifactId>site-maven-plugin</artifactId>
+						<configuration>
+							<message>Maven artifacts and site for ${project.artifactId}
+								${project.version}</message>
+							<noJekyll>true</noJekyll>
+						</configuration>
+						<executions>
+							<execution>
+								<id>first</id>
+								<goals>
+									<goal>site</goal>
+								</goals>
+								<phase>deploy</phase>
+								<configuration>
+									<merge>false</merge>
+								</configuration>
+								<inherited>false</inherited>
+							</execution>
+							<!-- This will run twice for the parent. Unfortunately. -->
+							<execution>
+								<id>others</id>
+								<goals>
+									<goal>site</goal>
+								</goals>
+								<phase>deploy</phase>
+								<inherited>true</inherited>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
