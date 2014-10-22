@@ -40,7 +40,7 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/kmbulebu/NickNack.git</connection>
-		<developerConnection>scm:git:ssh://github.com/NickNack.git</developerConnection>
+		<developerConnection>scm:git:ssh://github.com/kmbulebu/NickNack.git</developerConnection>
 		<url>https://github.com/kmbulebu/NickNack</url>
 	</scm>
 
