@@ -1,5 +1,1 @@
-com.github.kmbulebu.nicknack.providers.xbmc
-com.github.kmbulebu.nicknack.providers.xbmc.actions
-com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters
-com.github.kmbulebu.nicknack.providers.xbmc.events
-com.github.kmbulebu.nicknack.providers.xbmc.json
+com.github.kmbulebu.nicknack.providers.ssh
