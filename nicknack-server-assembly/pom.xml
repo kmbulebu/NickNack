@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.oakcity.nicknack</groupId>
+		<groupId>com.github.kmbulebu.nicknack</groupId>
 		<version>0.0.3-SNAPSHOT</version>
 		<artifactId>nicknack-parent</artifactId>
 	</parent>
@@ -16,19 +16,19 @@
 	
 	<dependencies>
 	    <dependency>
-			<groupId>com.oakcity.nicknack</groupId>
+			<groupId>com.github.kmbulebu.nicknack</groupId>
 			<artifactId>xbmc-provider</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.oakcity.nicknack</groupId>
+			<groupId>com.github.kmbulebu.nicknack</groupId>
 			<artifactId>ssh-provider</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.oakcity.nicknack</groupId>
+			<groupId>com.github.kmbulebu.nicknack</groupId>
 			<artifactId>dsc-it100-provider</artifactId>
 		</dependency> 
 		<dependency>
-			<groupId>com.oakcity.nicknack</groupId>
+			<groupId>com.github.kmbulebu.nicknack</groupId>
 			<artifactId>nicknack-basic-providers</artifactId>
 		</dependency>
 	</dependencies>

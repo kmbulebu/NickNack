@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.oakcity.nicknack</groupId>
+		<groupId>com.github.kmbulebu.nicknack</groupId>
 		<version>0.0.3-SNAPSHOT</version>
 		<artifactId>nicknack-parent</artifactId>
 	</parent>
@@ -65,31 +65,13 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.oakcity.nicknack</groupId>
+			<groupId>com.github.kmbulebu.nicknack</groupId>
 			<artifactId>nicknack-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-		<!-- Temporary 
-		<dependency>
-			<groupId>com.oakcity.nicknack</groupId>
-			<artifactId>xbmc-provider</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.oakcity.nicknack</groupId>
-			<artifactId>dsc-it100-provider</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>runtime</scope>
-		</dependency> 
-		<dependency>
-			<groupId>com.oakcity.nicknack</groupId>
-			<artifactId>nicknack-basic-provider</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>-->
 
 		<dependency>
 			<groupId>org.aspectj</groupId>

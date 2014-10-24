@@ -15,7 +15,7 @@
       
       <!-- Now, select which projects to include in this module-set. -->
       <includes>
-        <include>com.oakcity.nicknack:nicknack-server</include>
+        <include>com.github.kmbulebu.nicknack:nicknack-server</include>
       </includes>
       <binaries>
         <outputDirectory>lib/</outputDirectory>
@@ -30,10 +30,10 @@
       
       <!-- Now, select which projects to include in this module-set. -->
       <includes>
-        <include>com.oakcity.nicknack:nicknack-basic-providers</include>
-        <include>com.oakcity.nicknack:xbmc-provider</include>
-        <include>com.oakcity.nicknack:ssh-provider</include>
-        <include>com.oakcity.nicknack:dsc-it100-provider</include>
+        <include>com.github.kmbulebu.nicknack:nicknack-basic-providers</include>
+        <include>com.github.kmbulebu.nicknack:xbmc-provider</include>
+        <include>com.github.kmbulebu.nicknack:ssh-provider</include>
+        <include>com.github.kmbulebu.nicknack:dsc-it100-provider</include>
       </includes>
       <binaries>
         <outputDirectory>providers/</outputDirectory>

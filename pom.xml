@@ -1,7 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.oakcity.nicknack</groupId>
+	<groupId>com.github.kmbulebu.nicknack</groupId>
 	<version>0.0.3-SNAPSHOT</version>
 	<artifactId>nicknack-parent</artifactId>
 	<packaging>pom</packaging>
@@ -41,8 +42,8 @@
 		<connection>scm:git:https://github.com/kmbulebu/NickNack.git</connection>
 		<developerConnection>scm:git:ssh://github.com/kmbulebu/NickNack.git</developerConnection>
 		<url>https://github.com/kmbulebu/NickNack</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<ciManagement>
 		<url>https://travis-ci.org/kmbulebu/NickNack</url>
@@ -51,7 +52,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<internalRepo>file://${project.reporting.outputDirectory}</internalRepo>
 	</properties>
 
 	<modules>
@@ -69,27 +69,27 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>com.oakcity.nicknack</groupId>
+				<groupId>com.github.kmbulebu.nicknack</groupId>
 				<artifactId>nicknack-core</artifactId>
 				<version>0.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.oakcity.nicknack</groupId>
+				<groupId>com.github.kmbulebu.nicknack</groupId>
 				<artifactId>nicknack-basic-providers</artifactId>
 				<version>0.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.oakcity.nicknack</groupId>
+				<groupId>com.github.kmbulebu.nicknack</groupId>
 				<artifactId>xbmc-provider</artifactId>
 				<version>0.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.oakcity.nicknack</groupId>
+				<groupId>com.github.kmbulebu.nicknack</groupId>
 				<artifactId>ssh-provider</artifactId>
 				<version>0.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.oakcity.nicknack</groupId>
+				<groupId>com.github.kmbulebu.nicknack</groupId>
 				<artifactId>dsc-it100-provider</artifactId>
 				<version>0.0.3-SNAPSHOT</version>
 			</dependency>
@@ -163,7 +163,7 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
+					<version>3.2</version>
 					<configuration>
 						<source>1.7</source>
 						<target>1.7</target>
@@ -181,11 +181,10 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5</version>
+					<version>2.5.1</version>
 					<configuration>
 						<tagNameFormat>@{project.version}</tagNameFormat>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<goals>deploy</goals>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -193,7 +192,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
+				<version>2.4</version>
 				<executions>
 					<execution>
 						<id>source-jar</id>
@@ -203,15 +202,21 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Re-enable later. plugin> <artifactId>maven-javadoc-plugin</artifactId> 
-				<version>2.9.1</version> <executions> <execution> <id>javadoc-jar</id> <goals> 
-				<goal>jar</goal> </goals> </execution> </executions> </plugin -->
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.1</version>
+				<executions>
+					<execution>
+						<id>javadoc-jar</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.8.1</version>
-				<configuration>
-					<altDeploymentRepository>internal.repo::default::${internalRepo}</altDeploymentRepository>
-				</configuration>
+				<version>2.8.2</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -226,7 +231,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
+				<version>2.10.1</version>
 				<reportSets>
 					<reportSet><!-- by default, id = "default" -->
 						<reports><!-- select non-aggregate reports -->
@@ -265,50 +270,7 @@
 				</plugins>
 			</build>
 		</profile>
-		<profile>
-			<id>site-deploy-github</id>
-			<activation>
-				<property>
-					<name>github.global.oauth2Token</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.github.github</groupId>
-						<artifactId>site-maven-plugin</artifactId>
-						<configuration>
-							<message>Maven artifacts and site for ${project.artifactId}
-								${project.version}</message>
-							<noJekyll>true</noJekyll>
-						</configuration>
-						<executions>
-							<execution>
-								<id>first</id>
-								<goals>
-									<goal>site</goal>
-								</goals>
-								<phase>deploy</phase>
-								<configuration>
-									<merge>false</merge>
-								</configuration>
-								<inherited>false</inherited>
-							</execution>
-							<!-- This will run twice for the parent. Unfortunately. -->
-							<execution>
-								<id>others</id>
-								<goals>
-									<goal>site</goal>
-								</goals>
-								<phase>deploy</phase>
-								<inherited>true</inherited>
-							</execution>
-						</executions>
-					</plugin>
 
-				</plugins>
-			</build>
-		</profile>
 	</profiles>
 
 </project>
