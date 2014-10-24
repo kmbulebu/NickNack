@@ -3,7 +3,7 @@
 
 	<parent>
 		<groupId>com.github.kmbulebu.nicknack</groupId>
-		<version>0.0.4-SNAPSHOT</version>
+		<version>0.0.4</version>
 		<artifactId>nicknack-parent</artifactId>
 	</parent>
 
