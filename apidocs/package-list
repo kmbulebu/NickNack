@@ -1,0 +1,7 @@
+com.github.kmbulebu.nicknack.server
+com.github.kmbulebu.nicknack.server.events
+com.github.kmbulebu.nicknack.server.model
+com.github.kmbulebu.nicknack.server.services
+com.github.kmbulebu.nicknack.server.services.impl
+com.github.kmbulebu.nicknack.server.validation
+com.github.kmbulebu.nicknack.server.web
