@@ -8,6 +8,7 @@
 	</parent>
 
 	<artifactId>nicknack-basic-providers</artifactId>
+	<name>${project.artifactId}</name>
 	<description>Commonly used, basic providers to include with NickNack, such as a Clock events provider.</description>
 
 	<properties>

@@ -8,6 +8,8 @@
 	</parent>
 
 	<artifactId>nicknack-server</artifactId>
+	<name>${project.artifactId}</name>
+	<description>NickNack Web and RESTful Web Services Server</description>
 	<packaging>jar</packaging>
 
 	<properties>

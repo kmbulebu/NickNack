@@ -8,6 +8,8 @@
 	</parent>
 
 	<artifactId>example-provider</artifactId>
+	<description>Examplke implementation of a NickNack Provider</description>
+	<name>${project.artifactId}</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

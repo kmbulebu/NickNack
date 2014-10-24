@@ -8,6 +8,8 @@
 	</parent>
 
 	<artifactId>nicknack-server-assembly</artifactId>
+	<name>${project.artifactId}</name>
+	<description>Distributable binaries of the NickNack server.</description>
 	<packaging>pom</packaging>
 
 	<properties>

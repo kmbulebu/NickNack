@@ -8,7 +8,8 @@
 	</parent>
 
 	<artifactId>xbmc-provider</artifactId>
-	<description>Provides XBMC Events and Actions to NickNack</description>
+	<name>${project.artifactId}</name>
+	<description>Provides Kodi/XBMC Events and Actions to NickNack</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

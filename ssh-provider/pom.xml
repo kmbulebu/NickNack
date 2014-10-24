@@ -8,6 +8,7 @@
 	</parent>
 
 	<artifactId>ssh-provider</artifactId>
+	<name>${project.artifactId}</name>
 	<description>Provides SSH Actions to NickNack</description>
 
 	<properties>

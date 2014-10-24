@@ -8,6 +8,8 @@
 	</parent>
 
 	<artifactId>nicknack-core</artifactId>
+	<name>${project.artifactId}</name>
+	<description>NickNack Core API</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

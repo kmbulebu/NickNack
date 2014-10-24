@@ -8,6 +8,7 @@
 	</parent>
 
 	<artifactId>dsc-it100-provider</artifactId>
+	<name>${project.artifactId}</name>
 	<description>Provides DSC security system Events and Actions to NickNack</description>
 
 	<properties>

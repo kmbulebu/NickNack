@@ -1,2 +1,2 @@
-com.oakcity.nicknack.basicproviders.clock.ClockProvider
-com.oakcity.nicknack.basicproviders.wol.WakeOnLanProvider
+com.github.kmbulebu.nicknack.basicproviders.clock.ClockProvider
+com.github.kmbulebu.nicknack.basicproviders.wol.WakeOnLanProvider

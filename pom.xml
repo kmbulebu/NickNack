@@ -8,6 +8,8 @@
 
 	<url>https://github.com/kmbulebu/NickNack</url>
 	<inceptionYear>2014</inceptionYear>
+	
+	<name>${project.artifactId}</name>
 	<description>Event driven automation engine for the Internet of Things.</description>
 
 	<licenses>
