@@ -1,1 +1,9 @@
-com.github.kmbulebu.nicknack.example.provider
+com.github.kmbulebu.nicknack.core.actions
+com.github.kmbulebu.nicknack.core.actions.parameters
+com.github.kmbulebu.nicknack.core.events
+com.github.kmbulebu.nicknack.core.events.filters
+com.github.kmbulebu.nicknack.core.events.filters.operators
+com.github.kmbulebu.nicknack.core.events.impl
+com.github.kmbulebu.nicknack.core.plans
+com.github.kmbulebu.nicknack.core.providers
+com.github.kmbulebu.nicknack.core.units
