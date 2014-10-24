@@ -1,1 +1,3 @@
-com.github.kmbulebu.nicknack.providers.ssh
+com.github.kmbulebu.nicknack.providers.dsc
+com.github.kmbulebu.nicknack.providers.dsc.actions
+com.github.kmbulebu.nicknack.providers.dsc.events
