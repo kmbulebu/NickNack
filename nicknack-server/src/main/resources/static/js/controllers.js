@@ -26,10 +26,8 @@ nicknackControllers.controller('NewPlanCtrl', ['$scope', '$rootScope', '$routePa
 function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataService) {
 	$scope.planUuid = $routeParams.planUuid;
 	$scope.formData = {};
-	$scope.formData.eventAttributeFilters = [];
-	$scope.eventAttributeType = [];
+	$scope.formData.attributeFilterExpressions = [];
 	$scope.actionParameterValues = [];
-	$scope.formData.deletedAttributeFilters = [];
 	if ($scope.planUuid !== undefined) {
 		// Look up plan.
 		StaticDataService.plan($scope.planUuid)
@@ -47,27 +45,18 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
         					$scope.eventType = eventDef;
         					StaticDataService.attributeDefinitions(eventDefinitionUuid).then(function (attributeDefinitions) {
         						$scope.eventAttributeDefinitions = attributeDefinitions;
+        					
+	        					$scope.formData.attributeFilterExpressions = eventFilters[0].attributeFilterExpressions;
+	    						for (i = 0; i < $scope.formData.attributeFilterExpressions.length; i++) {
+	    							for (j = 0; j < $scope.eventAttributeDefinitions.length; j++) {
+	    								if ($scope.eventAttributeDefinitions[j].uuid === $scope.formData.attributeFilterExpressions[i].attributeDefinitionUuid) {
+	    									$scope.formData.attributeFilterExpressions[i].attributeDefinition = $scope.eventAttributeDefinitions[j];
+	    									break;
+	    								}
+	    							}
+	    							
+	    						}
         					});
-	        				eventFilters[0].$get('attributeFilters').then(function(attFiltersResource) {
-	        					attFiltersResource.$get('AttributeFilters').then(function(attFilters) {
-	        						for (i = 0; i < attFilters.length; i++) {
-	        							$scope.formData.eventAttributeFilters.push({ 
-	        								uuid: attFilters[i].uuid,
-	             	                    	appliesToAttributeDefinition: attFilters[i].appliesToAttributeDefinition,
-	             	                    	operator: attFilters[i].operator,
-	             	                    	operand: attFilters[i].operand
-	            	                    });
-	        							for (j = 0; j < $scope.eventAttributeDefinitions.length; j++) {
-	        								if ($scope.eventAttributeDefinitions[j].uuid === attFilters[i].appliesToAttributeDefinition) {
-	        									$scope.eventAttributeType[i]= $scope.eventAttributeDefinitions[j];
-	        									$scope.eventAttributeOperators = $scope.eventAttributeType[i].units.supportedOperators;
-	        									break;
-	        								}
-	        							}
-	        							
-	        						}
-	        					});
-	        				});
         				});
         			});
         		});
@@ -122,30 +111,28 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 	};
 	
 	$scope.onAttributeFilterTypeChange = function() {
-		if (this.eventAttributeType[this.$index]) {
-			var json = angular.fromJson(this.eventAttributeType[this.$index]);
-			$scope.formData.eventAttributeFilters[this.$index].appliesToAttributeDefinition = json.uuid;
-			$scope.eventAttributeOperators = json.units.supportedOperators;
-			
-			// Get the list of attribute values.
-			var index = this.$index;
-			WebsiteService.getAttributeDefinitionValues($scope.eventType.uuid, this.eventAttributeType[this.$index].uuid)
-				.then(function(valuesResource) {
-					var valueArray = [];
-					for (var key in valuesResource.content) {
-						valueArray.push(valuesResource.content[key]);
-					}
-					$scope.eventAttributeType[index]['values']=valueArray;
-				});
-		}
+		$scope.formData.attributeFilterExpressions[this.$index].attributeDefinitionUuid = $scope.formData.attributeFilterExpressions[this.$index].attributeDefinition.uuid;
+		
+		// Get the list of attribute values.
+		var index = this.$index;
+		WebsiteService.getAttributeDefinitionValues($scope.eventType.uuid, $scope.formData.attributeFilterExpressions[this.$index].attributeDefinition.uuid)
+			.then(function(valuesResource) {
+				var valueArray = [];
+				for (var key in valuesResource.content) {
+					valueArray.push(valuesResource.content[key]);
+				}
+				$scope.formData.attributeFilterExpressions[this.$index].attributeDefinition.values = valueArray;
+			});
 	};
 	
 	$scope.addEventAttributeFilter = function() {
-		$scope.formData.eventAttributeFilters.push({ 
-	                 	                    	appliesToAttributeDefinition: '',
-	                 	                    	operator: '',
-	                 	                    	operand:''
-	                	                      });
+		dummyFilter = { 
+             	attributeDefinitionUuid: '',
+             	operator: '',
+             	operand:'',
+             	attributeDefinition: {values:[], units:{supportedOperators:[]}}
+              };
+		$scope.formData.attributeFilterExpressions.push(dummyFilter);
 	};
 	
 	$scope.onActionTypeChange = function() {
@@ -156,10 +143,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 	};
 	
 	$scope.deleteEventAttributeFilter = function() {
-		if ($scope.formData.eventAttributeFilters[this.$index].uuid) {
-			$scope.formData.deletedAttributeFilters.push($scope.formData.eventAttributeFilters[this.$index].uuid);
-		}
-		$scope.formData.eventAttributeFilters.splice(this.$index, 1);
+		$scope.formData.attributeFilterExpressions.splice(this.$index, 1);
 	};
 	
 	$scope.submit = function() {
@@ -174,25 +158,27 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 				.createPlanResource(plan).then(function (newPlanResource) {
 					// Step 2: Create the Event Filter resource.
 					var json = angular.fromJson($scope.eventType);
+					var attributeFilterExpressions = $scope.formData.attributeFilterExpressions;
+					
+					for (var i = 0; i < attributeFilterExpressions.length; i++) {
+						delete attributeFilterExpressions[i].attributeDefinition;
+					}
 					var eventFilter = { 
-							appliesToEventDefinition:json.uuid
+							appliesToEventDefinition:json.uuid,
+							attributeFilterExpressions:attributeFilterExpressions
 			              };
-					newPlanResource.$post('eventFilters', null, eventFilter).then(function (newEventResource) {
-						// Step 3: Create each of the Attribute Filter resources.
-						$scope.formData.eventAttributeFilters.forEach(function(entry) {
-							newEventResource.$post('attributeFilters', null, entry);
-						});
-						
-					});
+					newPlanResource.$post('eventFilters', null, eventFilter).then();
 					
 					// Step 4: Create the Action resource with parameter values.
 					var json = angular.fromJson($scope.actionType);
 					var actionParameters = {};
 					
-					for (var i = 0; i < $scope.actionParameterDefinitions.length; i++) {
-						actionParameters[$scope.actionParameterDefinitions[i].uuid] = $scope.actionParameterValues[i];
-					}
-					
+					if ($scope.actionParameterDefinitions) {
+						for (var i = 0; i < $scope.actionParameterDefinitions.length; i++) {
+							actionParameters[$scope.actionParameterDefinitions[i].uuid] = $scope.actionParameterValues[i];
+						}
+					} 
+					 
 					var action = {
 						appliesToActionDefinition:json.uuid,
 						parameters:actionParameters
@@ -215,31 +201,27 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 			.updatePlanResource(plan).then(function (newPlanResource) {
 				// Step 2: Create the Event Filter resource.
 				var json = angular.fromJson($scope.eventType);
+				
+				var attributeFilterExpressions = $scope.formData.attributeFilterExpressions;
+				
+				for (var i = 0; i < attributeFilterExpressions.length; i++) {
+					delete attributeFilterExpressions[i].attributeDefinition;
+				}
+				
 				var eventFilter = { 
 						uuid: $scope.eventFilterUuid,
-						appliesToEventDefinition:json.uuid
+						appliesToEventDefinition:json.uuid,
+						attributeFilterExpressions:attributeFilterExpressions
 		              };
-				WebsiteService.updateEventFilter($scope.planUuid, eventFilter).then(function (newEventResource) {
-					$scope.formData.eventAttributeFilters.forEach(function(entry) {
-						if (entry.uuid) {
-							WebsiteService.updateAttributeFilter($scope.planUuid, eventFilter.uuid, entry);
-						} else {
-							newEventResource.$post('attributeFilters', null, entry);
-						}
-						
-					});
-					
-					$scope.formData.deletedAttributeFilters.forEach(function(attributeFilterUuid) {
-						WebsiteService.deleteAttributeFilter($scope.planUuid, eventFilter.uuid, attributeFilterUuid);
-					});
-					
-				});
+				WebsiteService.updateEventFilter($scope.planUuid, eventFilter).then();
 				
 				var json = angular.fromJson($scope.actionType);
 				var actionParameters = {};
 				
-				for (var i = 0; i < $scope.actionParameterDefinitions.length; i++) {
-					actionParameters[$scope.actionParameterDefinitions[i].uuid] = $scope.actionParameterValues[i];
+				if ($scope.actionParameterDefinitions) {
+					for (var i = 0; i < $scope.actionParameterDefinitions.length; i++) {
+						actionParameters[$scope.actionParameterDefinitions[i].uuid] = $scope.actionParameterValues[i];
+					}
 				}
 				
 				var action = {

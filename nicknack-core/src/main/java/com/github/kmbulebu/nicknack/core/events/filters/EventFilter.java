@@ -1,6 +1,6 @@
 package com.github.kmbulebu.nicknack.core.events.filters;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 
@@ -10,6 +10,6 @@ public interface EventFilter {
 	
 	public String getDescription();
 	
-	public List<AttributeFilter> getAttributeFilters();
+	public Collection<AttributeFilterExpression> getAttributeFilterExpressions();
 
 }

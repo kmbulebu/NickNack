@@ -4,12 +4,12 @@ import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.events.filters.operators.Operator;
 
-public interface AttributeFilter {
+public interface AttributeFilterExpression {
 	
-	public UUID getAppliesToAttributeDefinition();
+	public UUID getAttributeDefinitionUuid();
 	
 	public Operator getOperator();
 	
-	public String getOperand();
+	public String getOperand();	
 	
 }

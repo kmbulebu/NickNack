@@ -39,8 +39,9 @@ public class EventFilterEvaluator {
 		}
 		
 		// All attribute filters have to match.
-		for (AttributeFilter attributeFilter : eventFilter.getAttributeFilters()) {
-			if (!evaluate(attributeFilter, event.getAttributes(), event.getEventDefinition().getAttributeDefinitions())) {
+		for (AttributeFilterExpression expression : eventFilter.getAttributeFilterExpressions()) {
+			final UUID attributeDefinitionUuid = expression.getAttributeDefinitionUuid();
+			if (!evaluate(attributeDefinitionUuid, expression, event.getAttributes(), event.getEventDefinition().getAttributeDefinitions())) {
 				if (LOG.isTraceEnabled()) {
 					LOG.exit(false);
 				}
@@ -56,13 +57,13 @@ public class EventFilterEvaluator {
 	}
 	
 	// Find an attribute definition that applies to a particular attribute filter.
-	protected AttributeDefinition getApplicableAttributeDefinition(final AttributeFilter attributeFilter, final List<AttributeDefinition> attributeDefinitions) {
+	protected AttributeDefinition getApplicableAttributeDefinition(final UUID attributeDefinitionUuid, final List<AttributeDefinition> attributeDefinitions) {
 		if (LOG.isTraceEnabled()) {
-			LOG.entry(attributeFilter, attributeDefinitions);
+			LOG.entry(attributeDefinitionUuid, attributeDefinitions);
 		}
 		AttributeDefinition attributeDefinition = null;
 		for (AttributeDefinition anAttributeDefinition : attributeDefinitions) {
-			if (anAttributeDefinition.getUUID().equals(attributeFilter.getAppliesToAttributeDefinition())) {
+			if (anAttributeDefinition.getUUID().equals(attributeDefinitionUuid)) {
 				attributeDefinition = anAttributeDefinition;
 				break;
 			}
@@ -74,12 +75,12 @@ public class EventFilterEvaluator {
 	}
 	
 	// Evaluate single attribute filter
-	protected boolean evaluate(final AttributeFilter attributeFilter, final Map<UUID, String> eventAttributes, final List<AttributeDefinition> attributeDefinitions) throws ParseException {
+	protected boolean evaluate(final UUID attributeDefinitionUuid, final AttributeFilterExpression attributeFilter, final Map<UUID, String> eventAttributes, final List<AttributeDefinition> attributeDefinitions) throws ParseException {
 		if (LOG.isTraceEnabled()) {
-			LOG.entry(attributeFilter, eventAttributes, attributeDefinitions);
+			LOG.entry(attributeDefinitionUuid, attributeFilter, eventAttributes, attributeDefinitions);
 		}
 		// Find a matching attribute
-		final String attributeValue = eventAttributes.get(attributeFilter.getAppliesToAttributeDefinition());
+		final String attributeValue = eventAttributes.get(attributeDefinitionUuid);
 		if (attributeValue == null) {
 			// No attribute value to match attribute filter.
 			if (LOG.isTraceEnabled()) {
@@ -90,7 +91,7 @@ public class EventFilterEvaluator {
 		}
 		
 		// Find the Attribute definition that matches our filter.
-		final AttributeDefinition attributeDefinition = getApplicableAttributeDefinition(attributeFilter, attributeDefinitions);
+		final AttributeDefinition attributeDefinition = getApplicableAttributeDefinition(attributeDefinitionUuid, attributeDefinitions);
 		
 		if (attributeDefinition == null) {
 			// Really shouldn't have any filters defined for attributes that don't exist.

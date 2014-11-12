@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import com.github.kmbulebu.nicknack.core.SwitchChangeEvent.SwitchPositionAttribu
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
-import com.github.kmbulebu.nicknack.core.events.filters.AttributeFilter;
+import com.github.kmbulebu.nicknack.core.events.filters.AttributeFilterExpression;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilter;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilterEvaluator;
 import com.github.kmbulebu.nicknack.core.events.filters.operators.Operator;
@@ -38,9 +39,9 @@ public class _CoreApiTest {
 			}
 
 			@Override
-			public List<AttributeFilter> getAttributeFilters() {
+			public Collection<AttributeFilterExpression> getAttributeFilterExpressions() {
 				// Step 3: User creates an Attribute filter for their Event Filter.
-				AttributeFilter filter = new AttributeFilter() {
+				AttributeFilterExpression filter = new AttributeFilterExpression() {
 
 					@Override
 					public Operator getOperator() {
@@ -51,12 +52,12 @@ public class _CoreApiTest {
 					public String getOperand() {
 						return "true";
 					}
-					
+
 					@Override
-					public UUID getAppliesToAttributeDefinition() {
-						// TODO Clean up all these unnecessary attribute instantiations. A by-product of refactoring.
+					public UUID getAttributeDefinitionUuid() {
 						return new SwitchPositionAttribute().getUUID();
 					}
+					
 					
 				};
 				return Collections.singletonList(filter);

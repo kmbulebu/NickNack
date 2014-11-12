@@ -15,9 +15,11 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.hateoas.config.EnableEntityLinks;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.github.kmbulebu.nicknack.server.web.EventStreamingServlet;
 
 @Configuration
@@ -52,6 +54,14 @@ public class Application {
 	public static PropertySourcesPlaceholderConfigurer properties() {
 	    PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 	    return propertySourcesPlaceholderConfigurer;
+	}
+	
+	@Bean
+	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+		final MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+		mappingJackson2HttpMessageConverter.setPrettyPrint(true);
+		mappingJackson2HttpMessageConverter.getObjectMapper().setSerializationInclusion(Include.ALWAYS);
+		return mappingJackson2HttpMessageConverter;
 	}
 	
 

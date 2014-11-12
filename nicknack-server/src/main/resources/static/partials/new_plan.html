@@ -9,16 +9,15 @@
 					ng-model="eventType" ng-change="updateAttributeDefinitions()" ng-options="eventDefinition.name for eventDefinition in eventDefinitions">
 				</select>
 			</div>
-				<div class="panel panel-default form-group form-inline" ng-repeat="eventAttributeFilter in formData.eventAttributeFilters track by $index">
+				<div class="panel panel-default form-group form-inline" ng-repeat="attributeFilterExpression in formData.attributeFilterExpressions track by $index">
 					<div class="panel-heading">
 						If
 					</div>
 					<div class="panel-body">
-				 <select
-					id="eventAttributeType" class="form-control" ng-model="eventAttributeType[$index]"
+				 <select class="form-control" ng-model="attributeFilterExpression.attributeDefinition"
 					ng-change="onAttributeFilterTypeChange()" ng-options="eventAttributeDefinition.name for eventAttributeDefinition in eventAttributeDefinitions">
-					</select> <select class="form-control" ng-model="eventAttributeFilter.operator" ng-options="eventAttributeOperator for eventAttributeOperator in eventAttributeOperators">
-				</select> <input type="text" class="form-control" ng-model="eventAttributeFilter.operand" list="values{{$index}}"/><datalist id="values{{$index}}"><option ng-repeat="attributeValue in eventAttributeType[$index].values">{{attributeValue}}</option></datalist>
+					</select> <select ng-disabled="!attributeFilterExpression.attributeDefinition.uuid" class="form-control" ng-model="attributeFilterExpression.operator" ng-options="operator for operator in attributeFilterExpression.attributeDefinition.units.supportedOperators">
+				</select> <input ng-disabled="!attributeFilterExpression.attributeDefinition.uuid" type="text" class="form-control" ng-model="attributeFilterExpression.operand" list="values{{$index}}"/><datalist id="values{{$index}}"><option ng-repeat="attributeValue in attributeFilterExpression.attributeDefinition.values">{{attributeValue}}</option></datalist>
 				<button class="btn" ng-click="deleteEventAttributeFilter()"><span class="glyphicon glyphicon-trash"></span></button>
 				</div>
 			</div>

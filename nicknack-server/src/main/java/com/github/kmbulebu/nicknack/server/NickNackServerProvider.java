@@ -17,6 +17,7 @@ import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.server.actions.DummyActionDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionCompletedEventDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionDefinitionAttributeDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionErrorMessageAttributeDefinition;
@@ -28,6 +29,7 @@ public class NickNackServerProvider implements Provider {
 	public static final UUID PROVIDER_UUID = UUID.fromString("47bb24a8-b15d-4c4d-9218-1e9cba322d74");
 	
 	private final List<EventDefinition> eventDefinitions;
+	private final List<ActionDefinition> actionDefinitions;
 	
 	private OnEventListener onEventListener;
 	
@@ -35,6 +37,8 @@ public class NickNackServerProvider implements Provider {
 		eventDefinitions = new ArrayList<>(2);
 		eventDefinitions.add(ActionCompletedEventDefinition.INSTANCE);
 		eventDefinitions.add(ActionFailedEventDefinition.INSTANCE);
+		actionDefinitions = new ArrayList<>(1);
+		actionDefinitions.add(DummyActionDefinition.INSTANCE);
 	}
 
 	@Override
@@ -64,7 +68,7 @@ public class NickNackServerProvider implements Provider {
 
 	@Override
 	public Collection<ActionDefinition> getActionDefinitions() {
-		return Collections.emptyList();
+		return Collections.unmodifiableCollection(actionDefinitions);
 	}
 
 	@Override

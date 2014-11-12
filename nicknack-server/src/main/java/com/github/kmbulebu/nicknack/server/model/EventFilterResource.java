@@ -1,17 +1,15 @@
 package com.github.kmbulebu.nicknack.server.model;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -20,7 +18,9 @@ import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.kmbulebu.nicknack.core.events.filters.AttributeFilter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.github.kmbulebu.nicknack.core.events.filters.AttributeFilterExpression;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilter;
 import com.github.kmbulebu.nicknack.core.plans.Plan;
 
@@ -40,9 +40,10 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	
 	private String description;
 	
-	@NotNull
-	@OneToMany(targetEntity=AttributeFilterResource.class, fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private List<AttributeFilter> attributeFilters = new ArrayList<AttributeFilter>();
+	@JsonSerialize(contentAs=AttributeFilterExpressionImpl.class)
+	@JsonDeserialize(contentAs=AttributeFilterExpressionImpl.class)
+	@ElementCollection(targetClass=AttributeFilterExpressionImpl.class)
+	private Collection<AttributeFilterExpression> attributeFilterExpressions = new ArrayList<>();
 	
 	@ManyToOne(targetEntity=PlanResource.class)
 	@JsonIgnore
@@ -59,9 +60,8 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	}
 
 	@Override
-	@JsonIgnore
-	public List<AttributeFilter> getAttributeFilters() {
-		return attributeFilters;
+	public Collection<AttributeFilterExpression>  getAttributeFilterExpressions() {
+		return attributeFilterExpressions;
 	}
 
 	public UUID getUuid() {
@@ -87,9 +87,9 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public void setAttributeFilters(List<AttributeFilter> attributeFilters) {
-		this.attributeFilters = attributeFilters;
+	
+	public void setAttributeFilterExpressions(Collection<AttributeFilterExpression> attributeFilterExpressions) {
+		this.attributeFilterExpressions = attributeFilterExpressions;
 	}
 
 }
