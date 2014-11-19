@@ -1,4 +1,4 @@
-package com.github.kmbulebu.nicknack.server;
+package com.github.kmbulebu.nicknack.server.services.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,7 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.configuration.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
@@ -17,14 +23,18 @@ import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.providers.ProviderService;
+import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.actions.DummyActionDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionCompletedEventDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionDefinitionAttributeDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionErrorMessageAttributeDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionFailedEventDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionNameAttributeDefinition;
+import com.github.kmbulebu.nicknack.server.services.NickNackServerProvider;
 
-public class NickNackServerProvider implements Provider {
+@Service
+public class NickNackServerProviderImpl implements Provider, NickNackServerProvider {
 	
 	public static final UUID PROVIDER_UUID = UUID.fromString("47bb24a8-b15d-4c4d-9218-1e9cba322d74");
 	
@@ -33,12 +43,32 @@ public class NickNackServerProvider implements Provider {
 	
 	private OnEventListener onEventListener;
 	
-	public NickNackServerProvider() {
+	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
+	
+	@Autowired
+	private ProviderService providerService;
+	
+	public NickNackServerProviderImpl() {
 		eventDefinitions = new ArrayList<>(2);
 		eventDefinitions.add(ActionCompletedEventDefinition.INSTANCE);
 		eventDefinitions.add(ActionFailedEventDefinition.INSTANCE);
 		actionDefinitions = new ArrayList<>(1);
 		actionDefinitions.add(DummyActionDefinition.INSTANCE);
+	}
+	
+	@PostConstruct
+	public void init() {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry();
+		}
+		
+		// Manually register our NickNack Server Provider
+		// TOOD Do something useful with exceptions.
+		providerService.addProvider(this);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit();
+		}
 	}
 
 	@Override
@@ -85,6 +115,7 @@ public class NickNackServerProvider implements Provider {
 		this.onEventListener = onEventListener;
 	}
 	
+	@Override
 	public void fireActionCompletedEvent(String actionDefUuid, String actionDefName) {
 		if (onEventListener != null) {
 			final BasicTimestampedEvent event = new BasicTimestampedEvent(ActionCompletedEventDefinition.INSTANCE);
@@ -94,6 +125,7 @@ public class NickNackServerProvider implements Provider {
 		}
 	}
 	
+	@Override
 	public void fireActionFailedEvent(String actionDefUuid, String actionDefName, String errorMessage) {
 		if (onEventListener != null) {
 			final BasicTimestampedEvent event = new BasicTimestampedEvent(ActionFailedEventDefinition.INSTANCE);

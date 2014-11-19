@@ -60,7 +60,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
         				});
         			});
         		});
-        		planResource.$get('actions').then(function (actions){
+        		planResource.$get('Actions').then(function (actions){
         			actions.$get('Actions').then( function(actions) {
         				var actionDefUuid = actions[0].appliesToActionDefinition;
         				$scope.actionUuid = actions[0].uuid;
@@ -184,7 +184,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 						parameters:actionParameters
 					};
 					
-					newPlanResource.$post('actions', null, action);
+					newPlanResource.$post('Actions', null, action);
 					
 					
 				}).then( function() {
@@ -262,8 +262,10 @@ nicknackControllers.controller('RunActionCtrl', ['$scope', 'StaticDataService', 
 		var json = angular.fromJson($scope.actionType);
 		var actionParameters = {};
 		
-		for (var i = 0; i < $scope.actionParameterDefinitions.length; i++) {
-			actionParameters[$scope.actionParameterDefinitions[i].uuid] = $scope.actionParameterValues[i];
+		if ($scope.actionParameterDefinitions) {
+			for (var i = 0; i < $scope.actionParameterDefinitions.length; i++) {
+				actionParameters[$scope.actionParameterDefinitions[i].uuid] = $scope.actionParameterValues[i];
+			}
 		}
 		
 		var action = {

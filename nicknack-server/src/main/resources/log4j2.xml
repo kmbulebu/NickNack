@@ -24,7 +24,7 @@
 	</appenders>
 	<loggers>
 		<!-- Error log -->
-		<root level="trace">
+		<root level="info">
 			<appender-ref ref="nicknackLogFile-async" />
 		</root>
 	</loggers>

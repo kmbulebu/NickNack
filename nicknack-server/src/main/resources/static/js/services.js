@@ -27,11 +27,11 @@ angular.module('newplanService', ['angular-hal']).factory('WebsiteService', [ 'h
             },
         'updateAction' :
             function(planUuid, action) {
-                return halClient.$put('api/plans/' + planUuid + "/actions/" + action.uuid , null, action);
+                return halClient.$put("api/actions/" + action.uuid , null, action);
             },
         'runActionNow' :
             function(action) {
-                return halClient.$post('api/instantactions/', null, action);
+                return halClient.$post('api/actionQueue/', null, action);
             },
         'getAttributeDefinitionValues' :
             function(eventDefinitionUuid, attributeDefinitionUuid) {

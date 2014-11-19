@@ -29,7 +29,7 @@ import com.github.kmbulebu.nicknack.server.services.EventFiltersService;
 @RestController
 @RequestMapping(value="/api/plans/{planUuid}/eventFilters", produces={"application/hal+json"})
 @ExposesResourceFor(EventFilterResource.class)
-public class EventFiltersController {
+public class PlansEventFiltersController {
 	
 	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
@@ -130,11 +130,11 @@ public class EventFiltersController {
 	}
 	
 	private void addLinks(UUID planUuid, EventFilterResource resource) {
-		resource.add(linkTo(methodOn(EventFiltersController.class).getEventFilter(planUuid, resource.getUuid())).withSelfRel());
+		resource.add(linkTo(methodOn(PlansEventFiltersController.class).getEventFilter(planUuid, resource.getUuid())).withSelfRel());
 	}
 	
 	private void addLinks(UUID planUuid, Resources<EventFilterResource> resources) {
-		resources.add(linkTo(methodOn(EventFiltersController.class).getEventFilters(planUuid)).withSelfRel());
+		resources.add(linkTo(methodOn(PlansEventFiltersController.class).getEventFilters(planUuid)).withSelfRel());
 		
 		for (EventFilterResource resource : resources.getContent()) {
 			addLinks(planUuid, resource);

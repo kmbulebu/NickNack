@@ -1,7 +1,9 @@
 package com.github.kmbulebu.nicknack.server.model;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -10,7 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -40,9 +42,9 @@ public class ActionResource extends ResourceSupport implements Action {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<UUID, String> parameters = new HashMap<UUID, String>();
 	
-	@ManyToOne(targetEntity=PlanResource.class)
+	@ManyToMany(targetEntity=PlanResource.class)
 	@JsonIgnore
-	private Plan plan;
+	private Set<Plan> plans = new HashSet<Plan>();
 	
 	@Override
 	public UUID getAppliesToActionDefinition() {
@@ -61,12 +63,12 @@ public class ActionResource extends ResourceSupport implements Action {
 		this.appliesToActionDefinition = appliesToActionDefinition;
 	}
 
-	public Plan getPlan() {
-		return plan;
+	public Set<Plan> getPlans() {
+		return plans;
 	}
 
-	public void setPlan(Plan plan) {
-		this.plan = plan;
+	public void setPlans(Set<Plan> plans) {
+		this.plans = plans;
 	}
 
 	@Override
@@ -81,7 +83,7 @@ public class ActionResource extends ResourceSupport implements Action {
 	@Override
 	public String toString() {
 		return "ActionResource [uuid=" + uuid + ", appliesToActionDefinition=" + appliesToActionDefinition
-				+ ", parameters=" + parameters + ", plan=" + plan + "]";
+				+ ", parameters=" + parameters + "]";
 	}
 	
 	

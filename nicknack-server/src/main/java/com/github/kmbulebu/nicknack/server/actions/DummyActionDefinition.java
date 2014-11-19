@@ -3,7 +3,7 @@ package com.github.kmbulebu.nicknack.server.actions;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.actions.BasicActionDefinition;
-import com.github.kmbulebu.nicknack.server.NickNackServerProvider;
+import com.github.kmbulebu.nicknack.server.services.impl.NickNackServerProviderImpl;
 
 public class DummyActionDefinition extends BasicActionDefinition {
 	
@@ -12,7 +12,7 @@ public class DummyActionDefinition extends BasicActionDefinition {
 	public static final DummyActionDefinition INSTANCE = new DummyActionDefinition();
 
 	public DummyActionDefinition() {
-		super(ACTION_DEF_UUID, NickNackServerProvider.PROVIDER_UUID, "Dummy Action");
+		super(ACTION_DEF_UUID, NickNackServerProviderImpl.PROVIDER_UUID, "Dummy Action");
 	}
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.ActionDefinitionResource;
+import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.model.EventDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.PlanResource;
 import com.github.kmbulebu.nicknack.server.model.ProviderResource;
@@ -44,6 +45,7 @@ public class RootController {
 		rootResource.add(getCollectionResourceLink(ProviderResource.class));
 		rootResource.add(getCollectionResourceLink(EventDefinitionResource.class));
 		rootResource.add(getCollectionResourceLink(ActionDefinitionResource.class));
+		rootResource.add(getCollectionResourceLink(ActionResource.class));
 
 		//TODO Add event stream
 		

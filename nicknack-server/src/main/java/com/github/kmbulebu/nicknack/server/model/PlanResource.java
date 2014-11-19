@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -41,7 +42,7 @@ public class PlanResource extends ResourceSupport implements Plan {
 	private List<EventFilter> eventFilters = new ArrayList<EventFilter>();
 	
 	@NotNull
-	@OneToMany(targetEntity=ActionResource.class, cascade=CascadeType.ALL)
+	@ManyToMany(targetEntity=ActionResource.class, cascade=CascadeType.ALL)
 	@JsonIgnore
 	private List<Action> actions = new ArrayList<Action>();
 

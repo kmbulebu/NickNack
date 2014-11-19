@@ -14,7 +14,6 @@ import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import rx.Observable;
@@ -22,25 +21,22 @@ import rx.Subscription;
 import rx.functions.Action1;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
-import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilter;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilterEvaluator;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
 import com.github.kmbulebu.nicknack.server.Application;
-import com.github.kmbulebu.nicknack.server.NickNackServerProvider;
 import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.model.EventFilterResource;
 import com.github.kmbulebu.nicknack.server.model.PlanResource;
-import com.github.kmbulebu.nicknack.server.services.ActionRunnerService;
 import com.github.kmbulebu.nicknack.server.services.ActionsService;
 import com.github.kmbulebu.nicknack.server.services.EventFiltersService;
+import com.github.kmbulebu.nicknack.server.services.ActionQueueService;
 import com.github.kmbulebu.nicknack.server.services.PlansService;
 
 @Service
-public class PlansEvaluatorServiceImpl implements Action1<Event>, ActionRunnerService {
+public class PlansEvaluatorServiceImpl implements Action1<Event> {
 	
 	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
@@ -56,21 +52,21 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>, ActionRunnerSe
 	@Autowired
 	private ActionsService actionsService;
 	
+	@Autowired
+	private ActionQueueService actionQueueService;
+	
 	private Subscription eventsSubscription;
 	
 	private EventFilterEvaluator eventFilterEvaluator = new EventFilterEvaluator();
 	
-	private NickNackServerProvider nickNackServerProvider = new NickNackServerProvider();
+	@Autowired
+	private NickNackServerProviderImpl nickNackServerProvider;
 	
 	@PostConstruct
 	public void init() {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
-		
-		// Manually register our NickNack Server Provider
-		// TOOD Do something useful with exceptions.
-		providerService.addProvider(nickNackServerProvider);
 		
 		final Observable<Event> events = providerService.getEvents();
 		eventsSubscription = events.subscribe(this);
@@ -140,11 +136,11 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>, ActionRunnerSe
 		
 		if (match) {
 			LOG.info("Plan " + plan.getUUID() + " matches event " + event);
-			for (Action action : actionsService.getActions(plan.getUUID())) {
+			for (Action action : actionsService.getActionsByPlan(plan.getUUID())) {
 				LOG.info("Performing action " + action);
 				final Action processedAction = processVariables(action, event);
-				// Should not run as async when calling from same service class
-				runActionNow(processedAction);
+				// TODO Group all actions together into a composite action so that they run serially, not in parallel.
+				actionQueueService.enqueueAction(processedAction);
 			}
 		}
 		
@@ -152,20 +148,6 @@ public class PlansEvaluatorServiceImpl implements Action1<Event>, ActionRunnerSe
 			LOG.exit();
 		}
 
-	}
-	
-	@Async
-	@Override
-	public void runActionNow(Action action) {
-		final String actionName = providerService.getActionDefinitions().get(action.getAppliesToActionDefinition()).getName();
-		final String actionUuid = action.getAppliesToActionDefinition().toString();
-		try {
-			providerService.run(action);
-			nickNackServerProvider.fireActionCompletedEvent(actionUuid, actionName);
-		} catch (ActionFailureException | ActionParameterException e) {
-			LOG.warn("Failed to perform action. " + e.getMessage() + " " + action);
-			nickNackServerProvider.fireActionFailedEvent(actionUuid, actionName, e.getMessage());
-		} 
 	}
 	
 	// TODO I'd like to push a lot of this down into NickNack-core.

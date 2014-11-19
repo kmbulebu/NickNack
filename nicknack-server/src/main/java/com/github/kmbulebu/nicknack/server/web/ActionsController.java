@@ -9,9 +9,7 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.ExposesResourceFor;
-import org.springframework.hateoas.RelProvider;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +26,7 @@ import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.services.ActionsService;
 
 @RestController
-@RequestMapping(value="/api/plans/{planUuid}/actions", produces={"application/hal+json"})
+@RequestMapping(value="/api/actions", produces={"application/hal+json"})
 @ExposesResourceFor(ActionResource.class)
 public class ActionsController {
 	
@@ -36,88 +35,111 @@ public class ActionsController {
 	@Autowired
 	private ActionsService actionsService;
 	
-	@Autowired
-	private RelProvider relProvider;
-	
-	@Autowired
-	private EntityLinks entityLinks;
-	
-	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<ActionResource> getActions(@PathVariable UUID planUuid) {
+	@RequestMapping(value = "/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
+	@ResponseStatus(HttpStatus.OK)
+	public ActionResource getAction(@PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
 		
-		final List<ActionResource> actionResources = actionsService.getActions(planUuid);
-				
+		final ActionResource resource = actionsService.getAction(uuid);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(resource);	
+		}
+		return resource;
+	}
+	
+	@RequestMapping(method={RequestMethod.GET, RequestMethod.HEAD})
+	@ResponseStatus(HttpStatus.OK)
+	public Resources<ActionResource> getActions() {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry();
+		}
+		
+		final List<ActionResource> actionResources = actionsService.getActions();
+		
 		final Resources<ActionResource> resources = new Resources<ActionResource>(actionResources);
 		
 		// Add links
-		addLinks(planUuid, resources);
+		addLinks(resources);
 		
 		if (LOG.isTraceEnabled()) {
-			LOG.exit(resources);
+			LOG.exit(resources);	
 		}
 		return resources;
 	}
 	
-	@RequestMapping(value="", method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE})
-	@ResponseStatus(HttpStatus.CREATED)
-	public ActionResource createAction(@PathVariable UUID planUuid, @RequestBody ActionResource newAction) {
-		if (LOG.isTraceEnabled()) {
-			LOG.entry(newAction);
-		}
-		
-		final ActionResource resource = actionsService.createAction(planUuid, newAction);
-		
-		addLinks(planUuid, resource);
-		
-		if (LOG.isTraceEnabled()) {
-			LOG.exit(resource);
-		}
-		return resource;
-	}
-	
-	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
+	@RequestMapping(method={RequestMethod.GET, RequestMethod.HEAD}, params="planUuid")
 	@ResponseStatus(HttpStatus.OK)
-	public ActionResource createAction(@PathVariable UUID planUuid, @PathVariable UUID uuid, @RequestBody ActionResource modifiedAction) {
+	public Resources<ActionResource> getActionsByPlan(@RequestParam UUID planUuid) {
 		if (LOG.isTraceEnabled()) {
-			LOG.entry(modifiedAction);
+			LOG.entry();
 		}
 		
-		if (!uuid.equals(modifiedAction.getUuid())) {
-			throw new IllegalArgumentException("Action uuid did not match path.");
-		}
+		final List<ActionResource> actionResources = actionsService.getActionsByPlan(planUuid);
 		
-		final ActionResource resource = actionsService.modifyAction(modifiedAction);
+		final Resources<ActionResource> resources = new Resources<ActionResource>(actionResources);
 		
-		addLinks(planUuid, resource);
+		// Add links
+		addLinks(resources);
 		
 		if (LOG.isTraceEnabled()) {
-			LOG.exit(resource);
+			LOG.exit(resources);	
 		}
-		return resource;
+		return resources;
 	}
 	
-	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public ActionResource getAction(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
+	@RequestMapping(method={RequestMethod.POST}, params="planUuid", consumes={MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(HttpStatus.CREATED)
+	public ActionResource createActionForPlan(@RequestBody ActionResource action, @RequestParam UUID planUuid) {
 		if (LOG.isTraceEnabled()) {
-			LOG.entry(uuid);
+			LOG.entry(action);
 		}
 		
-		final ActionResource resource = actionsService.getAction(uuid);
+		final ActionResource createdResource = actionsService.createAction(action);
 		
-		addLinks(planUuid, resource);
+		actionsService.addActionToPlan(planUuid, createdResource.getUuid());
 		
 		if (LOG.isTraceEnabled()) {
-			LOG.exit(resource);
+			LOG.exit(createdResource);
 		}
-		return resource;
+		return createdResource;
 	}
 	
-	@RequestMapping(value="/{uuid}", method={RequestMethod.DELETE})
+	@RequestMapping(method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(HttpStatus.CREATED)
+	public ActionResource createAction(@RequestBody ActionResource action) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(action);
+		}
+		
+		final ActionResource createdResource = actionsService.createAction(action);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(createdResource);
+		}
+		return createdResource;
+	}
+	
+	@RequestMapping(value = "/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(HttpStatus.OK)
+	public ActionResource modifyAction(@PathVariable UUID uuid, @RequestBody ActionResource action) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(action);
+		}
+		
+		final ActionResource modifiedResource = actionsService.modifyAction(action);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(modifiedResource);
+		}
+		return modifiedResource;
+	}
+	
+	@RequestMapping(value = "/{uuid}", method={RequestMethod.DELETE})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteAction(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
+	public void deleteAction(@PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -129,16 +151,15 @@ public class ActionsController {
 		}
 	}
 	
-	private void addLinks(UUID planUuid, ActionResource resource) {
-		resource.add(linkTo(methodOn(ActionsController.class).getAction(planUuid, resource.getUuid())).withSelfRel());
+	private void addLinks(ActionResource resource) {
+		resource.add(linkTo(methodOn(ActionsController.class).getAction(resource.getUuid())).withSelfRel());
 	}
 	
-	private void addLinks(UUID planUuid, Resources<ActionResource> resources) {
-		resources.add(linkTo(methodOn(ActionsController.class).getActions(planUuid)).withSelfRel());
+	private void addLinks(Resources<ActionResource> resources) {
+		resources.add(linkTo(methodOn(ActionsController.class).getActions()).withSelfRel());
 		
 		for (ActionResource resource : resources.getContent()) {
-			addLinks(planUuid, resource);
+			addLinks(resource);
 		}
 	}
-
 }

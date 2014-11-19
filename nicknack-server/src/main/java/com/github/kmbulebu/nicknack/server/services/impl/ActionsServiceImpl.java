@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.kmbulebu.nicknack.core.plans.Plan;
 import com.github.kmbulebu.nicknack.server.model.ActionRepository;
 import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.model.PlanRepository;
@@ -24,40 +23,72 @@ public class ActionsServiceImpl implements ActionsService {
 	private ActionRepository actionRepo;
 
 	@Override
-	public List<ActionResource> getActions(UUID planUuid) {
-		final Plan plan = planRepo.findOne(planUuid);
+	@Transactional(readOnly=true)
+	public List<ActionResource> getActionsByPlan(UUID planUuid) {
+		final PlanResource plan = planRepo.findOne(planUuid);
 		return actionRepo.findByPlan(plan);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public ActionResource getAction(UUID uuid) {
 		return actionRepo.findOne(uuid);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public void deleteAction(UUID uuid) {
 		actionRepo.delete(uuid);
 	}
 
 	@Override
 	@Transactional
-	public ActionResource createAction(UUID planUuid, ActionResource newAction) {
-		final Plan plan = planRepo.findOne(planUuid);
-		newAction.setPlan(plan);
-		
-		final ActionResource resource = actionRepo.save(newAction);
-		plan.getActions().add(resource);
-		
-		planRepo.save((PlanResource) plan);
+	public ActionResource modifyAction(ActionResource modifiedAction) {
+		final ActionResource existing = actionRepo.findOne(modifiedAction.getUuid());
+		modifiedAction.setPlans(existing.getPlans());
+		final ActionResource resource = actionRepo.save(modifiedAction);
 		return resource;
 	}
 
 	@Override
-	public ActionResource modifyAction(ActionResource modifiedAction) {
-		final ActionResource existing = actionRepo.findOne(modifiedAction.getUuid());
-		modifiedAction.setPlan(existing.getPlan());
-		final ActionResource resource = actionRepo.save(modifiedAction);
+	@Transactional
+	public ActionResource createAction(ActionResource newActionBookmark) {
+		final ActionResource resource = actionRepo.save(newActionBookmark);
 		return resource;
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<ActionResource> getActions() {
+		return actionRepo.findAll();
+	}
+
+	@Override
+	@Transactional
+	public void addActionToPlan(UUID planUuid, UUID actionUuid) {
+		final ActionResource action = actionRepo.findOne(actionUuid);
+		final PlanResource plan = planRepo.findOne(planUuid);
+		
+		plan.getActions().add(action);
+		
+		action.getPlans().add(plan);
+		
+		planRepo.save(plan);
+		actionRepo.save(action);	
+	}
+
+	@Override
+	public void deleteAction(UUID planUuid, UUID actionUuid) {
+		final ActionResource action = actionRepo.findOne(actionUuid);
+		final PlanResource plan = planRepo.findOne(planUuid);
+		
+		plan.getActions().remove(action);
+		action.getPlans().remove(plan);
+		
+		planRepo.save(plan);
+		if (action.getPlans().isEmpty()) {
+			actionRepo.delete(action);
+		}
 	}
 
 }

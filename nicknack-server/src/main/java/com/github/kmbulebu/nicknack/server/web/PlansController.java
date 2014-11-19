@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.kmbulebu.nicknack.server.Application;
+import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.model.PlanResource;
 import com.github.kmbulebu.nicknack.server.services.PlansService;
 
@@ -131,8 +132,8 @@ public class PlansController {
 	
 	private void addLinks(PlanResource resource) {
 		resource.add(linkTo(methodOn(PlansController.class).getPlan(resource.getUUID())).withSelfRel());
-		resource.add(linkTo(methodOn(EventFiltersController.class).getEventFilters(resource.getUUID())).withRel("eventFilters"));
-		resource.add(linkTo(methodOn(ActionsController.class).getActions(resource.getUUID())).withRel("actions"));
+		resource.add(linkTo(methodOn(PlansEventFiltersController.class).getEventFilters(resource.getUUID())).withRel("eventFilters"));
+		resource.add(linkTo(methodOn(ActionsController.class).getActionsByPlan(resource.getUUID())).withRel(relProvider.getCollectionResourceRelFor(ActionResource.class)));
 	}
 	
 	private void addLinks(Resources<PlanResource> resources) {
