@@ -144,11 +144,16 @@ angular.module('staticDataService', ['angular-hal']).factory('StaticDataService'
 				for (i = 0; i < $rootScope.actionDefinitions.length; i++) {
 					if ($rootScope.actionDefinitions[i].uuid === actionDefUuid) {
 						return $rootScope.actionDefinitions[i].$get('parameterDefinitions').then(function (parameterDefinitionsResource) {
-							return parameterDefinitionsResource.$get('ParameterDefinitions')
-								.then(function(parameterDefinitions) {
-									$rootScope.parameterDefinitions[actionDefUuid] = parameterDefinitions;
-									return $q.when($rootScope.parameterDefinitions[actionDefUuid]);
-								});
+							if (parameterDefinitionsResource.$has('ParameterDefinitions')) {
+								return parameterDefinitionsResource.$get('ParameterDefinitions')
+									.then(function(parameterDefinitions) {
+										$rootScope.parameterDefinitions[actionDefUuid] = parameterDefinitions;
+										return $q.when($rootScope.parameterDefinitions[actionDefUuid]);
+									});
+							} else {
+								$rootScope.parameterDefinitions[actionDefUuid] = [];
+								return $q.when($rootScope.parameterDefinitions[actionDefUuid]);
+							}
 						});
 					}
 				};
