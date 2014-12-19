@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +20,6 @@ import com.github.kmbulebu.nicknack.server.services.ActionQueueService;
 
 @RestController
 @RequestMapping(value="/api/actionQueue", produces={"application/hal+json"})
-@ExposesResourceFor(ActionResource.class)
 public class ActionQueueController {
 	
 	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);

@@ -1,4 +1,4 @@
-package com.oakcity.nicknack.server.it;
+package com.github.kmbulebu.nicknack.server.it;
 
 import static com.jayway.restassured.RestAssured.*;
 import static com.jayway.restassured.matcher.RestAssuredMatchers.*;
@@ -30,7 +30,7 @@ public class _EventFilterIT extends _AbstractJettyTest {
 		// Create a new event filter for this plan.
 		final String eventFilterJson = given().contentType("application/json").body("{\"appliesToEventDefinition\":\"320c68e0-d662-11e3-9c1a-0800200c9a66\"}").post(eventFiltersLink.getHref()).then().assertThat().statusCode(201).extract().asString();
 		
-		System.out.println(eventFilterJson);
+		//System.out.println(eventFilterJson);
 		Link eventFilterLink = linkDiscoverer.findLinkWithRel("self", eventFilterJson);
 		
 		//  Check that it exists.

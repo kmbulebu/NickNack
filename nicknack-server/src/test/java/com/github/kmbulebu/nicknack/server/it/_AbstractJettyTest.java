@@ -1,4 +1,4 @@
-package com.oakcity.nicknack.server.it;
+package com.github.kmbulebu.nicknack.server.it;
 
 import static com.jayway.restassured.RestAssured.get;
 import static org.hamcrest.Matchers.equalTo;
@@ -14,6 +14,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.github.kmbulebu.nicknack.server.Application;
 import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.builder.RequestSpecBuilder;
+import com.jayway.restassured.specification.RequestSpecification;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -27,7 +29,8 @@ public abstract class _AbstractJettyTest {
 	@Before
 	public void setupRestAssured() {
 		RestAssured.port = this.port;
-		RestAssured.responseContentType("application/hal+json");
+		final RequestSpecification requestSpec = new RequestSpecBuilder().setContentType("application/hal+json").build();
+		RestAssured.requestSpecification = requestSpec;
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 	}
 	

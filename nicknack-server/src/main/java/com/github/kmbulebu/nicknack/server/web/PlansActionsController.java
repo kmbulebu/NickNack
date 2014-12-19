@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
-import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.RelProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,12 +16,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.kmbulebu.nicknack.server.Application;
-import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.services.ActionsService;
 
 @RestController
 @RequestMapping(value="/api/plans/{planUuid}/actions", produces={"application/hal+json"})
-@ExposesResourceFor(ActionResource.class)
 public class PlansActionsController {
 	
 	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);

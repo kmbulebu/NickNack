@@ -82,7 +82,7 @@ public class ActionsController {
 		final Resources<ActionResource> resources = new Resources<ActionResource>(actionResources);
 		
 		// Add links
-		addLinks(resources);
+		addLinks(resources, planUuid);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resources);	
@@ -157,6 +157,14 @@ public class ActionsController {
 	
 	private void addLinks(Resources<ActionResource> resources) {
 		resources.add(linkTo(methodOn(ActionsController.class).getActions()).withSelfRel());
+		
+		for (ActionResource resource : resources.getContent()) {
+			addLinks(resource);
+		}
+	}
+	
+	private void addLinks(Resources<ActionResource> resources, UUID planUuid) {
+		resources.add(linkTo(methodOn(ActionsController.class).getActionsByPlan(planUuid)).withSelfRel());
 		
 		for (ActionResource resource : resources.getContent()) {
 			addLinks(resource);
