@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="warn">
+	<Properties>
+		<Property name="consoleLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level %logger %msg %location [%mdc] %throwable%n</Property>
+		<Property name="fileLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level %logger %msg %location [%mdc] %throwable%n</Property>
+		<Property name="nicknackLogDir">./logs</Property>
+	</Properties>
+	<appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="${consoleLogPattern}" />
+		</Console>
+		<RollingRandomAccessFile name="nicknackLogFile"
+			fileName="${sys:nicknackLogDir}/nicknack.log" filePattern="${sys:nicknackLogDir}/nicknack-%i.log.gz">
+			<PatternLayout>
+				<Pattern>${fileLogPattern}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="20 MB" />
+			</Policies>
+		</RollingRandomAccessFile>
+		<Async name="nicknackLogFile-async" includeLocation="true">
+			<AppenderRef ref="nicknackLogFile" />
+		</Async>
+	</appenders>
+	<loggers>
+		<!-- Error log -->
+		<root level="info">
+			<appender-ref ref="nicknackLogFile-async" />
+		</root>
+	</loggers>
+</configuration>
