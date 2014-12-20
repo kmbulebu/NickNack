@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="warn">
 	<Properties>
-		<Property name="consoleLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level %logger %msg %location [%mdc] %throwable%n</Property>
 		<Property name="fileLogPattern">%d{dd MMM yyyy HH:mm:ss,SSS} [%thread] %level %logger %msg %location [%mdc] %throwable%n</Property>
 		<Property name="nicknackLogDir">./logs</Property>
 	</Properties>
 	<appenders>
-		<Console name="Console" target="SYSTEM_OUT">
-			<PatternLayout pattern="${consoleLogPattern}" />
-		</Console>
 		<RollingRandomAccessFile name="nicknackLogFile"
 			fileName="${sys:nicknackLogDir}/nicknack.log" filePattern="${sys:nicknackLogDir}/nicknack-%i.log.gz">
 			<PatternLayout>
