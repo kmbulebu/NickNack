@@ -102,7 +102,7 @@ public class CommandToEventMapper {
 		final String label = labels.getZoneLabel(zone);
 		
 		if (label != null) {
-			attributes.put(ZoneLabelAttributeDefinition.INSTANCE.getUUID(), label);
+			attributes.put(ZoneLabelAttributeDefinition.INSTANCE.getUUID(), label.replaceAll("\\s+", " ")); // Compress multiple spaces into one.
 		}
 		
 		return attributes;
@@ -129,7 +129,7 @@ public class CommandToEventMapper {
 		final String label = labels.getPartitionLabel(partition);
 		
 		if (label != null) {
-			attributes.put(PartitionLabelAttributeDefinition.INSTANCE.getUUID(), label);
+			attributes.put(PartitionLabelAttributeDefinition.INSTANCE.getUUID(), label.replaceAll("\\s+", " "));
 		}
 		
 		return attributes;
