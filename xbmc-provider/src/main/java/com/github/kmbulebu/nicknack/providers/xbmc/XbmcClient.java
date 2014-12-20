@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
@@ -65,6 +66,25 @@ public class XbmcClient {
 			logger.exit();
 		}
 	}
+	
+	@OnWebSocketError
+	public void onError(Session session, Throwable error) throws Exception {
+		if (logger.isTraceEnabled()) {
+			logger.entry(session);
+		}
+		
+		if (!session.isOpen()) {
+			this.session = null;
+			if (!stopRequested && websocketUri != null) {
+				connect(websocketUri);
+			}
+		}
+		
+		if (logger.isTraceEnabled()) {
+			logger.exit();
+		}
+	}
+	
 	
 	@OnWebSocketMessage
     public void onMessage(String msg) throws IOException {
