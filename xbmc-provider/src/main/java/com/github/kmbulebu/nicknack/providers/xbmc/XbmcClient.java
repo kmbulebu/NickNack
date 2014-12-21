@@ -8,6 +8,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import javax.annotation.CheckForNull;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.websocket.api.Session;
@@ -68,12 +70,12 @@ public class XbmcClient {
 	}
 	
 	@OnWebSocketError
-	public void onError(Session session, Throwable error) throws Exception {
+	public void onError(@CheckForNull Session session, Throwable error) throws Exception {
 		if (logger.isTraceEnabled()) {
-			logger.entry(session);
+			logger.entry(session, error);
 		}
 		
-		if (!session.isOpen()) {
+		if (session == null || !session.isOpen()) {
 			this.session = null;
 			if (!stopRequested && websocketUri != null) {
 				connect(websocketUri);
