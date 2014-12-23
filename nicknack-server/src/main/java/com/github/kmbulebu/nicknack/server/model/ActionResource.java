@@ -46,6 +46,8 @@ public class ActionResource extends ResourceSupport implements Action {
 	@JsonIgnore
 	private Set<Plan> plans = new HashSet<Plan>();
 	
+	private String description;
+	
 	@Override
 	public UUID getAppliesToActionDefinition() {
 		return appliesToActionDefinition;
@@ -78,6 +80,14 @@ public class ActionResource extends ResourceSupport implements Action {
 
 	public void setParameters(Map<UUID, String> parameters) {
 		this.parameters = parameters;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

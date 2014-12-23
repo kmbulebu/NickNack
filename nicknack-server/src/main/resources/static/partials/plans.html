@@ -1,9 +1,10 @@
 <h2 class="sub-header">Plans</h2>
+<a class="btn" href="#/newPlan">Create New</span></a>
 <div class="panel panel-default" ng-repeat="plan in plans track by $index">
   <div class="panel-body">
    	{{plan.name}} 
    	<div class="pull-right">
-   		<a class="btn" href="#/newPlan/{{plan.uuid}}"><span class="glyphicon glyphicon-pencil"></span></a>
+   		<a class="btn" href="#/plans/{{plan.uuid}}"><span class="glyphicon glyphicon-pencil"></span></a>
    		<a class="btn" ng-click="deletePlan(plan.uuid)"><span class="glyphicon glyphicon-trash"></span></a>
    	</div>
   </div>

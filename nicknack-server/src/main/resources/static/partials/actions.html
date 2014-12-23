@@ -1,0 +1,14 @@
+<h2 class="sub-header">Action Bookmarks</h2>
+<a class="btn" href="#/newActionBookmark">Create New</span></a>
+<div class="panel panel-default" ng-repeat="action in actions | filter:{description:'!!'} track by $index">
+  <div class="panel-body">
+   	{{action.description}} 
+   	<div class="pull-right">
+    	<a class="btn" ng-click="runNow(action.uuid)"><span class="glyphicon glyphicon-play-circle"></span></a>
+   		<a class="btn" href="#/actionBookmarks/{{action.uuid}}"><span class="glyphicon glyphicon-pencil"></span></a>
+   		<a class="btn" ng-click="deleteAction(action.uuid)"><span class="glyphicon glyphicon-trash"></span></a>
+   	</div>
+  </div>
+</div>  
+
+  

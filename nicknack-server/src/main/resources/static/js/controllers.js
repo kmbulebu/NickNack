@@ -1,21 +1,13 @@
 var nicknackControllers = angular.module('nicknackControllers', ['staticDataService']);
 
-nicknackControllers.controller('PlansCtrl', ['$scope', 'WebsiteService', 'StaticDataService', 
-                                       function ($scope, WebsiteService, StaticDataService) {
+nicknackControllers.controller('PlansCtrl', ['$scope', '$route', 'WebsiteService', 'StaticDataService', 'plans', 
+                                       function ($scope, $route, WebsiteService, StaticDataService, plans) {
 	
-	$scope.plans = {};
-	
-	$scope.refresh = function() {
-		StaticDataService.plans().then(function (plans) {
-			$scope.plans = plans;
-		});
-	};
-	
-	$scope.refresh();
+	$scope.plans = plans;
 	
 	$scope.deletePlan = function(planUuid) {
 		WebsiteService.deletePlan(planUuid).then(function () {
-			$scope.refresh();
+			$route.reload();
 		});
 		
 	};
@@ -241,46 +233,80 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 	};
 }]);
 
+nicknackControllers.controller('ActionBookmarksCtrl', ['$scope', '$route', 'StaticDataService', 'WebsiteService', 'actions', 
+    function ($scope, $route, StaticDataService, WebsiteService, actions) {
+	
+	$scope.actions = actions;
+	
+	$scope.deleteAction = function(actionUuid) {
+		WebsiteService.deleteActionBookmark(actionUuid).then(function () {
+			$route.reload();
+		});
+		
+	};
+	
+	$scope.runNow = function(actionUuid) {
+		WebsiteService.runActionBookmark(actionUuid).then( function() {
+			// Do something
+		});
+   	};
+	
+	
+}]);
 
-nicknackControllers.controller('RunActionCtrl', ['$scope', 'StaticDataService', 'WebsiteService', 
-     function ($scope, StaticDataService, WebsiteService) {
-     	$scope.actionParameterValues = {};
-     	$scope.formData = {};
-     
-     	StaticDataService.actionDefinitions().then(function (actionDefinitions) {
-     		$scope.actionDefinitions = actionDefinitions;
-     	});
-   
-   	$scope.onActionTypeChange = function() {
-   		var json = angular.fromJson($scope.actionType);
+nicknackControllers.controller('ActionBookmarkCtrl', ['$scope', 'StaticDataService', 'WebsiteService', 'action', 'actionDefinitions',
+                                                 function ($scope, StaticDataService, WebsiteService, action, actionDefinitions) {
+	
+	// Bind to the view
+	$scope.action = action;
+	$scope.actionDefinitions = actionDefinitions;
+	
+	// When an action definition is selected, update the parameter list and set the uuid
+	$scope.onActionTypeChange = function() {
+		$scope.action.appliesToActionDefinition = $scope.selectedActionDefinition.uuid;
+		
+   		var json = angular.fromJson($scope.selectedActionDefinition);
    		StaticDataService.parameterDefinitions(json.uuid).then(function (parameterDefinitions) {
 			$scope.actionParameterDefinitions = parameterDefinitions;
 		});
    	};
-   	
-   	$scope.submit = function() {
-		var json = angular.fromJson($scope.actionType);
-		var actionParameters = {};
-		
-		if ($scope.actionParameterDefinitions) {
-			for (var i = 0; i < $scope.actionParameterDefinitions.length; i++) {
-				actionParameters[$scope.actionParameterDefinitions[i].uuid] = $scope.actionParameterValues[i];
+	
+	// If an action definition is selected, find the object to mark it as selected
+	if ($scope.action.appliesToActionDefinition) {
+		for (i = 0; i < $scope.actionDefinitions.length; i++) {
+			if ($scope.actionDefinitions[i].uuid === $scope.action.appliesToActionDefinition) {
+				$scope.selectedActionDefinition = $scope.actionDefinitions[i];
+				$scope.onActionTypeChange();
+				break;
 			}
 		}
-		
-		var action = {
-			appliesToActionDefinition:json.uuid,
-			parameters:actionParameters
-		};
-		
-		WebsiteService.runActionNow(action).then( function() {
+	}
+	
+	
+	$scope.runNow = function() {
+		WebsiteService.runActionNow($scope.action).then( function() {
 			// Do something
 		});
-
    	};
-   }]);
+	
+   	$scope.save = function() {
+   		if ($scope.action.uuid) {
+	   		WebsiteService.updateActionBookmark($scope.action.uuid, $scope.action).then( function() {
+				window.location = '#/actionBookmarks';
+			});
+   		} else {
+   			WebsiteService.saveActionBookmark($scope.action).then( function() {
+				window.location = '#/actionBookmarks';
+			});
+   		}
+   	};
+   	
+   	
+	
+}]);
+
    
-   nicknackControllers.controller('EventsCtrl', ['$scope', 'WebsiteService', 
+nicknackControllers.controller('EventsCtrl', ['$scope', 'WebsiteService', 
                                                   function ($scope, WebsiteService) {
 	
        

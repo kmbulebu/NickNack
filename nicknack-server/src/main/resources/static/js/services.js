@@ -33,6 +33,26 @@ angular.module('newplanService', ['angular-hal']).factory('WebsiteService', [ 'h
             function(action) {
                 return halClient.$post('api/actionQueue/', null, action);
             },
+        'runActionBookmark' :
+            function(actionUuid) {
+                return halClient.$put('api/actionQueue/'+actionUuid, null, null);
+            },   
+        'saveActionBookmark' :
+            function(action) {
+                return halClient.$post('api/actions/', null, action);
+            },
+        'updateActionBookmark' :
+            function(uuid, action) {
+                return halClient.$put('api/actions/' + uuid, null, action);
+            },
+        'getActionBookmark' :
+            function(actionUuid) {
+                return halClient.$get('api/actions/' + actionUuid);
+            },
+        'deleteActionBookmark' :
+            function(actionUuid) {
+                return halClient.$del('api/actions/' + actionUuid);
+            },
         'getAttributeDefinitionValues' :
             function(eventDefinitionUuid, attributeDefinitionUuid) {
                 return halClient.$get('api/eventDefinitions/' + eventDefinitionUuid + "/attributeDefinitions/" + attributeDefinitionUuid + "/values");
@@ -164,9 +184,17 @@ angular.module('staticDataService', ['angular-hal']).factory('StaticDataService'
 			return RestService.api().then(function (apiResource) {
 				// Successful get
 				return apiResource.$get('Plans').then(function (plansResource) {
-						return plansResource.$get('Plans').then(function (plans) {
-							return plans;
-						});
+						if (plansResource.$has('Plans')) {
+							return plansResource.$get('Plans').then(function (plans) {
+								return plans;
+							}, function(reason) {
+								return [];
+							});
+						} else {
+							return [];
+						}
+				}, function(reason) {
+					return [];
 				});
 			});
 		},

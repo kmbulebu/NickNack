@@ -2,24 +2,80 @@ var nicknackApp = angular.module('nicknackApp', ['angular-hal', 'ngRoute',
 		'nicknackControllers', 'newplanService', 'restService', 'staticDataService']);
 
 nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {	
-	$routeProvider.when('/plans', {
-		templateUrl : 'partials/plans.html',
-		controller : 'PlansCtrl'
-	}).when('/newPlan', {
-		templateUrl : 'partials/new_plan.html',
+	$routeProvider.when('/newPlan', {
+		templateUrl : 'partials/plan.html',
 		controller : 'NewPlanCtrl'
-	}).when('/newPlan/:planUuid', {
-		templateUrl : 'partials/new_plan.html',
+	}).when('/plans/:planUuid', {
+		templateUrl : 'partials/plan.html',
 		controller : 'NewPlanCtrl'
-	}).when('/runAction', {
-		templateUrl : 'partials/run_action.html',
-		controller : 'RunActionCtrl'
 	}).when('/liveEvents', {
 		templateUrl : 'partials/events.html',
 		controller : 'EventsCtrl'
 	}).when('/home', {
 		templateUrl : 'partials/home.html',
 		controller : ''
+	}).when('/plans', {
+		templateUrl : 'partials/plans.html',
+		controller : 'PlansCtrl',
+		resolve: {
+			plans: function($route, RestService) {
+				return RestService
+					.api()
+					.then(function (apiResource) {
+						return apiResource.$get('Plans');
+				}).then(function (resource) {
+					if (resource.$has('Plans')) {
+						return resource.$get('Plans');
+					} else {
+						return [];
+					}
+				});
+			}
+		}
+	}).when('/actionBookmarks', {
+		templateUrl : 'partials/actions.html',
+		controller : 'ActionBookmarksCtrl',
+		resolve: {
+			actions: function($route, RestService) {
+				return RestService
+					.api()
+					.then(function (apiResource) {
+						return apiResource.$get('Actions');
+				}).then(function (resource) {
+					if (resource.$has('Actions')) {
+						return resource.$get('Actions');
+					} else {
+						return [];
+					}
+				});
+			}
+		}
+	}).when('/actionBookmarks/:actionUuid', {
+		templateUrl : 'partials/action.html',
+		controller : 'ActionBookmarkCtrl',
+		resolve: {
+			action: function($route, WebsiteService) {
+					return WebsiteService
+						.getActionBookmark($route.current.params.actionUuid);
+				},
+			actionDefinitions: function($route, StaticDataService) {
+					return StaticDataService.actionDefinitions();
+				}
+			}
+	}).when('/newActionBookmark', {
+		templateUrl : 'partials/action.html',
+		controller : 'ActionBookmarkCtrl',
+		resolve: {
+			action: function() {
+					var newAction = {
+							parameters: {}
+					}
+					return newAction;
+				},
+			actionDefinitions: function($route, StaticDataService) {
+					return StaticDataService.actionDefinitions();
+				}
+			}
 	}).otherwise({
 		redirectTo : '/home'
 	});
