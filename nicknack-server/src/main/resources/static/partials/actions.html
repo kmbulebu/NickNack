@@ -1,14 +1,14 @@
-<h2 class="sub-header">Action Bookmarks</h2>
-<a class="btn" href="#/newActionBookmark">Create New</span></a>
-<div class="panel panel-default" ng-repeat="action in actions | filter:{description:'!!'} track by $index">
-  <div class="panel-body">
-   	{{action.description}} 
+<h2 class="sub-header">Actions</h2>
+<div>
+<a type="button" href="#/newActionBookmark" class="btn btn-primary">Create New</a>
+</div>
+<br>
+<div class="well clearfix" ng-repeat="action in actions | filter:{description:'!!'} track by $index">
+   	<span class="h4">{{action.description}}</span>
    	<div class="pull-right">
-    	<a class="btn" ng-click="runNow(action.uuid)"><span class="glyphicon glyphicon-play-circle"></span></a>
-   		<a class="btn" href="#/actionBookmarks/{{action.uuid}}"><span class="glyphicon glyphicon-pencil"></span></a>
-   		<a class="btn" ng-click="deleteAction(action.uuid)"><span class="glyphicon glyphicon-trash"></span></a>
-   	</div>
-  </div>
+    	<a type="button" class="btn btn-primary" ng-click="runNow(action.uuid)"><i class="glyphicon glyphicon-play"></i> Run</a>
+   		<a type="button" class="btn btn-default" href="#/actionBookmarks/{{action.uuid}}"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
+   	</div>  
 </div>  
 
   

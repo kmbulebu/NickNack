@@ -238,13 +238,6 @@ nicknackControllers.controller('ActionBookmarksCtrl', ['$scope', '$route', 'Stat
 	
 	$scope.actions = actions;
 	
-	$scope.deleteAction = function(actionUuid) {
-		WebsiteService.deleteActionBookmark(actionUuid).then(function () {
-			$route.reload();
-		});
-		
-	};
-	
 	$scope.runNow = function(actionUuid) {
 		WebsiteService.runActionBookmark(actionUuid).then( function() {
 			// Do something
@@ -282,6 +275,12 @@ nicknackControllers.controller('ActionBookmarkCtrl', ['$scope', 'StaticDataServi
 		}
 	}
 	
+	$scope.deleteAction = function(actionUuid) {
+		WebsiteService.deleteActionBookmark(actionUuid).then(function () {
+			$route.reload();
+		});
+		
+	};
 	
 	$scope.runNow = function() {
 		WebsiteService.runActionNow($scope.action).then( function() {

@@ -1,4 +1,4 @@
-  <form name="newPlanForm" ng-submit="submit()">
+ <form name="newPlanForm">
  <div class="panel panel-default">
 		<div class="panel-heading">
 			<b>Do</b> this action:
@@ -29,6 +29,7 @@
 				<input type="text" class="form-control" ng-model="action.description" /> </ng-form>
 			</div>
 			<button ng-click="save()" class="btn btn-primary">Save</button>
+            <a ng-if="action.uuid" type="button" class="btn btn-primary" ng-click="deleteAction(action.uuid)">Delete</a>
 		</div>
 	</div>
   </form>

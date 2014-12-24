@@ -1,13 +1,14 @@
 <h2 class="sub-header">Plans</h2>
-<a class="btn" href="#/newPlan">Create New</span></a>
-<div class="panel panel-default" ng-repeat="plan in plans track by $index">
-  <div class="panel-body">
-   	{{plan.name}} 
+<div>
+<a type="button" href="#/newPlan" class="btn btn-primary">Create New</a>
+</div>
+<br>
+<div class="well clearfix" ng-repeat="plan in plans track by $index">
+   	<span class="h4">{{plan.name}}</span>
    	<div class="pull-right">
-   		<a class="btn" href="#/plans/{{plan.uuid}}"><span class="glyphicon glyphicon-pencil"></span></a>
-   		<a class="btn" ng-click="deletePlan(plan.uuid)"><span class="glyphicon glyphicon-trash"></span></a>
+     	<a type="button" href="#/plans/{{plan.uuid}}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
+   		<a type="button" ng-click="deletePlan(plan.uuid)" class="btn btn-default"><i class="glyphicon glyphicon-trash"></i> Delete</a>
    	</div>
-  </div>
 </div>  
 
   
