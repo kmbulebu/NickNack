@@ -34,6 +34,7 @@
         <include>com.github.kmbulebu.nicknack:xbmc-provider</include>
         <include>com.github.kmbulebu.nicknack:ssh-provider</include>
         <include>com.github.kmbulebu.nicknack:dsc-it100-provider</include>
+        <include>com.github.kmbulebu.nicknack:pushover-provider</include>
       </includes>
       <binaries>
         <outputDirectory>providers/</outputDirectory>

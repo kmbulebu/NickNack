@@ -64,6 +64,7 @@
 		<module>xbmc-provider</module>
 		<module>ssh-provider</module>
 		<module>dsc-it100-provider</module>
+		<module>pushover-provider</module>
 
 		<module>nicknack-server-assembly</module>
 	</modules>
