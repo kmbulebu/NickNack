@@ -8,7 +8,7 @@
 Active. Basic capabilities have been implemented to provide the commonly needed actions and events. Additional actions and events are planned.
 
 ## Actions:
-* Show Notification
+* **Show Notification**
 
 ## Events:
 * **Player Started**
