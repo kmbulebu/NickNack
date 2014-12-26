@@ -6,7 +6,8 @@
     <format>zip</format>
     <format>tar.gz</format>
   </formats>
-  <includeBaseDirectory>false</includeBaseDirectory>
+  <baseDirectory>nicknack</baseDirectory>
+  <includeBaseDirectory>true</includeBaseDirectory>
   <moduleSets>
     <moduleSet>
     
