@@ -1,4 +1,5 @@
 #Kodi (XBMC) Provider
+http://kodi.tv/
 
 ## Supported Kodi (XBMC) versions
 * Kodi 14.0 Helix
@@ -16,7 +17,6 @@ Active. Basic capabilities have been implemented to provide the commonly needed 
 * **Player Stopped**
 
 ## Configuration:
-
 * **hostN**: Specifies one or more XBMC hosts available for actions and monitored for events. N starts with zero (host0, host1, etc). 
 
 ### Sample nicknack_config.xml:
