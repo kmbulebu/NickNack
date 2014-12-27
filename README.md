@@ -1,5 +1,5 @@
 [![Build Status](https://drone.io/github.com/kmbulebu/NickNack/status.png)](https://drone.io/github.com/kmbulebu/NickNack/latest)
-#NickNack 
+# NickNack 
 NickNack is an event driven automation engine for the "Internet of Things." Most homes are now equipped with at least one internet connected TV, appliance, security system, stereo receiver, or other device. Additionally, we find Home Theater PC software, Internet services, such as email and weather updates. Nick Nack aims to offer an easy way to create meaningful connections between these providers and more.
 
 A list of included providers is available [here] (./PROVIDERS.md).
