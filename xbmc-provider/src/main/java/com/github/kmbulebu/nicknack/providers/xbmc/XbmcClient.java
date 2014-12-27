@@ -139,17 +139,17 @@ public class XbmcClient {
 		client.start();
 	    
 		final ClientUpgradeRequest request = new ClientUpgradeRequest();
-		IOException lastException = null;
+		Exception lastException = null;
 	    int retries = 1;
 	    Random random = new Random();
 	    // TODO See how jetty websockets handles the threading. We may need to do this in a separate thread.
 	    do {
 	    	logger.info("Connecting to " + uri);
 		    try {
-		    	client.connect(this, uri, request);
+		    	client.connect(this, uri, request).get();
 		    	logger.info("Connected to " + uri);
 		    	lastException = null;
-		    } catch (IOException e) {
+		    } catch (IOException | ExecutionException e) {
 		    	logger.error("Could not connect to " + uri + ". " + e.getMessage(), e);
 		    	lastException = e;
 		    	int slotsToSleep = random.nextInt((2 << retries) - 1);
