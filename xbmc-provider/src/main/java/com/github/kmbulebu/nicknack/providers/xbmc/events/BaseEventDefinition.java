@@ -3,7 +3,7 @@ package com.github.kmbulebu.nicknack.providers.xbmc.events;
 import java.util.Arrays;
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.events.AttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEventDefinition;
 
 public abstract class BaseEventDefinition extends BasicTimestampedEventDefinition {

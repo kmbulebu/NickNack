@@ -7,7 +7,7 @@ import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.kmbulebu.nicknack.core.events.AttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 
 @Relation(value="EventDefinition", collectionRelation="EventDefinitions")

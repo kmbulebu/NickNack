@@ -1,6 +1,7 @@
 package com.github.kmbulebu.nicknack.example.provider;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 public class ExampleProvider implements Provider {
 	
@@ -95,6 +97,11 @@ public class ExampleProvider implements Provider {
 	}
 	
 	@Override
+	public Collection<StateDefinition> getStateDefinitions() {
+		return Collections.emptyList();
+	}
+	
+	@Override
 	public void run(Action action) {
 		String macAddress = action.getParameters().get(LightBulbActionDefinition.MAC_ADDRESS_PARAMETER_DEFINITION.getUUID());
 		
@@ -114,5 +121,7 @@ public class ExampleProvider implements Provider {
 		System.out.println("Switch changing to " + switchStr);
 		
 	}
+	
+	
 
 }

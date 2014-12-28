@@ -2,7 +2,7 @@ package com.github.kmbulebu.nicknack.core.events.impl;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.events.BasicAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
 
 public class SecondOfMinuteAttributeDefinition extends BasicAttributeDefinition{

@@ -16,13 +16,14 @@ import org.junit.Test;
 
 import com.github.kmbulebu.nicknack.core.SwitchChangeEvent.SwitchPositionAttribute;
 import com.github.kmbulebu.nicknack.core.actions.Action;
+import com.github.kmbulebu.nicknack.core.attributes.filters.AttributeFilterExpression;
+import com.github.kmbulebu.nicknack.core.attributes.filters.Operator;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
-import com.github.kmbulebu.nicknack.core.events.filters.AttributeFilterExpression;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilter;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilterEvaluator;
-import com.github.kmbulebu.nicknack.core.events.filters.operators.Operator;
 import com.github.kmbulebu.nicknack.core.plans.Plan;
+import com.github.kmbulebu.nicknack.core.states.filters.StateFilter;
 
 public class _CoreApiTest {
 	
@@ -93,6 +94,12 @@ public class _CoreApiTest {
 			@Override
 			public List<Action> getActions() {
 				return null; // Not yet implemented.
+			}
+
+			@Override
+			public List<StateFilter> getStateFilters() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 			
 		};

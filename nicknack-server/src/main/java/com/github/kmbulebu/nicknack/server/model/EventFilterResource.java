@@ -21,7 +21,7 @@ import org.springframework.hateoas.core.Relation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.github.kmbulebu.nicknack.core.events.filters.AttributeFilterExpression;
+import com.github.kmbulebu.nicknack.core.attributes.filters.AttributeFilterExpression;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilter;
 import com.github.kmbulebu.nicknack.core.plans.Plan;
 

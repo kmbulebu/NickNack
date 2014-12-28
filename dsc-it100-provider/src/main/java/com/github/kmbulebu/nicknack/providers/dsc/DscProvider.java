@@ -29,6 +29,7 @@ import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.CommandOutputActionDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.DscActionDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.PartitionArmAwayActionDefinition;
@@ -157,6 +158,11 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		if (actionDef instanceof DscActionDefinition) {
 			((DscActionDefinition) actionDef).run(action);
 		}
+	}
+
+	@Override
+	public Collection<StateDefinition> getStateDefinitions() {
+		return Collections.emptyList();
 	}
 
 }

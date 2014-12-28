@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import javax.persistence.Embeddable;
 
-import com.github.kmbulebu.nicknack.core.events.filters.AttributeFilterExpression;
-import com.github.kmbulebu.nicknack.core.events.filters.operators.Operator;
+import com.github.kmbulebu.nicknack.core.attributes.filters.AttributeFilterExpression;
+import com.github.kmbulebu.nicknack.core.attributes.filters.Operator;
 
 @Embeddable
 public class AttributeFilterExpressionImpl implements AttributeFilterExpression {

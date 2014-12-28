@@ -2,7 +2,7 @@ package com.github.kmbulebu.nicknack.core.units;
 
 import java.text.ParseException;
 
-import com.github.kmbulebu.nicknack.core.events.filters.operators.Operator;
+import com.github.kmbulebu.nicknack.core.attributes.filters.Operator;
 
 public interface Unit {
 

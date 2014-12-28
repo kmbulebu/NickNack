@@ -11,6 +11,7 @@ import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
+import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 /**
  * Provider Interface. Main entry point for extending NickNack. 
@@ -46,6 +47,12 @@ public interface Provider {
 	 * @return A list of all possible events this provider may broadcast.
 	 */
 	public Collection<EventDefinition> getEventDefinitions();
+	
+	/**
+	 * 
+	 * @return A list of all possible states that may exist.
+	 */
+	public Collection<StateDefinition> getStateDefinitions();
 	
 	/**
 	 * 

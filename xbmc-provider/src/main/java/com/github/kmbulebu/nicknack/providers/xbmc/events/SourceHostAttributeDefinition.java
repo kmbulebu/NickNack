@@ -2,7 +2,7 @@ package com.github.kmbulebu.nicknack.providers.xbmc.events;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.events.BasicAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.StringUnit;
 
 public class SourceHostAttributeDefinition extends BasicAttributeDefinition {

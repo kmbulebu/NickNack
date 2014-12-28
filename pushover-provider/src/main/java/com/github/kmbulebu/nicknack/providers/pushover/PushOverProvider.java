@@ -16,6 +16,7 @@ import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 public class PushOverProvider implements Provider {
 	
@@ -45,6 +46,11 @@ public class PushOverProvider implements Provider {
 
 	@Override	
 	public Collection<EventDefinition> getEventDefinitions() {
+		return Collections.emptyList();
+	}
+	
+	@Override
+	public Collection<StateDefinition> getStateDefinitions() {
 		return Collections.emptyList();
 	}
 

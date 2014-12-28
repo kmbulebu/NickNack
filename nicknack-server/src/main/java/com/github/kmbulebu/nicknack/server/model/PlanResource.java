@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilter;
 import com.github.kmbulebu.nicknack.core.plans.Plan;
+import com.github.kmbulebu.nicknack.core.states.filters.StateFilter;
 
 @Entity
 @Table(name="Plans")
@@ -42,6 +43,11 @@ public class PlanResource extends ResourceSupport implements Plan {
 	private List<EventFilter> eventFilters = new ArrayList<EventFilter>();
 	
 	@NotNull
+	@OneToMany(targetEntity=StateFilterResource.class, mappedBy="plan", cascade=CascadeType.ALL)
+	@JsonIgnore
+	private List<StateFilter> stateFilters = new ArrayList<StateFilter>();
+	
+	@NotNull
 	@ManyToMany(targetEntity=ActionResource.class, cascade=CascadeType.ALL)
 	@JsonIgnore
 	private List<Action> actions = new ArrayList<Action>();
@@ -60,6 +66,11 @@ public class PlanResource extends ResourceSupport implements Plan {
 	public List<EventFilter> getEventFilters() {
 		return eventFilters;
 	}
+	
+	@Override
+	public List<StateFilter> getStateFilters() {
+		return stateFilters;
+	}
 
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
@@ -71,6 +82,10 @@ public class PlanResource extends ResourceSupport implements Plan {
 
 	public void setEventFilters(List<EventFilter> eventFilters) {
 		this.eventFilters = eventFilters;
+	}
+	
+	public void setStateFilters(List<StateFilter> stateFilters) {
+		this.stateFilters = stateFilters;
 	}
 
 	public List<Action> getActions() {

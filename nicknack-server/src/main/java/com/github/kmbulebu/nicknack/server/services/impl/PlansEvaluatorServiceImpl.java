@@ -21,7 +21,7 @@ import rx.Subscription;
 import rx.functions.Action1;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
-import com.github.kmbulebu.nicknack.core.events.AttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilter;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilterEvaluator;
@@ -30,10 +30,11 @@ import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.model.EventFilterResource;
 import com.github.kmbulebu.nicknack.server.model.PlanResource;
+import com.github.kmbulebu.nicknack.server.services.ActionQueueService;
 import com.github.kmbulebu.nicknack.server.services.ActionsService;
 import com.github.kmbulebu.nicknack.server.services.EventFiltersService;
-import com.github.kmbulebu.nicknack.server.services.ActionQueueService;
 import com.github.kmbulebu.nicknack.server.services.PlansService;
+import com.github.kmbulebu.nicknack.server.services.StateFiltersService;
 
 @Service
 public class PlansEvaluatorServiceImpl implements Action1<Event> {
@@ -48,6 +49,9 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 	
 	@Autowired
 	private EventFiltersService eventFiltersService;
+	
+	@Autowired
+	private StateFiltersService stateFiltersService;
 	
 	@Autowired
 	private ActionsService actionsService;
@@ -113,28 +117,30 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 			LOG.entry(plan, event);
 		}
 		
-		boolean match = false;
+		boolean eventMatch = false;
 		
 		final Iterator<EventFilterResource> iterator = eventFiltersService.getEventFilters(plan.getUUID()).iterator();
 		
 		// If any event filter matches, then this plan is match.
-		while (!match && iterator.hasNext()) {
+		while (!eventMatch && iterator.hasNext()) {
 			final EventFilter filter = iterator.next();
 			
 			try {
-				match = eventFilterEvaluator.evaluate(filter, event);
+				eventMatch = eventFilterEvaluator.evaluate(filter, event);
 			} catch (ParseException e) {
 				LOG.warn("Error parsing some text while evalutaing an event filter. " + e.getMessage(), e);
 				// TODO Generate an error event
-				match = false;
+				eventMatch = false;
 			}
 			
-			if (LOG.isInfoEnabled() && match) {
+			if (LOG.isInfoEnabled() && eventMatch) {
 				LOG.info("EventFilter matched: " + ((EventFilterResource) filter).getUuid());
 			}
 		}
 		
-		if (match) {
+		// TODO Implement evaluation of state.
+		
+		if (eventMatch) {
 			LOG.info("Plan " + plan.getUUID() + " matches event " + event);
 			for (Action action : actionsService.getActionsByPlan(plan.getUUID())) {
 				LOG.info("Performing action " + action);

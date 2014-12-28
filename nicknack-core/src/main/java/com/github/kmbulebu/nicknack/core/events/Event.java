@@ -1,8 +1,8 @@
 package com.github.kmbulebu.nicknack.core.events;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+
+import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
 
 
 
@@ -11,12 +11,9 @@ import java.util.UUID;
  * @author Kevin Bulebush
  *
  */
-public interface Event {
+public interface Event extends AttributeCollection {
 	
 	// Are we adequately tying Events to their definition?
-	
-	// Attribute definition to Attribute Value map.
-	public Map<UUID, String> getAttributes();
 	
 	// TODO Switch to just UUID?
 	public EventDefinition getEventDefinition();

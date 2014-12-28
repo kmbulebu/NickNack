@@ -2,7 +2,7 @@ package com.github.kmbulebu.nicknack.providers.dsc.events;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.events.BasicAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
 
 public class PartitionNumberAttributeDefinition extends BasicAttributeDefinition {

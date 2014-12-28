@@ -2,6 +2,7 @@ package com.github.kmbulebu.nicknack.providers.xbmc;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.actions.ShowNotificationActionDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.HostParameterDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.events.PauseEventDefinition;
@@ -88,6 +90,11 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	@Override
 	public List<EventDefinition> getEventDefinitions() {
 		return Collections.unmodifiableList(eventDefinitions);
+	}
+	
+	@Override
+	public Collection<StateDefinition> getStateDefinitions() {
+		return Collections.emptyList();
 	}
 	
 	@Override

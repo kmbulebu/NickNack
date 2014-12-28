@@ -25,6 +25,7 @@ import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
+import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 public class ProviderServiceImpl implements ProviderService, OnEventListener, rx.Observable.OnSubscribe<Event> {
 	
@@ -34,9 +35,11 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     private ProviderLoader loader;
     
     private final Map<UUID, EventDefinition> eventDefinitions = new HashMap<UUID, EventDefinition>();
+    private final Map<UUID, StateDefinition> stateDefinitions = new HashMap<UUID, StateDefinition>();
     private final Map<UUID, ActionDefinition> actionDefinitions = new HashMap<UUID, ActionDefinition>();
     private final Map<UUID, Provider> providers = new HashMap<UUID, Provider>();
     private final Map<UUID, UUID> eventDefinitionToProvider = new HashMap<UUID, UUID>();
+    private final Map<UUID, UUID> stateDefinitionToProvider = new HashMap<UUID, UUID>();
     private final Map<UUID, UUID> actionDefinitionToProvider = new HashMap<UUID, UUID>();
     
     
@@ -82,6 +85,11 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	public Map<UUID, EventDefinition> getEventDefinitions() {
     	return Collections.unmodifiableMap(eventDefinitions);
     }
+    
+    @Override
+	public Map<UUID, StateDefinition> getStateDefinitions() {
+    	return Collections.unmodifiableMap(stateDefinitions);
+	}
     
     @Override
     public Map<UUID, Provider> getProviders() {
@@ -138,6 +146,18 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 					} else {
 						eventDefinitions.put(uuid, eventDef);
 						eventDefinitionToProvider.put(uuid, provider.getUuid());
+					}
+				}
+			}
+			
+			if (provider.getStateDefinitions() != null) {
+				for (StateDefinition stateDef : provider.getStateDefinitions()) {
+					UUID uuid = stateDef.getUUID();
+					if (uuid == null) {
+						LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an State Definition with null UUID.");
+					} else {
+						stateDefinitions.put(uuid, stateDef);
+						stateDefinitionToProvider.put(uuid, provider.getUuid());
 					}
 				}
 			}
@@ -235,10 +255,23 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 		
 		return providers.get(providerUuid);
 	}
+	
+	@Override
+	public Provider getProviderByStateDefinitionUuid(UUID stateDefinitionUuid) {
+		UUID providerUuid = stateDefinitionToProvider.get(stateDefinitionUuid);
+		
+		if (providerUuid == null) {
+			return null;
+		}
+		
+		return providers.get(providerUuid);
+	}
 
 	@Override
 	public List<Exception> addProvider(Provider provider) {
 		return initializeProvider(provider);
 	}
+
+	
 
 }

@@ -12,6 +12,7 @@ import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
+import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 public interface ProviderService {
 
@@ -19,11 +20,15 @@ public interface ProviderService {
 
 	public Map<UUID, EventDefinition> getEventDefinitions();
 	
+	public Map<UUID, StateDefinition> getStateDefinitions();
+	
 	public Map<UUID, Provider> getProviders();
 	
 	public Provider getProviderByActionDefinitionUuid(UUID actionDefinitionUuid);
 	
 	public Provider getProviderByEventDefinitionUuid(UUID eventDefinitionUuid);
+	
+	public Provider getProviderByStateDefinitionUuid(UUID stateDefinitionUuid);
 	
 	public Observable<Event> getEvents();
 	

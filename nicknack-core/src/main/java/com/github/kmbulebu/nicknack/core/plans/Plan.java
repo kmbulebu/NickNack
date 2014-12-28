@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilter;
+import com.github.kmbulebu.nicknack.core.states.filters.StateFilter;
 
 public interface Plan {
 	
@@ -14,6 +15,8 @@ public interface Plan {
 	public String getName();
 	
 	public List<EventFilter> getEventFilters();
+	
+	public List<StateFilter> getStateFilters();
 	
 	public List<Action> getActions();
 

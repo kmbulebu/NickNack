@@ -2,8 +2,8 @@ package com.github.kmbulebu.nicknack.example.provider;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.events.AttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.BasicAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.BasicEventDefinition;
 import com.github.kmbulebu.nicknack.core.units.BooleanUnit;
 import com.github.kmbulebu.nicknack.core.units.StringUnit;

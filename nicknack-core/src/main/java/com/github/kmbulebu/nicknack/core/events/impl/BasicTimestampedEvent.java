@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.events.AttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 

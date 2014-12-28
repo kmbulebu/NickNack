@@ -1,4 +1,4 @@
-package com.github.kmbulebu.nicknack.core.events.filters.operators;
+package com.github.kmbulebu.nicknack.core.attributes.filters;
 
 
 public enum Operator {

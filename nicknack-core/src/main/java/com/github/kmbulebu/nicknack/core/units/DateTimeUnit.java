@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
-import com.github.kmbulebu.nicknack.core.events.filters.operators.Operator;
+import com.github.kmbulebu.nicknack.core.attributes.filters.Operator;
 
 public class DateTimeUnit implements Unit {
 	

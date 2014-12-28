@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
+
 public class BasicEventDefinition implements EventDefinition {
 	
 	private final UUID uuid;

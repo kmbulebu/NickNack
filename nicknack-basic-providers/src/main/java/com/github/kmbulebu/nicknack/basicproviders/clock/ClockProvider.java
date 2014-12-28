@@ -1,6 +1,7 @@
 package com.github.kmbulebu.nicknack.basicproviders.clock;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 /**
  * Provides real time clock capabilities to Nick Nack.
@@ -64,6 +66,11 @@ public class ClockProvider implements Provider, Runnable {
 	@Override
 	public List<EventDefinition> getEventDefinitions() {
 		return Collections.unmodifiableList(eventDefinitions);
+	}
+	
+	@Override
+	public Collection<StateDefinition> getStateDefinitions() {
+		return Collections.emptyList();
 	}
 	
 	@Override

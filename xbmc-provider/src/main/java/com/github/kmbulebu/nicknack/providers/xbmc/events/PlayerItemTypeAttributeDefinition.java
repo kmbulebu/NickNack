@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.events.BasicAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.StringUnit;
 
 public class PlayerItemTypeAttributeDefinition extends BasicAttributeDefinition {

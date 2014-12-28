@@ -24,6 +24,7 @@ import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
+import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.actions.DummyActionDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionCompletedEventDefinition;
@@ -40,6 +41,7 @@ public class NickNackServerProviderImpl implements Provider, NickNackServerProvi
 	
 	private final List<EventDefinition> eventDefinitions;
 	private final List<ActionDefinition> actionDefinitions;
+	private final List<StateDefinition> stateDefinitions;
 	
 	private OnEventListener onEventListener;
 	
@@ -52,6 +54,7 @@ public class NickNackServerProviderImpl implements Provider, NickNackServerProvi
 		eventDefinitions = new ArrayList<>(2);
 		eventDefinitions.add(ActionCompletedEventDefinition.INSTANCE);
 		eventDefinitions.add(ActionFailedEventDefinition.INSTANCE);
+		stateDefinitions = Collections.emptyList();
 		actionDefinitions = new ArrayList<>(1);
 		actionDefinitions.add(DummyActionDefinition.INSTANCE);
 	}
@@ -134,6 +137,11 @@ public class NickNackServerProviderImpl implements Provider, NickNackServerProvi
 			event.setAttribute(ActionErrorMessageAttributeDefinition.INSTANCE, errorMessage);
 			onEventListener.onEvent(event);
 		}
+	}
+
+	@Override
+	public Collection<StateDefinition> getStateDefinitions() {
+		return stateDefinitions;
 	}
 
 	
