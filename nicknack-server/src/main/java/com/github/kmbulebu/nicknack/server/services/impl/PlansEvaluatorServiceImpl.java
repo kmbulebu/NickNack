@@ -25,11 +25,16 @@ import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilter;
 import com.github.kmbulebu.nicknack.core.events.filters.EventFilterEvaluator;
+import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
+import com.github.kmbulebu.nicknack.core.states.State;
+import com.github.kmbulebu.nicknack.core.states.filters.StateFilter;
+import com.github.kmbulebu.nicknack.core.states.filters.StateFilterEvaluator;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.model.EventFilterResource;
 import com.github.kmbulebu.nicknack.server.model.PlanResource;
+import com.github.kmbulebu.nicknack.server.model.StateFilterResource;
 import com.github.kmbulebu.nicknack.server.services.ActionQueueService;
 import com.github.kmbulebu.nicknack.server.services.ActionsService;
 import com.github.kmbulebu.nicknack.server.services.EventFiltersService;
@@ -62,6 +67,8 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 	private Subscription eventsSubscription;
 	
 	private EventFilterEvaluator eventFilterEvaluator = new EventFilterEvaluator();
+	
+	private StateFilterEvaluator stateFilterEvaluator = new StateFilterEvaluator();
 	
 	@Autowired
 	private NickNackServerProviderImpl nickNackServerProvider;
@@ -101,6 +108,7 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 			LOG.entry(event);
 		}
 		
+		// TODO Do a more narrow lookup of plans that match the eventDefinition.
 		final List<PlanResource> plans = plansService.getPlans();
 		
 		for (PlanResource plan : plans) {
@@ -138,9 +146,48 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 			}
 		}
 		
-		// TODO Implement evaluation of state.
+
+		boolean stateMatch = false;
 		
-		if (eventMatch) {
+		final Iterator<StateFilterResource> stateFilterIterator = stateFiltersService.getStateFilters(plan.getUUID()).iterator();
+		
+		if (stateFilterIterator.hasNext()) {
+			// If any state filter matches, then this plan is match.
+			while (!stateMatch && stateFilterIterator.hasNext()) {
+				final StateFilter filter = stateFilterIterator.next();
+				
+				final Provider provider = providerService.getProviderByStateDefinitionUuid(filter.getAppliesToStateDefinition());
+				
+				if (provider != null) {
+					// FIXME getStates could be slow as the provider looks up the possible states. 
+					final List<State> states = provider.getStates(filter.getAppliesToStateDefinition());
+					
+					if (states != null) {
+						final Iterator<State> stateIterator = states.iterator();
+						
+						while (!stateMatch && stateIterator.hasNext()) {
+							final State state = stateIterator.next();
+							try {
+								stateMatch = stateFilterEvaluator.evaluate(filter, state);
+							} catch (ParseException e) {
+								LOG.warn("Error parsing some text while evalutaing an state filter. " + e.getMessage(), e);
+								// TODO Generate an error state
+								stateMatch = false;
+							}
+						} // State loop
+					} // If states != null
+				} // If provider != null
+				
+				if (LOG.isInfoEnabled() && stateMatch) {
+					LOG.info("StateFilter matched: " + ((StateFilterResource) filter).getUuid());
+				}
+			} // Loop state filters
+		} else {
+			// State filters are not required. 
+			stateMatch = true;
+		}
+		
+		if (eventMatch && stateMatch) {
 			LOG.info("Plan " + plan.getUUID() + " matches event " + event);
 			for (Action action : actionsService.getActionsByPlan(plan.getUUID())) {
 				LOG.info("Performing action " + action);

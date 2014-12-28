@@ -20,6 +20,7 @@ import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 /**
@@ -103,6 +104,11 @@ public class ClockProvider implements Provider, Runnable {
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
 		// Do nothing
 		return;
+	}
+	
+	@Override
+	public List<State> getStates(UUID stateDefinitionUuid) {
+		return Collections.emptyList();
 	}
 
 

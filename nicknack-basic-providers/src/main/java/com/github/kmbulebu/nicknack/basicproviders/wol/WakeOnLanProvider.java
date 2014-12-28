@@ -18,6 +18,7 @@ import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 /**
@@ -101,6 +102,11 @@ public class WakeOnLanProvider implements Provider {
 				throw new ActionFailureException(e);
 			}
 		}
+	}
+	
+	@Override
+	public List<State> getStates(UUID stateDefinitionUuid) {
+		return Collections.emptyList();
 	}
 
 }

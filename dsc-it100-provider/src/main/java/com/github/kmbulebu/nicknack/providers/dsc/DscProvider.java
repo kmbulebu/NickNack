@@ -29,6 +29,7 @@ import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.CommandOutputActionDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.DscActionDefinition;
@@ -162,6 +163,11 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 
 	@Override
 	public Collection<StateDefinition> getStateDefinitions() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<State> getStates(UUID stateDefinitionUuid) {
 		return Collections.emptyList();
 	}
 

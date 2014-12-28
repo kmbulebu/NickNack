@@ -21,6 +21,7 @@ import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.actions.ShowNotificationActionDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.HostParameterDefinition;
@@ -247,6 +248,11 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 			logger.exit(theClient);
 		}
 		return theClient;
+	}
+	
+	@Override
+	public List<State> getStates(UUID stateDefinitionUuid) {
+		return Collections.emptyList();
 	}
 
 }

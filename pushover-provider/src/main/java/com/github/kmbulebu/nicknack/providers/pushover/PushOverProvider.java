@@ -4,6 +4,7 @@ package com.github.kmbulebu.nicknack.providers.pushover;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 public class PushOverProvider implements Provider {
@@ -79,6 +81,11 @@ public class PushOverProvider implements Provider {
 	@Override
 	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
 		actionDefinitions.put(PushMessageActionDefinition.DEF_UUID, new PushMessageActionDefinition());
+	}
+	
+	@Override
+	public List<State> getStates(UUID stateDefinitionUuid) {
+		return Collections.emptyList();
 	}
 
 }

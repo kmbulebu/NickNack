@@ -24,6 +24,7 @@ import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
+import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.actions.DummyActionDefinition;
@@ -142,6 +143,11 @@ public class NickNackServerProviderImpl implements Provider, NickNackServerProvi
 	@Override
 	public Collection<StateDefinition> getStateDefinitions() {
 		return stateDefinitions;
+	}
+
+	@Override
+	public List<State> getStates(UUID stateDefinitionUuid) {
+		return Collections.emptyList();
 	}
 
 	

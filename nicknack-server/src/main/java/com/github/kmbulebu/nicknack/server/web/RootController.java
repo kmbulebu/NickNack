@@ -19,6 +19,7 @@ import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.model.EventDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.PlanResource;
 import com.github.kmbulebu.nicknack.server.model.ProviderResource;
+import com.github.kmbulebu.nicknack.server.model.StateDefinitionResource;
 
 @RestController
 @RequestMapping(value="/api", produces={"application/hal+json"})
@@ -44,6 +45,7 @@ public class RootController {
 		rootResource.add(getCollectionResourceLink(PlanResource.class));
 		rootResource.add(getCollectionResourceLink(ProviderResource.class));
 		rootResource.add(getCollectionResourceLink(EventDefinitionResource.class));
+		rootResource.add(getCollectionResourceLink(StateDefinitionResource.class));
 		rootResource.add(getCollectionResourceLink(ActionDefinitionResource.class));
 		rootResource.add(getCollectionResourceLink(ActionResource.class));
 

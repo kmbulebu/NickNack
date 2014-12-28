@@ -169,6 +169,10 @@ public class XbmcClient {
 		    	} else {
 		    		retries++;
 		    	}
+		    } catch (InterruptedException e) {
+		    	logger.error("Connection interrupted. Stopping.");
+	    		// Interrupted
+	    		stopRequested = true;
 		    }
 	    } while (!stopRequested && lastException != null);
 	    

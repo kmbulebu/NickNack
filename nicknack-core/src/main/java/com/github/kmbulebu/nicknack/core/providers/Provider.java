@@ -1,6 +1,7 @@
 package com.github.kmbulebu.nicknack.core.providers;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
+import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 /**
@@ -59,6 +61,11 @@ public interface Provider {
 	 * @return A list of all possible actions this provider may perform.
 	 */
 	public Collection<ActionDefinition> getActionDefinitions();
+	
+	/**
+	 * 
+	 */
+	public List<State> getStates(UUID stateDefinitionUuid);
 	
 	/**
 	 * 

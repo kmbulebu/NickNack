@@ -23,19 +23,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.kmbulebu.nicknack.server.Application;
-import com.github.kmbulebu.nicknack.server.model.ActionResource;
-import com.github.kmbulebu.nicknack.server.model.PlanResource;
-import com.github.kmbulebu.nicknack.server.services.PlansService;
+import com.github.kmbulebu.nicknack.server.model.StateFilterResource;
+import com.github.kmbulebu.nicknack.server.services.StateFiltersService;
 
 @RestController
-@RequestMapping(value="/api/plans", produces={"application/hal+json"})
-@ExposesResourceFor(PlanResource.class)
-public class PlansController {
+@RequestMapping(value="/api/plans/{planUuid}/stateFilters", produces={"application/hal+json"})
+@ExposesResourceFor(StateFilterResource.class)
+public class PlansStateFiltersController {
 	
 	private static final Logger LOG = LogManager.getLogger(Application.APP_LOGGER_NAME);
 	
 	@Autowired
-	private PlansService plansService;
+	private StateFiltersService stateFiltersService;
 	
 	@Autowired
 	private RelProvider relProvider;
@@ -44,17 +43,17 @@ public class PlansController {
 	private EntityLinks entityLinks;
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<PlanResource> getPlans() {
+	public Resources<StateFilterResource> getStateFilters(@PathVariable UUID planUuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
 		
-		final List<PlanResource> planResources = plansService.getPlans();
+		final List<StateFilterResource> stateFilterResources = stateFiltersService.getStateFilters(planUuid);
 				
-		final Resources<PlanResource> resources = new Resources<PlanResource>(planResources);
+		final Resources<StateFilterResource> resources = new Resources<StateFilterResource>(stateFilterResources);
 		
 		// Add links
-		addLinks(resources);
+		addLinks(planUuid, resources);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resources);
@@ -64,14 +63,14 @@ public class PlansController {
 	
 	@RequestMapping(value="", method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.CREATED)
-	public PlanResource createPlan(@RequestBody PlanResource newPlan) {
+	public StateFilterResource createStateFilter(@PathVariable UUID planUuid, @RequestBody StateFilterResource newStateFilter) {
 		if (LOG.isTraceEnabled()) {
-			LOG.entry(newPlan);
+			LOG.entry(newStateFilter);
 		}
 		
-		final PlanResource resource = plansService.createPlan(newPlan);
+		final StateFilterResource resource = stateFiltersService.createStateFilter(planUuid, newStateFilter);
 		
-		addLinks(resource);
+		addLinks(planUuid, resource);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resource);
@@ -81,18 +80,18 @@ public class PlansController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.OK)
-	public PlanResource modifyPlan(@PathVariable UUID uuid, @RequestBody PlanResource plan) {
+	public StateFilterResource modifyStateFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid, @RequestBody StateFilterResource stateFilter) {
 		if (LOG.isTraceEnabled()) {
-			LOG.entry(plan);
+			LOG.entry(stateFilter);
 		}
 		
-		if (!uuid.equals(plan.getUUID())) {
-			throw new IllegalArgumentException("Plan uuid did not match path.");
+		if (!uuid.equals(stateFilter.getUuid())) {
+			throw new IllegalArgumentException("State Filter uuid did not match path.");
 		}
 		
-		final PlanResource resource = plansService.modifyPlan(plan);
+		final StateFilterResource resource = stateFiltersService.modifyStateFilter(stateFilter);
 		
-		addLinks(resource);
+		addLinks(planUuid, resource);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resource);
@@ -101,14 +100,14 @@ public class PlansController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public PlanResource getPlan(@PathVariable UUID uuid) {
+	public StateFilterResource getStateFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
 		
-		final PlanResource resource = plansService.getPlan(uuid);
+		final StateFilterResource resource = stateFiltersService.getStateFilter(uuid);
 		
-		addLinks(resource);
+		addLinks(planUuid, resource);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(resource);
@@ -118,30 +117,27 @@ public class PlansController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.DELETE})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deletePlan(@PathVariable UUID uuid) {
+	public void deleteStateFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
 		
-		plansService.deletePlan(uuid);
+		stateFiltersService.deleteStateFilter(uuid);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit();
 		}
 	}
 	
-	private void addLinks(PlanResource resource) {
-		resource.add(linkTo(methodOn(PlansController.class).getPlan(resource.getUUID())).withSelfRel());
-		resource.add(linkTo(methodOn(PlansEventFiltersController.class).getEventFilters(resource.getUUID())).withRel("eventFilters"));
-		resource.add(linkTo(methodOn(PlansStateFiltersController.class).getStateFilters(resource.getUUID())).withRel("stateFilters"));
-		resource.add(linkTo(methodOn(ActionsController.class).getActionsByPlan(resource.getUUID())).withRel(relProvider.getCollectionResourceRelFor(ActionResource.class)));
+	private void addLinks(UUID planUuid, StateFilterResource resource) {
+		resource.add(linkTo(methodOn(PlansStateFiltersController.class).getStateFilter(planUuid, resource.getUuid())).withSelfRel());
 	}
 	
-	private void addLinks(Resources<PlanResource> resources) {
-		resources.add(entityLinks.linkToCollectionResource(PlanResource.class));
+	private void addLinks(UUID planUuid, Resources<StateFilterResource> resources) {
+		resources.add(linkTo(methodOn(PlansStateFiltersController.class).getStateFilters(planUuid)).withSelfRel());
 		
-		for (PlanResource resource : resources.getContent()) {
-			addLinks(resource);
+		for (StateFilterResource resource : resources.getContent()) {
+			addLinks(planUuid, resource);
 		}
 	}
 
