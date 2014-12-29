@@ -2,15 +2,15 @@ package com.github.kmbulebu.nicknack.basicproviders.clock;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.events.impl.DayOfMonthAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.DayOfWeekAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.HourOfDayAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.LongFormatDateAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.LongFormatTimeAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.MinuteOfHourAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.MonthOfYearNumericalAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.SecondOfMinuteAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.YearAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.DayOfMonthAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.DayOfWeekAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.HourOfDayAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.LongFormatDateAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.LongFormatTimeAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.MinuteOfHourAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.MonthOfYearNumericalAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.SecondOfMinuteAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.YearAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.states.BasicStateDefinition;
 
 /**
@@ -30,10 +30,10 @@ public class ClockStateDefinition extends BasicStateDefinition {
 	public static ClockStateDefinition INSTANCE = new ClockStateDefinition();
 
 	public ClockStateDefinition() {
-		super(INSTANCE_UUID, "Current Time", YearAttributeDefinition.INSTANCE,
+		super(INSTANCE_UUID, "Current Time", LongFormatDateAttributeDefinition.INSTANCE, LongFormatTimeAttributeDefinition.INSTANCE, YearAttributeDefinition.INSTANCE,
 				MonthOfYearNumericalAttributeDefinition.INSTANCE, DayOfMonthAttributeDefinition.INSTANCE,
 				DayOfWeekAttributeDefinition.INSTANCE, HourOfDayAttributeDefinition.INSTANCE,
-				MinuteOfHourAttributeDefinition.INSTANCE, SecondOfMinuteAttributeDefinition.INSTANCE, LongFormatDateAttributeDefinition.INSTANCE, LongFormatTimeAttributeDefinition.INSTANCE);
+				MinuteOfHourAttributeDefinition.INSTANCE, SecondOfMinuteAttributeDefinition.INSTANCE);
 	}
 
 }

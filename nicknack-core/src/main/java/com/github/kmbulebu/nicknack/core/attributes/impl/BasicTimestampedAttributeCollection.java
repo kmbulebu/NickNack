@@ -12,15 +12,6 @@ import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.DayOfMonthAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.DayOfWeekAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.HourOfDayAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.LongFormatDateAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.LongFormatTimeAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.MinuteOfHourAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.MonthOfYearNumericalAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.SecondOfMinuteAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.events.impl.YearAttributeDefinition;
 
 public class BasicTimestampedAttributeCollection implements AttributeCollection {
 	

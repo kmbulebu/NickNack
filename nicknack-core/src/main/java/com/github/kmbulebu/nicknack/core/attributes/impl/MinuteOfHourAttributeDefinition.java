@@ -1,4 +1,4 @@
-package com.github.kmbulebu.nicknack.core.events.impl;
+package com.github.kmbulebu.nicknack.core.attributes.impl;
 
 import java.util.UUID;
 

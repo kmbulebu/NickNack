@@ -6,6 +6,15 @@ import java.util.List;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.DayOfMonthAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.DayOfWeekAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.HourOfDayAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.LongFormatDateAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.LongFormatTimeAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.MinuteOfHourAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.MonthOfYearNumericalAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.SecondOfMinuteAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.YearAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.BasicEventDefinition;
 
 /**
