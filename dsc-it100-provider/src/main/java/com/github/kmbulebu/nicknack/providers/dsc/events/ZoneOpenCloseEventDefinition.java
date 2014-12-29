@@ -3,6 +3,9 @@ package com.github.kmbulebu.nicknack.providers.dsc.events;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEventDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneLabelAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneNumberAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneOpenAttributeDefinition;
 
 public class ZoneOpenCloseEventDefinition extends BasicTimestampedEventDefinition {
 	

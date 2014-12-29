@@ -1,4 +1,4 @@
-package com.github.kmbulebu.nicknack.providers.dsc;
+package com.github.kmbulebu.nicknack.providers.dsc.internal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,17 +18,17 @@ import com.github.kmbulebu.dsc.it100.commands.read.ZoneRestoredCommand;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.PartitionArmedModeAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.PartitionLabelAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.PartitionNumberAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneLabelAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneNumberAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneOpenAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.events.EntryDelayInProgressEventDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.events.ExitDelayInProgressEventDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.events.PartitionArmedEventDefinition;
-import com.github.kmbulebu.nicknack.providers.dsc.events.PartitionArmedModeAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.events.PartitionDisarmedEventDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.events.PartitionInAlarmEventDefinition;
-import com.github.kmbulebu.nicknack.providers.dsc.events.PartitionLabelAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.dsc.events.PartitionNumberAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.dsc.events.ZoneLabelAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.dsc.events.ZoneNumberAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.dsc.events.ZoneOpenAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.events.ZoneOpenCloseEventDefinition;
 
 public class CommandToEventMapper {

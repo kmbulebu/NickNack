@@ -1,4 +1,4 @@
-package com.github.kmbulebu.nicknack.providers.dsc.events;
+package com.github.kmbulebu.nicknack.providers.dsc.attributes;
 
 import java.util.UUID;
 

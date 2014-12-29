@@ -20,6 +20,7 @@ import com.github.kmbulebu.dsc.it100.ConfigurationBuilder;
 import com.github.kmbulebu.dsc.it100.IT100;
 import com.github.kmbulebu.dsc.it100.Labels;
 import com.github.kmbulebu.dsc.it100.commands.read.ReadCommand;
+import com.github.kmbulebu.dsc.it100.commands.write.StatusRequestCommand;
 import com.github.kmbulebu.dsc.it100.commands.write.WriteCommand;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
@@ -44,6 +45,12 @@ import com.github.kmbulebu.nicknack.providers.dsc.events.PartitionArmedEventDefi
 import com.github.kmbulebu.nicknack.providers.dsc.events.PartitionDisarmedEventDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.events.PartitionInAlarmEventDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.events.ZoneOpenCloseEventDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.internal.CommandToEventMapper;
+import com.github.kmbulebu.nicknack.providers.dsc.internal.CommandToStateMapper;
+import com.github.kmbulebu.nicknack.providers.dsc.internal.Zone;
+import com.github.kmbulebu.nicknack.providers.dsc.internal.Zones;
+import com.github.kmbulebu.nicknack.providers.dsc.states.ZoneOpenState;
+import com.github.kmbulebu.nicknack.providers.dsc.states.ZoneOpenStateDefinition;
 
 public class DscProvider implements Provider, Action1<ReadCommand> {
 	
@@ -55,8 +62,12 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	
 	private final List<EventDefinition> eventDefinitions;
 	private final Map<UUID, ActionDefinition> actionDefinitions;
+	private final List<StateDefinition> stateDefinitions;
 	private OnEventListener onEventListener = null;
 	private CommandToEventMapper eventMapper;
+	private CommandToStateMapper stateMapper;
+	
+	private Zones zones;
 	private Labels labels;
 	
 	public DscProvider() {
@@ -67,6 +78,9 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		this.eventDefinitions.add(PartitionDisarmedEventDefinition.INSTANCE);
 		this.eventDefinitions.add(EntryDelayInProgressEventDefinition.INSTANCE);
 		this.eventDefinitions.add(ExitDelayInProgressEventDefinition.INSTANCE);
+		
+		this.stateDefinitions = new ArrayList<>(1);
+		this.stateDefinitions.add(ZoneOpenStateDefinition.INSTANCE);
 		
 		this.actionDefinitions = new HashMap<>();
 	}
@@ -126,9 +140,13 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		final Observable<ReadCommand> readObservable = it100.getReadObservable();
 		final PublishSubject<WriteCommand> writeObservable = it100.getWriteObservable();
 		
+		// Begin tracking zone state and request the initial state.
+		zones = new Zones();
+		stateMapper = new CommandToStateMapper(zones);
+		writeObservable.onNext(new StatusRequestCommand());
+		
 		// Labels gives us friendly names to our zones.
 		labels = new Labels(readObservable, writeObservable);
-		
 		eventMapper = new CommandToEventMapper(labels);
 		
 		this.onEventListener = onEventListener;
@@ -140,12 +158,15 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		this.actionDefinitions.put(PartitionArmNoEntryDelayActionDefinition.DEF_UUID, new PartitionArmNoEntryDelayActionDefinition(writeObservable));
 		this.actionDefinitions.put(PartitionArmWithCodeActionDefinition.DEF_UUID, new PartitionArmWithCodeActionDefinition(writeObservable));
 		
+		// TODO Delay a reasonable amount of time before creating events.
 		readObservable.ofType(ReadCommand.class).subscribe(this);
 
 	}
 
 	@Override
 	public void call(ReadCommand readCommand) {
+		// FIXME Subscription comes after we call StatusRequestCommand
+		stateMapper.map(readCommand);
 		final Event event = eventMapper.map(readCommand);
 		if (event != null) {
 			onEventListener.onEvent(event);
@@ -163,12 +184,32 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 
 	@Override
 	public Collection<StateDefinition> getStateDefinitions() {
-		return Collections.emptyList();
+		return stateDefinitions;
 	}
 
 	@Override
 	public List<State> getStates(UUID stateDefinitionUuid) {
+		if (ZoneOpenStateDefinition.INSTANCE.getUUID().equals(stateDefinitionUuid)) {
+			return getZoneOpenStates();
+		}
 		return Collections.emptyList();
 	}
+	
+	protected List<State> getZoneOpenStates() {
+		final List<State> states = new ArrayList<>();
+	
+		for (int i = 1; i <= 128; i++) {
+			final Zone zone = zones.getZone(i);
+			if (zone != null) {
+				final ZoneOpenState state = new ZoneOpenState();
+				state.setZoneNumber(i);
+				state.setZoneOpen(zone.isOpen());
+				state.setZoneLabel(labels.getZoneLabel(i));
+				states.add(state);
+			}
+		}
+		
+		return states;
+ 	}
 
 }

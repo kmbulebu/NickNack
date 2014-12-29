@@ -3,6 +3,8 @@ package com.github.kmbulebu.nicknack.providers.dsc.events;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEventDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.PartitionLabelAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.PartitionNumberAttributeDefinition;
 
 public class EntryDelayInProgressEventDefinition extends BasicTimestampedEventDefinition {
 	
