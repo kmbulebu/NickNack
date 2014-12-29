@@ -2,10 +2,12 @@ package com.github.kmbulebu.nicknack.providers.dsc.internal;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import com.github.kmbulebu.dsc.it100.Labels;
 import com.github.kmbulebu.dsc.it100.commands.read.BasePartitionCommand;
+import com.github.kmbulebu.dsc.it100.commands.read.BasePartitionZoneCommand;
 import com.github.kmbulebu.dsc.it100.commands.read.BaseZoneCommand;
 import com.github.kmbulebu.dsc.it100.commands.read.EntryDelayInProgressCommand;
 import com.github.kmbulebu.dsc.it100.commands.read.ExitDelayInProgressCommand;
@@ -34,12 +36,23 @@ import com.github.kmbulebu.nicknack.providers.dsc.events.ZoneOpenCloseEventDefin
 public class CommandToEventMapper {
 	
 	private final Labels labels;
+	private Set<Integer> activeZones;
 	
-	public CommandToEventMapper(Labels labels) {
+	public CommandToEventMapper(Labels labels, Set<Integer> activeZones) {
 		this.labels = labels;
+		this.activeZones = activeZones;
 	}
 	
 	public Event map(ReadCommand readCommand) {
+		if (readCommand instanceof BaseZoneCommand) {
+			if (activeZones != null && !activeZones.contains(((BaseZoneCommand) readCommand).getZone())) {
+				return null;
+			}
+		} else if (readCommand instanceof BasePartitionZoneCommand) {
+			if (activeZones != null && !activeZones.contains(((BasePartitionZoneCommand) readCommand).getZone())) {
+				return null;
+			}
+		}
 		if (readCommand instanceof ZoneOpenCommand) {
 			return toEvent((ZoneOpenCommand) readCommand);
 		} else if (readCommand instanceof ZoneRestoredCommand) {

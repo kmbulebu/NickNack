@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
@@ -70,6 +71,8 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	private Zones zones;
 	private Labels labels;
 	
+	private Set<Integer> activeZones = null;
+	
 	public DscProvider() {
 		this.eventDefinitions = new ArrayList<>(6);
 		this.eventDefinitions.add(ZoneOpenCloseEventDefinition.INSTANCE);
@@ -126,6 +129,15 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		
 		final String host = configuration.getString("host");
 		final int port = configuration.getInt("port");
+		final String activeZoneList = configuration.getString("activeZones");
+		if (activeZoneList != null && activeZoneList.length() > 0) {
+			String[] values = activeZoneList.split(",");
+			for (String value : values) {
+				if (value.matches("\\d+")) {
+					this.activeZones.add(Integer.parseInt(value));
+				}
+ 			}
+		}
 		
 		final IT100 it100 = new IT100(new ConfigurationBuilder().withRemoteSocket(host, port).build());
 		
@@ -142,12 +154,12 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		
 		// Begin tracking zone state and request the initial state.
 		zones = new Zones();
-		stateMapper = new CommandToStateMapper(zones);
+		stateMapper = new CommandToStateMapper(zones, activeZones);
 		writeObservable.onNext(new StatusRequestCommand());
 		
 		// Labels gives us friendly names to our zones.
 		labels = new Labels(readObservable, writeObservable);
-		eventMapper = new CommandToEventMapper(labels);
+		eventMapper = new CommandToEventMapper(labels, activeZones);
 		
 		this.onEventListener = onEventListener;
 		

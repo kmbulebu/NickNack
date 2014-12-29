@@ -1,5 +1,7 @@
 package com.github.kmbulebu.nicknack.providers.dsc.internal;
 
+import java.util.Set;
+
 import com.github.kmbulebu.dsc.it100.commands.read.BaseZoneCommand;
 import com.github.kmbulebu.dsc.it100.commands.read.ReadCommand;
 import com.github.kmbulebu.dsc.it100.commands.read.ZoneOpenCommand;
@@ -8,9 +10,11 @@ import com.github.kmbulebu.dsc.it100.commands.read.ZoneRestoredCommand;
 public class CommandToStateMapper {
 	
 	private final Zones zones;
+	private final Set<Integer> activeZones;
 	
-	public CommandToStateMapper(Zones zones) {
+	public CommandToStateMapper(Zones zones, Set<Integer> activeZones) {
 		this.zones = zones;
+		this.activeZones = activeZones;
 	}
 	
 	public void map(ReadCommand readCommand) {
@@ -23,12 +27,16 @@ public class CommandToStateMapper {
 	
 	protected void mapCommand(ZoneOpenCommand command) {
 		final Zone zone = getOrCreateZone(command);
-		zone.setOpen(true);
+		if (zone != null) {
+			zone.setOpen(true);
+		}
 	}
 
 	protected void mapCommand(ZoneRestoredCommand command) {
 		final Zone zone = getOrCreateZone(command);
-		zone.setOpen(false);
+		if (zone != null) {
+			zone.setOpen(false);
+		}
 	}
 	
 	protected Zone getOrCreateZone(BaseZoneCommand command) {
@@ -36,6 +44,9 @@ public class CommandToStateMapper {
 	}
 	
 	protected Zone getOrCreateZone(int zoneNumber) {
+		if (activeZones != null && !activeZones.contains(zoneNumber)) {
+			return null;
+		}
 		Zone zone = zones.getZone(zoneNumber);
 		if (zone == null) {
 			zone = new Zone();

@@ -37,6 +37,8 @@ public abstract class BasicTimestampedEventDefinition extends BasicEventDefiniti
 		attributeDefinitions.add(HourOfDayAttributeDefinition.INSTANCE);
 		attributeDefinitions.add(MinuteOfHourAttributeDefinition.INSTANCE);
 		attributeDefinitions.add(SecondOfMinuteAttributeDefinition.INSTANCE);
+		attributeDefinitions.add(LongFormatTimeAttributeDefinition.INSTANCE);
+		attributeDefinitions.add(LongFormatDateAttributeDefinition.INSTANCE);
 		attributeDefinitions.addAll(newAttributeDefinitions);
 		return attributeDefinitions;
 	}

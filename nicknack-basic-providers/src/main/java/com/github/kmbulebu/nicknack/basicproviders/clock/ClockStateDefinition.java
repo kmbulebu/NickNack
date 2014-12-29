@@ -5,6 +5,8 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.events.impl.DayOfMonthAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.DayOfWeekAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.HourOfDayAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.events.impl.LongFormatDateAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.events.impl.LongFormatTimeAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.MinuteOfHourAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.MonthOfYearNumericalAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.SecondOfMinuteAttributeDefinition;
@@ -31,7 +33,7 @@ public class ClockStateDefinition extends BasicStateDefinition {
 		super(INSTANCE_UUID, "Current Time", YearAttributeDefinition.INSTANCE,
 				MonthOfYearNumericalAttributeDefinition.INSTANCE, DayOfMonthAttributeDefinition.INSTANCE,
 				DayOfWeekAttributeDefinition.INSTANCE, HourOfDayAttributeDefinition.INSTANCE,
-				MinuteOfHourAttributeDefinition.INSTANCE, SecondOfMinuteAttributeDefinition.INSTANCE);
+				MinuteOfHourAttributeDefinition.INSTANCE, SecondOfMinuteAttributeDefinition.INSTANCE, LongFormatDateAttributeDefinition.INSTANCE, LongFormatTimeAttributeDefinition.INSTANCE);
 	}
 
 }
