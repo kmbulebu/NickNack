@@ -34,15 +34,20 @@ public class ClockProvider implements Provider, Runnable {
 	
 	private final List<EventDefinition> eventDefinitions;
 	private final List<ActionDefinition> actionDefinitions;
+	private final List<StateDefinition> stateDefinitions;
 	private final ScheduledExecutorService executorService;
 	
 	private OnEventListener onEventListener;
 	
 	public ClockProvider() {
-		eventDefinitions = new ArrayList<EventDefinition>(1);
+		eventDefinitions = new ArrayList<>(1);
 		eventDefinitions.add(ClockTickEventDefinition.INSTANCE);
 		
-		actionDefinitions = new ArrayList<ActionDefinition>(0);
+		actionDefinitions = new ArrayList<>(0);
+		
+		stateDefinitions = new ArrayList<>(1);
+		
+		stateDefinitions.add(ClockStateDefinition.INSTANCE);
 		
 		executorService = Executors.newScheduledThreadPool(2);
 	}
@@ -71,7 +76,7 @@ public class ClockProvider implements Provider, Runnable {
 	
 	@Override
 	public Collection<StateDefinition> getStateDefinitions() {
-		return Collections.emptyList();
+		return stateDefinitions;
 	}
 	
 	@Override
@@ -108,8 +113,16 @@ public class ClockProvider implements Provider, Runnable {
 	
 	@Override
 	public List<State> getStates(UUID stateDefinitionUuid) {
+		if (ClockStateDefinition.INSTANCE_UUID.equals(stateDefinitionUuid)) {
+			return getClockStates();
+		}
 		return Collections.emptyList();
 	}
 
+	private List<State> getClockStates() {
+		final List<State> states = new ArrayList<>();
+		states.add(new ClockState());	
+		return states;
+	}
 
 }
