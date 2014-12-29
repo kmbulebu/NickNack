@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -129,10 +130,10 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		
 		final String host = configuration.getString("host");
 		final int port = configuration.getInt("port");
-		final String activeZoneList = configuration.getString("activeZones");
-		if (activeZoneList != null && activeZoneList.length() > 0) {
-			String[] values = activeZoneList.split(",");
-			for (String value : values) {
+		final String[] activeZoneList = configuration.getStringArray("activeZones");
+		if (activeZoneList != null && activeZoneList.length > 0) {
+			this.activeZones = new HashSet<>();
+			for (String value : activeZoneList) {
 				if (value.matches("\\d+")) {
 					this.activeZones.add(Integer.parseInt(value));
 				}

@@ -20,7 +20,7 @@ public class ProviderClassloader extends URLClassLoader {
 
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
-		if (name.startsWith("com.oakcity.nicknack.core")) {
+		if (name.startsWith("com.github.kmbulebu.nicknack.core")) {
 			return super.loadClass(name);
 		} else {
 			throw new ClassNotFoundException(name);

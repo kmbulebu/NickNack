@@ -8,6 +8,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.DirectoryStream.Filter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -44,8 +45,14 @@ public class ProviderLoader {
 		final ServiceLoader<Provider> loader = ServiceLoader.load(Provider.class, classLoader);
 		
 		final List<Provider> providers = new LinkedList<Provider>();
-		for (Provider provider : loader) {
-			providers.add(provider);
+		final Iterator<Provider> iterator = loader.iterator();
+		while (iterator.hasNext()) {
+			try {
+				providers.add(iterator.next());
+			} catch (Throwable e) {
+				e.printStackTrace();
+				//TODO Log
+			}
 		}
 		
 		return providers;
