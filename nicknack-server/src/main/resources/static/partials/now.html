@@ -1,0 +1,19 @@
+<h2 class="sub-header">Current State</h2>
+<div class="form-group">
+    <label for="providerSelect" class="control-label">Provider</label>
+    <select id="providerSelect" class="form-control" ng-model="provider" ng-change="onProviderChange()" ng-options="provider.name for provider in providers"></select>
+</div>
+<div ng-if="stateses.length == 0">Current state not available for {{provider.name}} provider.</div>
+<div class="panel panel-default" ng-repeat="aStates in stateses">
+    <div class="panel-heading">{{aStates.stateDefinition.name}}</div>
+    <div class="panel-body">
+        <div class="panel panel-default" ng-repeat="state in aStates.states">
+        <table class="table table-striped">
+        <tr ng-repeat="(key, value) in state.attributes">
+            <td>{{value}}</td>
+            <td>{{getAttributeName(state, key)}}</td>
+        </tr>
+        </table>
+        </div>
+    </div>
+</div>

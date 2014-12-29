@@ -40,7 +40,7 @@ public class StatesServiceImpl implements StatesService{
 			for (StateDefinition stateDefinition : provider.getStateDefinitions()) {
 				final List<State> states = provider.getStates(stateDefinition.getUUID());
 				final StatesResource resource = new StatesResource();
-				resource.setStateDefinitionUuid(stateDefinition.getUUID());
+				resource.setStateDefinition(stateDefinition);
 				resource.setStates(states);
 				resources.add(resource);
 			}
@@ -65,7 +65,7 @@ public class StatesServiceImpl implements StatesService{
 		for (StateDefinition stateDefinition : provider.getStateDefinitions()) {
 			final List<State> states = provider.getStates(stateDefinition.getUUID());
 			final StatesResource resource = new StatesResource();
-			resource.setStateDefinitionUuid(stateDefinition.getUUID());
+			resource.setStateDefinition(stateDefinition);
 			resource.setStates(states);
 			resources.add(resource);
 		}
@@ -83,10 +83,17 @@ public class StatesServiceImpl implements StatesService{
 		}
 		
 		final Provider provider = providerService.getProviderByStateDefinitionUuid(stateDefinitionUuid);
+		StateDefinition stateDefinition = null;
+		for (StateDefinition aDefinition : provider.getStateDefinitions()) {
+			if (aDefinition.getUUID().equals(stateDefinitionUuid)) {
+				stateDefinition = aDefinition;
+				break;
+			}
+		}
 		
 		final List<State> states = provider.getStates(stateDefinitionUuid);
 		final StatesResource resource = new StatesResource();
-		resource.setStateDefinitionUuid(stateDefinitionUuid);
+		resource.setStateDefinition(stateDefinition);
 		resource.setStates(states);
 		
 		if (LOG.isTraceEnabled()) {

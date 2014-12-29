@@ -33,7 +33,7 @@ public class PushOverProvider implements Provider {
 
 	@Override
 	public String getName() {
-		return "PushOver";
+		return "Pushover";
 	}
 
 	@Override

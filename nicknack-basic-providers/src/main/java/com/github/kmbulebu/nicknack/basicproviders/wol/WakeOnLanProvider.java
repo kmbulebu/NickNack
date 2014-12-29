@@ -47,11 +47,11 @@ public class WakeOnLanProvider implements Provider {
 	}
 	@Override
 	public String getName() {
-		return "WakeOnLan Provider";
+		return "WakeOnLan";
 	}
 	@Override
 	public String getAuthor() {
-		return "Nick Nack";
+		return "NickNack";
 	}
 	@Override
 	public int getVersion() {

@@ -12,6 +12,48 @@ nicknackControllers.controller('PlansCtrl', ['$scope', '$route', 'WebsiteService
 		
 	};
 	
+}]);
+
+nicknackControllers.controller('NowCtrl', ['$scope', '$route', 'WebsiteService', 'StaticDataService', 'providers', 
+                                             function ($scope, $route, WebsiteService, StaticDataService, providers) {  	
+    $scope.providers = providers;
+    var providerUuid = $route.current.params.providerUuid;
+    
+    if (providerUuid) {
+    	// Select provider by UUID
+    	for (i = 0; i < providers.length; i++) {
+    		if (providers[i].uuid === providerUuid) {
+    			$scope.provider = providers[i];
+    		}
+    	}
+    	
+    	// Load states
+    	$scope.provider.$get('Stateses').then(function (page) {
+    		if (page.$has('Stateses')) {
+    			return page.$get('Stateses');
+    		} else {
+    			return [];
+    		}
+		}, function(error) {
+			return [];
+		}).then(function (resource) {
+			$scope.stateses = resource;
+		});
+    }
+    
+    $scope.onProviderChange = function() {
+    	window.location = '#/now/' + $scope.provider.uuid;
+    }
+    
+    $scope.getAttributeName = function(state, attributeDefinitionUuid) {
+    	var attributeDefinitions = state.stateDefinition.attributeDefinitions;
+    	for (i = 0; i < attributeDefinitions.length; i++) {
+    		if (attributeDefinitions[i].uuid === attributeDefinitionUuid) {
+    			return attributeDefinitions[i].name;
+    		}
+    	}
+    }
+      	
 }]);	
 
 nicknackControllers.controller('NewPlanCtrl', ['$scope', '$rootScope', '$routeParams', '$route', 'WebsiteService', 'StaticDataService',

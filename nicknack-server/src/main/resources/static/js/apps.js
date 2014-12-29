@@ -11,6 +11,24 @@ nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider,
 	}).when('/liveEvents', {
 		templateUrl : 'partials/events.html',
 		controller : 'EventsCtrl'
+	}).when('/now/:providerUuid?', {
+		templateUrl : 'partials/now.html',
+		controller : 'NowCtrl',
+		resolve: {
+			providers: function($route, RestService) {
+				return RestService
+					.api()
+					.then(function (apiResource) {
+						return apiResource.$get('Providers');
+				}).then(function (resource) {
+					if (resource.$has('Providers')) {
+						return resource.$get('Providers');
+					} else {
+						return [];
+					}
+				});
+			}
+		}
 	}).when('/home', {
 		templateUrl : 'partials/home.html',
 		controller : ''

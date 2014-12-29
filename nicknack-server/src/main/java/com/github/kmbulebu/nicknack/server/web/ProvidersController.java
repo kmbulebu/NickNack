@@ -26,6 +26,8 @@ import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.ActionDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.EventDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.ProviderResource;
+import com.github.kmbulebu.nicknack.server.model.StateDefinitionResource;
+import com.github.kmbulebu.nicknack.server.model.StatesResource;
 
 
 @RestController
@@ -59,7 +61,10 @@ public class ProvidersController {
 			resource.add(linkTo(methodOn(ProvidersController.class).getProvider(provider.getUuid())).withSelfRel());
 			resource.add(linkTo(methodOn(EventDefinitionsController.class).getEventDefinitions(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(EventDefinitionResource.class)));
 			resource.add(linkTo(methodOn(ActionDefinitionsController.class).getActionDefinitions(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(ActionDefinitionResource.class)));
+			resource.add(linkTo(methodOn(StateDefinitionsController.class).getStateDefinitions(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(StateDefinitionResource.class)));
+			resource.add(linkTo(methodOn(StatesController.class).getAllStates(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(StatesResource.class)));
 			providerResources.add(resource);
+			
 		}
 		
 		final Resources<ProviderResource> resources = new Resources<ProviderResource>(providerResources);
@@ -82,6 +87,8 @@ public class ProvidersController {
 		resource.add(linkTo(methodOn(ProvidersController.class).getProvider(provider.getUuid())).withSelfRel());
 		resource.add(linkTo(methodOn(EventDefinitionsController.class).getEventDefinitions(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(EventDefinitionResource.class)));
 		resource.add(linkTo(methodOn(ActionDefinitionsController.class).getActionDefinitions(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(ActionDefinitionResource.class)));
+		resource.add(linkTo(methodOn(StateDefinitionsController.class).getStateDefinitions(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(StateDefinitionResource.class)));
+		resource.add(linkTo(methodOn(StatesController.class).getAllStates(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(StatesResource.class)));
 		
 			
 		if (LOG.isTraceEnabled()) {

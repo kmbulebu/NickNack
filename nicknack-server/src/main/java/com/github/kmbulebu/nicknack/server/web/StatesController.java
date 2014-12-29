@@ -78,8 +78,8 @@ public class StatesController {
 		
 		final StatesResource resource = statesService.getStates(uuid);
 		
-		resource.add(entityLinks.linkToSingleResource(StatesResource.class, uuid));
-		resource.add(linkTo(methodOn(StateDefinitionsController.class).getStateDefinition(resource.getStateDefinitionUuid())).withRel(relProvider.getItemResourceRelFor(StateDefinitionResource.class)));
+		resource.add(entityLinks.linkToSingleResource(StatesResource.class, uuid).withSelfRel());
+		resource.add(linkTo(methodOn(StateDefinitionsController.class).getStateDefinition(resource.getStateDefinition().getUUID())).withRel(relProvider.getItemResourceRelFor(StateDefinitionResource.class)));
 		
 			
 		if (LOG.isTraceEnabled()) {
@@ -95,8 +95,8 @@ public class StatesController {
 		}
 		
 		for (StatesResource resource : statesResources) {
-			resource.add(entityLinks.linkToSingleResource(StatesResource.class, resource.getStateDefinitionUuid()).withRel(relProvider.getItemResourceRelFor(StatesResource.class)));
-			resource.add(linkTo(methodOn(StateDefinitionsController.class).getStateDefinition(resource.getStateDefinitionUuid())).withRel(relProvider.getItemResourceRelFor(StateDefinitionResource.class)));
+			resource.add(entityLinks.linkToSingleResource(StatesResource.class, resource.getStateDefinition().getUUID()).withSelfRel());
+			resource.add(linkTo(methodOn(StateDefinitionsController.class).getStateDefinition(resource.getStateDefinition().getUUID())).withRel(relProvider.getItemResourceRelFor(StateDefinitionResource.class)));
 		}
 		
 		final Resources<StatesResource> resources = new Resources<>(statesResources);

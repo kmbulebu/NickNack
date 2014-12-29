@@ -13,7 +13,7 @@ public class ZoneStateDefinition extends BasicStateDefinition {
 
 	private ZoneStateDefinition() {
 		super(UUID.fromString("5d3cb7d1-d88f-4a93-97cb-c14370971fde"), 
-				"Zone Open", 
+				"Zone", 
 				ZoneLabelAttributeDefinition.INSTANCE,
 				ZoneNumberAttributeDefinition.INSTANCE,
 				ZoneOpenAttributeDefinition.INSTANCE);

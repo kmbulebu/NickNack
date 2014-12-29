@@ -97,7 +97,7 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 
 	@Override
 	public String getAuthor() {
-		return "Nick Nack";
+		return "NickNack";
 	}
 
 	@Override

@@ -77,11 +77,11 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	}
 	@Override
 	public String getName() {
-		return "XBMC";
+		return "Kodi (formerly XBMC)";
 	}
 	@Override
 	public String getAuthor() {
-		return "Nick Nack";
+		return "NickNack";
 	}
 	@Override
 	public int getVersion() {
