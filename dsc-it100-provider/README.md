@@ -31,6 +31,7 @@ The second is via TCP to a remote system with the IT-100. Ser2net was used to re
 * **serialPort**: Serial port connection only. Specifies the COM port (Windows) or device (*nix) of the serial port with the IT-100.
 * **host**: TCP connection only. Specifies the IP or hostname of the remote host.
 * **port**: TCP connection only. Specifies the listening TCP port of the remote host.
+* **activeZones**: Optional. A comma separated list of zone numbers to use. Helps with hiding unused zones.
 
 ### Sample Serial Port nicknack_config.xml:
 Not Yet Implemented.
@@ -41,6 +42,7 @@ Not Yet Implemented.
   <name>DSC Security System</name>
   <host>192.168.1.2</host>
   <port>2000</port>
+  <activeZones>1,2,3,4,7,8</activeZones
 </uuid873b5fe3b69d4c80a10e9c04c0673776>
 ```
 
