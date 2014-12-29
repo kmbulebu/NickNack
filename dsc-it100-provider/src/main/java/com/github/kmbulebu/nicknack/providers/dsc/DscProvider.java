@@ -49,8 +49,8 @@ import com.github.kmbulebu.nicknack.providers.dsc.internal.CommandToEventMapper;
 import com.github.kmbulebu.nicknack.providers.dsc.internal.CommandToStateMapper;
 import com.github.kmbulebu.nicknack.providers.dsc.internal.Zone;
 import com.github.kmbulebu.nicknack.providers.dsc.internal.Zones;
-import com.github.kmbulebu.nicknack.providers.dsc.states.ZoneOpenState;
-import com.github.kmbulebu.nicknack.providers.dsc.states.ZoneOpenStateDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.states.ZoneState;
+import com.github.kmbulebu.nicknack.providers.dsc.states.ZoneStateDefinition;
 
 public class DscProvider implements Provider, Action1<ReadCommand> {
 	
@@ -80,7 +80,7 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		this.eventDefinitions.add(ExitDelayInProgressEventDefinition.INSTANCE);
 		
 		this.stateDefinitions = new ArrayList<>(1);
-		this.stateDefinitions.add(ZoneOpenStateDefinition.INSTANCE);
+		this.stateDefinitions.add(ZoneStateDefinition.INSTANCE);
 		
 		this.actionDefinitions = new HashMap<>();
 	}
@@ -189,7 +189,7 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 
 	@Override
 	public List<State> getStates(UUID stateDefinitionUuid) {
-		if (ZoneOpenStateDefinition.INSTANCE.getUUID().equals(stateDefinitionUuid)) {
+		if (ZoneStateDefinition.INSTANCE.getUUID().equals(stateDefinitionUuid)) {
 			return getZoneOpenStates();
 		}
 		return Collections.emptyList();
@@ -201,7 +201,7 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		for (int i = 1; i <= 128; i++) {
 			final Zone zone = zones.getZone(i);
 			if (zone != null) {
-				final ZoneOpenState state = new ZoneOpenState();
+				final ZoneState state = new ZoneState();
 				state.setZoneNumber(i);
 				state.setZoneOpen(zone.isOpen());
 				state.setZoneLabel(labels.getZoneLabel(i));

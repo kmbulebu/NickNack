@@ -7,11 +7,11 @@ import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneLabelAttributeD
 import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneNumberAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneOpenAttributeDefinition;
 
-public class ZoneOpenStateDefinition extends BasicStateDefinition {
+public class ZoneStateDefinition extends BasicStateDefinition {
 	
-	public static final ZoneOpenStateDefinition INSTANCE = new ZoneOpenStateDefinition();
+	public static final ZoneStateDefinition INSTANCE = new ZoneStateDefinition();
 
-	private ZoneOpenStateDefinition() {
+	private ZoneStateDefinition() {
 		super(UUID.fromString("5d3cb7d1-d88f-4a93-97cb-c14370971fde"), 
 				"Zone Open", 
 				ZoneLabelAttributeDefinition.INSTANCE,

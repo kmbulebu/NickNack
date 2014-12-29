@@ -11,7 +11,7 @@ import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneLabelAttributeD
 import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneNumberAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneOpenAttributeDefinition;
 
-public class ZoneOpenState implements State {
+public class ZoneState implements State {
 	
 	final Map<UUID, String> attributes = new HashMap<>();
 
@@ -22,7 +22,7 @@ public class ZoneOpenState implements State {
 
 	@Override
 	public StateDefinition getStateDefinition() {
-		return ZoneOpenStateDefinition.INSTANCE; 
+		return ZoneStateDefinition.INSTANCE; 
 	}
 	
 	public void setZoneNumber(int zoneNumber) {
