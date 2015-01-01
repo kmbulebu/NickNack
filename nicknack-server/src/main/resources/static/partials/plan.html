@@ -6,18 +6,18 @@
 		<div class="panel-body">
 			<div class="form-group">
 				<label for="eventType" class="control-label">Event</label> <select id="eventType" class="form-control"
-					ng-model="eventType" ng-change="updateAttributeDefinitions()" ng-options="eventDefinition.name for eventDefinition in eventDefinitions">
+					ng-model="eventType" ng-change="updateEventAttributeDefinitions()" ng-options="eventDefinition.name for eventDefinition in eventDefinitions">
 				</select>
 			</div>
-				<div class="panel panel-default form-group form-inline" ng-repeat="attributeFilterExpression in formData.attributeFilterExpressions track by $index">
+				<div class="panel panel-default form-group form-inline" ng-repeat="eventAttributeFilterExpression in formData.eventAttributeFilterExpressions track by $index">
 					<div class="panel-heading">
 						If
 					</div>
 					<div class="panel-body">
-				 <select class="form-control" ng-model="attributeFilterExpression.attributeDefinition"
-					ng-change="onAttributeFilterTypeChange()" ng-options="eventAttributeDefinition.name for eventAttributeDefinition in eventAttributeDefinitions">
-					</select> <select ng-disabled="!attributeFilterExpression.attributeDefinition.uuid" class="form-control" ng-model="attributeFilterExpression.operator" ng-options="operator for operator in attributeFilterExpression.attributeDefinition.units.supportedOperators">
-				</select> <input ng-disabled="!attributeFilterExpression.attributeDefinition.uuid" type="text" class="form-control" ng-model="attributeFilterExpression.operand" list="values{{$index}}"/><datalist id="values{{$index}}"><option ng-repeat="attributeValue in attributeFilterExpression.attributeDefinition.values">{{attributeValue}}</option></datalist>
+				 <select class="form-control" ng-model="eventAttributeFilterExpression.attributeDefinition"
+					ng-change="onEventAttributeFilterTypeChange()" ng-options="eventAttributeDefinition.name for eventAttributeDefinition in eventAttributeDefinitions">
+					</select> <select ng-disabled="!eventAttributeFilterExpression.attributeDefinition.uuid" class="form-control" ng-model="eventAttributeFilterExpression.operator" ng-options="operator for operator in eventAttributeFilterExpression.attributeDefinition.units.supportedOperators">
+				</select> <input ng-disabled="!eventAttributeFilterExpression.attributeDefinition.uuid" type="text" class="form-control" ng-model="eventAttributeFilterExpression.operand" list="values{{$index}}"/><datalist id="values{{$index}}"><option ng-repeat="attributeValue in eventAttributeFilterExpression.attributeDefinition.values">{{attributeValue}}</option></datalist>
 				<button class="btn" ng-click="deleteEventAttributeFilter()"><span class="glyphicon glyphicon-trash"></span></button>
 				</div>
 			</div>
@@ -25,6 +25,32 @@
 			
 		</div>
 	</div>
+	<div class="panel panel-default">
+        <div class="panel-heading">
+            <b>And</b> this condition exists:
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="stateType" class="control-label">State</label> <select id="stateType" class="form-control"
+                    ng-model="stateType" ng-change="updateStateAttributeDefinitions()" ng-options="stateDefinition.name for stateDefinition in stateDefinitions">
+                </select>
+            </div>
+                <div class="panel panel-default form-group form-inline" ng-repeat="stateAttributeFilterExpression in formData.stateAttributeFilterExpressions track by $index">
+                    <div class="panel-heading">
+                        If
+                    </div>
+                    <div class="panel-body">
+                 <select class="form-control" ng-model="stateAttributeFilterExpression.attributeDefinition"
+                    ng-change="onStateAttributeFilterTypeChange()" ng-options="stateAttributeDefinition.name for stateAttributeDefinition in stateAttributeDefinitions">
+                    </select> <select ng-disabled="!stateAttributeFilterExpression.attributeDefinition.uuid" class="form-control" ng-model="stateAttributeFilterExpression.operator" ng-options="operator for operator in stateAttributeFilterExpression.attributeDefinition.units.supportedOperators">
+                </select> <input ng-disabled="!stateAttributeFilterExpression.attributeDefinition.uuid" type="text" class="form-control" ng-model="stateAttributeFilterExpression.operand" list="values{{$index}}"/><datalist id="values{{$index}}"><option ng-repeat="attributeValue in stateAttributeFilterExpression.attributeDefinition.values">{{attributeValue}}</option></datalist>
+                <button class="btn" ng-click="deleteStateAttributeFilter()"><span class="glyphicon glyphicon-trash"></span></button>
+                </div>
+            </div>
+            <button class="btn" ng-click="addStateAttributeFilter()"><span class="glyphicon glyphicon-plus"></span></button>
+            
+        </div>
+    </div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<b>Do</b> this action:

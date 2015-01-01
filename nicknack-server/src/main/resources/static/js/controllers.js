@@ -60,7 +60,8 @@ nicknackControllers.controller('NewPlanCtrl', ['$scope', '$rootScope', '$routePa
 function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataService) {
 	$scope.planUuid = $routeParams.planUuid;
 	$scope.formData = {};
-	$scope.formData.attributeFilterExpressions = [];
+	$scope.formData.eventAttributeFilterExpressions = [];
+	$scope.formData.stateAttributeFilterExpressions = [];
 	$scope.actionParameterValues = [];
 	if ($scope.planUuid !== undefined) {
 		// Look up plan.
@@ -77,14 +78,14 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
         				// find it.
         				StaticDataService.eventDefinition(eventDefinitionUuid).then(function (eventDef) {
         					$scope.eventType = eventDef;
-        					StaticDataService.attributeDefinitions(eventDefinitionUuid).then(function (attributeDefinitions) {
+        					StaticDataService.eventAttributeDefinitions(eventDefinitionUuid).then(function (attributeDefinitions) {
         						$scope.eventAttributeDefinitions = attributeDefinitions;
         					
-	        					$scope.formData.attributeFilterExpressions = eventFilters[0].attributeFilterExpressions;
-	    						for (i = 0; i < $scope.formData.attributeFilterExpressions.length; i++) {
+	        					$scope.formData.eventAttributeFilterExpressions = eventFilters[0].attributeFilterExpressions;
+	    						for (i = 0; i < $scope.formData.eventAttributeFilterExpressions.length; i++) {
 	    							for (j = 0; j < $scope.eventAttributeDefinitions.length; j++) {
-	    								if ($scope.eventAttributeDefinitions[j].uuid === $scope.formData.attributeFilterExpressions[i].attributeDefinitionUuid) {
-	    									$scope.formData.attributeFilterExpressions[i].attributeDefinition = $scope.eventAttributeDefinitions[j];
+	    								if ($scope.eventAttributeDefinitions[j].uuid === $scope.formData.eventAttributeFilterExpressions[i].attributeDefinitionUuid) {
+	    									$scope.formData.eventAttributeFilterExpressions[i].attributeDefinition = $scope.eventAttributeDefinitions[j];
 	    									break;
 	    								}
 	    							}
@@ -94,6 +95,34 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
         				});
         			});
         		});
+        		
+        		planResource.$get('stateFilters').then(function (stateFilters){
+        			if (stateFilters.$has('StateFilters')) {
+	        			stateFilters.$get('StateFilters').then( function(stateFilters) {
+	        				var stateDefinitionUuid = stateFilters[0].appliesToStateDefinition;
+	        				$scope.stateFilterUuid = stateFilters[0].uuid;
+	        				// find it.
+	        				StaticDataService.stateDefinition(stateDefinitionUuid).then(function (stateDef) {
+	        					$scope.stateType = stateDef;
+	        					StaticDataService.stateAttributeDefinitions(stateDefinitionUuid).then(function (attributeDefinitions) {
+	        						$scope.stateAttributeDefinitions = attributeDefinitions;
+	        					
+		        					$scope.formData.stateAttributeFilterExpressions = stateFilters[0].attributeFilterExpressions;
+		    						for (i = 0; i < $scope.formData.stateAttributeFilterExpressions.length; i++) {
+		    							for (j = 0; j < $scope.stateAttributeDefinitions.length; j++) {
+		    								if ($scope.stateAttributeDefinitions[j].uuid === $scope.formData.stateAttributeFilterExpressions[i].attributeDefinitionUuid) {
+		    									$scope.formData.stateAttributeFilterExpressions[i].attributeDefinition = $scope.stateAttributeDefinitions[j];
+		    									break;
+		    								}
+		    							}
+		    							
+		    						}
+	        					});
+	        				});
+	        			});
+        			}
+        		});
+        		
         		planResource.$get('Actions').then(function (actions){
         			actions.$get('Actions').then( function(actions) {
         				var actionDefUuid = actions[0].appliesToActionDefinition;
@@ -127,38 +156,65 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 	        	operator: '',
 	        	operand:''
 	        }];
+		$scope.formData.stateAttributeFilters = [];
 	} 
 	
 	StaticDataService.eventDefinitions().then(function (eventDefinitions) {
 		$scope.eventDefinitions = eventDefinitions;
 	});
 	
+	StaticDataService.stateDefinitions().then(function (stateDefinitions) {
+		$scope.stateDefinitions = stateDefinitions;
+	});
+	
 	StaticDataService.actionDefinitions().then(function (actionDefinitions) {
 		$scope.actionDefinitions = actionDefinitions;
 	});
 	
-	$scope.updateAttributeDefinitions = function() {
+	$scope.updateEventAttributeDefinitions = function() {
 		var json = angular.fromJson($scope.eventType);
-		StaticDataService.attributeDefinitions(json.uuid).then(function (attributeDefinitions) {
+		StaticDataService.eventAttributeDefinitions(json.uuid).then(function (attributeDefinitions) {
 			$scope.eventAttributeDefinitions = attributeDefinitions;
 		});
 	};
 	
-	$scope.onAttributeFilterTypeChange = function() {
-		$scope.formData.attributeFilterExpressions[this.$index].attributeDefinitionUuid = $scope.formData.attributeFilterExpressions[this.$index].attributeDefinition.uuid;
+	$scope.updateStateAttributeDefinitions = function() {
+		var json = angular.fromJson($scope.stateType);
+		StaticDataService.stateAttributeDefinitions(json.uuid).then(function (attributeDefinitions) {
+			$scope.stateAttributeDefinitions = attributeDefinitions;
+		});
+	};
+	
+	$scope.onEventAttributeFilterTypeChange = function() {
+		$scope.formData.eventAttributeFilterExpressions[this.$index].attributeDefinitionUuid = $scope.formData.eventAttributeFilterExpressions[this.$index].attributeDefinition.uuid;
 		
 		// Get the list of attribute values.
 		var index = this.$index;
-		WebsiteService.getAttributeDefinitionValues($scope.eventType.uuid, $scope.formData.attributeFilterExpressions[this.$index].attributeDefinition.uuid)
+		WebsiteService.getAttributeDefinitionValues($scope.eventType.uuid, $scope.formData.eventAttributeFilterExpressions[this.$index].attributeDefinition.uuid)
 			.then(function(valuesResource) {
 				var valueArray = [];
 				for (var key in valuesResource.content) {
 					valueArray.push(valuesResource.content[key]);
 				}
-				$scope.formData.attributeFilterExpressions[this.$index].attributeDefinition.values = valueArray;
+				$scope.formData.eventAttributeFilterExpressions[this.$index].attributeDefinition.values = valueArray;
 			});
 	};
 	
+	$scope.onStateAttributeFilterTypeChange = function() {
+		$scope.formData.stateAttributeFilterExpressions[this.$index].attributeDefinitionUuid = $scope.formData.stateAttributeFilterExpressions[this.$index].attributeDefinition.uuid;
+		
+		// Get the list of attribute values.
+		var index = this.$index;
+		WebsiteService.getAttributeDefinitionValues($scope.stateType.uuid, $scope.formData.stateAttributeFilterExpressions[this.$index].attributeDefinition.uuid)
+			.then(function(valuesResource) {
+				var valueArray = [];
+				for (var key in valuesResource.content) {
+					valueArray.push(valuesResource.content[key]);
+				}
+				$scope.formData.stateAttributeFilterExpressions[this.$index].attributeDefinition.values = valueArray;
+			});
+	};
+
 	$scope.addEventAttributeFilter = function() {
 		dummyFilter = { 
              	attributeDefinitionUuid: '',
@@ -166,7 +222,17 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
              	operand:'',
              	attributeDefinition: {values:[], units:{supportedOperators:[]}}
               };
-		$scope.formData.attributeFilterExpressions.push(dummyFilter);
+		$scope.formData.eventAttributeFilterExpressions.push(dummyFilter);
+	};
+	
+	$scope.addStateAttributeFilter = function() {
+		dummyFilter = { 
+             	attributeDefinitionUuid: '',
+             	operator: '',
+             	operand:'',
+             	attributeDefinition: {values:[], units:{supportedOperators:[]}}
+              };
+		$scope.formData.stateAttributeFilterExpressions.push(dummyFilter);
 	};
 	
 	$scope.onActionTypeChange = function() {
@@ -177,7 +243,11 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 	};
 	
 	$scope.deleteEventAttributeFilter = function() {
-		$scope.formData.attributeFilterExpressions.splice(this.$index, 1);
+		$scope.formData.eventAttributeFilterExpressions.splice(this.$index, 1);
+	};
+	
+	$scope.deleteStateAttributeFilter = function() {
+		$scope.formData.stateAttributeFilterExpressions.splice(this.$index, 1);
 	};
 	
 	$scope.submit = function() {
@@ -191,17 +261,32 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 			WebsiteService
 				.createPlanResource(plan).then(function (newPlanResource) {
 					// Step 2: Create the Event Filter resource.
-					var json = angular.fromJson($scope.eventType);
-					var attributeFilterExpressions = $scope.formData.attributeFilterExpressions;
+					var eventJson = angular.fromJson($scope.eventType);
+					var eventAttributeFilterExpressions = $scope.formData.eventAttributeFilterExpressions;
 					
-					for (var i = 0; i < attributeFilterExpressions.length; i++) {
-						delete attributeFilterExpressions[i].attributeDefinition;
+					for (var i = 0; i < eventAttributeFilterExpressions.length; i++) {
+						delete eventAttributeFilterExpressions[i].attributeDefinition;
 					}
 					var eventFilter = { 
-							appliesToEventDefinition:json.uuid,
-							attributeFilterExpressions:attributeFilterExpressions
+							appliesToEventDefinition:eventJson.uuid,
+							attributeFilterExpressions:eventAttributeFilterExpressions
 			              };
 					newPlanResource.$post('eventFilters', null, eventFilter).then();
+					
+					// Step 2: Create the State Filter resource.
+					if ($scope.stateType) {
+						var stateJson = angular.fromJson($scope.stateType);
+						var stateAttributeFilterExpressions = $scope.formData.stateAttributeFilterExpressions;
+						
+						for (var i = 0; i < stateAttributeFilterExpressions.length; i++) {
+							delete stateAttributeFilterExpressions[i].attributeDefinition;
+						}
+						var stateFilter = { 
+								appliesToStateDefinition:stateJson.uuid,
+								attributeFilterExpressions:stateAttributeFilterExpressions
+				              };
+						newPlanResource.$post('stateFilters', null, stateFilter).then();
+					}
 					
 					// Step 4: Create the Action resource with parameter values.
 					var json = angular.fromJson($scope.actionType);
@@ -234,20 +319,36 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 			WebsiteService
 			.updatePlanResource(plan).then(function (newPlanResource) {
 				// Step 2: Create the Event Filter resource.
-				var json = angular.fromJson($scope.eventType);
+				var eventJson = angular.fromJson($scope.eventType);
 				
-				var attributeFilterExpressions = $scope.formData.attributeFilterExpressions;
+				var eventAttributeFilterExpressions = $scope.formData.eventAttributeFilterExpressions;
 				
-				for (var i = 0; i < attributeFilterExpressions.length; i++) {
-					delete attributeFilterExpressions[i].attributeDefinition;
+				for (var i = 0; i < eventAttributeFilterExpressions.length; i++) {
+					delete eventAttributeFilterExpressions[i].attributeDefinition;
 				}
 				
 				var eventFilter = { 
 						uuid: $scope.eventFilterUuid,
-						appliesToEventDefinition:json.uuid,
-						attributeFilterExpressions:attributeFilterExpressions
+						appliesToEventDefinition:eventJson.uuid,
+						attributeFilterExpressions:eventAttributeFilterExpressions
 		              };
 				WebsiteService.updateEventFilter($scope.planUuid, eventFilter).then();
+				
+				// Step 2: Create the State Filter resource.
+				var stateJson = angular.fromJson($scope.stateType);
+				
+				var stateAttributeFilterExpressions = $scope.formData.stateAttributeFilterExpressions;
+				
+				for (var i = 0; i < stateAttributeFilterExpressions.length; i++) {
+					delete stateAttributeFilterExpressions[i].attributeDefinition;
+				}
+				
+				var stateFilter = { 
+						uuid: $scope.stateFilterUuid,
+						appliesToStateDefinition:stateJson.uuid,
+						attributeFilterExpressions:stateAttributeFilterExpressions
+		              };
+				WebsiteService.updateStateFilter($scope.planUuid, stateFilter).then();
 				
 				var json = angular.fromJson($scope.actionType);
 				var actionParameters = {};

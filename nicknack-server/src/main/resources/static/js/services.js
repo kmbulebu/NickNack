@@ -17,9 +17,17 @@ angular.module('newplanService', ['angular-hal']).factory('WebsiteService', [ 'h
             function(planUuid, eventFilter) {
                 return halClient.$put('api/plans/' + planUuid + "/eventFilters/" + eventFilter.uuid , null, eventFilter);
             },
-        'updateAttributeFilter' :
+        'updateStateFilter' :
+            function(planUuid, stateFilter) {
+                return halClient.$put('api/plans/' + planUuid + "/stateFilters/" + stateFilter.uuid , null, stateFilter);
+            },
+        'updateEventAttributeFilter' :
             function(planUuid, eventFilterUuid, attributeFilter) {
                 return halClient.$put('api/plans/' + planUuid + "/eventFilters/" + eventFilterUuid + "/attributeFilters/" + attributeFilter.uuid, null, attributeFilter);
+            },
+        'updateStateAttributeFilter' :
+            function(planUuid, stateFilterUuid, attributeFilter) {
+                return halClient.$put('api/plans/' + planUuid + "/stateFilters/" + stateFilterUuid + "/attributeFilters/" + attributeFilter.uuid, null, attributeFilter);
             },
         'deleteAttributeFilter' :
             function(planUuid, eventFilterUuid, attributeFilterUuid) {
@@ -111,9 +119,34 @@ angular.module('staticDataService', ['angular-hal']).factory('StaticDataService'
 					}
 				}
 			});
+		},
+		'stateDefinitions': function() {
+			if ($rootScope.stateDefinitions === undefined) {
+				return RestService.api().then(function (apiResource) {
+					// Successful get
+					return apiResource.$get('StateDefinitions').then(function (stateDefinitionsResource) {
+							return stateDefinitionsResource.$get('StateDefinitions').then(function (stateDefinitions) {
+								$rootScope.stateDefinitions = stateDefinitions;
+								return $rootScope.stateDefinitions;
+							});
+					});
+				});
+			} else {
+				return $q.when($rootScope.stateDefinitions);
+			}
+		},
+		'stateDefinition': function(uuid) {
+			var promise = this.stateDefinitions();
+			return promise.then(function(stateDefinitions) {
+				for (i = 0; i < stateDefinitions.length; i++) {
+					if (stateDefinitions[i].uuid === uuid) {
+						return stateDefinitions[i];
+					}
+				}
+			});
 		}
 		// Returns promise of an array of Attribute Definitions for the given Event Definition.
-		,'attributeDefinitions': function(eventDefUuid) {
+		,'eventAttributeDefinitions': function(eventDefUuid) {
 			if (eventDefUuid in $rootScope.attributeDefinitions) {
 				return $q.when($rootScope.attributeDefinitions[eventDefUuid]);
 			} else {
@@ -124,6 +157,24 @@ angular.module('staticDataService', ['angular-hal']).factory('StaticDataService'
 								.then(function(attributeDefinitions) {
 									$rootScope.attributeDefinitions[eventDefUuid] = attributeDefinitions;
 									return $q.when($rootScope.attributeDefinitions[eventDefUuid]);
+								});
+						});
+					}
+				};
+			}
+		},
+		// Returns promise of an array of Attribute Definitions for the given State Definition.
+		'stateAttributeDefinitions': function(stateDefUuid) {
+			if (stateDefUuid in $rootScope.attributeDefinitions) {
+				return $q.when($rootScope.attributeDefinitions[stateDefUuid]);
+			} else {
+				for (i = 0; i < $rootScope.stateDefinitions.length; i++) {
+					if ($rootScope.stateDefinitions[i].uuid === stateDefUuid) {
+						return $rootScope.stateDefinitions[i].$get('attributeDefinitions').then(function (attributeDefinitionsResource) {
+							return attributeDefinitionsResource.$get('AttributeDefinitions')
+								.then(function(attributeDefinitions) {
+									$rootScope.attributeDefinitions[stateDefUuid] = attributeDefinitions;
+									return $q.when($rootScope.attributeDefinitions[stateDefUuid]);
 								});
 						});
 					}
