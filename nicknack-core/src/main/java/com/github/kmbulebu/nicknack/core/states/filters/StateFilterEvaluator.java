@@ -40,7 +40,7 @@ public class StateFilterEvaluator extends AttrbuteFilterExpressionCollectionEval
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(result);
 		}
-		return true;
+		return result;
 	}
 	
 }

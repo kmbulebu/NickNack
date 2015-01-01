@@ -146,45 +146,45 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 			}
 		}
 		
-
 		boolean stateMatch = false;
-		
-		final Iterator<StateFilterResource> stateFilterIterator = stateFiltersService.getStateFilters(plan.getUUID()).iterator();
-		
-		if (stateFilterIterator.hasNext()) {
-			// If any state filter matches, then this plan is match.
-			while (!stateMatch && stateFilterIterator.hasNext()) {
-				final StateFilter filter = stateFilterIterator.next();
-				
-				final Provider provider = providerService.getProviderByStateDefinitionUuid(filter.getAppliesToStateDefinition());
-				
-				if (provider != null) {
-					// FIXME getStates could be slow as the provider looks up the possible states. 
-					final List<State> states = provider.getStates(filter.getAppliesToStateDefinition());
+		if (eventMatch) {// Only test state if event matches
+			final Iterator<StateFilterResource> stateFilterIterator = stateFiltersService.getStateFilters(plan.getUUID()).iterator();
+			
+			if (stateFilterIterator.hasNext()) {
+				// If any state filter matches, then this plan is match.
+				while (!stateMatch && stateFilterIterator.hasNext()) {
+					final StateFilter filter = stateFilterIterator.next();
 					
-					if (states != null) {
-						final Iterator<State> stateIterator = states.iterator();
+					final Provider provider = providerService.getProviderByStateDefinitionUuid(filter.getAppliesToStateDefinition());
+					
+					if (provider != null) {
+						// FIXME getStates could be slow as the provider looks up the possible states. 
+						final List<State> states = provider.getStates(filter.getAppliesToStateDefinition());
 						
-						while (!stateMatch && stateIterator.hasNext()) {
-							final State state = stateIterator.next();
-							try {
-								stateMatch = stateFilterEvaluator.evaluate(filter, state);
-							} catch (ParseException e) {
-								LOG.warn("Error parsing some text while evalutaing an state filter. " + e.getMessage(), e);
-								// TODO Generate an error state
-								stateMatch = false;
-							}
-						} // State loop
-					} // If states != null
-				} // If provider != null
-				
-				if (LOG.isInfoEnabled() && stateMatch) {
-					LOG.info("StateFilter matched: " + ((StateFilterResource) filter).getUuid());
-				}
-			} // Loop state filters
-		} else {
-			// State filters are not required. 
-			stateMatch = true;
+						if (states != null) {
+							final Iterator<State> stateIterator = states.iterator();
+							
+							while (!stateMatch && stateIterator.hasNext()) {
+								final State state = stateIterator.next();
+								try {
+									stateMatch = stateFilterEvaluator.evaluate(filter, state);
+								} catch (ParseException e) {
+									LOG.warn("Error parsing some text while evalutaing an state filter. " + e.getMessage(), e);
+									// TODO Generate an error state
+									stateMatch = false;
+								}
+							} // State loop
+						} // If states != null
+					} // If provider != null
+					
+					if (LOG.isInfoEnabled() && stateMatch) {
+						LOG.info("StateFilter matched: " + ((StateFilterResource) filter).getUuid());
+					}
+				} // Loop state filters
+			} else {
+				// State filters are not required. 
+				stateMatch = true;
+			}
 		}
 		
 		if (eventMatch && stateMatch) {
