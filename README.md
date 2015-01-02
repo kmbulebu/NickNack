@@ -8,12 +8,12 @@ A list of included providers is available [here] (./PROVIDERS.md).
 * Java JRE 7 or higher
 
 ## Download
-* [Gzip tarball (Linux, OSX, etc)] (http://repo1.maven.org/maven2/com/github/kmbulebu/nicknack/nicknack-server-assembly/0.0.5b/nicknack-server-assembly-0.0.5b-distribution.tar.gz)
-* [Zip (Windows)] (http://repo1.maven.org/maven2/com/github/kmbulebu/nicknack/nicknack-server-assembly/0.0.5/nicknack-server-assembly-0.0.5b-distribution.zip)
+* [Gzip tarball (Linux, OSX, etc)] (http://repo1.maven.org/maven2/com/github/kmbulebu/nicknack/nicknack-server-assembly/0.0.6/nicknack-server-assembly-0.0.6-distribution.tar.gz)
+* [Zip (Windows)] (http://repo1.maven.org/maven2/com/github/kmbulebu/nicknack/nicknack-server-assembly/0.0.6/nicknack-server-assembly-0.0.6-distribution.zip)
 
 ## Running
 ### Linux / OS X
-1. Download nicknack distribution. `curl -o nicknack.tgz "http://repo1.maven.org/maven2/com/github/kmbulebu/nicknack/nicknack-server-assembly/0.0.5b/nicknack-server-assembly-0.0.5b-distribution.tar.gz`
+1. Download nicknack distribution. `curl -o nicknack.tgz "http://repo1.maven.org/maven2/com/github/kmbulebu/nicknack/nicknack-server-assembly/0.0.6/nicknack-server-assembly-0.0.6-distribution.tar.gz`
 2. Unpack. `tar xzf nicknack.tgz`
 3. Start. `nicknack/bin/nicknack.sh start`
 4. Visit (http://127.0.0.1:8085/).
