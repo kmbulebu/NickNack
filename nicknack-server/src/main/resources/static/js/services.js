@@ -21,6 +21,10 @@ angular.module('newplanService', ['angular-hal']).factory('WebsiteService', [ 'h
             function(planUuid, stateFilter) {
                 return halClient.$put('api/plans/' + planUuid + "/stateFilters/" + stateFilter.uuid , null, stateFilter);
             },
+        'deleteStateFilter' :
+            function(planUuid, stateFilterUuid) {
+                return halClient.$del('api/plans/' + planUuid + "/stateFilters/" + stateFilterUuid);
+            },
         'updateEventAttributeFilter' :
             function(planUuid, eventFilterUuid, attributeFilter) {
                 return halClient.$put('api/plans/' + planUuid + "/eventFilters/" + eventFilterUuid + "/attributeFilters/" + attributeFilter.uuid, null, attributeFilter);

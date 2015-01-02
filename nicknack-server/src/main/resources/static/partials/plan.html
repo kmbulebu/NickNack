@@ -6,7 +6,7 @@
 		<div class="panel-body">
 			<div class="form-group">
 				<label for="eventType" class="control-label">Event</label> <select id="eventType" class="form-control"
-					ng-model="eventType" ng-change="updateEventAttributeDefinitions()" ng-options="eventDefinition.name for eventDefinition in eventDefinitions">
+					ng-model="eventType" ng-change="updateEventAttributeDefinitions(eventType)" ng-options="eventDefinition.name for eventDefinition in eventDefinitions">
 				</select>
 			</div>
 				<div class="panel panel-default form-group form-inline" ng-repeat="eventAttributeFilterExpression in formData.eventAttributeFilterExpressions track by $index">
@@ -26,13 +26,13 @@
 		</div>
 	</div>
 	<div class="panel panel-default">
-        <div class="panel-heading">
-            <b>And</b> this condition exists:
+        <div class="panel-heading clearfix">
+            <b>And</b> this condition exists: <button ng-if="stateEnabled" class="btn pull-right" ng-click="disableState()"><span class="glyphicon glyphicon-trash"></span></button><button ng-if="!stateEnabled" class="btn pull-right" ng-click="enableState()"><span class="glyphicon glyphicon-plus"></span></button>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" ng-if="stateEnabled">
             <div class="form-group">
                 <label for="stateType" class="control-label">State</label> <select id="stateType" class="form-control"
-                    ng-model="stateType" ng-change="updateStateAttributeDefinitions()" ng-options="stateDefinition.name for stateDefinition in stateDefinitions">
+                    ng-model="stateType" ng-change="updateStateAttributeDefinitions(stateType)" ng-options="stateDefinition.name for stateDefinition in stateDefinitions">
                 </select>
             </div>
                 <div class="panel panel-default form-group form-inline" ng-repeat="stateAttributeFilterExpression in formData.stateAttributeFilterExpressions track by $index">
