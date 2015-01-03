@@ -67,7 +67,7 @@ public class WemoProvider implements Provider, EventListener {
 
 	@Override
 	public String getName() {
-		return "Wemo";
+		return "WeMo";
 	}
 
 	@Override

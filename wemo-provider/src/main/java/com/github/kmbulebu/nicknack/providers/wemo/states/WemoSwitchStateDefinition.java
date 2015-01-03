@@ -11,7 +11,7 @@ public class WemoSwitchStateDefinition extends BasicStateDefinition {
 	public final static WemoSwitchStateDefinition INSTANCE = new WemoSwitchStateDefinition();
 
 	public WemoSwitchStateDefinition() {
-		super(UUID.fromString("179e7470-8938-4176-b765-ec4c392f5fc0"), "Switch", 
+		super(UUID.fromString("179e7470-8938-4176-b765-ec4c392f5fc0"), "Switches", 
 				FriendlyNameAttributeDefinition.INSTANCE,
 				OnAttributeDefinition.INSTANCE);
 	}
