@@ -15,7 +15,7 @@ A list of included providers is available [here] (./PROVIDERS.md).
 ### Linux / OS X
 1. Download nicknack distribution. `curl -o nicknack.tgz "http://repo1.maven.org/maven2/com/github/kmbulebu/nicknack/nicknack-server-assembly/0.0.6/nicknack-server-assembly-0.0.6-distribution.tar.gz`
 2. Unpack. `tar xzf nicknack.tgz`
-3. Start. `nicknack/bin/nicknack.sh start`
+3. Start. `nicknack/bin/nicknack start`
 4. Visit (http://127.0.0.1:8085/).
 
 ### Windows
