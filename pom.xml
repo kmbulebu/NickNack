@@ -64,7 +64,8 @@
 		<module>ssh-provider</module>
 		<module>dsc-it100-provider</module>
 		<module>pushover-provider</module>
-
+        <module>wemo-provider</module>
+    
 		<module>nicknack-server-assembly</module>
 	</modules>
 
@@ -100,6 +101,11 @@
 				<artifactId>pushover-provider</artifactId>
 				<version>0.0.7-SNAPSHOT</version>
 			</dependency>
+			<dependency>
+                <groupId>com.github.kmbulebu.nicknack</groupId>
+                <artifactId>wemo-provider</artifactId>
+                <version>0.0.7-SNAPSHOT</version>
+            </dependency>
 			<dependency>
 				<groupId>com.google.code.findbugs</groupId>
 				<artifactId>jsr305</artifactId>

@@ -36,6 +36,7 @@
         <include>com.github.kmbulebu.nicknack:ssh-provider</include>
         <include>com.github.kmbulebu.nicknack:dsc-it100-provider</include>
         <include>com.github.kmbulebu.nicknack:pushover-provider</include>
+        <include>com.github.kmbulebu.nicknack:wemo-provider</include>
       </includes>
       <binaries>
         <outputDirectory>providers/</outputDirectory>

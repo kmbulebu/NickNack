@@ -159,10 +159,10 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 					
 					if (provider != null) {
 						// FIXME getStates could be slow as the provider looks up the possible states. 
-						final List<State> states = provider.getStates(filter.getAppliesToStateDefinition());
+						final List<? extends State> states = provider.getStates(filter.getAppliesToStateDefinition());
 						
 						if (states != null) {
-							final Iterator<State> stateIterator = states.iterator();
+							final Iterator<? extends State> stateIterator = states.iterator();
 							
 							while (!stateMatch && stateIterator.hasNext()) {
 								final State state = stateIterator.next();

@@ -37,6 +37,10 @@
             <groupId>com.github.kmbulebu.nicknack</groupId>
             <artifactId>pushover-provider</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.kmbulebu.nicknack</groupId>
+            <artifactId>wemo-provider</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>

@@ -13,13 +13,13 @@ public class StatesResource extends ResourceSupport {
 	
 	private StateDefinition stateDefinition;
 	
-	private List<State> states;
+	private List<? extends State> states;
 
-	public List<State> getStates() {
+	public List<? extends State> getStates() {
 		return states;
 	}
 
-	public void setStates(List<State> states) {
+	public void setStates(List<? extends State> states) {
 		this.states = states;
 	}
 	

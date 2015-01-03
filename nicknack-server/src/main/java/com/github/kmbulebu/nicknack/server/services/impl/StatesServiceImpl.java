@@ -38,7 +38,7 @@ public class StatesServiceImpl implements StatesService{
 
 		for (Provider provider : providers) {
 			for (StateDefinition stateDefinition : provider.getStateDefinitions()) {
-				final List<State> states = provider.getStates(stateDefinition.getUUID());
+				final List<? extends State> states = provider.getStates(stateDefinition.getUUID());
 				final StatesResource resource = new StatesResource();
 				resource.setStateDefinition(stateDefinition);
 				resource.setStates(states);
@@ -63,7 +63,7 @@ public class StatesServiceImpl implements StatesService{
 		final List<StatesResource> resources = new LinkedList<>();
 
 		for (StateDefinition stateDefinition : provider.getStateDefinitions()) {
-			final List<State> states = provider.getStates(stateDefinition.getUUID());
+			final List<? extends State> states = provider.getStates(stateDefinition.getUUID());
 			final StatesResource resource = new StatesResource();
 			resource.setStateDefinition(stateDefinition);
 			resource.setStates(states);
@@ -91,7 +91,7 @@ public class StatesServiceImpl implements StatesService{
 			}
 		}
 		
-		final List<State> states = provider.getStates(stateDefinitionUuid);
+		final List<? extends State> states = provider.getStates(stateDefinitionUuid);
 		final StatesResource resource = new StatesResource();
 		resource.setStateDefinition(stateDefinition);
 		resource.setStates(states);

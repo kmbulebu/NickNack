@@ -48,24 +48,24 @@ public interface Provider {
 	 * 
 	 * @return A list of all possible events this provider may broadcast.
 	 */
-	public Collection<EventDefinition> getEventDefinitions();
+	public Collection<? extends EventDefinition> getEventDefinitions();
 	
 	/**
 	 * 
 	 * @return A list of all possible states that may exist.
 	 */
-	public Collection<StateDefinition> getStateDefinitions();
+	public Collection<? extends StateDefinition> getStateDefinitions();
 	
 	/**
 	 * 
 	 * @return A list of all possible actions this provider may perform.
 	 */
-	public Collection<ActionDefinition> getActionDefinitions();
+	public Collection<? extends ActionDefinition> getActionDefinitions();
 	
 	/**
 	 * 
 	 */
-	public List<State> getStates(UUID stateDefinitionUuid);
+	public List<? extends State> getStates(UUID stateDefinitionUuid);
 	
 	/**
 	 * 
