@@ -196,7 +196,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 	$scope.onEventAttributeFilterTypeChange = function(eventAttributeFilterExpression, eventDefinition, attributeDefinition) {
 		eventAttributeFilterExpression.attributeDefinitionUuid = attributeDefinition.uuid;
 		// Get the list of attribute values.
-		WebsiteService.getAttributeDefinitionValues(eventDefinition.uuid, attributeDefinition.uuid)
+		WebsiteService.getEventAttributeDefinitionValues(eventDefinition.uuid, attributeDefinition.uuid)
 			.then(function(valuesResource) {
 				var valueArray = [];
 				for (var key in valuesResource.content) {
@@ -206,18 +206,17 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 			});
 	};
 	
-	$scope.onStateAttributeFilterTypeChange = function() {
-		$scope.formData.stateAttributeFilterExpressions[this.$index].attributeDefinitionUuid = $scope.formData.stateAttributeFilterExpressions[this.$index].attributeDefinition.uuid;
-		
+	
+	$scope.onStateAttributeFilterTypeChange = function(stateAttributeFilterExpression, stateDefinition, attributeDefinition) {
+		stateAttributeFilterExpression.attributeDefinitionUuid = attributeDefinition.uuid;
 		// Get the list of attribute values.
-		var index = this.$index;
-		WebsiteService.getAttributeDefinitionValues($scope.stateType.uuid, $scope.formData.stateAttributeFilterExpressions[this.$index].attributeDefinition.uuid)
+		WebsiteService.getStateAttributeDefinitionValues(stateDefinition.uuid, attributeDefinition.uuid)
 			.then(function(valuesResource) {
 				var valueArray = [];
 				for (var key in valuesResource.content) {
 					valueArray.push(valuesResource.content[key]);
 				}
-				$scope.formData.stateAttributeFilterExpressions[this.$index].attributeDefinition.values = valueArray;
+				attributeDefinition.values = valueArray;
 			});
 	};
 
@@ -286,6 +285,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 						var stateAttributeFilterExpressions = $scope.formData.stateAttributeFilterExpressions;
 						
 						for (var i = 0; i < stateAttributeFilterExpressions.length; i++) {
+							stateAttributeFilterExpressions[i].attributeDefinitionUuid = stateAttributeFilterExpressions[i].attributeDefinition.uuid;
 							delete stateAttributeFilterExpressions[i].attributeDefinition;
 						}
 						var stateFilter = { 
@@ -349,6 +349,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 					var stateAttributeFilterExpressions = $scope.formData.stateAttributeFilterExpressions;
 					
 					for (var i = 0; i < stateAttributeFilterExpressions.length; i++) {
+						stateAttributeFilterExpressions[i].attributeDefinitionUuid = stateAttributeFilterExpressions[i].attributeDefinition.uuid;
 						delete stateAttributeFilterExpressions[i].attributeDefinition;
 					}
 					

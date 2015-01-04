@@ -65,9 +65,13 @@ angular.module('newplanService', ['angular-hal']).factory('WebsiteService', [ 'h
             function(actionUuid) {
                 return halClient.$del('api/actions/' + actionUuid);
             },
-        'getAttributeDefinitionValues' :
+        'getEventAttributeDefinitionValues' :
             function(eventDefinitionUuid, attributeDefinitionUuid) {
                 return halClient.$get('api/eventDefinitions/' + eventDefinitionUuid + "/attributeDefinitions/" + attributeDefinitionUuid + "/values");
+            },
+        'getStateAttributeDefinitionValues' :
+            function(stateDefinitionUuid, attributeDefinitionUuid) {
+                return halClient.$get('api/stateDefinitions/' + stateDefinitionUuid + "/attributeDefinitions/" + attributeDefinitionUuid + "/values");
             }
     };
 }]);
