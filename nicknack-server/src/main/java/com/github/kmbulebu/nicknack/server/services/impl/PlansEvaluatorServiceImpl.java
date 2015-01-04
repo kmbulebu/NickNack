@@ -40,6 +40,7 @@ import com.github.kmbulebu.nicknack.server.services.ActionsService;
 import com.github.kmbulebu.nicknack.server.services.EventFiltersService;
 import com.github.kmbulebu.nicknack.server.services.PlansService;
 import com.github.kmbulebu.nicknack.server.services.StateFiltersService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.PlanNotFoundException;
 
 @Service
 public class PlansEvaluatorServiceImpl implements Action1<Event> {
@@ -112,7 +113,11 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 		final List<PlanResource> plans = plansService.getPlans();
 		
 		for (PlanResource plan : plans) {
-			evaluate(plan, event);
+			try {
+				evaluate(plan, event);
+			} catch (PlanNotFoundException e) {
+				LOG.error("Could not evaluate event against plan. " + e.getMessage(), e);
+			}
 		}
 		
 		if (LOG.isTraceEnabled()) {
@@ -120,7 +125,7 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 		}
 	}
 	
-	public void evaluate(PlanResource plan, Event event) {
+	public void evaluate(PlanResource plan, Event event) throws PlanNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(plan, event);
 		}
@@ -193,6 +198,7 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 				LOG.info("Performing action " + action);
 				final Action processedAction = processVariables(action, event);
 				// TODO Group all actions together into a composite action so that they run serially, not in parallel.
+				
 				actionQueueService.enqueueAction(processedAction);
 			}
 		}

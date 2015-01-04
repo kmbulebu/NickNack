@@ -27,6 +27,9 @@ import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.ActionDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.ParameterDefinitionResource;
 import com.github.kmbulebu.nicknack.server.services.ActionDefinitionService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ActionDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ParameterDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
 
 @RestController
 @RequestMapping(value="/api/actionDefinitions", produces={"application/hal+json"})
@@ -47,7 +50,7 @@ public class ActionDefinitionsController {
 	// TODO Refactor HATEOAS link building. Time for ResourceAssembler or moving this stuff up the service. Although moving it up will create a circular dep.
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<ActionDefinitionResource> getActionDefinitions() {
+	public Resources<ActionDefinitionResource> getActionDefinitions() throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -61,7 +64,7 @@ public class ActionDefinitionsController {
 	}
 	
 	@RequestMapping(value="", params="provider", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<ActionDefinitionResource> getActionDefinitions(@RequestParam UUID provider) {
+	public Resources<ActionDefinitionResource> getActionDefinitions(@RequestParam UUID provider) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException, ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -74,7 +77,7 @@ public class ActionDefinitionsController {
 		return resources;
 	}
 	
-	private Resources<ActionDefinitionResource> getActionDefinitions(Collection<ActionDefinition> actionDefinitions) {
+	private Resources<ActionDefinitionResource> getActionDefinitions(Collection<ActionDefinition> actionDefinitions) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionDefinitions);
 		}
@@ -99,7 +102,7 @@ public class ActionDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public ActionDefinitionResource getActionDefinition(@PathVariable UUID uuid) {
+	public ActionDefinitionResource getActionDefinition(@PathVariable UUID uuid) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -117,7 +120,7 @@ public class ActionDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{actionUuid}/parameterDefinitions", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<ParameterDefinitionResource> getParameterDefinitions(@PathVariable UUID actionUuid) {
+	public Resources<ParameterDefinitionResource> getParameterDefinitions(@PathVariable UUID actionUuid) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUuid);
 		}
@@ -143,7 +146,7 @@ public class ActionDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{actionUuid}/parameterDefinitions/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public ParameterDefinitionResource getParameterDefinition(@PathVariable UUID actionUuid, @PathVariable UUID uuid) {
+	public ParameterDefinitionResource getParameterDefinition(@PathVariable UUID actionUuid, @PathVariable UUID uuid) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUuid, uuid);
 		}

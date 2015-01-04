@@ -18,6 +18,9 @@ import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.services.StateDefinitionService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.AttributeDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.StateDefinitionNotFoundException;
 
 
 @Service
@@ -28,7 +31,6 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 	@Autowired
 	private ProviderService providerService;
 
-
 	@Override
 	public List<StateDefinition> getStateDefinitions() {
 		if (LOG.isTraceEnabled()) {
@@ -36,8 +38,6 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 		}
 		
 		final Collection<StateDefinition> set = providerService.getStateDefinitions().values();
-		
-		// TODO Add exceptions for not found, etc.
 		
 		final List<StateDefinition> stateDefinitions = new ArrayList<StateDefinition>(set);
 		
@@ -49,14 +49,16 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 	}
 
 	@Override
-	public StateDefinition getStateDefinition(final UUID uuid) {
+	public StateDefinition getStateDefinition(final UUID uuid) throws StateDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
 		
 		final StateDefinition stateDefinition = providerService.getStateDefinitions().get(uuid);
 		
-		// TODO Add exceptions for not found, etc.
+		if (stateDefinition == null) {
+			throw new StateDefinitionNotFoundException(uuid);
+		}
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(stateDefinition);
@@ -65,14 +67,12 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 	}
 	
 	@Override
-	public List<AttributeDefinition> getAttributeDefinitions(final UUID stateUUID) {
+	public List<AttributeDefinition> getAttributeDefinitions(final UUID stateUUID) throws StateDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateUUID);
 		}
 		
 		final StateDefinition stateDefinition = getStateDefinition(stateUUID);
-				
-		// TODO Add exceptions for not found, etc.
 		
 		final List<AttributeDefinition> attributeDefinitions = Collections.unmodifiableList(stateDefinition.getAttributeDefinitions());
 		
@@ -83,7 +83,7 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 	}
 	
 	@Override
-	public AttributeDefinition getAttributeDefinition(final UUID stateUUID, final UUID uuid) {
+	public AttributeDefinition getAttributeDefinition(final UUID stateUUID, final UUID uuid) throws StateDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateUUID, uuid);
 		}
@@ -99,6 +99,10 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 			}
 		}
 		
+		if (attributeDefinition == null) {
+			throw new AttributeDefinitionNotFoundException(uuid);
+		}
+		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(attributeDefinition);
 		}
@@ -106,12 +110,18 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 	}
 
 	@Override
-	public Map<String, String> getAttributeDefinitionValues(UUID stateUuid, UUID uuid) {
+	public Map<String, String> getAttributeDefinitionValues(UUID stateUuid, UUID uuid) throws ProviderNotFoundException, StateDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateUuid, uuid);
 		}
 		
 		final Provider provider = providerService.getProviderByStateDefinitionUuid(stateUuid);
+		
+		if (provider == null) {
+			throw new ProviderNotFoundException(StateDefinition.class.getSimpleName(), stateUuid);
+		}
+		
+		getAttributeDefinition(stateUuid, uuid);
 		
 		final Map<String, String> values = provider.getAttributeDefinitionValues(stateUuid, uuid);
 		
@@ -122,12 +132,18 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 	}
 
 	@Override
-	public Collection<StateDefinition> getStateDefinitionsByProvider(UUID providerUuid) {
+	public Collection<StateDefinition> getStateDefinitionsByProvider(UUID providerUuid) throws ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(providerUuid);
 		}
 		
-		final Collection<StateDefinition> stateDefinitions = Collections.unmodifiableCollection(providerService.getProviders().get(providerUuid).getStateDefinitions());
+		final Provider provider = providerService.getProviders().get(providerUuid);
+		
+		if (provider == null) {
+			throw new ProviderNotFoundException(providerUuid);
+		}
+		
+		final Collection<StateDefinition> stateDefinitions = Collections.unmodifiableCollection(provider.getStateDefinitions());
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(stateDefinitions);

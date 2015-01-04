@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ParameterDefinition;
 import com.github.kmbulebu.nicknack.server.services.ActionDefinitionService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ActionDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ParameterDefinitionNotFoundException;
 
 @Component
 public class ActionParameterValidator implements ConstraintValidator<ValidActionParameter, Action> {
@@ -30,15 +32,19 @@ public class ActionParameterValidator implements ConstraintValidator<ValidAction
     	final Map<UUID, String> parameters = action.getParameters();
     	if (parameters != null) {
 	    	for (UUID uuid : parameters.keySet()) {
-	    		if (!validateParameter(action.getAppliesToActionDefinition(), uuid, parameters.get(uuid))) {
-	    			return false;
-	    		}
+	    		try {
+					if (!validateParameter(action.getAppliesToActionDefinition(), uuid, parameters.get(uuid))) {
+						return false;
+					}
+				} catch (ActionDefinitionNotFoundException | ParameterDefinitionNotFoundException e) {
+					return false;
+				}
 	    	}
     	}
     	return true;
     }
     
-    protected boolean validateParameter(UUID actionDefUuid, UUID uuid, String value) {
+    protected boolean validateParameter(UUID actionDefUuid, UUID uuid, String value) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException {
     	// Get the parameter definition
     	final ParameterDefinition def = actionDefinitionService.getParameterDefinition(actionDefUuid, uuid);
     	

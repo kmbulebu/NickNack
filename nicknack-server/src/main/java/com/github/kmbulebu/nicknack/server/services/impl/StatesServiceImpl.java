@@ -17,6 +17,8 @@ import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.StatesResource;
 import com.github.kmbulebu.nicknack.server.services.StatesService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.StateDefinitionNotFoundException;
 
 @Service
 public class StatesServiceImpl implements StatesService{
@@ -53,12 +55,16 @@ public class StatesServiceImpl implements StatesService{
 	}
 
 	@Override
-	public List<StatesResource> getAllStatesByProvider(UUID providerUuid) {
+	public List<StatesResource> getAllStatesByProvider(UUID providerUuid) throws ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(providerUuid);
 		}
 		
 		final Provider provider = providerService.getProviders().get(providerUuid);
+		
+		if (provider == null) {
+			throw new ProviderNotFoundException(providerUuid);
+		}
 		
 		final List<StatesResource> resources = new LinkedList<>();
 
@@ -77,18 +83,27 @@ public class StatesServiceImpl implements StatesService{
 	}
 
 	@Override
-	public StatesResource getStates(UUID stateDefinitionUuid) {
+	public StatesResource getStates(UUID stateDefinitionUuid) throws ProviderNotFoundException, StateDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateDefinitionUuid);
 		}
 		
 		final Provider provider = providerService.getProviderByStateDefinitionUuid(stateDefinitionUuid);
+		
+		if (provider == null) {
+			throw new ProviderNotFoundException(StateDefinition.class.getSimpleName(), stateDefinitionUuid);
+		}
+		
 		StateDefinition stateDefinition = null;
 		for (StateDefinition aDefinition : provider.getStateDefinitions()) {
 			if (aDefinition.getUUID().equals(stateDefinitionUuid)) {
 				stateDefinition = aDefinition;
 				break;
 			}
+		}
+		
+		if (stateDefinition == null) {
+			throw new StateDefinitionNotFoundException(stateDefinitionUuid);
 		}
 		
 		final List<? extends State> states = provider.getStates(stateDefinitionUuid);

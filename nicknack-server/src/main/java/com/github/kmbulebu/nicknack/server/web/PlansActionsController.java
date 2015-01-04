@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.services.ActionsService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ActionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.PlanNotFoundException;
 
 @RestController
 @RequestMapping(value="/api/plans/{planUuid}/actions", produces={"application/hal+json"})
@@ -35,7 +37,7 @@ public class PlansActionsController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.OK)
-	public void addAction(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
+	public void addAction(@PathVariable UUID planUuid, @PathVariable UUID uuid) throws ActionNotFoundException, PlanNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(planUuid, uuid);
 		}
@@ -49,7 +51,7 @@ public class PlansActionsController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.DELETE})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteAction(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
+	public void deleteAction(@PathVariable UUID planUuid, @PathVariable UUID uuid) throws PlanNotFoundException, ActionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}

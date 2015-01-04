@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.services.ActionQueueService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ActionNotFoundException;
 
 @RestController
 @RequestMapping(value="/api/actionQueue", produces={"application/hal+json"})
@@ -43,7 +44,7 @@ public class ActionQueueController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.OK)
-	public void createAction(@PathVariable UUID uuid) {
+	public void createAction(@PathVariable UUID uuid) throws ActionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}

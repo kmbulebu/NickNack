@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.StateFilterResource;
 import com.github.kmbulebu.nicknack.server.services.StateFiltersService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.PlanNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.StateFilterNotFoundException;
 
 @RestController
 @RequestMapping(value="/api/plans/{planUuid}/stateFilters", produces={"application/hal+json"})
@@ -43,7 +45,7 @@ public class PlansStateFiltersController {
 	private EntityLinks entityLinks;
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<StateFilterResource> getStateFilters(@PathVariable UUID planUuid) {
+	public Resources<StateFilterResource> getStateFilters(@PathVariable UUID planUuid) throws StateFilterNotFoundException, PlanNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -63,7 +65,7 @@ public class PlansStateFiltersController {
 	
 	@RequestMapping(value="", method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.CREATED)
-	public StateFilterResource createStateFilter(@PathVariable UUID planUuid, @RequestBody StateFilterResource newStateFilter) {
+	public StateFilterResource createStateFilter(@PathVariable UUID planUuid, @RequestBody StateFilterResource newStateFilter) throws PlanNotFoundException, StateFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(newStateFilter);
 		}
@@ -80,7 +82,7 @@ public class PlansStateFiltersController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.OK)
-	public StateFilterResource modifyStateFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid, @RequestBody StateFilterResource stateFilter) {
+	public StateFilterResource modifyStateFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid, @RequestBody StateFilterResource stateFilter) throws StateFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateFilter);
 		}
@@ -100,7 +102,7 @@ public class PlansStateFiltersController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public StateFilterResource getStateFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
+	public StateFilterResource getStateFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) throws StateFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -117,7 +119,7 @@ public class PlansStateFiltersController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.DELETE})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteStateFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
+	public void deleteStateFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) throws StateFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -129,11 +131,11 @@ public class PlansStateFiltersController {
 		}
 	}
 	
-	private void addLinks(UUID planUuid, StateFilterResource resource) {
+	private void addLinks(UUID planUuid, StateFilterResource resource) throws StateFilterNotFoundException {
 		resource.add(linkTo(methodOn(PlansStateFiltersController.class).getStateFilter(planUuid, resource.getUuid())).withSelfRel());
 	}
 	
-	private void addLinks(UUID planUuid, Resources<StateFilterResource> resources) {
+	private void addLinks(UUID planUuid, Resources<StateFilterResource> resources) throws StateFilterNotFoundException, PlanNotFoundException {
 		resources.add(linkTo(methodOn(PlansStateFiltersController.class).getStateFilters(planUuid)).withSelfRel());
 		
 		for (StateFilterResource resource : resources.getContent()) {

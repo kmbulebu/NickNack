@@ -31,6 +31,9 @@ import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.AttributeDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.EventDefinitionResource;
 import com.github.kmbulebu.nicknack.server.services.EventDefinitionService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.AttributeDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.EventDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
 
 @RestController
 @RequestMapping(value="/api/eventDefinitions", produces={"application/hal+json"})
@@ -51,7 +54,7 @@ public class EventDefinitionsController {
 	// TODO Refactor HATEOAS link building. Time for ResourceAssembler or moving this stuff up the service. Although moving it up will create a circular dep.
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<EventDefinitionResource> getEventDefinitions() {
+	public Resources<EventDefinitionResource> getEventDefinitions() throws EventDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -66,7 +69,7 @@ public class EventDefinitionsController {
 	}
 	
 	@RequestMapping(value="", params="provider", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<EventDefinitionResource> getEventDefinitions(@RequestParam UUID provider) {
+	public Resources<EventDefinitionResource> getEventDefinitions(@RequestParam UUID provider) throws EventDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -79,7 +82,7 @@ public class EventDefinitionsController {
 		return resources;
 	}
 	
-	private Resources<EventDefinitionResource> getEventDefinitions(Collection<EventDefinition> eventDefinitions) {
+	private Resources<EventDefinitionResource> getEventDefinitions(Collection<EventDefinition> eventDefinitions) throws EventDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventDefinitions);
 		}
@@ -104,7 +107,7 @@ public class EventDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public EventDefinitionResource getEventDefinition(@PathVariable UUID uuid) {
+	public EventDefinitionResource getEventDefinition(@PathVariable UUID uuid) throws EventDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -122,7 +125,7 @@ public class EventDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{eventUuid}/attributeDefinitions", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<AttributeDefinitionResource> getAttributeDefinitions(@PathVariable UUID eventUuid) {
+	public Resources<AttributeDefinitionResource> getAttributeDefinitions(@PathVariable UUID eventUuid) throws EventDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUuid);
 		}
@@ -148,7 +151,7 @@ public class EventDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{eventUuid}/attributeDefinitions/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public AttributeDefinitionResource getAttributeDefinition(@PathVariable UUID eventUuid, @PathVariable UUID uuid) {
+	public AttributeDefinitionResource getAttributeDefinition(@PathVariable UUID eventUuid, @PathVariable UUID uuid) throws EventDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUuid, uuid);
 		}
@@ -166,7 +169,7 @@ public class EventDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{eventUuid}/attributeDefinitions/{uuid}/values", method={RequestMethod.GET, RequestMethod.HEAD})
-	public ResponseEntity<Resource<Map<String, String>>> getAttributeDefinitionValues(@PathVariable UUID eventUuid, @PathVariable UUID uuid) {
+	public ResponseEntity<Resource<Map<String, String>>> getAttributeDefinitionValues(@PathVariable UUID eventUuid, @PathVariable UUID uuid) throws EventDefinitionNotFoundException, ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUuid, uuid);
 		}

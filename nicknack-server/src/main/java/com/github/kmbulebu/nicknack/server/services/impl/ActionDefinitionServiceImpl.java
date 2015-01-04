@@ -13,9 +13,13 @@ import org.springframework.stereotype.Service;
 
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ParameterDefinition;
+import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.services.ActionDefinitionService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ActionDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ParameterDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
 
 
 @Service
@@ -34,9 +38,7 @@ public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 		}
 		
 		final Collection<ActionDefinition> set = providerService.getActionDefinitions().values();
-		
-		// TODO Add exceptions for not found, etc.
-		
+
 		final List<ActionDefinition> actionDefinitions = new ArrayList<ActionDefinition>(set);
 		
 		if (LOG.isTraceEnabled()) {
@@ -47,14 +49,16 @@ public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 	}
 
 	@Override
-	public ActionDefinition getActionDefinition(final UUID uuid) {
+	public ActionDefinition getActionDefinition(final UUID uuid) throws ActionDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
 		
 		final ActionDefinition actionDefinition = providerService.getActionDefinitions().get(uuid);
 		
-		// TODO Add exceptions for not found, etc.
+		if (actionDefinition == null) {
+			throw new ActionDefinitionNotFoundException(uuid);
+		}
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(actionDefinition);
@@ -63,15 +67,13 @@ public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 	}
 	
 	@Override
-	public List<ParameterDefinition> getParameterDefinitions(final UUID actionUUID) {
+	public List<ParameterDefinition> getParameterDefinitions(final UUID actionUUID) throws ActionDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUUID);
 		}
 		
 		final ActionDefinition actionDefinition = getActionDefinition(actionUUID);
 				
-		// TODO Add exceptions for not found, etc.
-		
 		final List<ParameterDefinition> parameterDefinitions = Collections.unmodifiableList(actionDefinition.getParameterDefinitions());
 		
 		if (LOG.isTraceEnabled()) {
@@ -81,7 +83,7 @@ public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 	}
 	
 	@Override
-	public ParameterDefinition getParameterDefinition(final UUID actionUUID, final UUID uuid) {
+	public ParameterDefinition getParameterDefinition(final UUID actionUUID, final UUID uuid) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUUID, uuid);
 		}
@@ -97,6 +99,10 @@ public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 			}
 		}
 		
+		if (parameterDefinition == null) {
+			throw new ParameterDefinitionNotFoundException(uuid);
+		}
+		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(parameterDefinition);
 		}
@@ -104,12 +110,18 @@ public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 	}
 
 	@Override
-	public Collection<ActionDefinition> getActionDefinitionsByProvider(UUID providerUuid) {
+	public Collection<ActionDefinition> getActionDefinitionsByProvider(UUID providerUuid) throws ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
 		
-		final Collection<ActionDefinition> actionDefinitions = Collections.unmodifiableCollection(providerService.getProviders().get(providerUuid).getActionDefinitions());
+		final Provider provider = providerService.getProviders().get(providerUuid);
+		
+		if (provider == null) {
+			throw new ProviderNotFoundException(providerUuid);
+		}
+		
+		final Collection<ActionDefinition> actionDefinitions = Collections.unmodifiableCollection(provider.getActionDefinitions());
 	
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(actionDefinitions);

@@ -26,6 +26,10 @@ import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.model.PlanResource;
 import com.github.kmbulebu.nicknack.server.services.PlansService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ActionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.EventFilterNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.PlanNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.StateFilterNotFoundException;
 
 @RestController
 @RequestMapping(value="/api/plans", produces={"application/hal+json"})
@@ -44,7 +48,7 @@ public class PlansController {
 	private EntityLinks entityLinks;
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<PlanResource> getPlans() {
+	public Resources<PlanResource> getPlans() throws PlanNotFoundException, ActionNotFoundException, EventFilterNotFoundException, StateFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -64,7 +68,7 @@ public class PlansController {
 	
 	@RequestMapping(value="", method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.CREATED)
-	public PlanResource createPlan(@RequestBody PlanResource newPlan) {
+	public PlanResource createPlan(@RequestBody PlanResource newPlan) throws PlanNotFoundException, ActionNotFoundException, EventFilterNotFoundException, StateFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(newPlan);
 		}
@@ -81,7 +85,7 @@ public class PlansController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.OK)
-	public PlanResource modifyPlan(@PathVariable UUID uuid, @RequestBody PlanResource plan) {
+	public PlanResource modifyPlan(@PathVariable UUID uuid, @RequestBody PlanResource plan) throws PlanNotFoundException, ActionNotFoundException, EventFilterNotFoundException, StateFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(plan);
 		}
@@ -101,7 +105,7 @@ public class PlansController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public PlanResource getPlan(@PathVariable UUID uuid) {
+	public PlanResource getPlan(@PathVariable UUID uuid) throws PlanNotFoundException, ActionNotFoundException, EventFilterNotFoundException, StateFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -118,7 +122,7 @@ public class PlansController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.DELETE})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deletePlan(@PathVariable UUID uuid) {
+	public void deletePlan(@PathVariable UUID uuid) throws PlanNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -130,14 +134,14 @@ public class PlansController {
 		}
 	}
 	
-	private void addLinks(PlanResource resource) {
+	private void addLinks(PlanResource resource) throws PlanNotFoundException, ActionNotFoundException, EventFilterNotFoundException, StateFilterNotFoundException {
 		resource.add(linkTo(methodOn(PlansController.class).getPlan(resource.getUUID())).withSelfRel());
 		resource.add(linkTo(methodOn(PlansEventFiltersController.class).getEventFilters(resource.getUUID())).withRel("eventFilters"));
 		resource.add(linkTo(methodOn(PlansStateFiltersController.class).getStateFilters(resource.getUUID())).withRel("stateFilters"));
 		resource.add(linkTo(methodOn(ActionsController.class).getActionsByPlan(resource.getUUID())).withRel(relProvider.getCollectionResourceRelFor(ActionResource.class)));
 	}
 	
-	private void addLinks(Resources<PlanResource> resources) {
+	private void addLinks(Resources<PlanResource> resources) throws PlanNotFoundException, ActionNotFoundException, EventFilterNotFoundException, StateFilterNotFoundException {
 		resources.add(entityLinks.linkToCollectionResource(PlanResource.class));
 		
 		for (PlanResource resource : resources.getContent()) {

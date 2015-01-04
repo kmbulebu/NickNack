@@ -18,6 +18,9 @@ import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.services.EventDefinitionService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.AttributeDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.EventDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
 
 
 @Service
@@ -37,8 +40,6 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 		
 		final Collection<EventDefinition> set = providerService.getEventDefinitions().values();
 		
-		// TODO Add exceptions for not found, etc.
-		
 		final List<EventDefinition> eventDefinitions = new ArrayList<EventDefinition>(set);
 		
 		if (LOG.isTraceEnabled()) {
@@ -49,14 +50,16 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 	}
 
 	@Override
-	public EventDefinition getEventDefinition(final UUID uuid) {
+	public EventDefinition getEventDefinition(final UUID uuid) throws EventDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
 		
 		final EventDefinition eventDefinition = providerService.getEventDefinitions().get(uuid);
 		
-		// TODO Add exceptions for not found, etc.
+		if (eventDefinition == null) {
+			throw new EventDefinitionNotFoundException(uuid);
+		}
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(eventDefinition);
@@ -65,14 +68,12 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 	}
 	
 	@Override
-	public List<AttributeDefinition> getAttributeDefinitions(final UUID eventUUID) {
+	public List<AttributeDefinition> getAttributeDefinitions(final UUID eventUUID) throws EventDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUUID);
 		}
 		
 		final EventDefinition eventDefinition = getEventDefinition(eventUUID);
-				
-		// TODO Add exceptions for not found, etc.
 		
 		final List<AttributeDefinition> attributeDefinitions = Collections.unmodifiableList(eventDefinition.getAttributeDefinitions());
 		
@@ -83,7 +84,7 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 	}
 	
 	@Override
-	public AttributeDefinition getAttributeDefinition(final UUID eventUUID, final UUID uuid) {
+	public AttributeDefinition getAttributeDefinition(final UUID eventUUID, final UUID uuid) throws EventDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUUID, uuid);
 		}
@@ -99,6 +100,10 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 			}
 		}
 		
+		if (attributeDefinition == null) {
+			throw new AttributeDefinitionNotFoundException(uuid);
+		}
+		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(attributeDefinition);
 		}
@@ -106,12 +111,16 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 	}
 
 	@Override
-	public Map<String, String> getAttributeDefinitionValues(UUID eventUuid, UUID uuid) {
+	public Map<String, String> getAttributeDefinitionValues(UUID eventUuid, UUID uuid) throws ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUuid, uuid);
 		}
 		
 		final Provider provider = providerService.getProviderByEventDefinitionUuid(eventUuid);
+		
+		if (provider == null) {
+			throw new ProviderNotFoundException(EventDefinition.class.getSimpleName(), eventUuid);
+		}
 		
 		final Map<String, String> values = provider.getAttributeDefinitionValues(eventUuid, uuid);
 		
@@ -122,12 +131,18 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 	}
 
 	@Override
-	public Collection<EventDefinition> getEventDefinitionsByProvider(UUID providerUuid) {
+	public Collection<EventDefinition> getEventDefinitionsByProvider(UUID providerUuid) throws ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(providerUuid);
 		}
 		
-		final Collection<EventDefinition> eventDefinitions = Collections.unmodifiableCollection(providerService.getProviders().get(providerUuid).getEventDefinitions());
+		final Provider provider = providerService.getProviders().get(providerUuid);
+		
+		if (provider == null) {
+			throw new ProviderNotFoundException(providerUuid);
+		}
+		
+		final Collection<EventDefinition> eventDefinitions = Collections.unmodifiableCollection(provider.getEventDefinitions());
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(eventDefinitions);

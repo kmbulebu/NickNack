@@ -31,6 +31,9 @@ import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.AttributeDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.StateDefinitionResource;
 import com.github.kmbulebu.nicknack.server.services.StateDefinitionService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.AttributeDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.StateDefinitionNotFoundException;
 
 @RestController
 @RequestMapping(value="/api/stateDefinitions", produces={"application/hal+json"})
@@ -51,7 +54,7 @@ public class StateDefinitionsController {
 	// TODO Refactor HATEOAS link building. Time for ResourceAssembler or moving this stuff up the service. Although moving it up will create a circular dep.
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<StateDefinitionResource> getStateDefinitions() {
+	public Resources<StateDefinitionResource> getStateDefinitions() throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -66,7 +69,7 @@ public class StateDefinitionsController {
 	}
 	
 	@RequestMapping(value="", params="provider", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<StateDefinitionResource> getStateDefinitions(@RequestParam UUID provider) {
+	public Resources<StateDefinitionResource> getStateDefinitions(@RequestParam UUID provider) throws ProviderNotFoundException, StateDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -79,7 +82,7 @@ public class StateDefinitionsController {
 		return resources;
 	}
 	
-	private Resources<StateDefinitionResource> getStateDefinitions(Collection<StateDefinition> stateDefinitions) {
+	private Resources<StateDefinitionResource> getStateDefinitions(Collection<StateDefinition> stateDefinitions) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateDefinitions);
 		}
@@ -104,7 +107,7 @@ public class StateDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public StateDefinitionResource getStateDefinition(@PathVariable UUID uuid) {
+	public StateDefinitionResource getStateDefinition(@PathVariable UUID uuid) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -122,7 +125,7 @@ public class StateDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{stateUuid}/attributeDefinitions", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<AttributeDefinitionResource> getAttributeDefinitions(@PathVariable UUID stateUuid) {
+	public Resources<AttributeDefinitionResource> getAttributeDefinitions(@PathVariable UUID stateUuid) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateUuid);
 		}
@@ -148,7 +151,7 @@ public class StateDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{stateUuid}/attributeDefinitions/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public AttributeDefinitionResource getAttributeDefinition(@PathVariable UUID stateUuid, @PathVariable UUID uuid) {
+	public AttributeDefinitionResource getAttributeDefinition(@PathVariable UUID stateUuid, @PathVariable UUID uuid) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateUuid, uuid);
 		}
@@ -166,7 +169,7 @@ public class StateDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{stateUuid}/attributeDefinitions/{uuid}/values", method={RequestMethod.GET, RequestMethod.HEAD})
-	public ResponseEntity<Resource<Map<String, String>>> getAttributeDefinitionValues(@PathVariable UUID stateUuid, @PathVariable UUID uuid) {
+	public ResponseEntity<Resource<Map<String, String>>> getAttributeDefinitionValues(@PathVariable UUID stateUuid, @PathVariable UUID uuid) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateUuid, uuid);
 		}

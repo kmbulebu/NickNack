@@ -23,6 +23,9 @@ import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.StateDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.StatesResource;
 import com.github.kmbulebu.nicknack.server.services.StatesService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.AttributeDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.StateDefinitionNotFoundException;
 
 @RestController
 @RequestMapping(value="/api/states", produces={"application/hal+json"})
@@ -43,7 +46,7 @@ public class StatesController {
 	// TODO Refactor HATEOAS link building. Time for ResourceAssembler or moving this stuff up the service. Although moving it up will create a circular dep.
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<StatesResource> getAllStates() {
+	public Resources<StatesResource> getAllStates() throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -57,7 +60,7 @@ public class StatesController {
 	}
 	
 	@RequestMapping(value="", params="provider", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<StatesResource> getAllStates(@RequestParam UUID provider) {
+	public Resources<StatesResource> getAllStates(@RequestParam UUID provider) throws ProviderNotFoundException, StateDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(provider);
 		}
@@ -71,7 +74,7 @@ public class StatesController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public StatesResource getStates(@PathVariable UUID uuid) {
+	public StatesResource getStates(@PathVariable UUID uuid) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -89,7 +92,7 @@ public class StatesController {
 	}
 	
 	
-	private Resources<StatesResource> getAllStates(Collection<StatesResource> statesResources, UUID provider) {
+	private Resources<StatesResource> getAllStates(Collection<StatesResource> statesResources, UUID provider) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(statesResources);
 		}

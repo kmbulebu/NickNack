@@ -28,6 +28,12 @@ import com.github.kmbulebu.nicknack.server.model.EventDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.ProviderResource;
 import com.github.kmbulebu.nicknack.server.model.StateDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.StatesResource;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ActionDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.AttributeDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.EventDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ParameterDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.StateDefinitionNotFoundException;
 
 
 @RestController
@@ -47,7 +53,7 @@ public class ProvidersController {
 	private EntityLinks entityLinks;
 		
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<ProviderResource> getProviders() {
+	public Resources<ProviderResource> getProviders() throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException, ProviderNotFoundException, EventDefinitionNotFoundException, AttributeDefinitionNotFoundException, StateDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -77,7 +83,7 @@ public class ProvidersController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public ProviderResource getProvider(@PathVariable UUID uuid) {
+	public ProviderResource getProvider(@PathVariable UUID uuid) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException, ProviderNotFoundException, StateDefinitionNotFoundException, AttributeDefinitionNotFoundException, EventDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}

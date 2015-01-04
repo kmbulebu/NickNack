@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
+import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
@@ -21,6 +22,7 @@ import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.services.ActionQueueService;
 import com.github.kmbulebu.nicknack.server.services.ActionsService;
 import com.github.kmbulebu.nicknack.server.services.NickNackServerProvider;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ActionNotFoundException;
 
 @Service
 public class ActionQueueServiceImpl implements ActionQueueService {
@@ -43,8 +45,16 @@ public class ActionQueueServiceImpl implements ActionQueueService {
 	}
 	
 	public void enqueueAction(final Action action) {
-		final String actionName = providerService.getActionDefinitions().get(action.getAppliesToActionDefinition()).getName();
+		final ActionDefinition actionDefinition = providerService.getActionDefinitions().get(action.getAppliesToActionDefinition());
+		
 		final String actionUuid = action.getAppliesToActionDefinition().toString();
+		if (actionDefinition == null) {
+			final String error = "Failed to perform action. ActionDefinition " + action.getAppliesToActionDefinition() + " does not exist.";
+			LOG.warn(error);
+			nickNackServerProvider.fireActionFailedEvent(actionUuid, "unknown", error);
+		}
+		final String actionName = actionDefinition.getName();
+		
 		
 		actionsExecutor.execute(new Runnable() {
 
@@ -68,7 +78,7 @@ public class ActionQueueServiceImpl implements ActionQueueService {
 	}
 
 	@Override
-	public void enqueueAction(UUID actionUuid) {
+	public void enqueueAction(UUID actionUuid) throws ActionNotFoundException {
 		final Action action = actionsService.getAction(actionUuid);
 		
 		enqueueAction(action);

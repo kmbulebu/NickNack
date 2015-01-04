@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.services.ActionsService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.ActionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.PlanNotFoundException;
 
 @RestController
 @RequestMapping(value="/api/actions", produces={"application/hal+json"})
@@ -37,7 +39,7 @@ public class ActionsController {
 	
 	@RequestMapping(value = "/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
 	@ResponseStatus(HttpStatus.OK)
-	public ActionResource getAction(@PathVariable UUID uuid) {
+	public ActionResource getAction(@PathVariable UUID uuid) throws ActionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -52,7 +54,7 @@ public class ActionsController {
 	
 	@RequestMapping(method={RequestMethod.GET, RequestMethod.HEAD})
 	@ResponseStatus(HttpStatus.OK)
-	public Resources<ActionResource> getActions() {
+	public Resources<ActionResource> getActions() throws ActionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -72,7 +74,7 @@ public class ActionsController {
 	
 	@RequestMapping(method={RequestMethod.GET, RequestMethod.HEAD}, params="planUuid")
 	@ResponseStatus(HttpStatus.OK)
-	public Resources<ActionResource> getActionsByPlan(@RequestParam UUID planUuid) {
+	public Resources<ActionResource> getActionsByPlan(@RequestParam UUID planUuid) throws PlanNotFoundException, ActionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -92,7 +94,7 @@ public class ActionsController {
 	
 	@RequestMapping(method={RequestMethod.POST}, params="planUuid", consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.CREATED)
-	public ActionResource createActionForPlan(@RequestBody ActionResource action, @RequestParam UUID planUuid) {
+	public ActionResource createActionForPlan(@RequestBody ActionResource action, @RequestParam UUID planUuid) throws ActionNotFoundException, PlanNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(action);
 		}
@@ -124,7 +126,7 @@ public class ActionsController {
 	
 	@RequestMapping(value = "/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.OK)
-	public ActionResource modifyAction(@PathVariable UUID uuid, @RequestBody ActionResource action) {
+	public ActionResource modifyAction(@PathVariable UUID uuid, @RequestBody ActionResource action) throws ActionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(action);
 		}
@@ -139,7 +141,7 @@ public class ActionsController {
 	
 	@RequestMapping(value = "/{uuid}", method={RequestMethod.DELETE})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteAction(@PathVariable UUID uuid) {
+	public void deleteAction(@PathVariable UUID uuid) throws ActionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -151,11 +153,11 @@ public class ActionsController {
 		}
 	}
 	
-	private void addLinks(ActionResource resource) {
+	private void addLinks(ActionResource resource) throws ActionNotFoundException {
 		resource.add(linkTo(methodOn(ActionsController.class).getAction(resource.getUuid())).withSelfRel());
 	}
 	
-	private void addLinks(Resources<ActionResource> resources) {
+	private void addLinks(Resources<ActionResource> resources) throws ActionNotFoundException {
 		resources.add(linkTo(methodOn(ActionsController.class).getActions()).withSelfRel());
 		
 		for (ActionResource resource : resources.getContent()) {
@@ -163,7 +165,7 @@ public class ActionsController {
 		}
 	}
 	
-	private void addLinks(Resources<ActionResource> resources, UUID planUuid) {
+	private void addLinks(Resources<ActionResource> resources, UUID planUuid) throws PlanNotFoundException, ActionNotFoundException {
 		resources.add(linkTo(methodOn(ActionsController.class).getActionsByPlan(planUuid)).withSelfRel());
 		
 		for (ActionResource resource : resources.getContent()) {

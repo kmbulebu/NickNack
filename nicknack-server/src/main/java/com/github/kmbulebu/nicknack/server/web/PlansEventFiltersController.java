@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.EventFilterResource;
 import com.github.kmbulebu.nicknack.server.services.EventFiltersService;
+import com.github.kmbulebu.nicknack.server.services.exceptions.EventFilterNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.PlanNotFoundException;
 
 @RestController
 @RequestMapping(value="/api/plans/{planUuid}/eventFilters", produces={"application/hal+json"})
@@ -43,7 +45,7 @@ public class PlansEventFiltersController {
 	private EntityLinks entityLinks;
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<EventFilterResource> getEventFilters(@PathVariable UUID planUuid) {
+	public Resources<EventFilterResource> getEventFilters(@PathVariable UUID planUuid) throws PlanNotFoundException, EventFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -63,7 +65,7 @@ public class PlansEventFiltersController {
 	
 	@RequestMapping(value="", method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.CREATED)
-	public EventFilterResource createEventFilter(@PathVariable UUID planUuid, @RequestBody EventFilterResource newEventFilter) {
+	public EventFilterResource createEventFilter(@PathVariable UUID planUuid, @RequestBody EventFilterResource newEventFilter) throws PlanNotFoundException, EventFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(newEventFilter);
 		}
@@ -80,7 +82,7 @@ public class PlansEventFiltersController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.OK)
-	public EventFilterResource modifyEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid, @RequestBody EventFilterResource eventFilter) {
+	public EventFilterResource modifyEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid, @RequestBody EventFilterResource eventFilter) throws EventFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventFilter);
 		}
@@ -100,7 +102,7 @@ public class PlansEventFiltersController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public EventFilterResource getEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
+	public EventFilterResource getEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) throws EventFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -117,7 +119,7 @@ public class PlansEventFiltersController {
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.DELETE})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) {
+	public void deleteEventFilter(@PathVariable UUID planUuid, @PathVariable UUID uuid) throws EventFilterNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}
@@ -129,11 +131,11 @@ public class PlansEventFiltersController {
 		}
 	}
 	
-	private void addLinks(UUID planUuid, EventFilterResource resource) {
+	private void addLinks(UUID planUuid, EventFilterResource resource) throws EventFilterNotFoundException {
 		resource.add(linkTo(methodOn(PlansEventFiltersController.class).getEventFilter(planUuid, resource.getUuid())).withSelfRel());
 	}
 	
-	private void addLinks(UUID planUuid, Resources<EventFilterResource> resources) {
+	private void addLinks(UUID planUuid, Resources<EventFilterResource> resources) throws PlanNotFoundException, EventFilterNotFoundException {
 		resources.add(linkTo(methodOn(PlansEventFiltersController.class).getEventFilters(planUuid)).withSelfRel());
 		
 		for (EventFilterResource resource : resources.getContent()) {
