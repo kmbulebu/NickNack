@@ -193,18 +193,16 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 		});
 	};
 	
-	$scope.onEventAttributeFilterTypeChange = function() {
-		$scope.formData.eventAttributeFilterExpressions[this.$index].attributeDefinitionUuid = $scope.formData.eventAttributeFilterExpressions[this.$index].attributeDefinition.uuid;
-		
+	$scope.onEventAttributeFilterTypeChange = function(eventAttributeFilterExpression, eventDefinition, attributeDefinition) {
+		eventAttributeFilterExpression.attributeDefinitionUuid = attributeDefinition.uuid;
 		// Get the list of attribute values.
-		var index = this.$index;
-		WebsiteService.getAttributeDefinitionValues($scope.eventType.uuid, $scope.formData.eventAttributeFilterExpressions[this.$index].attributeDefinition.uuid)
+		WebsiteService.getAttributeDefinitionValues(eventDefinition.uuid, attributeDefinition.uuid)
 			.then(function(valuesResource) {
 				var valueArray = [];
 				for (var key in valuesResource.content) {
 					valueArray.push(valuesResource.content[key]);
 				}
-				$scope.formData.eventAttributeFilterExpressions[this.$index].attributeDefinition.values = valueArray;
+				attributeDefinition.values = valueArray;
 			});
 	};
 	
@@ -273,6 +271,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 					var eventAttributeFilterExpressions = $scope.formData.eventAttributeFilterExpressions;
 					
 					for (var i = 0; i < eventAttributeFilterExpressions.length; i++) {
+						eventAttributeFilterExpressions[i].attributeDefinitionUuid = eventAttributeFilterExpressions[i].attributeDefinition.uuid;
 						delete eventAttributeFilterExpressions[i].attributeDefinition;
 					}
 					var eventFilter = { 
@@ -332,6 +331,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 				var eventAttributeFilterExpressions = $scope.formData.eventAttributeFilterExpressions;
 				
 				for (var i = 0; i < eventAttributeFilterExpressions.length; i++) {
+					eventAttributeFilterExpressions[i].attributeDefinitionUuid = eventAttributeFilterExpressions[i].attributeDefinition.uuid;
 					delete eventAttributeFilterExpressions[i].attributeDefinition;
 				}
 				

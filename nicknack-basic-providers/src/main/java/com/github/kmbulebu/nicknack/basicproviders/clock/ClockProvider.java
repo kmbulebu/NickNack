@@ -16,6 +16,13 @@ import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.attributes.impl.DayOfMonthAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.DayOfWeekAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.HourOfDayAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.MinuteOfHourAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.MonthOfYearNumericalAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.SecondOfMinuteAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.YearAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
@@ -102,6 +109,21 @@ public class ClockProvider implements Provider, Runnable {
 
 	@Override
 	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+		if (DayOfMonthAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
+			return DayOfMonthAttributeDefinition.INSTANCE.getStaticValues();
+		} else if (DayOfWeekAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
+			return DayOfWeekAttributeDefinition.INSTANCE.getStaticValues();
+		} else if (HourOfDayAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
+			return HourOfDayAttributeDefinition.INSTANCE.getStaticValues();
+		} else if (MinuteOfHourAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
+			return MinuteOfHourAttributeDefinition.INSTANCE.getStaticValues();
+		} else if (MonthOfYearNumericalAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
+			return MonthOfYearNumericalAttributeDefinition.INSTANCE.getStaticValues();
+		} else if (SecondOfMinuteAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
+			return SecondOfMinuteAttributeDefinition.INSTANCE.getStaticValues();
+		} else if (YearAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
+			return YearAttributeDefinition.INSTANCE.getStaticValues();
+		}
 		return null;
 	}
 

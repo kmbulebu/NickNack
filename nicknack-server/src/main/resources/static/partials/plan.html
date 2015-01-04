@@ -15,7 +15,7 @@
 					</div>
 					<div class="panel-body">
 				 <select class="form-control" ng-model="eventAttributeFilterExpression.attributeDefinition"
-					ng-change="onEventAttributeFilterTypeChange()" ng-options="eventAttributeDefinition.name for eventAttributeDefinition in eventAttributeDefinitions">
+					ng-change="onEventAttributeFilterTypeChange(eventAttributeFilterExpression, eventType, eventAttributeFilterExpression.attributeDefinition)" ng-options="eventAttributeDefinition.name for eventAttributeDefinition in eventAttributeDefinitions">
 					</select> <select ng-disabled="!eventAttributeFilterExpression.attributeDefinition.uuid" class="form-control" ng-model="eventAttributeFilterExpression.operator" ng-options="operator for operator in eventAttributeFilterExpression.attributeDefinition.units.supportedOperators">
 				</select> <input ng-disabled="!eventAttributeFilterExpression.attributeDefinition.uuid" type="text" class="form-control" ng-model="eventAttributeFilterExpression.operand" list="values{{$index}}"/><datalist id="values{{$index}}"><option ng-repeat="attributeValue in eventAttributeFilterExpression.attributeDefinition.values">{{attributeValue}}</option></datalist>
 				<button class="btn" ng-click="deleteEventAttributeFilter()"><span class="glyphicon glyphicon-trash"></span></button>
