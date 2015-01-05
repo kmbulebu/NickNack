@@ -222,7 +222,7 @@ angular.module('staticDataService', ['angular-hal']).factory('StaticDataService'
 			} else {
 				for (i = 0; i < $rootScope.actionDefinitions.length; i++) {
 					if ($rootScope.actionDefinitions[i].uuid === actionDefUuid) {
-						return $rootScope.actionDefinitions[i].$get('parameterDefinitions').then(function (parameterDefinitionsResource) {
+						return $rootScope.actionDefinitions[i].$get('ParameterDefinitions').then(function (parameterDefinitionsResource) {
 							if (parameterDefinitionsResource.$has('ParameterDefinitions')) {
 								return parameterDefinitionsResource.$get('ParameterDefinitions')
 									.then(function(parameterDefinitions) {
