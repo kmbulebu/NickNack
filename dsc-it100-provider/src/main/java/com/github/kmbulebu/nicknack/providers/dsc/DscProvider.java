@@ -49,8 +49,12 @@ import com.github.kmbulebu.nicknack.providers.dsc.events.PartitionInAlarmEventDe
 import com.github.kmbulebu.nicknack.providers.dsc.events.ZoneOpenCloseEventDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.internal.CommandToEventMapper;
 import com.github.kmbulebu.nicknack.providers.dsc.internal.CommandToStateMapper;
+import com.github.kmbulebu.nicknack.providers.dsc.internal.Partition;
+import com.github.kmbulebu.nicknack.providers.dsc.internal.Partitions;
 import com.github.kmbulebu.nicknack.providers.dsc.internal.Zone;
 import com.github.kmbulebu.nicknack.providers.dsc.internal.Zones;
+import com.github.kmbulebu.nicknack.providers.dsc.states.PartitionState;
+import com.github.kmbulebu.nicknack.providers.dsc.states.PartitionStateDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.states.ZoneState;
 import com.github.kmbulebu.nicknack.providers.dsc.states.ZoneStateDefinition;
 
@@ -70,9 +74,11 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	private CommandToStateMapper stateMapper;
 	
 	private Zones zones;
+	private Partitions partitions;
 	private Labels labels;
 	
 	private Set<Integer> activeZones = null;
+	private Set<Integer> activePartitions = null;
 	
 	public DscProvider() {
 		this.eventDefinitions = new ArrayList<>(6);
@@ -85,6 +91,7 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		
 		this.stateDefinitions = new ArrayList<>(1);
 		this.stateDefinitions.add(ZoneStateDefinition.INSTANCE);
+		this.stateDefinitions.add(PartitionStateDefinition.INSTANCE);
 		
 		this.actionDefinitions = new HashMap<>();
 	}
@@ -140,6 +147,16 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
  			}
 		}
 		
+		final String[] activePartitionList = configuration.getStringArray("activePartitions");
+		if (activePartitionList != null && activePartitionList.length > 0) {
+			this.activePartitions = new HashSet<>();
+			for (String value : activePartitionList) {
+				if (value.matches("\\d+")) {
+					this.activePartitions.add(Integer.parseInt(value));
+				}
+ 			}
+		}
+		
 		final IT100 it100 = new IT100(new ConfigurationBuilder().withRemoteSocket(host, port).build());
 		
 		// Start communicating with IT-100.
@@ -155,12 +172,13 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		
 		// Begin tracking zone state and request the initial state.
 		zones = new Zones();
-		stateMapper = new CommandToStateMapper(zones, activeZones);
+		partitions = new Partitions();
+		stateMapper = new CommandToStateMapper(zones, partitions, activeZones, activePartitions);
 		writeObservable.onNext(new StatusRequestCommand());
 		
 		// Labels gives us friendly names to our zones.
 		labels = new Labels(readObservable, writeObservable);
-		eventMapper = new CommandToEventMapper(labels, activeZones);
+		eventMapper = new CommandToEventMapper(labels, activeZones, activePartitions);
 		
 		this.onEventListener = onEventListener;
 		
@@ -203,12 +221,14 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	@Override
 	public List<State> getStates(UUID stateDefinitionUuid) {
 		if (ZoneStateDefinition.INSTANCE.getUUID().equals(stateDefinitionUuid)) {
-			return getZoneOpenStates();
-		}
+			return getZoneStates();
+		} else if (PartitionStateDefinition.INSTANCE.getUUID().equals(stateDefinitionUuid)) {
+			return getPartitionStates();
+		} 
 		return Collections.emptyList();
 	}
 	
-	protected List<State> getZoneOpenStates() {
+	protected List<State> getZoneStates() {
 		final List<State> states = new ArrayList<>();
 	
 		for (int i = 1; i <= 128; i++) {
@@ -224,5 +244,23 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		
 		return states;
  	}
+	
+	protected List<State> getPartitionStates() {
+		final List<State> states = new ArrayList<>();
+		
+		for (int i = 1; i <= 16; i++) {
+			final Partition partition = partitions.getPartition(i);
+			if (partition != null) {
+				final PartitionState state = new PartitionState();
+				state.setPartitionLabel(labels.getPartitionLabel(i));
+				state.setPartitionNumber(i);
+				state.setPartitionArmed(partition.isArmed());
+				state.setPartitionArmedMode(partition.getArmedMode());
+				states.add(state);
+			}
+		}
+		return states;
+		
+	}
 
 }

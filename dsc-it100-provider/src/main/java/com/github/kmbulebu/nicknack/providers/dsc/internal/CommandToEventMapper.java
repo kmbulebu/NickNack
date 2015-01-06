@@ -36,11 +36,14 @@ import com.github.kmbulebu.nicknack.providers.dsc.events.ZoneOpenCloseEventDefin
 public class CommandToEventMapper {
 	
 	private final Labels labels;
-	private Set<Integer> activeZones;
+	private final Set<Integer> activeZones;
+	@SuppressWarnings("unused") // We will
+	private final Set<Integer> activePartitions;
 	
-	public CommandToEventMapper(Labels labels, Set<Integer> activeZones) {
+	public CommandToEventMapper(Labels labels, Set<Integer> activeZones, Set<Integer> activePartitions) {
 		this.labels = labels;
 		this.activeZones = activeZones;
+		this.activePartitions = activePartitions;
 	}
 	
 	public Event map(ReadCommand readCommand) {
