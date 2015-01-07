@@ -4,23 +4,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
+
 
 public abstract class BasicActionDefinition implements ActionDefinition {
 	
 	private final UUID uuid;
 	private final UUID providerUuid;
 	private final String name;
-	private final List<ParameterDefinition> parameterDefinitions;
+	private final List<AttributeDefinition> attributeDefinitions;
 
-	public BasicActionDefinition(UUID uuid, UUID providerUuid, String name, List<ParameterDefinition> parameterDefinitions) {
+	public BasicActionDefinition(UUID uuid, UUID providerUuid, String name, List<AttributeDefinition> parameterDefinitions) {
 		super();
 		this.uuid = uuid;
 		this.providerUuid = providerUuid;
 		this.name = name;
-		this.parameterDefinitions = parameterDefinitions;
+		this.attributeDefinitions = parameterDefinitions;
 	}
 	
-	public BasicActionDefinition(UUID uuid, UUID providerUuid, String name, ParameterDefinition... parameterDefinitions) {
+	public BasicActionDefinition(UUID uuid, UUID providerUuid, String name, AttributeDefinition... parameterDefinitions) {
 		this(uuid, providerUuid, name, Arrays.asList(parameterDefinitions));
 	}
 
@@ -35,8 +37,8 @@ public abstract class BasicActionDefinition implements ActionDefinition {
 	}
 
 	@Override
-	public List<ParameterDefinition> getParameterDefinitions() {
-		return parameterDefinitions;
+	public List<AttributeDefinition> getAttributeDefinitions() {
+		return attributeDefinitions;
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public abstract class BasicActionDefinition implements ActionDefinition {
 	@Override
 	public String toString() {
 		return "BasicActionDefinition [uuid=" + uuid + ", providerUuid=" + providerUuid + ", name=" + name
-				+ ", parameterDefinitions=" + parameterDefinitions + "]";
+				+ ", parameterDefinitions=" + attributeDefinitions + "]";
 	}
 
 	@Override

@@ -1,29 +1,21 @@
 package com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.github.kmbulebu.nicknack.core.actions.parameters.BasicParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
-import com.github.kmbulebu.nicknack.providers.xbmc.XbmcProvider;
 
-public class DurationParameterDefinition extends BasicParameterDefinition<IntegerUnit> {
-	
-	private static final Logger logger = LogManager.getLogger(XbmcProvider.LOGGER_NAME);
+public class DurationAttributeDefinition extends BasicAttributeDefinition {
 	
 	public static final UUID DEF_UUID = UUID.fromString("f9ffe599-6208-41f7-a6fa-124ec4c19576");
 	
-	public static final DurationParameterDefinition INSTANCE = new DurationParameterDefinition();
+	public static final DurationAttributeDefinition INSTANCE = new DurationAttributeDefinition();
 
-	public DurationParameterDefinition() {
+	public DurationAttributeDefinition() {
 		super(DEF_UUID, "Duration (ms)", IntegerUnit.INSTANCE, true);
 	}
 
-	@Override
+	/*@Override
 	public String format(String rawValue) {
 		return rawValue;
 	}
@@ -45,5 +37,5 @@ public class DurationParameterDefinition extends BasicParameterDefinition<Intege
 		}
 		return Collections.emptyList();
 	}
-
+*/
 }

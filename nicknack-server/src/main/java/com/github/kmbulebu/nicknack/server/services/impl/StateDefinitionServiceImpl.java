@@ -123,7 +123,7 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 		
 		getAttributeDefinition(stateUuid, uuid);
 		
-		final Map<String, String> values = provider.getAttributeDefinitionValues(stateUuid, uuid);
+		final Map<String, String> values = provider.getAttributeDefinitionValues(uuid);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(values);

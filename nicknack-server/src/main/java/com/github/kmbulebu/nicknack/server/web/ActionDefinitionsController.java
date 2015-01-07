@@ -18,7 +18,7 @@ import com.github.kmbulebu.nicknack.server.hateoas.ActionDefinitionResourceAssem
 import com.github.kmbulebu.nicknack.server.model.ActionDefinitionResource;
 import com.github.kmbulebu.nicknack.server.services.ActionDefinitionService;
 import com.github.kmbulebu.nicknack.server.services.exceptions.ActionDefinitionNotFoundException;
-import com.github.kmbulebu.nicknack.server.services.exceptions.ParameterDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.AttributeDefinitionNotFoundException;
 import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
 
 @RestController
@@ -35,7 +35,7 @@ public class ActionDefinitionsController {
 	private ActionDefinitionResourceAssembler actionDefinitionResourceAssembler;
 	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<ActionDefinitionResource> getActionDefinitions() throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException {
+	public Resources<ActionDefinitionResource> getActionDefinitions() throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -49,7 +49,7 @@ public class ActionDefinitionsController {
 	}
 	
 	@RequestMapping(value="", params="provider", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<ActionDefinitionResource> getActionDefinitions(@RequestParam UUID provider) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException, ProviderNotFoundException {
+	public Resources<ActionDefinitionResource> getActionDefinitions(@RequestParam UUID provider) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException, ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry();
 		}
@@ -63,7 +63,7 @@ public class ActionDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public ActionDefinitionResource getActionDefinition(@PathVariable UUID uuid) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException {
+	public ActionDefinitionResource getActionDefinition(@PathVariable UUID uuid) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(uuid);
 		}

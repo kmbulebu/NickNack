@@ -216,8 +216,8 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 		final Map<UUID, String> newParameters = new HashMap<>();
 		newAction.setAppliesToActionDefinition(origAction.getAppliesToActionDefinition());
 		
-		for (UUID key : origAction.getParameters().keySet()) {
-			newParameters.put(key,  processVariables(origAction.getParameters().get(key), cause));
+		for (UUID key : origAction.getAttributes().keySet()) {
+			newParameters.put(key,  processVariables(origAction.getAttributes().get(key), cause));
 		}
 		newAction.setParameters(newParameters);
 		return newAction;

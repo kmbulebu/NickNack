@@ -63,7 +63,7 @@ public class PushOverProvider implements Provider {
 	}
 
 	@Override
-	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+	public Map<String, String> getAttributeDefinitionValues(UUID attributeDefinitionUuid) {
 		return null;
 	}
 

@@ -78,18 +78,18 @@ public class WakeOnLanProvider implements Provider {
 	}
 
 	@Override
-	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+	public Map<String, String> getAttributeDefinitionValues(UUID attributeDefinitionUuid) {
 		return null;
 	}
 	
 	@Override
 	public void run(Action action) throws ActionParameterException, ActionFailureException {
 		if (WakeOnLanActionDefinition.WOL_ACTION_UUID.equals(action.getAppliesToActionDefinition())) {
-			if (action.getParameters() == null) {
+			if (action.getAttributes() == null) {
 				throw new ActionParameterException("Parameters are required.");
 			}
 			
-			final String macAddress = action.getParameters().get(DeviceMacAddressParameterDefinition.MAC_ADDRESS_PARAMETER_UUID);
+			final String macAddress = action.getAttributes().get(DeviceMacAddressParameterDefinition.MAC_ADDRESS_PARAMETER_UUID);
 			if (macAddress == null) {
 				throw new ActionParameterException(DeviceMacAddressParameterDefinition.INSTANCE.getName() + " is required.");
 			}

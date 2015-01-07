@@ -127,7 +127,7 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	}
 
 	@Override
-	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+	public Map<String, String> getAttributeDefinitionValues(UUID attributeDefinitionUuid) {
 		return Collections.emptyMap();
 	}
 

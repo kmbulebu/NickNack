@@ -1,19 +1,17 @@
-package com.github.kmbulebu.nicknack.core.actions.parameters;
+package com.github.kmbulebu.nicknack.core.attributes.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.StringUnit;
 
-public class MacAddressParameterDefinition extends BasicParameterDefinition<StringUnit> {
+public class MacAddressParameterDefinition extends BasicAttributeDefinition {
 
 	public MacAddressParameterDefinition(UUID uuid, String name, boolean isRequired) {
 		super(uuid, name, StringUnit.INSTANCE, isRequired);
 	}
 
-	@Override
+/*	@Override
 	public String format(String rawValue) {
 		return rawValue.toLowerCase();
 	}
@@ -31,7 +29,7 @@ public class MacAddressParameterDefinition extends BasicParameterDefinition<Stri
 		}
 		
 		return errors;
-	}
+	}*/
 	
 	
 

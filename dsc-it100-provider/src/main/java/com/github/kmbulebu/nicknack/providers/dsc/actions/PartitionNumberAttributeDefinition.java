@@ -1,23 +1,21 @@
 package com.github.kmbulebu.nicknack.providers.dsc.actions;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.actions.parameters.BasicParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
 
-public class PartitionNumberParameterDefinition extends BasicParameterDefinition<IntegerUnit> {
+public class PartitionNumberAttributeDefinition extends BasicAttributeDefinition {
 	
 	public static final UUID DEF_UUID = UUID.fromString("5748a2bb-8030-4e17-a325-494ad11e3893");
 	
-	public static final PartitionNumberParameterDefinition INSTANCE = new PartitionNumberParameterDefinition();
+	public static final PartitionNumberAttributeDefinition INSTANCE = new PartitionNumberAttributeDefinition();
 	
-	public PartitionNumberParameterDefinition() {
+	public PartitionNumberAttributeDefinition() {
 		super(DEF_UUID, "Partition Number", IntegerUnit.INSTANCE, true);
 	}
 
-	@Override
+	/*@Override
 	public String format(String rawValue) {
 		return rawValue;
 	}
@@ -35,6 +33,6 @@ public class PartitionNumberParameterDefinition extends BasicParameterDefinition
 			return Collections.singletonList(VALIDATE_ERROR);
 		}
 		return null;
-	}
+	}*/
 
 }

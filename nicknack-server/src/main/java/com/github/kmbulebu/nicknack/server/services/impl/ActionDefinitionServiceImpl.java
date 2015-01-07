@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
-import com.github.kmbulebu.nicknack.core.actions.ParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.services.ActionDefinitionService;
 import com.github.kmbulebu.nicknack.server.services.exceptions.ActionDefinitionNotFoundException;
-import com.github.kmbulebu.nicknack.server.services.exceptions.ParameterDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.AttributeDefinitionNotFoundException;
 import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
 
 
@@ -67,46 +67,46 @@ public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 	}
 	
 	@Override
-	public List<ParameterDefinition> getParameterDefinitions(final UUID actionUUID) throws ActionDefinitionNotFoundException {
+	public List<AttributeDefinition> getAttributeDefinitions(final UUID actionUUID) throws ActionDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUUID);
 		}
 		
 		final ActionDefinition actionDefinition = getActionDefinition(actionUUID);
 				
-		final List<ParameterDefinition> parameterDefinitions = Collections.unmodifiableList(actionDefinition.getParameterDefinitions());
+		final List<AttributeDefinition> attributeDefinitions = Collections.unmodifiableList(actionDefinition.getAttributeDefinitions());
 		
 		if (LOG.isTraceEnabled()) {
-			LOG.exit(parameterDefinitions);
+			LOG.exit(attributeDefinitions);
 		}
-		return parameterDefinitions;
+		return attributeDefinitions;
 	}
 	
 	@Override
-	public ParameterDefinition getParameterDefinition(final UUID actionUUID, final UUID uuid) throws ActionDefinitionNotFoundException, ParameterDefinitionNotFoundException {
+	public AttributeDefinition getAttributeDefinition(final UUID actionUUID, final UUID uuid) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUUID, uuid);
 		}
 		
-		final List<ParameterDefinition> parameterDefinitions = getParameterDefinitions(actionUUID);
+		final List<AttributeDefinition> attributeDefinitions = getAttributeDefinitions(actionUUID);
 		
-		ParameterDefinition parameterDefinition = null;
+		AttributeDefinition attributeDefinition = null;
 		
-		for (ParameterDefinition anParameterDefinition : parameterDefinitions) {
-			if (uuid.equals(anParameterDefinition.getUUID())) {
-				parameterDefinition = anParameterDefinition;
+		for (AttributeDefinition anAttributeDefinition : attributeDefinitions) {
+			if (uuid.equals(anAttributeDefinition.getUUID())) {
+				attributeDefinition = anAttributeDefinition;
 				break;
 			}
 		}
 		
-		if (parameterDefinition == null) {
-			throw new ParameterDefinitionNotFoundException(uuid);
+		if (attributeDefinition == null) {
+			throw new AttributeDefinitionNotFoundException(uuid);
 		}
 		
 		if (LOG.isTraceEnabled()) {
-			LOG.exit(parameterDefinition);
+			LOG.exit(attributeDefinition);
 		}
-		return parameterDefinition;
+		return attributeDefinition;
 	}
 
 	@Override

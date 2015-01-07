@@ -1,29 +1,21 @@
 package com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.github.kmbulebu.nicknack.core.actions.parameters.BasicParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.StringUnit;
-import com.github.kmbulebu.nicknack.providers.xbmc.XbmcProvider;
 
-public class HostParameterDefinition extends BasicParameterDefinition<StringUnit> {
-
-	private static final Logger logger = LogManager.getLogger(XbmcProvider.LOGGER_NAME);
+public class HostAttributeDefinition extends BasicAttributeDefinition {
 	
 	public static final UUID DEF_UUID = UUID.fromString("4e1bd491-fd3d-47bf-9910-8cf79b139b1d");
 	
-	public static final HostParameterDefinition INSTANCE = new HostParameterDefinition();
+	public static final HostAttributeDefinition INSTANCE = new HostAttributeDefinition();
 
-	public HostParameterDefinition() {
+	public HostAttributeDefinition() {
 		super(DEF_UUID, "Host", StringUnit.INSTANCE, true);
 	}
 
-	@Override
+/*	@Override
 	public String format(String rawValue) {
 		return rawValue;
 	}
@@ -39,5 +31,5 @@ public class HostParameterDefinition extends BasicParameterDefinition<StringUnit
 		}
 		return Collections.emptyList();
 	}
-
+*/
 }

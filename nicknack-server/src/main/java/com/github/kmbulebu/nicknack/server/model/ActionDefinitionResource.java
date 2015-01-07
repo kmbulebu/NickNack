@@ -8,7 +8,7 @@ import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
-import com.github.kmbulebu.nicknack.core.actions.ParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 
 @Relation(value="ActionDefinition", collectionRelation="ActionDefinitions")
 public class ActionDefinitionResource extends ResourceSupport implements ActionDefinition {
@@ -32,8 +32,8 @@ public class ActionDefinitionResource extends ResourceSupport implements ActionD
 
 	@Override
 	@JsonIgnore
-	public List<ParameterDefinition> getParameterDefinitions() {
-		return actionDefinition.getParameterDefinitions();
+	public List<AttributeDefinition> getAttributeDefinitions() {
+		return actionDefinition.getAttributeDefinitions();
 	}
 
 	@Override

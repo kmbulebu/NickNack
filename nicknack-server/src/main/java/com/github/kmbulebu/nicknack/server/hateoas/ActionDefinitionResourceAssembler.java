@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.server.model.ActionDefinitionResource;
-import com.github.kmbulebu.nicknack.server.model.ParameterDefinitionResource;
+import com.github.kmbulebu.nicknack.server.model.AttributeDefinitionResource;
 import com.github.kmbulebu.nicknack.server.services.exceptions.ActionDefinitionNotFoundException;
-import com.github.kmbulebu.nicknack.server.services.exceptions.ParameterDefinitionNotFoundException;
+import com.github.kmbulebu.nicknack.server.services.exceptions.AttributeDefinitionNotFoundException;
 import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundException;
-import com.github.kmbulebu.nicknack.server.web.ActionDefinitionParameterDefinitionsController;
+import com.github.kmbulebu.nicknack.server.web.ActionDefinitionAttributeDefinitionsController;
 import com.github.kmbulebu.nicknack.server.web.ActionDefinitionsController;
 
 @Service
@@ -41,9 +41,9 @@ public class ActionDefinitionResourceAssembler extends
 		ActionDefinitionResource resource = instantiateResource(entity);
 		try {
 			resource.add(links.linkToSingleResource(ActionDefinitionResource.class, entity.getUUID()).withSelfRel());
-			resource.add(linkTo(methodOn(ActionDefinitionParameterDefinitionsController.class).getParameterDefinitions(entity.getUUID()))
-					.withRel(rels.getCollectionResourceRelFor(ParameterDefinitionResource.class)));
-		} catch (ActionDefinitionNotFoundException | ParameterDefinitionNotFoundException e) {
+			resource.add(linkTo(methodOn(ActionDefinitionAttributeDefinitionsController.class).getAttributeDefinitions(entity.getUUID()))
+					.withRel(rels.getCollectionResourceRelFor(AttributeDefinitionResource.class)));
+		} catch (ActionDefinitionNotFoundException | AttributeDefinitionNotFoundException e) {
 			throw new RuntimeException("Can not happen.");
 		}
 		
@@ -66,7 +66,7 @@ public class ActionDefinitionResourceAssembler extends
 		final Resources<ActionDefinitionResource> resources = new Resources<>(toResources(entities));
 		try {
 			resources.add(linkTo(methodOn(ActionDefinitionsController.class).getActionDefinitions(provider)).withRel(rels.getCollectionResourceRelFor(ActionDefinitionResource.class)));
-		} catch (ActionDefinitionNotFoundException | ParameterDefinitionNotFoundException | ProviderNotFoundException e) {
+		} catch (ActionDefinitionNotFoundException | AttributeDefinitionNotFoundException | ProviderNotFoundException e) {
 			throw new RuntimeException("Can not happen.");
 		}
 		return resources;

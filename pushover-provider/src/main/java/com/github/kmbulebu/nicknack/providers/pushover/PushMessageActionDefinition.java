@@ -14,12 +14,12 @@ public class PushMessageActionDefinition extends AbstractPushMessageActionDefini
 	
 	public PushMessageActionDefinition() {
 		super(DEF_UUID, "Send Push Message",
-				TitleParameterDefinition.INSTANCE,
-				DeviceParameterDefinition.INSTANCE,
-				UrlParameterDefinition.INSTANCE,
-				UrlTitleParameterDefinition.INSTANCE,
-				PriorityParameterDefinition.INSTANCE,
-				SoundParameterDefinition.INSTANCE);
+				TitleAttributeDefinition.INSTANCE,
+				DeviceAttributeDefinition.INSTANCE,
+				UrlAttributeDefinition.INSTANCE,
+				UrlTitleAttributeDefinition.INSTANCE,
+				PriorityAttributeDefinition.INSTANCE,
+				SoundAttributeDefinition.INSTANCE);
 	}
 	
 
@@ -27,20 +27,20 @@ public class PushMessageActionDefinition extends AbstractPushMessageActionDefini
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
 		final PushMessage pushMessage = new PushMessage();
 		pushMessage.setTimeStamp(new Date());
-		pushMessage.setMessage(action.getParameters().get(MessageParameterDefinition.DEF_UUID));
-		pushMessage.setUser(action.getParameters().get(UserParameterDefinition.DEF_UUID));
-		pushMessage.setTitle(action.getParameters().get(TitleParameterDefinition.DEF_UUID));
-		pushMessage.setDevice(action.getParameters().get(DeviceParameterDefinition.DEF_UUID));
-		pushMessage.setUrl(action.getParameters().get(UrlParameterDefinition.DEF_UUID));
-		pushMessage.setUrlTitle(action.getParameters().get(UrlTitleParameterDefinition.DEF_UUID));
-		pushMessage.setSound(action.getParameters().get(SoundParameterDefinition.DEF_UUID));
+		pushMessage.setMessage(action.getAttributes().get(MessageAttributeDefinition.DEF_UUID));
+		pushMessage.setUser(action.getAttributes().get(UserAttributeDefinition.DEF_UUID));
+		pushMessage.setTitle(action.getAttributes().get(TitleAttributeDefinition.DEF_UUID));
+		pushMessage.setDevice(action.getAttributes().get(DeviceAttributeDefinition.DEF_UUID));
+		pushMessage.setUrl(action.getAttributes().get(UrlAttributeDefinition.DEF_UUID));
+		pushMessage.setUrlTitle(action.getAttributes().get(UrlTitleAttributeDefinition.DEF_UUID));
+		pushMessage.setSound(action.getAttributes().get(SoundAttributeDefinition.DEF_UUID));
 		
-		final String priorityStr = action.getParameters().get(PriorityParameterDefinition.DEF_UUID);
+		final String priorityStr = action.getAttributes().get(PriorityAttributeDefinition.DEF_UUID);
 		if (priorityStr != null && priorityStr.matches("-?\\d+")) {
 			pushMessage.setPriority(Integer.parseInt(priorityStr));
 		}
 		
-		final String apiToken = action.getParameters().get(TokenParameterDefinition.DEF_UUID);
+		final String apiToken = action.getAttributes().get(TokenAttributeDefinition.DEF_UUID);
 		
 		if (apiToken == null) {
 			throw new ActionParameterException("Token is required.");

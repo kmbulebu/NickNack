@@ -7,20 +7,20 @@ import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.actions.BasicActionDefinition;
-import com.github.kmbulebu.nicknack.core.actions.ParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 
 public abstract class SshActionDefinition extends BasicActionDefinition {
 	
-	public SshActionDefinition(UUID uuid, String name, ParameterDefinition... parameterDefinitions) {
-		super(uuid, SshProvider.PROVIDER_UUID, name, appendCommonParameterDefinition(parameterDefinitions));
+	public SshActionDefinition(UUID uuid, String name, AttributeDefinition... parameterDefinitions) {
+		super(uuid, SshProvider.PROVIDER_UUID, name, appendCommonAttributeDefinition(parameterDefinitions));
 	}
 	
-	private static ParameterDefinition[] appendCommonParameterDefinition(ParameterDefinition... parameterDefinitions) {
-		final ParameterDefinition[] definitions = Arrays.copyOf(parameterDefinitions, parameterDefinitions.length + 4);
-		definitions[definitions.length - 4] = HostParameterDefinition.INSTANCE;
-		definitions[definitions.length - 3] = PortParameterDefinition.INSTANCE;
-		definitions[definitions.length - 2] = UserNameParameterDefinition.INSTANCE;
-		definitions[definitions.length - 1] = PasswordParameterDefinition.INSTANCE;
+	private static AttributeDefinition[] appendCommonAttributeDefinition(AttributeDefinition... parameterDefinitions) {
+		final AttributeDefinition[] definitions = Arrays.copyOf(parameterDefinitions, parameterDefinitions.length + 4);
+		definitions[definitions.length - 4] = HostAttributeDefinition.INSTANCE;
+		definitions[definitions.length - 3] = PortAttributeDefinition.INSTANCE;
+		definitions[definitions.length - 2] = UserNameAttributeDefinition.INSTANCE;
+		definitions[definitions.length - 1] = PasswordAttributeDefinition.INSTANCE;
 		return definitions;
 	}
 	

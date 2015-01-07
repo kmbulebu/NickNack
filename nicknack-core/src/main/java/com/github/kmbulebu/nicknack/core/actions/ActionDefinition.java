@@ -3,6 +3,8 @@ package com.github.kmbulebu.nicknack.core.actions;
 import java.util.List;
 import java.util.UUID;
 
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
+
 public interface ActionDefinition {
 	
 	public UUID getUUID();
@@ -11,8 +13,6 @@ public interface ActionDefinition {
 	
 	public String getName();
 	
-	public List<ParameterDefinition> getParameterDefinitions();
-	
-	//public void run(Action action) throws ActionFailureException, ActionParameterException;
-	
+	public List<AttributeDefinition> getAttributeDefinitions();
+
 }

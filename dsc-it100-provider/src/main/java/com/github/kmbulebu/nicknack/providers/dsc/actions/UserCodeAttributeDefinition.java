@@ -1,23 +1,21 @@
 package com.github.kmbulebu.nicknack.providers.dsc.actions;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.actions.parameters.BasicParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.StringUnit;
 
-public class UserCodeParameterDefinition extends BasicParameterDefinition<StringUnit> {
+public class UserCodeAttributeDefinition extends BasicAttributeDefinition {
 	
 	public static final UUID DEF_UUID = UUID.fromString("e41c0c10-1f18-471f-a0ab-888815c54adc");
 	
-	public static final UserCodeParameterDefinition INSTANCE = new UserCodeParameterDefinition();
+	public static final UserCodeAttributeDefinition INSTANCE = new UserCodeAttributeDefinition();
 	
-	public UserCodeParameterDefinition() {
+	public UserCodeAttributeDefinition() {
 		super(DEF_UUID, "User Code", StringUnit.INSTANCE, true);
 	}
 
-	@Override
+/*	@Override
 	public String format(String rawValue) {
 		return rawValue;
 	}
@@ -34,6 +32,6 @@ public class UserCodeParameterDefinition extends BasicParameterDefinition<String
 			return Collections.singletonList(VALIDATE_ERROR);
 		}
 		return null;
-	}
+	}*/
 
 }

@@ -3,7 +3,7 @@ package com.github.kmbulebu.nicknack.basicproviders.wol;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.actions.BasicActionDefinition;
-import com.github.kmbulebu.nicknack.core.actions.parameters.MacAddressParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.MacAddressParameterDefinition;
 
 public class WakeOnLanActionDefinition extends BasicActionDefinition {
 	

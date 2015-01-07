@@ -106,7 +106,7 @@ public class NickNackServerProviderImpl implements Provider, NickNackServerProvi
 	}
 
 	@Override
-	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+	public Map<String, String> getAttributeDefinitionValues(UUID attributeDefinitionUuid) {
 		return null;
 	}
 

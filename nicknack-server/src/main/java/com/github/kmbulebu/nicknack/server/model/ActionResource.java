@@ -74,7 +74,7 @@ public class ActionResource extends ResourceSupport implements Action {
 	}
 
 	@Override
-	public Map<UUID, String> getParameters() {
+	public Map<UUID, String> getAttributes() {
 		return parameters;
 	}
 

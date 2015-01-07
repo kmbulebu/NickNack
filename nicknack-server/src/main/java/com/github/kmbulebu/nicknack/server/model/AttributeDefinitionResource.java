@@ -35,8 +35,13 @@ public class AttributeDefinitionResource extends ResourceSupport implements Attr
 	}
 
 	@Override
-	public boolean isOptional() {
-		return attributeDefinition.isOptional();
+	public boolean isRequired() {
+		return attributeDefinition.isRequired();
+	}
+
+	@Override
+	public String getDescription() {
+		return attributeDefinition.getDescription();
 	}
 
 }

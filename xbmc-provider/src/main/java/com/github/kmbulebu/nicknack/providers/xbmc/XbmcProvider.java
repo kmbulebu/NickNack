@@ -24,7 +24,7 @@ import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.actions.ShowNotificationActionDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.HostParameterDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.HostAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.events.PauseEventDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.events.PlayEventDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.events.PlayerItemTypeAttributeDefinition;
@@ -155,9 +155,9 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	}
 
 	@Override
-	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+	public Map<String, String> getAttributeDefinitionValues(UUID attributeDefinitionUuid) {
 		if (logger.isTraceEnabled()) {
-			logger.entry(eventDefinitionUuid, attributeDefinitionUuid);
+			logger.entry(attributeDefinitionUuid);
 		}
 		
 		final Map<String, String> result;
@@ -200,9 +200,9 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 			logger.entry(action);
 		}
 		if (ShowNotificationActionDefinition.INSTANCE.getUUID().equals(action.getAppliesToActionDefinition())) {
-			final String host = action.getParameters().get(HostParameterDefinition.DEF_UUID);
+			final String host = action.getAttributes().get(HostAttributeDefinition.DEF_UUID);
 			if (host == null) {
-				final ActionParameterException t = new ActionParameterException(HostParameterDefinition.INSTANCE.getName() + " is missing.");
+				final ActionParameterException t = new ActionParameterException(HostAttributeDefinition.INSTANCE.getName() + " is missing.");
 				if (logger.isTraceEnabled()) {
 					logger.throwing(t);
 				}

@@ -8,14 +8,20 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 	
 	private final UUID uuid;
 	private final String name;
+	private final String description;
 	private final Unit units;
-	private final boolean isOptional;
+	private final boolean isRequired;
 	
-	public BasicAttributeDefinition(UUID uuid, String name, Unit units, boolean isOptional) {
+	public BasicAttributeDefinition(UUID uuid, String name, Unit units, boolean isRequired) {
+		this(uuid, name, "", units, isRequired);
+	}
+	
+	public BasicAttributeDefinition(UUID uuid, String name, String description, Unit units, boolean isRequired) {
 		this.uuid = uuid;
 		this.name = name;
+		this.description = description;
 		this.units = units;
-		this.isOptional = isOptional;
+		this.isRequired = isRequired;
 	}
 	
 	@Override
@@ -34,8 +40,13 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 	}
 
 	@Override
-	public boolean isOptional() {
-		return isOptional;
+	public boolean isRequired() {
+		return isRequired;
+	}
+	
+	@Override
+	public String getDescription() {
+		return description;
 	}
 
 	@Override
@@ -65,9 +76,11 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 
 	@Override
 	public String toString() {
-		return "BasicAttributeDefinition [uuid=" + uuid + ", name=" + name + ", units=" + units + ", isOptional="
-				+ isOptional + "]";
+		return "BasicAttributeDefinition [uuid=" + uuid + ", name=" + name + ", description=" + description
+				+ ", units=" + units + ", isRequired=" + isRequired + "]";
 	}
+
+
 	
 	
 

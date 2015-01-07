@@ -10,25 +10,25 @@ import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.actions.BasicActionDefinition;
-import com.github.kmbulebu.nicknack.core.actions.ParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.XbmcClient;
 import com.github.kmbulebu.nicknack.providers.xbmc.XbmcProvider;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.HostParameterDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.HostAttributeDefinition;
 
 public abstract class XbmcActionDefinition extends BasicActionDefinition {
 	
 	private static final Logger logger = LogManager.getLogger(XbmcProvider.LOGGER_NAME);
 	
-	public XbmcActionDefinition(UUID uuid, String name, ParameterDefinition... parameterDefinitions) {
-		super(uuid, XbmcProvider.PROVIDER_UUID, name, appendHostParameterDefinition(parameterDefinitions));
+	public XbmcActionDefinition(UUID uuid, String name, AttributeDefinition... parameterDefinitions) {
+		super(uuid, XbmcProvider.PROVIDER_UUID, name, appendHostAttributeDefinition(parameterDefinitions));
 	}
 	
-	private static ParameterDefinition[] appendHostParameterDefinition(ParameterDefinition... parameterDefinitions) {
+	private static AttributeDefinition[] appendHostAttributeDefinition(AttributeDefinition... parameterDefinitions) {
 		if (logger.isTraceEnabled()) {
 			logger.entry((Object[]) parameterDefinitions);
 		}
-		final ParameterDefinition[] definitions = Arrays.copyOf(parameterDefinitions, parameterDefinitions.length + 1);
-		definitions[definitions.length - 1] = HostParameterDefinition.INSTANCE;
+		final AttributeDefinition[] definitions = Arrays.copyOf(parameterDefinitions, parameterDefinitions.length + 1);
+		definitions[definitions.length - 1] = HostAttributeDefinition.INSTANCE;
 		if (logger.isTraceEnabled()) {
 			logger.exit(definitions);
 		}

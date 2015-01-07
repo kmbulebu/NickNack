@@ -16,20 +16,20 @@ public class PartitionArmWithCodeActionDefinition extends DscActionDefinition {
 
 	public PartitionArmWithCodeActionDefinition(PublishSubject<WriteCommand> dscWriteObservable) {
 		super(dscWriteObservable, DEF_UUID, "Arm Partition in Away Mode with User Code", 
-				PartitionNumberParameterDefinition.INSTANCE,
-				UserCodeParameterDefinition.INSTANCE);
+				PartitionNumberAttributeDefinition.INSTANCE,
+				UserCodeAttributeDefinition.INSTANCE);
 	}
 
 	@Override
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
-		String partitionStr = action.getParameters().get(PartitionNumberParameterDefinition.INSTANCE.getUUID());
+		String partitionStr = action.getAttributes().get(PartitionNumberAttributeDefinition.INSTANCE.getUUID());
 		if (partitionStr == null) {
-			throw new ActionParameterException(PartitionNumberParameterDefinition.INSTANCE.getName() + " is missing.");
+			throw new ActionParameterException(PartitionNumberAttributeDefinition.INSTANCE.getName() + " is missing.");
 		}
 		
-		String userCode = action.getParameters().get(UserCodeParameterDefinition.INSTANCE.getUUID());
+		String userCode = action.getAttributes().get(UserCodeAttributeDefinition.INSTANCE.getUUID());
 		if (userCode == null) {
-			throw new ActionParameterException(UserCodeParameterDefinition.INSTANCE.getName() + " is missing.");
+			throw new ActionParameterException(UserCodeAttributeDefinition.INSTANCE.getName() + " is missing.");
 		}
 		
 		int partition;

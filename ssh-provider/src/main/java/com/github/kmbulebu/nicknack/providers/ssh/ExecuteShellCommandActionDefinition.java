@@ -17,18 +17,18 @@ public class ExecuteShellCommandActionDefinition extends SshActionDefinition {
 
 	public ExecuteShellCommandActionDefinition() {
 		super(DEF_UUID, "SSH: Execute Shell Command",
-				CommandLineParameterDefinition.INSTANCE,
-				SuccessfulReturnCodeParameterDefinition.INSTANCE);
+				CommandLineAttributeDefinition.INSTANCE,
+				SuccessfulReturnCodeAttributeDefinition.INSTANCE);
 	}
 
 	@Override
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
-		final String host = action.getParameters().get(HostParameterDefinition.DEF_UUID);
-		final String portStr = action.getParameters().get(PortParameterDefinition.DEF_UUID);
-		final String commandLine = action.getParameters().get(CommandLineParameterDefinition.DEF_UUID);
-		final String returnCodeStr = action.getParameters().get(SuccessfulReturnCodeParameterDefinition.DEF_UUID);
-		final String userName = action.getParameters().get(UserNameParameterDefinition.DEF_UUID);
-		final String password = action.getParameters().get(PasswordParameterDefinition.DEF_UUID);
+		final String host = action.getAttributes().get(HostAttributeDefinition.DEF_UUID);
+		final String portStr = action.getAttributes().get(PortAttributeDefinition.DEF_UUID);
+		final String commandLine = action.getAttributes().get(CommandLineAttributeDefinition.DEF_UUID);
+		final String returnCodeStr = action.getAttributes().get(SuccessfulReturnCodeAttributeDefinition.DEF_UUID);
+		final String userName = action.getAttributes().get(UserNameAttributeDefinition.DEF_UUID);
+		final String password = action.getAttributes().get(PasswordAttributeDefinition.DEF_UUID);
 		
 		if (host == null || host.isEmpty()) {
 			throw new ActionParameterException("Host parameter is missing.");

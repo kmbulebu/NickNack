@@ -2,7 +2,7 @@ package com.github.kmbulebu.nicknack.providers.wemo.actions;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.actions.parameters.OnOffSwitchParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.OnOffSwitchParameterDefinition;
 
 public class OnParameterDefinition extends OnOffSwitchParameterDefinition {
 	

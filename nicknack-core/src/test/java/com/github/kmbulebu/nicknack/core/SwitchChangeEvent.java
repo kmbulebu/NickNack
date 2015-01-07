@@ -57,7 +57,7 @@ public class SwitchChangeEvent implements EventDefinition {
 		private final UUID uuid = UUID.fromString("320c68e0-d662-11e3-9c1a-0800200d9a66");
 		
 		@Override
-		public boolean isOptional() {
+		public boolean isRequired() {
 			return false;
 		}
 		
@@ -99,6 +99,11 @@ public class SwitchChangeEvent implements EventDefinition {
 			} else if (!uuid.equals(other.uuid))
 				return false;
 			return true;
+		}
+
+		@Override
+		public String getDescription() {
+			return "";
 		}
 		
 		

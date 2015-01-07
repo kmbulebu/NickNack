@@ -13,10 +13,10 @@ import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.providers.xbmc.XbmcClient;
 import com.github.kmbulebu.nicknack.providers.xbmc.XbmcProvider;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.DurationParameterDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.MessageParameterDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.NotificationIconParameterDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.TitleParameterDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.DurationAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.MessageAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.NotificationIconAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.TitleAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.json.JsonRpc;
 
 public class ShowNotificationActionDefinition extends XbmcActionDefinition {
@@ -27,10 +27,10 @@ public class ShowNotificationActionDefinition extends XbmcActionDefinition {
 
 	public ShowNotificationActionDefinition() {
 		super(UUID.fromString("03bf82ea-975a-4ba5-a41e-59c81455402b"), "Show Notification",
-				TitleParameterDefinition.INSTANCE,
-				MessageParameterDefinition.INSTANCE,
-				NotificationIconParameterDefinition.INSTANCE,
-				DurationParameterDefinition.INSTANCE);
+				TitleAttributeDefinition.INSTANCE,
+				MessageAttributeDefinition.INSTANCE,
+				NotificationIconAttributeDefinition.INSTANCE,
+				DurationAttributeDefinition.INSTANCE);
 	}
 
 	private static final String METHOD = "GUI.ShowNotification";
@@ -40,36 +40,36 @@ public class ShowNotificationActionDefinition extends XbmcActionDefinition {
 		if (logger.isTraceEnabled()) {
 			logger.entry(action, client);
 		}
-		final String title = action.getParameters().get(TitleParameterDefinition.DEF_UUID);
+		final String title = action.getAttributes().get(TitleAttributeDefinition.DEF_UUID);
 		if (title == null) {
-			final ActionParameterException t = new ActionParameterException(TitleParameterDefinition.INSTANCE.getName() + " is missing.");
+			final ActionParameterException t = new ActionParameterException(TitleAttributeDefinition.INSTANCE.getName() + " is missing.");
 			if (logger.isTraceEnabled()) {
 				logger.throwing(t);
 			}
 			throw t;
 		}
 		
-		final String message = action.getParameters().get(MessageParameterDefinition.DEF_UUID);
+		final String message = action.getAttributes().get(MessageAttributeDefinition.DEF_UUID);
 		if (message == null) {
-			final ActionParameterException t = new ActionParameterException(MessageParameterDefinition.INSTANCE.getName() + " is missing.");
+			final ActionParameterException t = new ActionParameterException(MessageAttributeDefinition.INSTANCE.getName() + " is missing.");
 			if (logger.isTraceEnabled()) {
 				logger.throwing(t);
 			}
 			throw t;
 		}
 		
-		final String icon = action.getParameters().get(NotificationIconParameterDefinition.DEF_UUID);
+		final String icon = action.getAttributes().get(NotificationIconAttributeDefinition.DEF_UUID);
 		if (icon == null) {
-			final ActionParameterException t = new ActionParameterException(NotificationIconParameterDefinition.INSTANCE.getName() + " is missing.");
+			final ActionParameterException t = new ActionParameterException(NotificationIconAttributeDefinition.INSTANCE.getName() + " is missing.");
 			if (logger.isTraceEnabled()) {
 				logger.throwing(t);
 			}
 			throw t;
 		}
 		
-		final String durationStr = action.getParameters().get(DurationParameterDefinition.DEF_UUID);
+		final String durationStr = action.getAttributes().get(DurationAttributeDefinition.DEF_UUID);
 		if (durationStr == null) {
-			final ActionParameterException t = new ActionParameterException(DurationParameterDefinition.INSTANCE.getName() + " is missing.");
+			final ActionParameterException t = new ActionParameterException(DurationAttributeDefinition.INSTANCE.getName() + " is missing.");
 			if (logger.isTraceEnabled()) {
 				logger.throwing(t);
 			}

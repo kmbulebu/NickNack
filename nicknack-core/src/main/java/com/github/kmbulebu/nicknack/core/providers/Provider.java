@@ -76,7 +76,7 @@ public interface Provider {
 	 * populating a list of choices to the user while creating attribute filters. 
 	 */
 	// Should we use UUID or attribute definition here?
-	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid);
+	public Map<String, String> getAttributeDefinitionValues(UUID attributeDefinitionUuid);
 	
 	public void run(Action action) throws ActionFailureException, ActionParameterException;
 	

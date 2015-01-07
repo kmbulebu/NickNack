@@ -16,20 +16,20 @@ public class CommandOutputActionDefinition extends DscActionDefinition {
 
 	public CommandOutputActionDefinition(PublishSubject<WriteCommand> dscWriteObservable) {
 		super(dscWriteObservable, DEF_UUID, "Trigger Command Output", 
-				PartitionNumberParameterDefinition.INSTANCE,
-				PgmNumberParameterDefinition.INSTANCE);
+				PartitionNumberAttributeDefinition.INSTANCE,
+				PgmNumberAttributeDefinition.INSTANCE);
 	}
 
 	@Override
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
-		String partitionStr = action.getParameters().get(PartitionNumberParameterDefinition.INSTANCE.getUUID());
+		String partitionStr = action.getAttributes().get(PartitionNumberAttributeDefinition.INSTANCE.getUUID());
 		if (partitionStr == null) {
-			throw new ActionParameterException(PartitionNumberParameterDefinition.INSTANCE.getName() + " is missing.");
+			throw new ActionParameterException(PartitionNumberAttributeDefinition.INSTANCE.getName() + " is missing.");
 		}
 		
-		String pgmStr = action.getParameters().get(PgmNumberParameterDefinition.INSTANCE.getUUID());
+		String pgmStr = action.getAttributes().get(PgmNumberAttributeDefinition.INSTANCE.getUUID());
 		if (pgmStr == null) {
-			throw new ActionParameterException(PgmNumberParameterDefinition.INSTANCE.getName() + " is missing.");
+			throw new ActionParameterException(PgmNumberAttributeDefinition.INSTANCE.getName() + " is missing.");
 		}
 		
 		int pgm;

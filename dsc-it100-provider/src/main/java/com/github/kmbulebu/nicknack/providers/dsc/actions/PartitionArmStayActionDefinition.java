@@ -16,14 +16,14 @@ public class PartitionArmStayActionDefinition extends DscActionDefinition {
 
 	public PartitionArmStayActionDefinition(PublishSubject<WriteCommand> dscWriteObservable) {
 		super(dscWriteObservable, DEF_UUID, "Arm Partition in Stay Mode", 
-				PartitionNumberParameterDefinition.INSTANCE);
+				PartitionNumberAttributeDefinition.INSTANCE);
 	}
 
 	@Override
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
-		String partitionStr = action.getParameters().get(PartitionNumberParameterDefinition.INSTANCE.getUUID());
+		String partitionStr = action.getAttributes().get(PartitionNumberAttributeDefinition.INSTANCE.getUUID());
 		if (partitionStr == null) {
-			throw new ActionParameterException(PartitionNumberParameterDefinition.INSTANCE.getName() + " is missing.");
+			throw new ActionParameterException(PartitionNumberAttributeDefinition.INSTANCE.getName() + " is missing.");
 		}
 		
 		int partition;

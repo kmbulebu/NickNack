@@ -108,7 +108,7 @@ public class ClockProvider implements Provider, Runnable {
 	}	
 
 	@Override
-	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+	public Map<String, String> getAttributeDefinitionValues(UUID attributeDefinitionUuid) {
 		if (DayOfMonthAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
 			return DayOfMonthAttributeDefinition.INSTANCE.getStaticValues();
 		} else if (DayOfWeekAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {

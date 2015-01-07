@@ -1,23 +1,21 @@
 package com.github.kmbulebu.nicknack.providers.dsc.actions;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.actions.parameters.BasicParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
 
-public class PgmNumberParameterDefinition extends BasicParameterDefinition<IntegerUnit> {
+public class PgmNumberAttributeDefinition extends BasicAttributeDefinition {
 	
 	public static final UUID DEF_UUID = UUID.fromString("b60f1f17-4024-40b3-921f-e00ce0790565");
 	
-	public static final PgmNumberParameterDefinition INSTANCE = new PgmNumberParameterDefinition();
+	public static final PgmNumberAttributeDefinition INSTANCE = new PgmNumberAttributeDefinition();
 	
-	public PgmNumberParameterDefinition() {
+	public PgmNumberAttributeDefinition() {
 		super(DEF_UUID, "Pgm Output", IntegerUnit.INSTANCE, true);
 	}
 
-	@Override
+/*	@Override
 	public String format(String rawValue) {
 		return rawValue;
 	}
@@ -35,6 +33,6 @@ public class PgmNumberParameterDefinition extends BasicParameterDefinition<Integ
 			return Collections.singletonList(VALIDATE_ERROR);
 		}
 		return null;
-	}
+	}*/
 
 }

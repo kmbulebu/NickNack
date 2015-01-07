@@ -92,7 +92,7 @@ public class ExampleProvider implements Provider {
 
 
 	@Override
-	public Map<String, String> getAttributeDefinitionValues(UUID eventDefinitionUuid, UUID attributeDefinitionUuid) {
+	public Map<String, String> getAttributeDefinitionValues(UUID attributeDefinitionUuid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -109,9 +109,9 @@ public class ExampleProvider implements Provider {
 	
 	@Override
 	public void run(Action action) {
-		String macAddress = action.getParameters().get(LightBulbActionDefinition.MAC_ADDRESS_PARAMETER_DEFINITION.getUUID());
+		String macAddress = action.getAttributes().get(LightBulbActionDefinition.MAC_ADDRESS_PARAMETER_DEFINITION.getUUID());
 		
-		String switchStr = action.getParameters().get(LightBulbActionDefinition.SWITCH_PARAMETER_DEFINITION.getUUID()); 
+		String switchStr = action.getAttributes().get(LightBulbActionDefinition.SWITCH_PARAMETER_DEFINITION.getUUID()); 
 		
 		if (switchStr == null) {
 			// TODO Use our own exception

@@ -122,7 +122,7 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 			throw new ProviderNotFoundException(EventDefinition.class.getSimpleName(), eventUuid);
 		}
 		
-		final Map<String, String> values = provider.getAttributeDefinitionValues(eventUuid, uuid);
+		final Map<String, String> values = provider.getAttributeDefinitionValues(uuid);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(values);

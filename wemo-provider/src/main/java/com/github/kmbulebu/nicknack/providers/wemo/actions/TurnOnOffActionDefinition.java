@@ -32,11 +32,11 @@ public class TurnOnOffActionDefinition extends WemoActionDefinition {
 
 	@Override
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
-		final String friendlyName = action.getParameters().get(FriendlyNameParameterDefinition.INSTANCE.getUUID());
-		final String onStr = action.getParameters().get(OnParameterDefinition.INSTANCE.getUUID());
+		final String friendlyName = action.getAttributes().get(FriendlyNameAttributeDefinition.INSTANCE.getUUID());
+		final String onStr = action.getAttributes().get(OnParameterDefinition.INSTANCE.getUUID());
 		
 		if (friendlyName == null || friendlyName.length() < 1) {
-			throw new ActionParameterException(FriendlyNameParameterDefinition.INSTANCE.getName() + " parameter is required.");
+			throw new ActionParameterException(FriendlyNameAttributeDefinition.INSTANCE.getName() + " parameter is required.");
 		}
 		
 		if (onStr == null || onStr.length() < 1) {
