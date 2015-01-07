@@ -136,6 +136,8 @@ public class XbmcClient {
 		}
 		stopRequested = false;
 		websocketUri = uri;
+		client.setConnectTimeout(2000);
+		client.setMaxIdleTimeout(0);
 		client.start();
 	    
 		final ClientUpgradeRequest request = new ClientUpgradeRequest();
