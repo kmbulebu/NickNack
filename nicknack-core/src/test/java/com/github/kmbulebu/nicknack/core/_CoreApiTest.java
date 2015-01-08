@@ -33,12 +33,6 @@ public class _CoreApiTest {
 		// Step 2: User creates an Event Filter
 		final EventFilter switchEventFilter = new EventFilter() {
 
-
-			@Override
-			public String getDescription() {
-				return "Switch is turned on.";
-			}
-
 			@Override
 			public Collection<AttributeFilterExpression> getAttributeFilterExpressions() {
 				// Step 3: User creates an Attribute filter for their Event Filter.
@@ -75,11 +69,6 @@ public class _CoreApiTest {
 		
 		// Step 1: User creates a new Plan
 		Plan newPlan = new Plan() {
-
-			@Override
-			public UUID getUUID() {
-				return UUID.fromString("44a84940-d664-11e3-9c1a-0800200c9a66");
-			}
 
 			@Override
 			public String getName() {

@@ -9,6 +9,12 @@ import com.github.kmbulebu.nicknack.core.attributes.impl.BasicTimestampedAttribu
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 
+/**
+ * Basic implementation of an Event that includes timestamp information.
+ * 
+ * May be extended or used as-is.
+ *
+ */
 public class BasicTimestampedEvent extends BasicTimestampedAttributeCollection implements Event  {
 	
 	final Map<UUID, String> attributes = new HashMap<UUID, String>();

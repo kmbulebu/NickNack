@@ -52,7 +52,6 @@ public class PlanResource extends ResourceSupport implements Plan {
 	@JsonIgnore
 	private List<Action> actions = new ArrayList<Action>();
 
-	@Override
 	public UUID getUUID() {
 		return uuid;
 	}

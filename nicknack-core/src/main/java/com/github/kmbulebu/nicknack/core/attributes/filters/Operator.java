@@ -1,6 +1,10 @@
 package com.github.kmbulebu.nicknack.core.attributes.filters;
 
-
+/**
+ * Operators available for creating attribute filters in 
+ * event filters and state filters.
+ *
+ */
 public enum Operator {
 	
 	EQUALS("=", "The values are the same."),

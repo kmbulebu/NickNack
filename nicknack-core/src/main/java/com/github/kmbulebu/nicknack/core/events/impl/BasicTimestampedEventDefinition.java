@@ -18,14 +18,10 @@ import com.github.kmbulebu.nicknack.core.attributes.impl.YearAttributeDefinition
 import com.github.kmbulebu.nicknack.core.events.BasicEventDefinition;
 
 /**
- * Creates a new 'Time Changed' event every second, nearest to the top of the
- * second as possible.
+ * Basic implementation of an EventDefinition that includes timestamp information.
  * 
- * 'dateTime' attribute defines the date and time the clock tick event was
- * generated.
- * 
- * @author kmbulebu
- * 
+ * May be extended or used as-is.
+ *
  */
 public abstract class BasicTimestampedEventDefinition extends BasicEventDefinition {
 

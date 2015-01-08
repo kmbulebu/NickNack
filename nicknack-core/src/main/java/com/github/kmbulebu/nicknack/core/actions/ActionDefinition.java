@@ -36,7 +36,7 @@ public interface ActionDefinition {
 	 * A list of Attribute's that are necessary for the execution of this Action.
 	 * 
 	 * May include both required and optional attributes.
-	 * @return List List of this Action's Attributes
+	 * @return List of this Action's Attributes
 	 */
 	public List<AttributeDefinition> getAttributeDefinitions();
 

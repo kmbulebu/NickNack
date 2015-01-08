@@ -13,6 +13,12 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 
+/**
+ * Basic implementation of an AttributeDefinitionCollection that includes timestamp properties.
+ * 
+ * Useful for when the time of an event may need preserved.
+ *
+ */
 public class BasicTimestampedAttributeCollection implements AttributeCollection {
 	
 	final Map<UUID, String> attributes = new HashMap<UUID, String>();

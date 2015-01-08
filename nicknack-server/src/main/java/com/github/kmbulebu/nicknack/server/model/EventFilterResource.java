@@ -39,8 +39,6 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	@NotNull
 	private UUID appliesToEventDefinition;
 	
-	private String description;
-	
 	@JsonSerialize(contentAs=AttributeFilterExpressionImpl.class)
 	@JsonDeserialize(contentAs=AttributeFilterExpressionImpl.class)
 	@ElementCollection(targetClass=AttributeFilterExpressionImpl.class, fetch=FetchType.EAGER)
@@ -53,11 +51,6 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	@Override
 	public UUID getAppliesToEventDefinition() {
 		return appliesToEventDefinition;
-	}
-
-	@Override
-	public String getDescription() {
-		return description;
 	}
 
 	@Override
@@ -83,10 +76,6 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 
 	public void setAppliesToEventDefinition(UUID appliesToEventDefinition) {
 		this.appliesToEventDefinition = appliesToEventDefinition;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	
 	public void setAttributeFilterExpressions(Collection<AttributeFilterExpression> attributeFilterExpressions) {

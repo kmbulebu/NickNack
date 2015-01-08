@@ -6,6 +6,12 @@ import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 
+/**
+ * Basic implementation of an EventDefinition. 
+ * 
+ * May be extended or used as-is.
+ *
+ */
 public class BasicEventDefinition implements EventDefinition {
 	
 	private final UUID uuid;

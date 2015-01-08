@@ -127,11 +127,6 @@ public class _EventFilterEvaluatorTest {
 		}
 
 		@Override
-		public String getDescription() {
-			return "Test Event Filter";
-		}
-
-		@Override
 		public Collection<AttributeFilterExpression> getAttributeFilterExpressions() {
 			final Collection<AttributeFilterExpression>attributeFilters = new ArrayList<>();
 			attributeFilters.add(positionFalseAttributeFilter);

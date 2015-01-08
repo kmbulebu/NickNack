@@ -1,6 +1,7 @@
 package com.github.kmbulebu.nicknack.core.attributes.filters;
 
 import java.text.ParseException;
+
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -12,6 +13,10 @@ import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.Unit;
 
+/**
+ * Evaluates of a collection of AttributeFilterExpressions matches
+ * a collection of attributes.
+ */
 public class AttrbuteFilterExpressionCollectionEvaluator {
 	
 	private static final Logger LOG = LogManager.getLogger();
