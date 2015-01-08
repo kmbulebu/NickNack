@@ -4,6 +4,12 @@ import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.units.Unit;
 
+/**
+ * Basic implementation of an AttributeDefinition. 
+ * 
+ * May be extended or used as-is.
+ *
+ */
 public class BasicAttributeDefinition implements AttributeDefinition {
 	
 	private final UUID uuid;
@@ -79,9 +85,5 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 		return "BasicAttributeDefinition [uuid=" + uuid + ", name=" + name + ", description=" + description
 				+ ", units=" + units + ", isRequired=" + isRequired + "]";
 	}
-
-
-	
-	
 
 }

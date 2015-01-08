@@ -18,7 +18,7 @@ import com.github.kmbulebu.nicknack.providers.wemo.internal.WemoDevice;
 import com.github.kmbulebu.nicknack.providers.wemo.internal.WemoDeviceRegistry;
 import com.github.kmbulebu.nicknack.providers.wemo.internal.WemoException;
 
-public class TurnOnOffActionDefinition extends WemoActionDefinition {
+public class TurnOnOffActionDefinition extends AbstractWemoActionDefinition {
 	
 	private static final Logger LOG = LogManager.getLogger(WemoProvider.LOGGER_NAME);
 
@@ -28,6 +28,7 @@ public class TurnOnOffActionDefinition extends WemoActionDefinition {
 
 	public TurnOnOffActionDefinition(WemoDeviceRegistry deviceRegistry) {
 		super(DEF_UUID, "Turn On or Off",
+				"Sets the switch to on or off, regardless of current setting.",
 				OnAttributeDefinition.INSTANCE);
 		this.deviceRegistry = deviceRegistry;
 	}

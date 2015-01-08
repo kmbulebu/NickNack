@@ -37,8 +37,8 @@ public class ActionDefinitionResource extends ResourceSupport implements ActionD
 	}
 
 	@Override
-	public UUID getProviderUUID() {
-		return actionDefinition.getProviderUUID();
+	public String getDescription() {
+		return actionDefinition.getDescription();
 	}
-
+	
 }

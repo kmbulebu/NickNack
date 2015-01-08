@@ -27,6 +27,7 @@ public class PushMessageActionDefinition extends AbstractPushMessageActionDefini
 	
 	public PushMessageActionDefinition() {
 		super(DEF_UUID, "Send Push Message",
+				"Send a push message to a mobile device or desktop computer using the Pushover service.",
 				TitleAttributeDefinition.INSTANCE,
 				DeviceAttributeDefinition.INSTANCE,
 				UrlAttributeDefinition.INSTANCE,

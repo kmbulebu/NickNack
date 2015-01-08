@@ -10,14 +10,13 @@ import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.actions.BasicActionDefinition;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.dsc.DscProvider;
 
 public abstract class AbstractDscActionDefinition extends BasicActionDefinition {
 	
 	private final PublishSubject<WriteCommand> dscWriteObservable;
 	
 	public AbstractDscActionDefinition(PublishSubject<WriteCommand> dscWriteObservable, UUID uuid, String name, AttributeDefinition... attributeDefinitions) {
-		super(uuid, DscProvider.PROVIDER_UUID, name, attributeDefinitions);
+		super(uuid, name, attributeDefinitions);
 		this.dscWriteObservable = dscWriteObservable;
 	}
 	

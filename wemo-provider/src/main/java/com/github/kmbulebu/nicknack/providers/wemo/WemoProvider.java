@@ -32,7 +32,7 @@ import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.wemo.actions.TurnOnOffActionDefinition;
-import com.github.kmbulebu.nicknack.providers.wemo.actions.WemoActionDefinition;
+import com.github.kmbulebu.nicknack.providers.wemo.actions.AbstractWemoActionDefinition;
 import com.github.kmbulebu.nicknack.providers.wemo.events.WemoSwitchOnOffEvent;
 import com.github.kmbulebu.nicknack.providers.wemo.events.WemoSwitchOnOffEventDefinition;
 import com.github.kmbulebu.nicknack.providers.wemo.internal.WemoDevice;
@@ -49,7 +49,7 @@ public class WemoProvider implements Provider, EventListener {
 	
 	public static final UUID PROVIDER_UUID = UUID.fromString("b1689e42-e0cd-4acc-bcb4-c4a780c86d35");
 	
-	private final Map<UUID, WemoActionDefinition> actionDefinitions = new HashMap<>();
+	private final Map<UUID, AbstractWemoActionDefinition> actionDefinitions = new HashMap<>();
 	private final List<StateDefinition> stateDefinitions = new ArrayList<>();
 	private final List<EventDefinition> eventDefinitions = new ArrayList<>();
 	
@@ -104,7 +104,7 @@ public class WemoProvider implements Provider, EventListener {
 	@Override
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
 		// Look it up.
-		final WemoActionDefinition actionDef = actionDefinitions.get(action.getAppliesToActionDefinition());
+		final AbstractWemoActionDefinition actionDef = actionDefinitions.get(action.getAppliesToActionDefinition());
 		if (actionDef == null) {
 			throw new ActionFailureException("Action is not provided by the " + getName() + " provider. Please open a bug.");
 		}

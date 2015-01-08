@@ -22,7 +22,8 @@ public class ExecuteShellCommandActionDefinition extends AbstractSshActionDefini
 	public static final UUID DEF_UUID = UUID.fromString("b7b2ead7-f723-4041-9014-5c7439cfba04");
 
 	public ExecuteShellCommandActionDefinition() {
-		super(DEF_UUID, "SSH: Execute Shell Command",
+		super(DEF_UUID, "Execute Shell Command",
+				"Run a single command on a remote device via SSH protocol.",
 				CommandLineAttributeDefinition.INSTANCE,
 				SuccessfulReturnCodeAttributeDefinition.INSTANCE);
 	}

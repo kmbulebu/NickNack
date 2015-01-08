@@ -27,6 +27,7 @@ public class ShowNotificationActionDefinition extends AbstractXbmcActionDefiniti
 
 	public ShowNotificationActionDefinition() {
 		super(UUID.fromString("03bf82ea-975a-4ba5-a41e-59c81455402b"), "Show Notification",
+				"Shows a floating notification on the screen.",
 				TitleAttributeDefinition.INSTANCE,
 				MessageAttributeDefinition.INSTANCE,
 				NotificationIconAttributeDefinition.INSTANCE,

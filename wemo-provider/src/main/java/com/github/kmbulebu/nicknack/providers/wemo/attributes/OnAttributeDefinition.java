@@ -2,9 +2,9 @@ package com.github.kmbulebu.nicknack.providers.wemo.attributes;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.attributes.impl.OnOffSwitchParameterDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.impl.OnOffSwitchAttributeDefinition;
 
-public class OnAttributeDefinition extends OnOffSwitchParameterDefinition {
+public class OnAttributeDefinition extends OnOffSwitchAttributeDefinition {
 	
 	public static final OnAttributeDefinition INSTANCE = new OnAttributeDefinition();
 

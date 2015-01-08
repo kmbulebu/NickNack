@@ -5,9 +5,9 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.StringUnit;
 
-public class MacAddressParameterDefinition extends BasicAttributeDefinition {
+public class MacAddressAttributeDefinition extends BasicAttributeDefinition {
 
-	public MacAddressParameterDefinition(UUID uuid, String name, boolean isRequired) {
+	public MacAddressAttributeDefinition(UUID uuid, String name, boolean isRequired) {
 		super(uuid, name, StringUnit.INSTANCE, isRequired);
 	}
 

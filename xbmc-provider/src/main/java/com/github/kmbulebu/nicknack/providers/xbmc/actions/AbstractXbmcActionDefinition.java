@@ -19,15 +19,15 @@ public abstract class AbstractXbmcActionDefinition extends BasicActionDefinition
 	
 	private static final Logger logger = LogManager.getLogger(XbmcProvider.LOGGER_NAME);
 	
-	public AbstractXbmcActionDefinition(UUID uuid, String name, AttributeDefinition... parameterDefinitions) {
-		super(uuid, XbmcProvider.PROVIDER_UUID, name, appendHostAttributeDefinition(parameterDefinitions));
+	public AbstractXbmcActionDefinition(UUID uuid, String name, String description, AttributeDefinition... attributeDefinitions) {
+		super(uuid, name, description, appendHostAttributeDefinition(attributeDefinitions));
 	}
 	
-	private static AttributeDefinition[] appendHostAttributeDefinition(AttributeDefinition... parameterDefinitions) {
+	private static AttributeDefinition[] appendHostAttributeDefinition(AttributeDefinition... attributeDefinitions) {
 		if (logger.isTraceEnabled()) {
-			logger.entry((Object[]) parameterDefinitions);
+			logger.entry((Object[]) attributeDefinitions);
 		}
-		final AttributeDefinition[] definitions = Arrays.copyOf(parameterDefinitions, parameterDefinitions.length + 1);
+		final AttributeDefinition[] definitions = Arrays.copyOf(attributeDefinitions, attributeDefinitions.length + 1);
 		definitions[definitions.length - 1] = HostAttributeDefinition.INSTANCE;
 		if (logger.isTraceEnabled()) {
 			logger.exit(definitions);

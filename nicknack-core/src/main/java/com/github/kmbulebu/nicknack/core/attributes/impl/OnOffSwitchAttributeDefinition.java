@@ -5,9 +5,9 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.BooleanUnit;
 
-public class OnOffSwitchParameterDefinition extends BasicAttributeDefinition {
+public class OnOffSwitchAttributeDefinition extends BasicAttributeDefinition {
 
-	public OnOffSwitchParameterDefinition(UUID uuid, String name, boolean isRequired) {
+	public OnOffSwitchAttributeDefinition(UUID uuid, String name, boolean isRequired) {
 		super(uuid, name, BooleanUnit.INSTANCE, isRequired);
 	}
 
