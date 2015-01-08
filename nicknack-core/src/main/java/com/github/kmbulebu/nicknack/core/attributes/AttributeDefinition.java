@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.units.Unit;
 
 /**
- * Defines a value to be associated with an Event, State, or Action.
+ * Defines an attribute to be associated with an Event, State, or Action.
  * 
  *
  */
@@ -34,7 +34,6 @@ public interface AttributeDefinition {
 	 * @return boolean True if attribute is required, false otherwise.
 	 */
 	public boolean isRequired();
-
 	
 	/**
 	 * The units of values for this attribute.

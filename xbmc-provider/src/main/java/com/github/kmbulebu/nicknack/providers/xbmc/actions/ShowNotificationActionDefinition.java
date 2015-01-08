@@ -11,15 +11,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
-import com.github.kmbulebu.nicknack.providers.xbmc.XbmcClient;
 import com.github.kmbulebu.nicknack.providers.xbmc.XbmcProvider;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.DurationAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.MessageAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.NotificationIconAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.TitleAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.json.JsonRpc;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.DurationAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.MessageAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.NotificationIconAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.TitleAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.internal.JsonRpc;
+import com.github.kmbulebu.nicknack.providers.xbmc.internal.XbmcClient;
 
-public class ShowNotificationActionDefinition extends XbmcActionDefinition {
+public class ShowNotificationActionDefinition extends AbstractXbmcActionDefinition {
 	
 	private static final Logger logger = LogManager.getLogger(XbmcProvider.LOGGER_NAME);
 	

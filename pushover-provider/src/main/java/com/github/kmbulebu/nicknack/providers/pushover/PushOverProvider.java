@@ -19,6 +19,8 @@ import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
+import com.github.kmbulebu.nicknack.providers.pushover.actions.AbstractPushMessageActionDefinition;
+import com.github.kmbulebu.nicknack.providers.pushover.actions.PushMessageActionDefinition;
 
 public class PushOverProvider implements Provider {
 	

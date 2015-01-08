@@ -10,7 +10,7 @@ public class FriendlyNameAttributeDefinition extends BasicAttributeDefinition {
 	public static final FriendlyNameAttributeDefinition INSTANCE = new FriendlyNameAttributeDefinition();
 	
 	public FriendlyNameAttributeDefinition() {
-		super(UUID.fromString("6773fcbf-2225-403d-8e08-6424886193cb"), "Friendly Name", StringUnit.INSTANCE, false);
-	}	
-	
+		super(UUID.fromString("06c6845b-9804-4cd9-821b-d8a394d50332"), "Friendly Name", StringUnit.INSTANCE, true);
+	}
+
 }

@@ -35,7 +35,7 @@ import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.CommandOutputActionDefinition;
-import com.github.kmbulebu.nicknack.providers.dsc.actions.DscActionDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.actions.AbstractDscActionDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.PartitionArmAwayActionDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.PartitionArmNoEntryDelayActionDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.PartitionArmStayActionDefinition;
@@ -208,8 +208,8 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
 		final ActionDefinition actionDef = actionDefinitions.get(action.getAppliesToActionDefinition());
 		
-		if (actionDef instanceof DscActionDefinition) {
-			((DscActionDefinition) actionDef).run(action);
+		if (actionDef instanceof AbstractDscActionDefinition) {
+			((AbstractDscActionDefinition) actionDef).run(action);
 		}
 	}
 

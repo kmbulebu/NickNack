@@ -24,13 +24,14 @@ import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.actions.ShowNotificationActionDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.actions.parameters.HostAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayEventDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayerItemTypeAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.HostAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.StopEventDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.events.PauseEventDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.events.PlayEventDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.events.PlayerItemTypeAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.events.SourceHostAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.events.StopEventDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.json.JsonRpc;
+import com.github.kmbulebu.nicknack.providers.xbmc.internal.JsonRpc;
+import com.github.kmbulebu.nicknack.providers.xbmc.internal.XbmcClient;
+import com.github.kmbulebu.nicknack.providers.xbmc.internal.XbmcMessageMapper;
 
 /**
  * Provides real time clock capabilities to Nick Nack.
@@ -163,7 +164,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 		final Map<String, String> result;
 		if (PlayerItemTypeAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
 			result = PlayerItemTypeAttributeDefinition.VALUES;
-		} else if (SourceHostAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
+		} else if (HostAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
 			result = buildSourceHostValues();
 		} else {
 			result = null;

@@ -18,12 +18,14 @@ import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
+import com.github.kmbulebu.nicknack.providers.ssh.actions.AbstractSshActionDefinition;
+import com.github.kmbulebu.nicknack.providers.ssh.actions.ExecuteShellCommandActionDefinition;
 
 public class SshProvider implements Provider {
 	
 	public static final UUID PROVIDER_UUID = UUID.fromString("af5f4a6c-699b-4ee9-a11c-898e502324b8");
 	
-	private final Map<UUID, SshActionDefinition> actionDefinitions = new HashMap<>();
+	private final Map<UUID, AbstractSshActionDefinition> actionDefinitions = new HashMap<>();
 
 	@Override
 	public UUID getUuid() {
@@ -69,7 +71,7 @@ public class SshProvider implements Provider {
 	@Override
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
 		// Look it up.
-		final SshActionDefinition actionDef = actionDefinitions.get(action.getAppliesToActionDefinition());
+		final AbstractSshActionDefinition actionDef = actionDefinitions.get(action.getAppliesToActionDefinition());
 		if (actionDef == null) {
 			throw new ActionFailureException("Action is not provided by the SSH provider. Please open a bug.");
 		}

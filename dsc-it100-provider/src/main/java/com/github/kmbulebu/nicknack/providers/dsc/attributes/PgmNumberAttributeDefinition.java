@@ -5,22 +5,22 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
 
-public class PartitionNumberAttributeDefinition extends BasicAttributeDefinition {
+public class PgmNumberAttributeDefinition extends BasicAttributeDefinition {
 	
-	public static final UUID DEF_UUID = UUID.fromString("5748a2bb-8030-4e17-a325-494ad11e3893");
+	public static final UUID DEF_UUID = UUID.fromString("b60f1f17-4024-40b3-921f-e00ce0790565");
 	
-	public static final PartitionNumberAttributeDefinition INSTANCE = new PartitionNumberAttributeDefinition();
+	public static final PgmNumberAttributeDefinition INSTANCE = new PgmNumberAttributeDefinition();
 	
-	public PartitionNumberAttributeDefinition() {
-		super(DEF_UUID, "Partition Number", IntegerUnit.INSTANCE, true);
+	public PgmNumberAttributeDefinition() {
+		super(DEF_UUID, "Pgm Output", IntegerUnit.INSTANCE, true);
 	}
 
-	/*@Override
+/*	@Override
 	public String format(String rawValue) {
 		return rawValue;
 	}
 	
-	private static final String VALIDATE_ERROR = "Partition must be an integer number between 1 and 8.";
+	private static final String VALIDATE_ERROR = "PGM must be an integer number between 1 and 4.";
 
 	@Override
 	public Collection<String> validate(String value) {
@@ -29,7 +29,7 @@ public class PartitionNumberAttributeDefinition extends BasicAttributeDefinition
 		}
 		final int intValue = Integer.parseInt(value);
 		
-		if (intValue < 1 || intValue > 8) {
+		if (intValue < 1 || intValue > 4) {
 			return Collections.singletonList(VALIDATE_ERROR);
 		}
 		return null;

@@ -9,8 +9,9 @@ import com.github.kmbulebu.dsc.it100.commands.write.WriteCommand;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.PartitionNumberAttributeDefinition;
 
-public class PartitionArmNoEntryDelayActionDefinition extends DscActionDefinition {
+public class PartitionArmNoEntryDelayActionDefinition extends AbstractDscActionDefinition {
 	
 	public static final UUID DEF_UUID = UUID.fromString("656ceded-6f4f-4a72-9991-0a38bab002d7");
 

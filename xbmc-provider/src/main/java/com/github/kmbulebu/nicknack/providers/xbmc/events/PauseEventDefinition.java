@@ -2,7 +2,10 @@ package com.github.kmbulebu.nicknack.providers.xbmc.events;
 
 import java.util.UUID;
 
-public class PauseEventDefinition extends BaseEventDefinition {
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayerItemTitleAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayerItemTypeAttributeDefinition;
+
+public class PauseEventDefinition extends AbstractXbmcEventDefinition {
 	
 	public static final PauseEventDefinition INSTANCE = new PauseEventDefinition();
 

@@ -12,6 +12,8 @@ import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.providers.wemo.WemoProvider;
+import com.github.kmbulebu.nicknack.providers.wemo.attributes.FriendlyNameAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.wemo.attributes.OnAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.wemo.internal.WemoDevice;
 import com.github.kmbulebu.nicknack.providers.wemo.internal.WemoDeviceRegistry;
 import com.github.kmbulebu.nicknack.providers.wemo.internal.WemoException;
@@ -26,21 +28,21 @@ public class TurnOnOffActionDefinition extends WemoActionDefinition {
 
 	public TurnOnOffActionDefinition(WemoDeviceRegistry deviceRegistry) {
 		super(DEF_UUID, "Turn On or Off",
-				OnParameterDefinition.INSTANCE);
+				OnAttributeDefinition.INSTANCE);
 		this.deviceRegistry = deviceRegistry;
 	}
 
 	@Override
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
 		final String friendlyName = action.getAttributes().get(FriendlyNameAttributeDefinition.INSTANCE.getUUID());
-		final String onStr = action.getAttributes().get(OnParameterDefinition.INSTANCE.getUUID());
+		final String onStr = action.getAttributes().get(OnAttributeDefinition.INSTANCE.getUUID());
 		
 		if (friendlyName == null || friendlyName.length() < 1) {
 			throw new ActionParameterException(FriendlyNameAttributeDefinition.INSTANCE.getName() + " parameter is required.");
 		}
 		
 		if (onStr == null || onStr.length() < 1) {
-			throw new ActionParameterException(OnParameterDefinition.INSTANCE.getName() + " parameter is required.");
+			throw new ActionParameterException(OnAttributeDefinition.INSTANCE.getName() + " parameter is required.");
 		}
 		
 		boolean newSwitchOnValue;
@@ -49,7 +51,7 @@ public class TurnOnOffActionDefinition extends WemoActionDefinition {
 		} else if ("off".equalsIgnoreCase(onStr) || "false".equalsIgnoreCase(onStr)) {
 			newSwitchOnValue = false;
 		} else {
-			throw new ActionParameterException(OnParameterDefinition.INSTANCE.getName() + " parameter value is not recognized."); 
+			throw new ActionParameterException(OnAttributeDefinition.INSTANCE.getName() + " parameter value is not recognized."); 
 		}
 		
 		final List<WemoDevice> failedToChange = new LinkedList<>();

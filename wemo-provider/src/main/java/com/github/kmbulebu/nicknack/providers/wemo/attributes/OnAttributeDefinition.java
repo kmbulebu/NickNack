@@ -2,15 +2,14 @@ package com.github.kmbulebu.nicknack.providers.wemo.attributes;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.BooleanUnit;
+import com.github.kmbulebu.nicknack.core.attributes.impl.OnOffSwitchParameterDefinition;
 
-public class OnAttributeDefinition extends BasicAttributeDefinition {
+public class OnAttributeDefinition extends OnOffSwitchParameterDefinition {
 	
 	public static final OnAttributeDefinition INSTANCE = new OnAttributeDefinition();
-	
+
 	public OnAttributeDefinition() {
-		super(UUID.fromString("9ed426d0-687b-4765-8097-0c2688de030c"), "is On", BooleanUnit.INSTANCE, false);
-	}	
-	
+		super(UUID.fromString("768f61c5-1c11-4588-8d75-4a049131a95c"), "On", true);
+	}
+
 }

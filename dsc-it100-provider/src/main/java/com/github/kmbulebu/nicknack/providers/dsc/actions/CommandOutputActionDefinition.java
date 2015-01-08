@@ -9,8 +9,10 @@ import com.github.kmbulebu.dsc.it100.commands.write.WriteCommand;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.PartitionNumberAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.attributes.PgmNumberAttributeDefinition;
 
-public class CommandOutputActionDefinition extends DscActionDefinition {
+public class CommandOutputActionDefinition extends AbstractDscActionDefinition {
 	
 	public static final UUID DEF_UUID = UUID.fromString("537e6c7f-1476-42e2-8e45-96f839ad5c74");
 
