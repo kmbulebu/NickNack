@@ -25,6 +25,8 @@ import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderMultiValueSettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 public class ProviderServiceImpl implements ProviderService, OnEventListener, rx.Observable.OnSubscribe<Event> {
@@ -123,6 +125,30 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     	
     }
     
+    protected ProviderConfiguration loadProviderConfiguration(List<? extends ProviderSettingDefinition<?>> list, Configuration configuration) {
+    	final ProviderConfigurationImpl providerConfiguration = new ProviderConfigurationImpl();
+    	for (ProviderSettingDefinition<?> definition : list) {
+    		final boolean exists = configuration.containsKey(definition.getKey());
+    		final boolean required = definition.isRequired();
+    		
+    		// Make sure we have all required settings.
+    		if (required && !exists) {
+    			// TODO Throw an exception or roll up errors.
+    			return null;
+    		}
+    		
+    		if (definition instanceof ProviderMultiValueSettingDefinition) {
+    			// Array
+    			// TODO Load all values 
+    		} else {
+    			// Single value.
+    			// TODO Load value.
+    		}
+    	}
+    	
+    	return providerConfiguration;
+    }
+    
     protected List<Exception> initializeProvider(Provider provider) {
     	List<Exception> errors = new ArrayList<Exception>();
     	
@@ -144,45 +170,49 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 					LOG.info("Per configuration, disabling provider: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
 				}
 			} else {
-			
-				provider.init(providerConfig, this);
+				final ProviderConfiguration providerConfiguration = loadProviderConfiguration(provider.getSettingDefinitions(), providerConfig);
 				
-				if (provider.getEventDefinitions() != null) {
-					for (EventDefinition eventDef : provider.getEventDefinitions()) {
-						UUID uuid = eventDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Event Definition with null UUID.");
-						} else {
-							eventDefinitions.put(uuid, eventDef);
-							eventDefinitionToProvider.put(uuid, provider.getUuid());
+				if (providerConfiguration == null) {
+					LOG.warn("Disabling provider due to incomplete configuration: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
+				} else {
+					provider.init(providerConfiguration, this);
+					
+					if (provider.getEventDefinitions() != null) {
+						for (EventDefinition eventDef : provider.getEventDefinitions()) {
+							UUID uuid = eventDef.getUUID();
+							if (uuid == null) {
+								LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Event Definition with null UUID.");
+							} else {
+								eventDefinitions.put(uuid, eventDef);
+								eventDefinitionToProvider.put(uuid, provider.getUuid());
+							}
 						}
 					}
-				}
-				
-				if (provider.getStateDefinitions() != null) {
-					for (StateDefinition stateDef : provider.getStateDefinitions()) {
-						UUID uuid = stateDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an State Definition with null UUID.");
-						} else {
-							stateDefinitions.put(uuid, stateDef);
-							stateDefinitionToProvider.put(uuid, provider.getUuid());
+					
+					if (provider.getStateDefinitions() != null) {
+						for (StateDefinition stateDef : provider.getStateDefinitions()) {
+							UUID uuid = stateDef.getUUID();
+							if (uuid == null) {
+								LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an State Definition with null UUID.");
+							} else {
+								stateDefinitions.put(uuid, stateDef);
+								stateDefinitionToProvider.put(uuid, provider.getUuid());
+							}
 						}
 					}
-				}
-				
-				if (provider.getActionDefinitions() != null) {
-					for (ActionDefinition actionDef : provider.getActionDefinitions()) {
-						UUID uuid = actionDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Action Definition with null UUID.");
-						} else {
-							actionDefinitions.put(uuid, actionDef);
-							actionDefinitionToProvider.put(uuid, provider.getUuid());
+					
+					if (provider.getActionDefinitions() != null) {
+						for (ActionDefinition actionDef : provider.getActionDefinitions()) {
+							UUID uuid = actionDef.getUUID();
+							if (uuid == null) {
+								LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Action Definition with null UUID.");
+							} else {
+								actionDefinitions.put(uuid, actionDef);
+								actionDefinitionToProvider.put(uuid, provider.getUuid());
+							}
 						}
 					}
-				}
-				
+				}// If configuration good
 			} // If disabled
 		} catch (Exception e) {
 			LOG.error("Failed to initialize provider, " + provider.getName() + " (" + provider.getUuid() + "):" + e.getMessage(), e);

@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.configuration.Configuration;
-
 import com.github.kmbulebu.nicknack.basicproviders.wol.WakeOnLanActionDefinition.DeviceMacAddressParameterDefinition;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
@@ -18,6 +16,8 @@ import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
@@ -30,16 +30,9 @@ public class WakeOnLanProvider implements Provider {
 	
 	public static final UUID PROVIDER_UUID = UUID.fromString("16f5774b-8104-4a29-85d7-e6d02d6353d2");
 	
-	private final List<EventDefinition> eventDefinitions;
-	private final List<ActionDefinition> actionDefinitions;
-	
-	public WakeOnLanProvider() {
-		eventDefinitions = new ArrayList<EventDefinition>(0);
-		
-		actionDefinitions = new ArrayList<ActionDefinition>(1);
-		actionDefinitions.add(WakeOnLanActionDefinition.INSTANCE);
-
-	}
+	private List<EventDefinition> eventDefinitions;
+	private List<ActionDefinition> actionDefinitions;
+	private List<StateDefinition> stateDefinitions;
 	
 	@Override
 	public UUID getUuid() {
@@ -65,7 +58,7 @@ public class WakeOnLanProvider implements Provider {
 	
 	@Override
 	public Collection<StateDefinition> getStateDefinitions() {
-		return Collections.emptyList();
+		return Collections.unmodifiableList(stateDefinitions);
 	}
 	
 	@Override
@@ -74,7 +67,12 @@ public class WakeOnLanProvider implements Provider {
 	}
 	
 	@Override
-	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
+	public void init(ProviderConfiguration configuration, OnEventListener onEventListener) throws Exception {
+		eventDefinitions = new ArrayList<>(0);
+		actionDefinitions = new ArrayList<>(1);
+		stateDefinitions = new ArrayList<>(0);
+		actionDefinitions.add(WakeOnLanActionDefinition.INSTANCE);
+
 	}
 
 	@Override
@@ -107,6 +105,19 @@ public class WakeOnLanProvider implements Provider {
 	@Override
 	public List<State> getStates(UUID stateDefinitionUuid) {
 		return Collections.emptyList();
+	}
+
+	@Override
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void shutdown() throws Exception {
+		stateDefinitions = null;
+		eventDefinitions = null;
+		actionDefinitions = null;
 	}
 
 }

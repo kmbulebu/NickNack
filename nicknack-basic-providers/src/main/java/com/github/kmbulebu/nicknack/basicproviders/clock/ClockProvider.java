@@ -10,8 +10,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.configuration.Configuration;
-
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
@@ -27,6 +25,8 @@ import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
@@ -39,25 +39,12 @@ public class ClockProvider implements Provider, Runnable {
 	
 	public static final UUID PROVIDER_UUID = UUID.fromString("58f948a0-f10c-11e3-8031-d31507193ec8");
 	
-	private final List<EventDefinition> eventDefinitions;
-	private final List<ActionDefinition> actionDefinitions;
-	private final List<StateDefinition> stateDefinitions;
-	private final ScheduledExecutorService executorService;
+	private List<EventDefinition> eventDefinitions;
+	private List<ActionDefinition> actionDefinitions;
+	private List<StateDefinition> stateDefinitions;
+	private ScheduledExecutorService executorService;
 	
 	private OnEventListener onEventListener;
-	
-	public ClockProvider() {
-		eventDefinitions = new ArrayList<>(1);
-		eventDefinitions.add(ClockTickEventDefinition.INSTANCE);
-		
-		actionDefinitions = new ArrayList<>(0);
-		
-		stateDefinitions = new ArrayList<>(1);
-		
-		stateDefinitions.add(ClockStateDefinition.INSTANCE);
-		
-		executorService = Executors.newScheduledThreadPool(2);
-	}
 	
 	@Override
 	public UUID getUuid() {
@@ -92,9 +79,21 @@ public class ClockProvider implements Provider, Runnable {
 	}
 	
 	@Override
-	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
+	public void init(ProviderConfiguration configuration, OnEventListener onEventListener) throws Exception {
 		final long nextSecond = ((System.currentTimeMillis() + 2000)/1000)*1000;
 		final long initialDelay = nextSecond - System.currentTimeMillis();
+		
+		eventDefinitions = new ArrayList<>(1);
+		eventDefinitions.add(ClockTickEventDefinition.INSTANCE);
+		
+		actionDefinitions = new ArrayList<>(0);
+		
+		stateDefinitions = new ArrayList<>(1);
+		
+		stateDefinitions.add(ClockStateDefinition.INSTANCE);
+		
+		executorService = Executors.newScheduledThreadPool(2);
+		
 		executorService.scheduleAtFixedRate(this, initialDelay, 1000, TimeUnit.MILLISECONDS);
 		this.onEventListener = onEventListener;
 	}
@@ -145,6 +144,22 @@ public class ClockProvider implements Provider, Runnable {
 		final List<State> states = new ArrayList<>();
 		states.add(new ClockState());	
 		return states;
+	}
+
+	@Override
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+		return null;
+	}
+
+	@Override
+	public void shutdown() throws Exception {
+		executorService.shutdown();
+		executorService = null;
+		onEventListener = null;
+		
+		eventDefinitions = null;
+		actionDefinitions = null;
+		stateDefinitions = null;
 	}
 
 }

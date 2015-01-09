@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,17 +20,20 @@ import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.actions.ShowNotificationActionDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayEventDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayerItemTypeAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.attributes.HostAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.attributes.StopEventDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayerItemTypeAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.events.PauseEventDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.events.PlayEventDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.events.StopEventDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.internal.JsonRpc;
 import com.github.kmbulebu.nicknack.providers.xbmc.internal.XbmcClient;
 import com.github.kmbulebu.nicknack.providers.xbmc.internal.XbmcMessageMapper;
+import com.github.kmbulebu.nicknack.providers.xbmc.settings.HostsSettingDefinition;
 
 /**
  * Provides real time clock capabilities to Nick Nack.
@@ -46,30 +48,23 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	
 	private static final Logger logger = LogManager.getLogger(LOGGER_NAME);
 	
-	private final List<EventDefinition> eventDefinitions;
-	private final List<ActionDefinition> actionDefinitions;
-	private final XbmcMessageMapper messageMapper;
-	private OnEventListener onEventListener = null;
-	private List<XbmcClient> xbmcClients;
+	private static final int DEFAULT_PORT = 9090;
 	
-	private Configuration configuration;
+	private List<EventDefinition> eventDefinitions = null;
+	private List<ActionDefinition> actionDefinitions = null;
+	private XbmcMessageMapper messageMapper = null;
+	private OnEventListener onEventListener = null;
+	private List<XbmcClient> xbmcClients = null;
+	private Map<String, String> hostNameValues;
+	
+	private final List<ProviderSettingDefinition<?>> settingDefinitions;
+	
+	private final HostsSettingDefinition hostSettingsDefinition;
 	
 	public XbmcProvider() {
-		if (logger.isTraceEnabled()) {
-			logger.entry();
-		}
-		eventDefinitions = new ArrayList<EventDefinition>(3);
-		eventDefinitions.add(PlayEventDefinition.INSTANCE);
-		eventDefinitions.add(PauseEventDefinition.INSTANCE);
-		eventDefinitions.add(StopEventDefinition.INSTANCE);
-		
-		actionDefinitions = new ArrayList<ActionDefinition>(1);
-		actionDefinitions.add(ShowNotificationActionDefinition.INSTANCE);
-		
-		messageMapper = new XbmcMessageMapper();
-		if (logger.isTraceEnabled()) {
-			logger.exit();
-		}
+		settingDefinitions = new ArrayList<ProviderSettingDefinition<?>>(1);
+		hostSettingsDefinition = new HostsSettingDefinition();
+		settingDefinitions.add(hostSettingsDefinition);
 	}
 	
 	@Override
@@ -78,7 +73,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	}
 	@Override
 	public String getName() {
-		return "Kodi (formerly XBMC)";
+		return "Kodi";
 	}
 	@Override
 	public String getAuthor() {
@@ -105,27 +100,31 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	}
 	
 	@Override
-	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
+	public void init(ProviderConfiguration configuration, OnEventListener onEventListener) throws Exception {
 		if (logger.isTraceEnabled()) {
 			logger.entry(configuration, onEventListener);
 		}
-		xbmcClients = new ArrayList<>();
-		this.configuration = configuration;
+		eventDefinitions = new ArrayList<EventDefinition>(3);
+		eventDefinitions.add(PlayEventDefinition.INSTANCE);
+		eventDefinitions.add(PauseEventDefinition.INSTANCE);
+		eventDefinitions.add(StopEventDefinition.INSTANCE);
 		
-		int i = 0;
-		// TODO Switch to string array
-		while (configuration.containsKey("host" + i)) {
-			String[] split = configuration.getString("host" + i).split(":");
-			if (split.length == 2 && split[1].matches("\\d+")) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Creating XBMC client for " + split[0] + " " + split[1]);
-				}
-				XbmcClient client = new XbmcClient();
-				client.setListener(this);
-				client.connect(split[0], Integer.parseInt(split[1]));
-				xbmcClients.add(client);
-			}
-			i++;
+		actionDefinitions = new ArrayList<ActionDefinition>(1);
+		actionDefinitions.add(ShowNotificationActionDefinition.INSTANCE);
+		
+		messageMapper = new XbmcMessageMapper();
+		
+		xbmcClients = new ArrayList<>();
+		
+		hostNameValues = new HashMap<>();
+		final List<String> hosts = configuration.getValues(hostSettingsDefinition);
+				
+		for (String host : hosts) {
+			XbmcClient client = new XbmcClient();
+			client.setListener(this);
+			client.connect(host, DEFAULT_PORT);
+			xbmcClients.add(client);
+			hostNameValues.put(host, host);
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -136,6 +135,28 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 		if (logger.isTraceEnabled()) {
 			logger.exit();
 		}
+	}
+	
+	@Override
+	public void shutdown() throws Exception {
+		onEventListener = null;
+		for (XbmcClient client : xbmcClients) {
+			client.setListener(null);
+			client.disconnect();
+		}
+		xbmcClients = null;
+		
+		messageMapper = null;
+		
+		actionDefinitions = null;
+		eventDefinitions = null;
+		
+		hostNameValues = null;
+	}
+	
+	@Override
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+		return Collections.unmodifiableList(settingDefinitions);
 	}
 
 	@Override
@@ -165,7 +186,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 		if (PlayerItemTypeAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
 			result = PlayerItemTypeAttributeDefinition.VALUES;
 		} else if (HostAttributeDefinition.INSTANCE.getUUID().equals(attributeDefinitionUuid)) {
-			result = buildSourceHostValues();
+			result = Collections.unmodifiableMap(hostNameValues);
 		} else {
 			result = null;
 		}
@@ -174,25 +195,6 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 			logger.exit(result);
 		}
 		return result;
-	}
-	
-	private Map<String, String> buildSourceHostValues() {
-		if (logger.isTraceEnabled()) {
-			logger.entry();
-		}
-		final Map<String, String> values = new HashMap<>();
-		int i = 0;
-		while (configuration.containsKey("host" + i)) {
-			String[] split = configuration.getString("host" + i).split(":");
-			if (split.length == 2 && split[1].matches("\\d+")) {
-				values.put(split[0], split[0]);
-			}
-			i++;
-		}
-		if (logger.isTraceEnabled()) {
-			logger.exit(values);
-		}
-		return values;
 	}
 
 	@Override

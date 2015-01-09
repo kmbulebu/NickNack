@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cybergarage.upnp.ControlPoint;
@@ -29,10 +28,12 @@ import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
-import com.github.kmbulebu.nicknack.providers.wemo.actions.TurnOnOffActionDefinition;
 import com.github.kmbulebu.nicknack.providers.wemo.actions.AbstractWemoActionDefinition;
+import com.github.kmbulebu.nicknack.providers.wemo.actions.TurnOnOffActionDefinition;
 import com.github.kmbulebu.nicknack.providers.wemo.events.WemoSwitchOnOffEvent;
 import com.github.kmbulebu.nicknack.providers.wemo.events.WemoSwitchOnOffEventDefinition;
 import com.github.kmbulebu.nicknack.providers.wemo.internal.WemoDevice;
@@ -49,9 +50,9 @@ public class WemoProvider implements Provider, EventListener {
 	
 	public static final UUID PROVIDER_UUID = UUID.fromString("b1689e42-e0cd-4acc-bcb4-c4a780c86d35");
 	
-	private final Map<UUID, AbstractWemoActionDefinition> actionDefinitions = new HashMap<>();
-	private final List<StateDefinition> stateDefinitions = new ArrayList<>();
-	private final List<EventDefinition> eventDefinitions = new ArrayList<>();
+	private Map<UUID, AbstractWemoActionDefinition> actionDefinitions;
+	private List<StateDefinition> stateDefinitions;
+	private List<EventDefinition> eventDefinitions;
 	
 	private ControlPoint controlPoint;
 	private WemoDeviceRegistry deviceRegistry;
@@ -113,7 +114,7 @@ public class WemoProvider implements Provider, EventListener {
 	}
 
 	@Override
-	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
+	public void init(ProviderConfiguration configuration, OnEventListener onEventListener) throws Exception {
 		controlPoint = new ControlPoint();
 		
 		if (!controlPoint.start()) {
@@ -130,7 +131,9 @@ public class WemoProvider implements Provider, EventListener {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Scheduled a search for Wemo devices every minute.");
 		}
-		
+		stateDefinitions = new ArrayList<>();
+		eventDefinitions = new ArrayList<>();
+		actionDefinitions = new HashMap<>();
 		stateDefinitions.add(new WemoSwitchStateDefinition());
 		eventDefinitions.add(new WemoSwitchOnOffEventDefinition());
 		actionDefinitions.put(TurnOnOffActionDefinition.DEF_UUID, new TurnOnOffActionDefinition(deviceRegistry));
@@ -213,6 +216,31 @@ public class WemoProvider implements Provider, EventListener {
 		}
 
 		
+	}
+
+	@Override
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+		return null;
+	}
+
+	@Override
+	public void shutdown() throws Exception {
+		executorService.shutdown();
+		executorService = null;
+		
+		if (controlPoint != null) {
+			controlPoint.removeEventListener(this);
+			controlPoint.removeDeviceChangeListener(deviceRegistry);
+			controlPoint.stop();
+			controlPoint = null;
+		}
+		
+		deviceRegistry = null;
+		onEventListener = null;
+		
+		actionDefinitions = null;
+		eventDefinitions = null;
+		stateDefinitions = null;	
 	}
 
 

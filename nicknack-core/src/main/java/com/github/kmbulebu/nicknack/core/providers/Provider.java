@@ -5,21 +5,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.configuration.Configuration;
-
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 /**
  * Provider Interface. Main entry point for extending NickNack. 
  * 
- * Implement to define new sets of actions and events. 
- * @author kmbulebu
+ * Implement to define new sets of Actions, Events, and States.
  *
  */
 public interface Provider {
@@ -43,6 +41,12 @@ public interface Provider {
 	 * @return Version of this provider. Higher versions are newer than lower versions. 
 	 */
 	public int getVersion();
+	
+	/**
+	 * 
+	 * @return A list of settings available to the user in configuring this provider.
+	 */
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions();
 	
 	/**
 	 * 
@@ -85,8 +89,10 @@ public interface Provider {
 	 * @throws Exception
 	 */
 	// TODO Pass in a configuration object that tells the provide where to store config files, what version of nicknack, etc.
-	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception;
+	public void init(ProviderConfiguration configuration, OnEventListener onEventListener) throws Exception;
 	
-	// TODO public void onConfigurationChange(Configuration configuration);
+	public void shutdown() throws Exception;
+	
+	// TODO public void onConfigurationChange(ProviderConfiguration configuration);
 	
 }

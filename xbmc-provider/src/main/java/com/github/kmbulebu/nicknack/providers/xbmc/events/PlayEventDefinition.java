@@ -1,8 +1,9 @@
-package com.github.kmbulebu.nicknack.providers.xbmc.attributes;
+package com.github.kmbulebu.nicknack.providers.xbmc.events;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.providers.xbmc.events.AbstractXbmcEventDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayerItemTitleAttributeDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayerItemTypeAttributeDefinition;
 
 public class PlayEventDefinition extends AbstractXbmcEventDefinition {
 	

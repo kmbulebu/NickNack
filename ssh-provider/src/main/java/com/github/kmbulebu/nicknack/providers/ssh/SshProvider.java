@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.configuration.Configuration;
-
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
@@ -16,6 +14,8 @@ import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.ssh.actions.AbstractSshActionDefinition;
@@ -25,7 +25,7 @@ public class SshProvider implements Provider {
 	
 	public static final UUID PROVIDER_UUID = UUID.fromString("af5f4a6c-699b-4ee9-a11c-898e502324b8");
 	
-	private final Map<UUID, AbstractSshActionDefinition> actionDefinitions = new HashMap<>();
+	private Map<UUID, AbstractSshActionDefinition> actionDefinitions = null;
 
 	@Override
 	public UUID getUuid() {
@@ -80,13 +80,24 @@ public class SshProvider implements Provider {
 	}
 
 	@Override
-	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
+	public void init(ProviderConfiguration configuration, OnEventListener onEventListener) throws Exception {
+		actionDefinitions = new HashMap<>();
 		actionDefinitions.put(ExecuteShellCommandActionDefinition.DEF_UUID, new ExecuteShellCommandActionDefinition());
+	}
+	
+	@Override
+	public void shutdown() throws Exception {
+		actionDefinitions = null;
 	}
 	
 	@Override
 	public List<State> getStates(UUID stateDefinitionUuid) {
 		return Collections.emptyList();
+	}
+
+	@Override
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+		return null;
 	}
 
 }

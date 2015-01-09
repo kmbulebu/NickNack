@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,10 +31,12 @@ import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
-import com.github.kmbulebu.nicknack.providers.dsc.actions.CommandOutputActionDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.AbstractDscActionDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.actions.CommandOutputActionDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.PartitionArmAwayActionDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.PartitionArmNoEntryDelayActionDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.PartitionArmStayActionDefinition;
@@ -53,6 +54,10 @@ import com.github.kmbulebu.nicknack.providers.dsc.internal.Partition;
 import com.github.kmbulebu.nicknack.providers.dsc.internal.Partitions;
 import com.github.kmbulebu.nicknack.providers.dsc.internal.Zone;
 import com.github.kmbulebu.nicknack.providers.dsc.internal.Zones;
+import com.github.kmbulebu.nicknack.providers.dsc.settings.ActivePartitionsSettingDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.settings.ActiveZonesSettingDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.settings.HostSettingDefinition;
+import com.github.kmbulebu.nicknack.providers.dsc.settings.PortSettingDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.states.PartitionState;
 import com.github.kmbulebu.nicknack.providers.dsc.states.PartitionStateDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.states.ZoneState;
@@ -66,9 +71,9 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	
 	//private Configuration configuration;
 	
-	private final List<EventDefinition> eventDefinitions;
-	private final Map<UUID, ActionDefinition> actionDefinitions;
-	private final List<StateDefinition> stateDefinitions;
+	private List<EventDefinition> eventDefinitions = null;
+	private Map<UUID, ActionDefinition> actionDefinitions = null;
+	private List<StateDefinition> stateDefinitions = null;
 	private OnEventListener onEventListener = null;
 	private CommandToEventMapper eventMapper;
 	private CommandToStateMapper stateMapper;
@@ -77,23 +82,30 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	private Partitions partitions;
 	private Labels labels;
 	
+	private IT100 it100;
+	
 	private Set<Integer> activeZones = null;
 	private Set<Integer> activePartitions = null;
 	
+	private final List<ProviderSettingDefinition<?>> settingDefinitions;
+	private final HostSettingDefinition hostSettingDefinition;
+	private final PortSettingDefinition portSettingDefinition;
+	private final ActivePartitionsSettingDefinition activePartitionsSettingDefinition;
+	private final ActiveZonesSettingDefinition activeZonesSettingDefinition;
+	
 	public DscProvider() {
-		this.eventDefinitions = new ArrayList<>(6);
-		this.eventDefinitions.add(ZoneOpenCloseEventDefinition.INSTANCE);
-		this.eventDefinitions.add(PartitionArmedEventDefinition.INSTANCE);
-		this.eventDefinitions.add(PartitionInAlarmEventDefinition.INSTANCE);
-		this.eventDefinitions.add(PartitionDisarmedEventDefinition.INSTANCE);
-		this.eventDefinitions.add(EntryDelayInProgressEventDefinition.INSTANCE);
-		this.eventDefinitions.add(ExitDelayInProgressEventDefinition.INSTANCE);
+		settingDefinitions = new ArrayList<ProviderSettingDefinition<?>>(1);
+		hostSettingDefinition = new HostSettingDefinition();
+		settingDefinitions.add(hostSettingDefinition);
 		
-		this.stateDefinitions = new ArrayList<>(1);
-		this.stateDefinitions.add(ZoneStateDefinition.INSTANCE);
-		this.stateDefinitions.add(PartitionStateDefinition.INSTANCE);
+		portSettingDefinition = new PortSettingDefinition();
+		settingDefinitions.add(portSettingDefinition);
 		
-		this.actionDefinitions = new HashMap<>();
+		activePartitionsSettingDefinition = new ActivePartitionsSettingDefinition();
+		settingDefinitions.add(activePartitionsSettingDefinition);
+		
+		activeZonesSettingDefinition = new ActiveZonesSettingDefinition();
+		settingDefinitions.add(activeZonesSettingDefinition);
 	}
 	
 	@Override
@@ -130,34 +142,48 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	public Map<String, String> getAttributeDefinitionValues(UUID attributeDefinitionUuid) {
 		return Collections.emptyMap();
 	}
+	
+	@Override
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+		return Collections.unmodifiableList(settingDefinitions);
+	}
 
 	@Override
-	public void init(Configuration configuration, OnEventListener onEventListener) {
-		//this.configuration = configuration;
+	public void init(ProviderConfiguration configuration, OnEventListener onEventListener) {
+		this.eventDefinitions = new ArrayList<>(6);
+		this.eventDefinitions.add(ZoneOpenCloseEventDefinition.INSTANCE);
+		this.eventDefinitions.add(PartitionArmedEventDefinition.INSTANCE);
+		this.eventDefinitions.add(PartitionInAlarmEventDefinition.INSTANCE);
+		this.eventDefinitions.add(PartitionDisarmedEventDefinition.INSTANCE);
+		this.eventDefinitions.add(EntryDelayInProgressEventDefinition.INSTANCE);
+		this.eventDefinitions.add(ExitDelayInProgressEventDefinition.INSTANCE);
 		
-		final String host = configuration.getString("host");
-		final int port = configuration.getInt("port");
-		final String[] activeZoneList = configuration.getStringArray("activeZones");
-		if (activeZoneList != null && activeZoneList.length > 0) {
-			this.activeZones = new HashSet<>();
-			for (String value : activeZoneList) {
-				if (value.matches("\\d+")) {
-					this.activeZones.add(Integer.parseInt(value));
-				}
- 			}
+		this.stateDefinitions = new ArrayList<>(1);
+		this.stateDefinitions.add(ZoneStateDefinition.INSTANCE);
+		this.stateDefinitions.add(PartitionStateDefinition.INSTANCE);
+		
+		this.actionDefinitions = new HashMap<>();
+		
+		final String host = configuration.getValue(hostSettingDefinition);
+		final Integer port = configuration.getValue(portSettingDefinition);
+		
+		final List<Integer> activeZoneList = configuration.getValues(activePartitionsSettingDefinition);
+		if (activeZoneList != null && !activeZoneList.isEmpty()) {
+			activeZones = new HashSet<>();
+			for (Integer zone : activeZoneList) {
+				activeZones.add(zone);
+			}
 		}
 		
-		final String[] activePartitionList = configuration.getStringArray("activePartitions");
-		if (activePartitionList != null && activePartitionList.length > 0) {
-			this.activePartitions = new HashSet<>();
-			for (String value : activePartitionList) {
-				if (value.matches("\\d+")) {
-					this.activePartitions.add(Integer.parseInt(value));
-				}
- 			}
+		final List<Integer> activePartitionList = configuration.getValues(activePartitionsSettingDefinition);
+		if (activePartitionList != null && !activePartitionList.isEmpty()) {
+			activePartitions = new HashSet<>();
+			for (Integer partition : activePartitionList) {
+				activePartitions.add(partition);
+			}
 		}
-		
-		final IT100 it100 = new IT100(new ConfigurationBuilder().withRemoteSocket(host, port).build());
+
+		it100 = new IT100(new ConfigurationBuilder().withRemoteSocket(host, port).build());
 		
 		// Start communicating with IT-100.
 		try {
@@ -191,7 +217,26 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		
 		// TODO Delay a reasonable amount of time before creating events.
 		readObservable.ofType(ReadCommand.class).subscribe(this);
-
+	}
+	
+	@Override
+	public void shutdown() throws Exception {
+		onEventListener = null;
+		
+		it100.disconnect();
+		it100 = null;
+		
+		eventMapper = null;
+		stateMapper = null;
+		
+		labels = null;
+		
+		activeZones = null;
+		activePartitions = null;
+		
+		actionDefinitions = null;
+		eventDefinitions = null;
+		stateDefinitions = null;
 	}
 
 	@Override

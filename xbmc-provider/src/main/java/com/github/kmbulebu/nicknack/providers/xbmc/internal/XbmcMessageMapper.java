@@ -10,12 +10,12 @@ import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.providers.xbmc.XbmcProvider;
-import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayEventDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayerItemTitleAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.attributes.PlayerItemTypeAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.attributes.HostAttributeDefinition;
-import com.github.kmbulebu.nicknack.providers.xbmc.attributes.StopEventDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.events.PauseEventDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.events.PlayEventDefinition;
+import com.github.kmbulebu.nicknack.providers.xbmc.events.StopEventDefinition;
 
 public class XbmcMessageMapper {
 	

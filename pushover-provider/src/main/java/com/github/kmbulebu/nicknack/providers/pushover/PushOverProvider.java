@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.configuration.Configuration;
-
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
@@ -17,6 +15,8 @@ import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.pushover.actions.AbstractPushMessageActionDefinition;
@@ -26,7 +26,7 @@ public class PushOverProvider implements Provider {
 	
 	public static final UUID PROVIDER_UUID = UUID.fromString("ec72c198-1ee8-4fd6-be0c-c10fd365f95a");
 	
-	private final Map<UUID, AbstractPushMessageActionDefinition> actionDefinitions = new HashMap<>();
+	private Map<UUID, AbstractPushMessageActionDefinition> actionDefinitions = null;;
 
 	@Override
 	public UUID getUuid() {
@@ -81,8 +81,20 @@ public class PushOverProvider implements Provider {
 	}
 
 	@Override
-	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
+	public void init(ProviderConfiguration configuration, OnEventListener onEventListener) throws Exception {
+		actionDefinitions = new HashMap<>();
 		actionDefinitions.put(PushMessageActionDefinition.DEF_UUID, new PushMessageActionDefinition());
+	}
+	
+	@Override
+	public void shutdown() throws Exception {
+		actionDefinitions = null;
+	}
+	
+	@Override
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override

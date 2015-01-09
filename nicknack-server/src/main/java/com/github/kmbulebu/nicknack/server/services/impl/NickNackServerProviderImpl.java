@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,9 @@ import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
+import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.server.Application;
@@ -40,9 +41,9 @@ public class NickNackServerProviderImpl implements Provider, NickNackServerProvi
 	
 	public static final UUID PROVIDER_UUID = UUID.fromString("47bb24a8-b15d-4c4d-9218-1e9cba322d74");
 	
-	private final List<EventDefinition> eventDefinitions;
-	private final List<ActionDefinition> actionDefinitions;
-	private final List<StateDefinition> stateDefinitions;
+	private List<EventDefinition> eventDefinitions;
+	private List<ActionDefinition> actionDefinitions;
+	private List<StateDefinition> stateDefinitions;
 	
 	private OnEventListener onEventListener;
 	
@@ -50,15 +51,6 @@ public class NickNackServerProviderImpl implements Provider, NickNackServerProvi
 	
 	@Autowired
 	private ProviderService providerService;
-	
-	public NickNackServerProviderImpl() {
-		eventDefinitions = new ArrayList<>(2);
-		eventDefinitions.add(ActionCompletedEventDefinition.INSTANCE);
-		eventDefinitions.add(ActionFailedEventDefinition.INSTANCE);
-		stateDefinitions = Collections.emptyList();
-		actionDefinitions = new ArrayList<>(1);
-		actionDefinitions.add(DummyActionDefinition.INSTANCE);
-	}
 	
 	@PostConstruct
 	public void init() {
@@ -115,8 +107,28 @@ public class NickNackServerProviderImpl implements Provider, NickNackServerProvi
 	}
 
 	@Override
-	public void init(Configuration configuration, OnEventListener onEventListener) throws Exception {
+	public void init(ProviderConfiguration configuration, OnEventListener onEventListener) throws Exception {
+		eventDefinitions = new ArrayList<>(2);
+		eventDefinitions.add(ActionCompletedEventDefinition.INSTANCE);
+		eventDefinitions.add(ActionFailedEventDefinition.INSTANCE);
+		stateDefinitions = Collections.emptyList();
+		actionDefinitions = new ArrayList<>(1);
+		actionDefinitions.add(DummyActionDefinition.INSTANCE);
 		this.onEventListener = onEventListener;
+	}
+	
+	@Override
+	public void shutdown() throws Exception {
+		onEventListener = null;
+		eventDefinitions = null;
+		stateDefinitions = null;
+		actionDefinitions = null;
+	}
+	
+	@Override
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override
