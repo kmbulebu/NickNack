@@ -3,8 +3,8 @@ package com.github.kmbulebu.nicknack.core.providers.settings;
 
 public abstract class AbstractProviderIntegerSettingDefinition extends AbstractProviderSettingDefinition<Integer> {
 
-	public AbstractProviderIntegerSettingDefinition(String key, String name, String description, boolean isRequired) {
-		super(key, name, description, isRequired);
+	public AbstractProviderIntegerSettingDefinition(String key, String name, String description, boolean isRequired, boolean isArray) {
+		super(key, name, description, isRequired, isArray);
 	}
 	
 	@Override

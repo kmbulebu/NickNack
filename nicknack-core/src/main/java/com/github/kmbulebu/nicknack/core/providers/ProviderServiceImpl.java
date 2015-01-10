@@ -25,7 +25,6 @@ import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
-import com.github.kmbulebu.nicknack.core.providers.settings.ProviderMultiValueSettingDefinition;
 import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
@@ -125,11 +124,12 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     	
     }
     
-    protected ProviderConfiguration loadProviderConfiguration(List<? extends ProviderSettingDefinition<?>> list, Configuration configuration) {
+	@SuppressWarnings("unchecked")
+	protected ProviderConfiguration loadProviderConfiguration(List<? extends ProviderSettingDefinition<?>> definitionsList, Configuration configuration) {
     	final ProviderConfigurationImpl providerConfiguration = new ProviderConfigurationImpl();
-    	for (ProviderSettingDefinition<?> definition : list) {
+    	for (ProviderSettingDefinition<?> definition : definitionsList) {
     		final boolean exists = configuration.containsKey(definition.getKey());
-    		final boolean required = definition.isRequired();
+    		final boolean required = definition.isRequired(); 
     		
     		// Make sure we have all required settings.
     		if (required && !exists) {
@@ -137,13 +137,13 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     			return null;
     		}
     		
-    		if (definition instanceof ProviderMultiValueSettingDefinition) {
-    			// Array
-    			// TODO Load all values 
-    		} else {
-    			// Single value.
-    			// TODO Load value.
-    		}
+    		@SuppressWarnings({ "rawtypes" })
+			final List<String> stringValues = (List) configuration.getList(definition.getKey());
+    		
+    		@SuppressWarnings("rawtypes")
+			final List values = definition.load(stringValues);
+    		
+    		providerConfiguration.setValues(definition, values);
     	}
     	
     	return providerConfiguration;

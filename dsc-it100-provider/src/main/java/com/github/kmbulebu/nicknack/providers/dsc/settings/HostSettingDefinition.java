@@ -10,7 +10,7 @@ public class HostSettingDefinition extends AbstractProviderHostNameSettingDefini
 		super("host",
 			"Hostname", 
 			"Hostname of system with IT-100",
-			true);
+			true, false);
 	}
 
 	@Override

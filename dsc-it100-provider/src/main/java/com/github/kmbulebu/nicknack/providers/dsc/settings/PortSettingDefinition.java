@@ -7,7 +7,7 @@ import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderInte
 public class PortSettingDefinition extends AbstractProviderIntegerSettingDefinition {
 
 	public PortSettingDefinition() {
-		super("port", "Port Number", "Port number of machine with IT-100", true);
+		super("port", "Port Number", "Port number of machine with IT-100", true, false);
 	}
 
 	@Override

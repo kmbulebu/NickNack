@@ -5,12 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderIntegerSettingDefinition;
-import com.github.kmbulebu.nicknack.core.providers.settings.ProviderMultiValueSettingDefinition;
 
-public class ActivePartitionsSettingDefinition extends AbstractProviderIntegerSettingDefinition implements ProviderMultiValueSettingDefinition<Integer> {
+public class ActivePartitionsSettingDefinition extends AbstractProviderIntegerSettingDefinition {
 
 	public ActivePartitionsSettingDefinition() {
-		super("partitions", "Active Partitions", "Add a partition to NickNack. If none are specified, all partitions are used.", false);
+		super("partitions", "Active Partitions", "Add a partition to NickNack. If none are specified, all partitions are used.", false, true);
 	}
 
 	@Override

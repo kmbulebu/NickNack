@@ -5,12 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderIntegerSettingDefinition;
-import com.github.kmbulebu.nicknack.core.providers.settings.ProviderMultiValueSettingDefinition;
 
-public class ActiveZonesSettingDefinition extends AbstractProviderIntegerSettingDefinition implements ProviderMultiValueSettingDefinition<Integer> {
+public class ActiveZonesSettingDefinition extends AbstractProviderIntegerSettingDefinition {
 
 	public ActiveZonesSettingDefinition() {
-		super("zones", "Active Zones", "Add a zone to NickNack. If none are specified, all zones are used.", false);
+		super("zones", "Active Zones", "Add a zone to NickNack. If none are specified, all zones are used.", false, true);
 	}
 
 	@Override

@@ -65,6 +65,26 @@ public interface ProviderSettingDefinition<ValueType> {
 	 * @return List A static list of values that the user may choose from for this Setting or null if the user may supply their own values.
 	 */
 	public List<ValueType> getValueChoices();
+	
+	/**
+	 * True if this setting may have more than one value.
+	 * @return boolean True if this setting may have more than one value.
+	 */
+	public boolean isArray();
+	
+	/**
+	 * Converts or serializes the List of values to a representation suitable for saving in a configuration file.
+	 * @param settingValues List of values
+	 * @return List of String representations
+	 */
+	public List<String> save(List<ValueType> settingValues);
+	
+	/**
+	 * Converts or de-serializes a List of settings stored in the configuration file to a strong typed representation.
+	 * @param savedData List of String representations
+	 * @return List of values
+	 */
+	public List<ValueType> load(List<String> savedData);
 
 	// TODO Do we need a way to convert to/from HTML representations? Not yet, NickNack core will provide base representations to start that are renderable.
 	// TODO Do we allow setting groups? Setting B is only available if Setting A is defined?
