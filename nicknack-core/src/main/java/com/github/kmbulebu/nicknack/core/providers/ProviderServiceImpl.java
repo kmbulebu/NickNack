@@ -127,23 +127,25 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	@SuppressWarnings("unchecked")
 	protected ProviderConfiguration loadProviderConfiguration(List<? extends ProviderSettingDefinition<?>> definitionsList, Configuration configuration) {
     	final ProviderConfigurationImpl providerConfiguration = new ProviderConfigurationImpl();
-    	for (ProviderSettingDefinition<?> definition : definitionsList) {
-    		final boolean exists = configuration.containsKey(definition.getKey());
-    		final boolean required = definition.isRequired(); 
-    		
-    		// Make sure we have all required settings.
-    		if (required && !exists) {
-    			// TODO Throw an exception or roll up errors.
-    			return null;
-    		}
-    		
-    		@SuppressWarnings({ "rawtypes" })
-			final List<String> stringValues = (List) configuration.getList(definition.getKey());
-    		
-    		@SuppressWarnings("rawtypes")
-			final List values = definition.load(stringValues);
-    		
-    		providerConfiguration.setValues(definition, values);
+    	if (definitionsList != null) {
+	    	for (ProviderSettingDefinition<?> definition : definitionsList) {
+	    		final boolean exists = configuration.containsKey(definition.getKey());
+	    		final boolean required = definition.isRequired(); 
+	    		
+	    		// Make sure we have all required settings.
+	    		if (required && !exists) {
+	    			// TODO Throw an exception or roll up errors.
+	    			return null;
+	    		}
+	    		
+	    		@SuppressWarnings({ "rawtypes" })
+				final List<String> stringValues = (List) configuration.getList(definition.getKey());
+	    		
+	    		@SuppressWarnings("rawtypes")
+				final List values = definition.load(stringValues);
+	    		
+	    		providerConfiguration.setValues(definition, values);
+	    	}
     	}
     	
     	return providerConfiguration;
