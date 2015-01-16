@@ -16,7 +16,7 @@ import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
-import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.pushover.actions.AbstractPushMessageActionDefinition;
@@ -92,7 +92,7 @@ public class PushOverProvider implements Provider {
 	}
 	
 	@Override
-	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+	public List<? extends SettingDefinition<?,?>> getSettingDefinitions() {
 		// TODO Auto-generated method stub
 		return null;
 	}

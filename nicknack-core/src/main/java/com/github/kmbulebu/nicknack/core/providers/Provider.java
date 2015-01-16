@@ -10,7 +10,7 @@ import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
-import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
@@ -46,7 +46,7 @@ public interface Provider {
 	 * 
 	 * @return A list of settings available to the user in configuring this provider.
 	 */
-	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions();
+	public List<? extends SettingDefinition<?,?>> getSettingDefinitions();
 	
 	/**
 	 * 

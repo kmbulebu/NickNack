@@ -1,26 +1,18 @@
 package com.github.kmbulebu.nicknack.providers.dsc.settings;
 
-import java.util.List;
+import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderSettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.HostnameType;
 
-import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderHostNameSettingDefinition;
-
-public class HostSettingDefinition extends AbstractProviderHostNameSettingDefinition {
+public class HostSettingDefinition extends AbstractProviderSettingDefinition<HostnameType, String> {
 	
 	public HostSettingDefinition() {
 		super("host",
+			new HostnameType(),
+			null,
 			"Hostname", 
 			"Hostname of system with IT-100",
 			true, false);
 	}
 
-	@Override
-	public boolean isValid(String value) {
-		return super.isValid(value);
-	}
-
-	@Override
-	public List<String> getValueChoices() {
-		return null;
-	}
 
 }

@@ -1,24 +1,33 @@
 package com.github.kmbulebu.nicknack.core.providers.settings;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 
-public abstract class AbstractProviderSettingDefinition<ValueType> implements ProviderSettingDefinition<ValueType> {
+public abstract class AbstractProviderSettingDefinition<T extends SettingType<U>, U extends Serializable> implements SettingDefinition<T,U> {
 	
 	private final String key;
 	private final String name;
 	private final String description;
 	private final boolean isRequired;
 	private final boolean isArray;
+	private final T settingType;
+	private final List<U> choices;
 	
-	public AbstractProviderSettingDefinition(String key, String name, String description, boolean isRequired, boolean isArray) {
+	public AbstractProviderSettingDefinition(String key, T settingType, List<U> choices, String name, String description, boolean isRequired, boolean isArray) {
 		super();
 		this.key = key;
 		this.name = name;
 		this.description = description;
 		this.isRequired = isRequired;
 		this.isArray = isArray;
+		this.settingType = settingType;
+		if (choices == null) {
+			this.choices = null;
+		} else {
+			this.choices = Collections.unmodifiableList(choices);
+		}
 	}
 
 	@Override
@@ -47,21 +56,12 @@ public abstract class AbstractProviderSettingDefinition<ValueType> implements Pr
 	}
 	
 	@Override
-	public List<String> save(List<ValueType> settingValues) {
-		final List<String> stringList = new ArrayList<>(settingValues.size());
-		for (int i = 0 ; i < settingValues.size() ; i++) {
-			stringList.add(i, save(settingValues.get(i)));
-		}
-		return stringList;
+	public T getSettingType() {
+		return settingType;
 	}
-
+	
 	@Override
-	public List<ValueType> load(List<String> savedData) {
-		final List<ValueType> valueList = new ArrayList<ValueType>(savedData.size());
-		for (int i = 0; i < savedData.size(); i++) {
-			valueList.add(i, load(savedData.get(i)));
-		}
-		return valueList;
+	public List<U> getValueChoices() {
+		return choices;
 	}
-
 }

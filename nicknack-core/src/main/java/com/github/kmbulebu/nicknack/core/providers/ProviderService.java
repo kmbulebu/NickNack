@@ -35,5 +35,14 @@ public interface ProviderService {
 	public void run(Action action) throws ActionFailureException, ActionParameterException;
 	
 	public List<Exception> addProvider(Provider provider);
-
+	
+	public Map<String, List<?>> getProviderSettings(UUID providerUuid);
+	
+	public boolean isProviderSettingsComplete(UUID providerUuid);
+	
+	public boolean isProviderEnabled(UUID providerUuid);
+	
+	public Map<String, List<String>> getProviderSettingsErrors(UUID providerUuid);
+	
+	public void setProviderSettings(UUID providerUuid, Map<String, List<String>> settings);
 }
