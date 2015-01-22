@@ -76,6 +76,7 @@ angular.module('angular-hal', [])
                     Object.defineProperty(this, key, {
                         configurable: false,
                         enumerable: true,
+                        writable: true,
                         value: data[key]
                     });
                 }, this);

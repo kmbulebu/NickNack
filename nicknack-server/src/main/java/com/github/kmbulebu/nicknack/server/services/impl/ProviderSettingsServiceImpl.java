@@ -102,6 +102,25 @@ public class ProviderSettingsServiceImpl implements ProviderSettingsService {
 		}
 		return errors;
 	}
+
+	@Override
+	public void setProviderSettings(UUID providerUuid, Map<String, List<?>> settings, boolean disabled) throws ProviderNotFoundException {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(providerUuid, settings);
+		}
+		
+		final Provider provider = providerService.getProviders().get(providerUuid);
+		
+		if (provider == null) {
+			throw new ProviderNotFoundException(providerUuid);
+		}
+		
+		providerService.setProviderSettings(providerUuid, settings, disabled);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit();
+		}
+	}
 	
 	
 

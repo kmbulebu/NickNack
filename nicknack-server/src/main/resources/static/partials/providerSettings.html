@@ -1,0 +1,27 @@
+<h2 class="sub-header">{{provider.name}} Settings</h2>
+<div class="h4 label-warning" ng-if="!settings.complete">Configuration is incomplete.</div>
+<ng-form>
+
+<div class="well clearfix">
+<p><span class="h4">Enabled</span></p>
+<input ng-model="settings.enabled" type="checkbox">
+</div>
+<div class="well clearfix" ng-repeat="settingDefinition in settingDefinitions">
+   	<p><span class="h4">{{settingDefinition.name}} <span ng-if="settingDefinition.required" class="label label-default">Required</span></span>   
+   	<div ng-if="settingDefinition.array">
+   	    <div ng-repeat="value in settings.settings[settingDefinition.key] track by $index">
+   	         <setting-input class="form-control" definition="{{settingDefinition}}" ng-model="settings.settings[settingDefinition.key][$index]"></setting-input><button class="btn" ng-click="settings.settings[settingDefinition.key].splice($index,1)">Remove</button>
+   	    </div>
+   	    <p>
+   	        <button class="btn btn-default" ng-click="settings.settings[settingDefinition.key].push('')">Add</button>
+   	    </p>
+   	</div>
+   	<div ng-if="!settingDefinition.array">
+   	    <setting-input class="form-control" definition="{{settingDefinition}}" ng-model="settings.settings[settingDefinition.key][0]"></setting-input>
+   	</div>
+</div>  
+<button class="btn btn-primary" ng-click="save()">Save</button>
+</ng-form>
+
+  
+  

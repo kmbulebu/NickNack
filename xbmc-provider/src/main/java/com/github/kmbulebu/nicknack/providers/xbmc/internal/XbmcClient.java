@@ -3,8 +3,12 @@ package com.github.kmbulebu.nicknack.providers.xbmc.internal;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -28,21 +32,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kmbulebu.nicknack.providers.xbmc.XbmcProvider;
 
 @WebSocket
-public class XbmcClient {
+public class XbmcClient implements Callable<WebSocketClient> {
 	
 	private static final Logger logger = LogManager.getLogger(XbmcProvider.LOGGER_NAME);
 
 	// Used for sending messages.
 	private Session session;
 	private final ObjectMapper mapper = new ObjectMapper();
-	private final WebSocketClient client = new WebSocketClient();
-	private URI websocketUri = null;
+	private WebSocketClient client = null;
+	private final URI websocketUri;
 	
 	private boolean stopRequested = false;
 	
 	private OnMessageReceivedListener listener;
 	
 	private static final long RETRY_SLOT_INTERVAL = 1000;
+	
+	private final ExecutorService connectExecutor = Executors.newSingleThreadExecutor();
+	
+	public XbmcClient(URI uri) {
+		this.websocketUri = uri;
+		this.client = new WebSocketClient();
+	}
+	
+	public XbmcClient(String hostname, int port) {
+		this(URI.create("ws://" + hostname + ":" + port + "/jsonrpc"));
+	}
 
 	@OnWebSocketClose
 	public void onClose(int statusCode, String reason) throws Exception {
@@ -50,8 +65,9 @@ public class XbmcClient {
 			logger.entry(statusCode, reason);
 		}
 		this.session = null;
+		this.client = null;
 		if (!stopRequested && websocketUri != null) {
-			connect(websocketUri);
+			connect();
 		}
 		if (logger.isTraceEnabled()) {
 			logger.exit();
@@ -77,8 +93,9 @@ public class XbmcClient {
 		
 		if (session == null || !session.isOpen()) {
 			this.session = null;
+			this.client = null;
 			if (!stopRequested && websocketUri != null) {
-				connect(websocketUri);
+				connect();
 			}
 		}
 		
@@ -130,68 +147,35 @@ public class XbmcClient {
 		}
     }
 	
-	private synchronized void connect(final URI uri) throws Exception {
+	public synchronized void connect() {
 		if (logger.isTraceEnabled()) {
-			logger.entry(uri);
+			logger.entry();
 		}
 		stopRequested = false;
-		websocketUri = uri;
-		client.setConnectTimeout(2000);
-		client.setMaxIdleTimeout(0);
-		client.start();
+		
+	    if (!stopRequested) {
+	    	final FutureTask<WebSocketClient> futureTask = new FutureTask<WebSocketClient>(this) {
+	    		
+	    		@Override
+	    		protected void done() {
+	    			if (!isCancelled()) {
+	    				try {
+							XbmcClient.this.client = get();
+						} catch (InterruptedException e) {
+							stopRequested = true;
+						} catch (ExecutionException e) {
+							if (logger.isWarnEnabled()) {
+								logger.warn("Could not connect to XBMC at " + websocketUri + ". " + e.getCause().getMessage(), e.getCause());
+							}
+						}
+	    			}
+	    		}
+	    	};
+	    	connectExecutor.execute(futureTask);
 	    
-		final ClientUpgradeRequest request = new ClientUpgradeRequest();
-		Exception lastException = null;
-	    int retries = 1;
-	    Random random = new Random();
-	    // TODO See how jetty websockets handles the threading. We may need to do this in a separate thread.
-	    do {
-	    	logger.info("Connecting to " + uri);
-		    try {
-		    	client.connect(this, uri, request).get();
-		    	logger.info("Connected to " + uri);
-		    	lastException = null;
-		    } catch (IOException | ExecutionException e) {
-		    	logger.error("Could not connect to " + uri + ". " + e.getMessage(), e);
-		    	lastException = e;
-		    	int slotsToSleep = random.nextInt((2 << retries) - 1);
-		    	try {
-		    		final long sleep = slotsToSleep * RETRY_SLOT_INTERVAL;
-		    		if (logger.isDebugEnabled()) {
-		    			logger.debug("Waiting " + sleep + " ms to try connecting again.");
-		    		}
-		    		Thread.sleep(sleep);
-		    	} catch (InterruptedException e2) {
-		    		logger.error("Connection retry interrupted. Stopping.");
-		    		// Interrupted
-		    		stopRequested = true;
-		    	}
-		    	if (retries > 10) {
-		    		retries = 1;
-		    	} else {
-		    		retries++;
-		    	}
-		    } catch (InterruptedException e) {
-		    	logger.error("Connection interrupted. Stopping.");
-	    		// Interrupted
-	    		stopRequested = true;
-		    }
-	    } while (!stopRequested && lastException != null);
-	    
+	    }
 
 	    if (logger.isTraceEnabled()) {
-			logger.exit();
-		}
-	}
-	
-	public synchronized void connect(String hostname, int port) throws Exception {
-		if (logger.isTraceEnabled()) {
-			logger.entry(hostname, port);
-		}
-		final String uriString = "ws://" + hostname + ":" + port + "/jsonrpc";
-		final URI uri = new URI(uriString);
-        connect(uri);
-        if (logger.isTraceEnabled()) {
 			logger.exit();
 		}
 	}
@@ -201,9 +185,13 @@ public class XbmcClient {
 			logger.entry();
 		}
 		stopRequested = true;
-		if (client.isRunning()) {
+		
+		if (client != null && client.isRunning()) {
 			client.stop();
 		}
+		client = null;
+		session = null;
+		
 		if (logger.isTraceEnabled()) {
 			logger.exit();
 		}
@@ -233,7 +221,7 @@ public class XbmcClient {
 			logger.entry(jsonRpc);
 		}
 		Future<Void> result;
-		if (session != null) {
+		if (client != null && session != null) {
 			final ObjectMapper mapper = new ObjectMapper();
 			String message = mapper.writeValueAsString(jsonRpc);
 			result = session.getRemote().sendStringByFuture(message);
@@ -289,5 +277,43 @@ public class XbmcClient {
 		
 	}
 	
+
+	@Override
+	public WebSocketClient call() throws Exception {
+		client.setConnectTimeout(2000);
+		client.setMaxIdleTimeout(0);
+		client.start();
+	    
+		final ClientUpgradeRequest request = new ClientUpgradeRequest();
+		Exception lastException = null;
+	    int retries = 1;
+	    Random random = new Random();
+
+	    //Retry indefinitely. 
+	    do {
+	    	logger.info("Connecting to " + websocketUri);
+		    try {
+		    	client.connect(this, websocketUri, request).get();
+		    	logger.info("Connected to " + websocketUri);
+		    	lastException = null;
+		    } catch (IOException e) {
+		    	logger.error("Could not connect to " + websocketUri + ". " + e.getMessage(), e);
+		    	lastException = e;
+		    	int slotsToSleep = random.nextInt((2 << retries) - 1);
+	    		final long sleep = slotsToSleep * RETRY_SLOT_INTERVAL;
+	    		if (logger.isDebugEnabled()) {
+	    			logger.debug("Waiting " + sleep + " ms to try connecting again.");
+	    		}
+	    		Thread.sleep(sleep);
+		    	if (retries > 10) {
+		    		retries = 1;
+		    	} else {
+		    		retries++;
+		    	}
+		    } 
+	    } while (!Thread.currentThread().isInterrupted() && lastException != null);
+	    
+	    return client;
+	}
 
 }

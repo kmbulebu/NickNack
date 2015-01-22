@@ -27,6 +27,7 @@ import com.github.kmbulebu.nicknack.server.model.ActionDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.EventDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.ProviderResource;
 import com.github.kmbulebu.nicknack.server.model.ProviderSettingDefinitionsResource;
+import com.github.kmbulebu.nicknack.server.model.ProviderSettingsResource;
 import com.github.kmbulebu.nicknack.server.model.StateDefinitionResource;
 import com.github.kmbulebu.nicknack.server.model.StatesResource;
 import com.github.kmbulebu.nicknack.server.services.exceptions.ActionDefinitionNotFoundException;
@@ -70,7 +71,7 @@ public class ProvidersController {
 			resource.add(linkTo(methodOn(StateDefinitionsController.class).getStateDefinitions(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(StateDefinitionResource.class)));
 			resource.add(linkTo(methodOn(StatesController.class).getAllStates(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(StatesResource.class)));
 			resource.add(linkTo(methodOn(ProviderSettingDefinitionsController.class).getProviderSettingDefinitions(provider.getUuid())).withRel(relProvider.getItemResourceRelFor(ProviderSettingDefinitionsResource.class)));
-			resource.add(linkTo(methodOn(ProviderSettingsController.class).getProviderSettings(provider.getUuid())).withRel(relProvider.getItemResourceRelFor(ProviderSettingsController.class)));
+			resource.add(linkTo(methodOn(ProviderSettingsController.class).getProviderSettings(provider.getUuid())).withRel(relProvider.getItemResourceRelFor(ProviderSettingsResource.class)));
 			providerResources.add(resource);
 			
 		}
@@ -98,7 +99,7 @@ public class ProvidersController {
 		resource.add(linkTo(methodOn(StateDefinitionsController.class).getStateDefinitions(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(StateDefinitionResource.class)));
 		resource.add(linkTo(methodOn(StatesController.class).getAllStates(provider.getUuid())).withRel(relProvider.getCollectionResourceRelFor(StatesResource.class)));
 		resource.add(linkTo(methodOn(ProviderSettingDefinitionsController.class).getProviderSettingDefinitions(provider.getUuid())).withRel(relProvider.getItemResourceRelFor(ProviderSettingDefinitionsResource.class)));
-		resource.add(linkTo(methodOn(ProviderSettingsController.class).getProviderSettings(provider.getUuid())).withRel(relProvider.getItemResourceRelFor(ProviderSettingsController.class)));
+		resource.add(linkTo(methodOn(ProviderSettingsController.class).getProviderSettings(provider.getUuid())).withRel(relProvider.getItemResourceRelFor(ProviderSettingsResource.class)));
 		
 			
 		if (LOG.isTraceEnabled()) {

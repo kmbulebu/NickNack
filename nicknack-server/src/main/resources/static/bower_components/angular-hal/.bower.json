@@ -22,7 +22,6 @@
     "commit": "e2cd86e4c0d5d6a86536ba0fd06c3c6db2f88f42"
   },
   "_source": "git://github.com/elmerbulthuis/angular-hal.git",
-  "_target": "~0.1.5",
-  "_originalSource": "angular-hal",
-  "_direct": true
+  "_target": "0.1.5",
+  "_originalSource": "angular-hal"
 }

@@ -1,5 +1,5 @@
-var nicknackApp = angular.module('nicknackApp', ['angular-hal', 'ngRoute',
-		'nicknackControllers', 'newplanService', 'restService', 'staticDataService']);
+var nicknackApp = angular.module('nicknackApp', ['angular-hal', 'ngRoute', 
+		'nicknackControllers', 'newplanService', 'restService', 'providersService', 'staticDataService']);
 
 nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {	
 	$routeProvider.when('/newPlan', {
@@ -94,6 +94,28 @@ nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider,
 					return StaticDataService.actionDefinitions();
 				}
 			}
+	}).when('/providers', {
+		templateUrl : 'partials/providers.html',
+		controller : 'ProvidersCtrl',
+		resolve: {
+			providers: function(ProvidersService) {
+				return ProvidersService.getProviders();
+			}
+		}
+	}).when('/providers/:uuid/settings', {
+		templateUrl : 'partials/providerSettings.html',
+		controller : 'ProviderSettingsCtrl',
+		resolve: {
+			provider: function($route, ProvidersService) {
+				return ProvidersService.getProvider($route.current.params.uuid);
+			},
+			providerSettingDefinitions: function($route, ProvidersService) {
+				return ProvidersService.getProviderSettingDefinitions($route.current.params.uuid);
+			},
+			providerSettings: function($route, ProvidersService) {
+				return ProvidersService.getProviderSettings($route.current.params.uuid);
+			},
+		}
 	}).otherwise({
 		redirectTo : '/home'
 	});

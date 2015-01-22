@@ -11,6 +11,7 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.RelProvider;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,6 +60,18 @@ public class ProviderSettingsController {
 		return settingsResource;
 	}
 	
+	@RequestMapping(value="", method={RequestMethod.POST})
+	public void setProviderSettings(@PathVariable UUID providerUuid, @RequestBody ProviderSettingsResource updatedSettings) throws ProviderNotFoundException {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(providerUuid, updatedSettings);
+		}
+		
+		settingsService.setProviderSettings(providerUuid, updatedSettings.getSettings(), !updatedSettings.isEnabled());
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit();
+		}
+	}
 
 	
 	/**

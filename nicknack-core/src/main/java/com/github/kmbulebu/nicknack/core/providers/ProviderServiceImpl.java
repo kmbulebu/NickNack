@@ -3,6 +3,7 @@ package com.github.kmbulebu.nicknack.core.providers;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -128,10 +130,10 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     
     // TODO This all needs pulled into a separate ProviderConfigurationLoader or whatever class that can properly return the results good or bad with a list of problems.
 	@SuppressWarnings("unchecked")
-	protected ProviderConfiguration loadProviderConfiguration(boolean enabled, List<? extends SettingDefinition<?,?>> definitionsList, Configuration configuration) {
+	protected ProviderConfiguration loadProviderConfiguration(boolean disabled, List<? extends SettingDefinition<?,?>> definitionsList, Configuration configuration) {
     	final ProviderConfigurationImpl providerConfiguration = new ProviderConfigurationImpl();
     	providerConfiguration.setComplete(true);
-    	providerConfiguration.setEnabled(enabled);
+    	providerConfiguration.setEnabled(!disabled);
     	if (definitionsList != null) {
 	    	for (SettingDefinition<?,?> definition : definitionsList) {
 	    		final boolean exists = configuration.containsKey(definition.getKey());
@@ -173,50 +175,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 			final ProviderConfiguration providerConfiguration = loadProviderConfiguration(providerConfig.getBoolean("disabled", false), provider.getSettingDefinitions(), providerConfig);
 			providerConfigurations.put(provider.getUuid(), providerConfiguration);
 			
-			
-			if (!providerConfiguration.isEnabled() || !providerConfiguration.isComplete() ) {
-				if (LOG.isInfoEnabled()) {
-					LOG.info("Disabling provider: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
-				}
-			} else {
-				provider.init(providerConfiguration, this);
-				
-				if (provider.getEventDefinitions() != null) {
-					for (EventDefinition eventDef : provider.getEventDefinitions()) {
-						UUID uuid = eventDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Event Definition with null UUID.");
-						} else {
-							eventDefinitions.put(uuid, eventDef);
-							eventDefinitionToProvider.put(uuid, provider.getUuid());
-						}
-					}
-				}
-				
-				if (provider.getStateDefinitions() != null) {
-					for (StateDefinition stateDef : provider.getStateDefinitions()) {
-						UUID uuid = stateDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an State Definition with null UUID.");
-						} else {
-							stateDefinitions.put(uuid, stateDef);
-							stateDefinitionToProvider.put(uuid, provider.getUuid());
-						}
-					}
-				}
-				
-				if (provider.getActionDefinitions() != null) {
-					for (ActionDefinition actionDef : provider.getActionDefinitions()) {
-						UUID uuid = actionDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Action Definition with null UUID.");
-						} else {
-							actionDefinitions.put(uuid, actionDef);
-							actionDefinitionToProvider.put(uuid, provider.getUuid());
-						}
-					}
-				}
-			} // If disabled
+			initProvider(provider, providerConfiguration);
 		} catch (Exception e) {
 			LOG.error("Failed to initialize provider, " + provider.getName() + " (" + provider.getUuid() + "):" + e.getMessage(), e);
     		errors.add(e);
@@ -326,13 +285,15 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 		}
 		
 		final Map<String, List<?>> settings = new HashMap<>();
-		for (SettingDefinition<?, ?> definition : provider.getSettingDefinitions()) {
-			List<?> values = config.getValues(definition);
-			
-			if (values == null) {
-				settings.put(definition.getKey(), new ArrayList<Object>());
-			} else {
-				settings.put(definition.getKey(), values);
+		if (provider.getSettingDefinitions() != null) {
+			for (SettingDefinition<?, ?> definition : provider.getSettingDefinitions()) {
+				List<?> values = config.getValues(definition);
+				
+				if (values == null) {
+					settings.put(definition.getKey(), new ArrayList<Object>());
+				} else {
+					settings.put(definition.getKey(), values);
+				}
 			}
 		}
 		return settings;
@@ -376,9 +337,137 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	}
 
 	@Override
-	public void setProviderSettings(UUID providerUuid, Map<String, List<String>> settings) {
-		// TODO Auto-generated method stub
+	public void setProviderSettings(UUID providerUuid, Map<String, List<?>> settings, boolean disabled) {
+		final Provider provider = getProviders().get(providerUuid);
+		final ProviderConfigurationImpl config = (ProviderConfigurationImpl) providerConfigurations.get(providerUuid);
+		config.setAllValues(settings);
+		config.setEnabled(!disabled);
+		final String configKey = "providers.uuid" + providerUuid.toString().replaceAll("-", "");
+
+		final Configuration providerConfig = configuration.configurationAt(configKey, true);
+		providerConfig.setProperty("disabled", disabled);
+		
+		final List<? extends SettingDefinition<?, ?>> settingDefinitions = provider.getSettingDefinitions();
+		
+		for (SettingDefinition<?, ?> definition : settingDefinitions) {
+			providerConfig.clearProperty(definition.getKey());
+			final List<?> values = settings.get(definition.getKey());
+			if (values != null) {
+				if (definition.isArray()) {
+					for (Object value : values) {
+						providerConfig.addProperty(definition.getKey(), definition.getSettingType().save(value));
+					}
+				} else if (!values.isEmpty()){
+					providerConfig.setProperty(definition.getKey(), definition.getSettingType().save(values.get(0)));
+				}
+			}
+		}
+		
+		try {
+			configuration.save();
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		try {
+			restartProvider(providerUuid);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+}
+
+	protected void restartProvider(UUID providerUuid) throws Exception {
+		final Provider provider = providers.get(providerUuid);
+		
+		shutdownProvider(provider);
+		initProvider(provider, providerConfigurations.get(providerUuid));
+	}
+	
+	protected void shutdownProvider(Provider provider) throws Exception {
+		final Collection<? extends EventDefinition> eventDefs = provider.getEventDefinitions();
+		final Collection<? extends StateDefinition> stateDefs = provider.getStateDefinitions();
+		final Collection<? extends ActionDefinition> actionDefs = provider.getActionDefinitions();
+		
+		
+		// Ask it to shutdown
+		provider.shutdown();
+		
+		// Remove event definitions.
+		if (eventDefs != null) {
+			for (EventDefinition eventDef : eventDefs) {
+				this.eventDefinitions.remove(eventDef.getUUID());
+				this.eventDefinitionToProvider.remove(eventDef.getUUID());
+			}
+		}
+		
+		// Remove state definitions.
+		if (stateDefs != null) {
+			for (StateDefinition stateDef : stateDefs) {
+				this.stateDefinitions.remove(stateDef.getUUID());
+				this.stateDefinitionToProvider.remove(stateDef.getUUID());
+			}
+		}
+		
+		// Remove action definitions
+		if (actionDefs != null) {
+			for (ActionDefinition actionDef : actionDefs) {
+				this.actionDefinitions.remove(actionDef.getUUID());
+				this.actionDefinitionToProvider.remove(actionDef.getUUID());
+			}
+		}
+	}
+	
+	protected void initProvider(Provider provider, ProviderConfiguration providerConfiguration) throws Exception {
+		if (!providerConfiguration.isEnabled() || !providerConfiguration.isComplete() ) {
+			if (LOG.isInfoEnabled()) {
+				LOG.info("Disabling provider: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
+			}
+		} else {
+			provider.init(providerConfiguration, this);
+			
+			if (provider.getEventDefinitions() != null) {
+				for (EventDefinition eventDef : provider.getEventDefinitions()) {
+					UUID uuid = eventDef.getUUID();
+					if (uuid == null) {
+						LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Event Definition with null UUID.");
+					} else {
+						eventDefinitions.put(uuid, eventDef);
+						eventDefinitionToProvider.put(uuid, provider.getUuid());
+					}
+				}
+			}
+			
+			if (provider.getStateDefinitions() != null) {
+				for (StateDefinition stateDef : provider.getStateDefinitions()) {
+					UUID uuid = stateDef.getUUID();
+					if (uuid == null) {
+						LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an State Definition with null UUID.");
+					} else {
+						stateDefinitions.put(uuid, stateDef);
+						stateDefinitionToProvider.put(uuid, provider.getUuid());
+					}
+				}
+			}
+			
+			if (provider.getActionDefinitions() != null) {
+				for (ActionDefinition actionDef : provider.getActionDefinitions()) {
+					UUID uuid = actionDef.getUUID();
+					if (uuid == null) {
+						LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Action Definition with null UUID.");
+					} else {
+						actionDefinitions.put(uuid, actionDef);
+						actionDefinitionToProvider.put(uuid, provider.getUuid());
+					}
+				}
+			}
+		} // If disabled
 		
 	}
+	
+	
 
 }

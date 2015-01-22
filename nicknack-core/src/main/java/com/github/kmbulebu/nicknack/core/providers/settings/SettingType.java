@@ -40,7 +40,7 @@ public interface SettingType<T extends Serializable> {
 	 * Converts or serializes the settingValue to a representation suitable for saving in a configuration file.
 	 * @return String suitable for writing to a configuration file.
 	 */
-	public String save(T settingValue);
+	public String save(Object settingValue);
 	
 	/**
 	 * Converts or de-serializes a settingValue stored in the configuration file to a strong typed representation.

@@ -14,6 +14,69 @@ nicknackControllers.controller('PlansCtrl', ['$scope', '$route', 'WebsiteService
 	
 }]);
 
+nicknackControllers.controller('ProvidersCtrl', ['$scope', '$route', 'WebsiteService', 'StaticDataService', 'providers', 
+                                             function ($scope, $route, WebsiteService, StaticDataService, providers) {
+      	
+	$scope.providers = providers;
+
+      	
+}]);
+
+
+nicknackControllers.controller('ProviderSettingsCtrl', ['$scope', '$route', 'provider', 'providerSettingDefinitions', 'providerSettings',
+                                             function ($scope, $route, provider, providerSettingDefinitions, providerSettings) {
+      	
+	$scope.provider = provider;
+	$scope.settingDefinitions = providerSettingDefinitions;
+	$scope.settings = providerSettings;
+	
+	$scope.save = function() {
+		$scope.settings.$post('self', null, $scope.settings).then(
+			function(success) {
+				window.location = '#/providers/';
+			}
+		); 
+	}
+}]);
+
+nicknackControllers.directive('settingInput', [function() {
+	return {
+		scope: {},
+		restrict: 'AE',
+		replace: 'true',
+		template: '<input type="{{inputType}}"/>',
+		link: function(scope, elem, attrs) {
+			 var definition = angular.fromJson(attrs.definition);
+			 var settingType = definition.settingType;
+			 if (settingType.name === 'hostname') {
+				 scope.inputType = 'text';
+				 
+			 } else {
+			 	 scope.inputType = settingType.name;
+			 	
+			 }
+			 elem.attr('required', definition.required);
+			 //elem.attr('placeholder', definition.name);
+			 if (settingType.maximumLength) {
+				 elem.attr('maxLength', settingType.maximumLength);
+			 }
+			 if (settingType.regexPattern) {
+				 elem.attr('pattern', settingType.regexPattern);
+			 }
+			 if (settingType.min) {
+		 		 elem.attr('min', settingType.min);
+		 	 }
+		 	if (settingType.max) {
+		 		 elem.attr('max', settingType.max);
+		 	 }
+		 	if (settingType.step) {
+		 		 elem.attr('step', settingType.step);
+		 	 }
+		 	// TODO Add datalist for valueList
+		}
+	};
+}]);
+
 nicknackControllers.controller('NowCtrl', ['$scope', '$route', 'WebsiteService', 'StaticDataService', 'providers', 
                                              function ($scope, $route, WebsiteService, StaticDataService, providers) {  	
     $scope.providers = providers;
