@@ -1,4 +1,4 @@
-package com.github.kmbulebu.nicknack.core.providers.settings;
+package valuetypes;
 
 
 public class EmailType extends TextType {

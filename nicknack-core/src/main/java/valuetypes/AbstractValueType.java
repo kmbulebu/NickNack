@@ -1,10 +1,10 @@
-package com.github.kmbulebu.nicknack.core.providers.settings;
+package valuetypes;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractSettingType<T extends Serializable> implements SettingType<T> {
+public abstract class AbstractValueType<T extends Serializable> implements ValueType<T> {
 	
 	@Override
 	public List<String> save(List<T> settingValues) {

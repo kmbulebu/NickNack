@@ -1,8 +1,8 @@
-package com.github.kmbulebu.nicknack.core.providers.settings;
+package valuetypes;
 
 
 
-public class TextType extends AbstractSettingType<String> {
+public class TextType extends AbstractValueType<String> {
 	
 	protected int minimumLength = 0;
 	protected int maximumLength = Integer.MAX_VALUE;
