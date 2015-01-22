@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import valuetypes.ValueType;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 
 public abstract class AbstractProviderSettingDefinition<T extends ValueType<U>, U extends Serializable> implements SettingDefinition<T,U> {

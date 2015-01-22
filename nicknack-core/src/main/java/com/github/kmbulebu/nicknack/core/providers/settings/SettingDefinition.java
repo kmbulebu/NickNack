@@ -3,7 +3,7 @@ package com.github.kmbulebu.nicknack.core.providers.settings;
 import java.io.Serializable;
 import java.util.List;
 
-import valuetypes.ValueType;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 /**
  * A single setting that may have one or many values.

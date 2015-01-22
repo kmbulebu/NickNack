@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import valuetypes.ValueType;
-
 import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 public interface ProviderConfiguration {
 

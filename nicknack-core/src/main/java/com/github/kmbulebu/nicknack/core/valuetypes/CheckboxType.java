@@ -1,4 +1,4 @@
-package valuetypes;
+package com.github.kmbulebu.nicknack.core.valuetypes;
 
 
 public class CheckboxType extends AbstractValueType<Boolean> {
