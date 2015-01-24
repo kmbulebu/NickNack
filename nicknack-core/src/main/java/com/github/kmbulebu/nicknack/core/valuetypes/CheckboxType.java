@@ -1,5 +1,7 @@
 package com.github.kmbulebu.nicknack.core.valuetypes;
 
+import com.github.kmbulebu.nicknack.core.attributes.filters.Operator;
+
 
 public class CheckboxType extends AbstractValueType<Boolean> {
 	
@@ -28,6 +30,25 @@ public class CheckboxType extends AbstractValueType<Boolean> {
 		return Boolean.parseBoolean(savedData);
 	}
 
-
+	@Override
+	public boolean evaluate(Operator operator, Boolean operand1, Boolean operand2) {
+		switch(operator) {
+		case EQUALS:
+			return operand1.equals(operand2);
+		default:
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean evaluate(Operator operator, Boolean operand1, Boolean[] operand2) {
+		return false;
+	}
+	
+	@Override
+	public Operator[] getSupportedOperators() {
+		return new Operator[] {Operator.EQUALS};
+	}
+	
 
 }

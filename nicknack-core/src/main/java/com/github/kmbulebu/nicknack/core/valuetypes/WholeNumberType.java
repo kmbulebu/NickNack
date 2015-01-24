@@ -1,5 +1,7 @@
 package com.github.kmbulebu.nicknack.core.valuetypes;
 
+import com.github.kmbulebu.nicknack.core.attributes.filters.Operator;
+
 
 public class WholeNumberType extends AbstractValueType<Integer> {
 	
@@ -74,5 +76,32 @@ public class WholeNumberType extends AbstractValueType<Integer> {
 	public Integer load(String savedData) {
 		return Integer.parseInt(savedData);
 	}
+	
+	@Override
+	public boolean evaluate(Operator operator, Integer operand1, Integer operand2) {
+		switch(operator) {
+		case EQUALS:
+			return operand1.equals(operand2);
+		default:
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean evaluate(Operator operator, Integer operand1, Integer[] operand2) {
+		switch(operator) {
+		case IN:
+			return evaluateInOperand(operand1, operand2);
+		case NOT_IN:
+			return evaluateNotInOperand(operand1, operand2);
+		default:
+			return false;
+		}
+	}
+
+	@Override
+	public Operator[] getSupportedOperators() {
+		return new Operator[] {Operator.EQUALS, Operator.IN, Operator.NOT_IN};
+	} 
 
 }

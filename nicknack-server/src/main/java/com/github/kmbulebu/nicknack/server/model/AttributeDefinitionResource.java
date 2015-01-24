@@ -1,5 +1,6 @@
 package com.github.kmbulebu.nicknack.server.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import org.springframework.hateoas.ResourceSupport;
@@ -7,15 +8,15 @@ import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.Unit;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 @Relation(value="AttributeDefinition", collectionRelation="AttributeDefinitions")
-public class AttributeDefinitionResource extends ResourceSupport implements AttributeDefinition {
+public class AttributeDefinitionResource<T extends ValueType<U>, U extends Serializable> extends ResourceSupport implements AttributeDefinition<T,U> {
 		
 	@JsonIgnore
-	public final AttributeDefinition attributeDefinition;
+	public final AttributeDefinition<T,U> attributeDefinition;
 	
-	public AttributeDefinitionResource(AttributeDefinition attributeDefinition) {
+	public AttributeDefinitionResource(AttributeDefinition<T,U> attributeDefinition) {
 		this.attributeDefinition = attributeDefinition;
 	}
 
@@ -30,11 +31,6 @@ public class AttributeDefinitionResource extends ResourceSupport implements Attr
 	}
 
 	@Override
-	public Unit getUnits() {
-		return attributeDefinition.getUnits();
-	}
-
-	@Override
 	public boolean isRequired() {
 		return attributeDefinition.isRequired();
 	}
@@ -42,6 +38,11 @@ public class AttributeDefinitionResource extends ResourceSupport implements Attr
 	@Override
 	public String getDescription() {
 		return attributeDefinition.getDescription();
+	}
+
+	@Override
+	public T getValueType() {
+		return attributeDefinition.getValueType();
 	}
 
 }

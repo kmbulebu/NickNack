@@ -19,9 +19,9 @@ public interface EventDefinitionService {
 	
 	public EventDefinition getEventDefinition(UUID uuid) throws EventDefinitionNotFoundException;
 
-	public List<AttributeDefinition> getAttributeDefinitions(UUID eventUUID) throws EventDefinitionNotFoundException;
+	public List<AttributeDefinition<?,?>> getAttributeDefinitions(UUID eventUUID) throws EventDefinitionNotFoundException;
 
-	public AttributeDefinition getAttributeDefinition(UUID eventUUID, UUID uuid) throws EventDefinitionNotFoundException, AttributeDefinitionNotFoundException;
+	public AttributeDefinition<?,?> getAttributeDefinition(UUID eventUUID, UUID uuid) throws EventDefinitionNotFoundException, AttributeDefinitionNotFoundException;
 
 	public Map<String, String> getAttributeDefinitionValues(UUID eventUuid, UUID uuid) throws EventDefinitionNotFoundException, ProviderNotFoundException;
 

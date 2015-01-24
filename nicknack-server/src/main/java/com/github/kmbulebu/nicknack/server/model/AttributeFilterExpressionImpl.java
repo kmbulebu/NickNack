@@ -1,20 +1,24 @@
 package com.github.kmbulebu.nicknack.server.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Embeddable;
+
+import org.hibernate.annotations.Type;
 
 import com.github.kmbulebu.nicknack.core.attributes.filters.AttributeFilterExpression;
 import com.github.kmbulebu.nicknack.core.attributes.filters.Operator;
 
 @Embeddable
-public class AttributeFilterExpressionImpl implements AttributeFilterExpression {
+public class AttributeFilterExpressionImpl<U extends Serializable> implements AttributeFilterExpression<U> {
 	
 	private UUID attributeDefinitionUuid;
 	
 	private Operator operator;
 	
-	private String operand;
+	@Type(type="org.hibernate.type.BinaryType")
+	private U[] operand;
 
 	@Override
 	public UUID getAttributeDefinitionUuid() {
@@ -27,7 +31,7 @@ public class AttributeFilterExpressionImpl implements AttributeFilterExpression 
 	}
 
 	@Override
-	public String getOperand() {
+	public Object[] getOperand() {
 		return operand;
 	}
 

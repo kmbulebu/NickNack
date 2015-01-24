@@ -7,18 +7,18 @@ package com.github.kmbulebu.nicknack.core.attributes.filters;
  */
 public enum Operator {
 	
-	EQUALS("=", "The values are the same."),
-	IN("in", "Equals any value in the comma separated list of values. Spaces are ignored."),
-	NOT_IN("not in", "Not equal to any value in the comma separated list of values. Spaces are ignored."),
-	EVERY("every", "The value divides evenly by this amount.");
-	
+	EQUALS("=", "The values are the same.", false),
+	IN("in", "Equals any value in the comma separated list of values. Spaces are ignored.", true),
+	NOT_IN("not in", "Not equal to any value in the comma separated list of values. Spaces are ignored.", true);
 	
 	private final String name;
 	private final String description;
+	private final boolean operandIsArray;
 	
-	Operator(String name, String description) {
+	Operator(String name, String description, boolean operandIsArray) {
 		this.name = name;
 		this.description = description;
+		this.operandIsArray = operandIsArray;
 	}
 	
 	public String getName() {
@@ -29,6 +29,9 @@ public enum Operator {
 		return description;
 	}
 	
+	public boolean isOperandIsArray() {
+		return operandIsArray;
+	}
 
 
 }

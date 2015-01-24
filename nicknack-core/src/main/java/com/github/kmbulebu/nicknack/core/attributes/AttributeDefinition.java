@@ -1,15 +1,16 @@
 package com.github.kmbulebu.nicknack.core.attributes;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.units.Unit;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 /**
  * Defines an attribute to be associated with an Event, State, or Action.
  * 
  *
  */
-public interface AttributeDefinition {
+public interface AttributeDefinition<T extends ValueType<U>, U extends Serializable> {
 	
 	/**
 	 * A UUID that uniquely identifies the attribute. This value always remains the same from
@@ -35,18 +36,15 @@ public interface AttributeDefinition {
 	 */
 	public boolean isRequired();
 	
-	/**
-	 * The units of values for this attribute.
-	 * 
-	 * @return Unit Defines the values of this attribute.
-	 */
-	public Unit getUnits();
+	public T getValueType();
 	
 	/**
 	 * Human readable help text to further explain the purpose of the attribute.
 	 * @return String Description
 	 */
 	public String getDescription();
+	
+	
 	
 	
 }

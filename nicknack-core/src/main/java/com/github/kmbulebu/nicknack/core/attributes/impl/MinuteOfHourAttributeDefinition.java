@@ -5,14 +5,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
-public class MinuteOfHourAttributeDefinition extends BasicAttributeDefinition{
+public class MinuteOfHourAttributeDefinition extends BasicAttributeDefinition<WholeNumberType, Integer>{
 	
 	public static final MinuteOfHourAttributeDefinition INSTANCE = new MinuteOfHourAttributeDefinition();
 
 	public MinuteOfHourAttributeDefinition() {
-		super(UUID.fromString("d07bf3e7-bda0-48ac-a6b9-f88a11495b49"), "Minute of Hour", IntegerUnit.INSTANCE, true);
+		super(UUID.fromString("d07bf3e7-bda0-48ac-a6b9-f88a11495b49"), "Minute of Hour", new WholeNumberType(0, 59, 1), true);
 	}
 	
 	public Map<String, String> getStaticValues() {

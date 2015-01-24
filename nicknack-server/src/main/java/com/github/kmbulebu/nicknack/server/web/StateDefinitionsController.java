@@ -125,23 +125,23 @@ public class StateDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{stateUuid}/attributeDefinitions", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<AttributeDefinitionResource> getAttributeDefinitions(@PathVariable UUID stateUuid) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
+	public Resources<AttributeDefinitionResource<?,?>> getAttributeDefinitions(@PathVariable UUID stateUuid) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateUuid);
 		}
 		
-		final List<AttributeDefinition> attributeDefinitions = stateDefinitionService.getAttributeDefinitions(stateUuid);
-		final List<AttributeDefinitionResource> attributeDefinitionResources = new ArrayList<AttributeDefinitionResource>(attributeDefinitions.size());
+		final List<AttributeDefinition<?,?>> attributeDefinitions = stateDefinitionService.getAttributeDefinitions(stateUuid);
+		final List<AttributeDefinitionResource<?,?>> attributeDefinitionResources = new ArrayList<>(attributeDefinitions.size());
 		
 		
-		for (AttributeDefinition attributeDefinition : attributeDefinitions) {
-			final AttributeDefinitionResource resource = new AttributeDefinitionResource(attributeDefinition);
+		for (AttributeDefinition<?,?> attributeDefinition : attributeDefinitions) {
+			final AttributeDefinitionResource<?,?> resource = new AttributeDefinitionResource(attributeDefinition);
 			resource.add(linkTo(methodOn(StateDefinitionsController.class).getAttributeDefinition(stateUuid, attributeDefinition.getUUID())).withSelfRel());
 	
 			attributeDefinitionResources.add(resource);
 		}
 		
-		final Resources<AttributeDefinitionResource> resources = new Resources<AttributeDefinitionResource>(attributeDefinitionResources);
+		final Resources<AttributeDefinitionResource<?,?>> resources = new Resources<AttributeDefinitionResource<?,?>>(attributeDefinitionResources);
 		resources.add(linkTo(methodOn(StateDefinitionsController.class).getAttributeDefinitions(stateUuid)).withSelfRel());
 	
 		if (LOG.isTraceEnabled()) {
@@ -151,14 +151,14 @@ public class StateDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{stateUuid}/attributeDefinitions/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public AttributeDefinitionResource getAttributeDefinition(@PathVariable UUID stateUuid, @PathVariable UUID uuid) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
+	public AttributeDefinitionResource<?,?> getAttributeDefinition(@PathVariable UUID stateUuid, @PathVariable UUID uuid) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateUuid, uuid);
 		}
 		
-		final AttributeDefinition attributeDefinition = stateDefinitionService.getAttributeDefinition(stateUuid, uuid);
+		final AttributeDefinition<?,?> attributeDefinition = stateDefinitionService.getAttributeDefinition(stateUuid, uuid);
 
-		final AttributeDefinitionResource resource = new AttributeDefinitionResource(attributeDefinition);
+		final AttributeDefinitionResource<?,?> resource = new AttributeDefinitionResource(attributeDefinition);
 		resource.add(linkTo(methodOn(StateDefinitionsController.class).getAttributeDefinition(stateUuid, attributeDefinition.getUUID())).withSelfRel());
 		resource.add(linkTo(methodOn(StateDefinitionsController.class).getAttributeDefinitionValues(stateUuid, attributeDefinition.getUUID())).withRel("values"));
 		

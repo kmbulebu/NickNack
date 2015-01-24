@@ -68,14 +68,14 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 	}
 	
 	@Override
-	public List<AttributeDefinition> getAttributeDefinitions(final UUID eventUUID) throws EventDefinitionNotFoundException {
+	public List<AttributeDefinition<?,?>> getAttributeDefinitions(final UUID eventUUID) throws EventDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUUID);
 		}
 		
 		final EventDefinition eventDefinition = getEventDefinition(eventUUID);
 		
-		final List<AttributeDefinition> attributeDefinitions = Collections.unmodifiableList(eventDefinition.getAttributeDefinitions());
+		final List<AttributeDefinition<?,?>> attributeDefinitions = Collections.unmodifiableList(eventDefinition.getAttributeDefinitions());
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(attributeDefinitions);
@@ -84,16 +84,16 @@ public class EventDefinitionServiceImpl implements EventDefinitionService {
 	}
 	
 	@Override
-	public AttributeDefinition getAttributeDefinition(final UUID eventUUID, final UUID uuid) throws EventDefinitionNotFoundException, AttributeDefinitionNotFoundException {
+	public AttributeDefinition<?,?> getAttributeDefinition(final UUID eventUUID, final UUID uuid) throws EventDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUUID, uuid);
 		}
 		
-		final List<AttributeDefinition> attributeDefinitions = getAttributeDefinitions(eventUUID);
+		final List<AttributeDefinition<?,?>> attributeDefinitions = getAttributeDefinitions(eventUUID);
 		
-		AttributeDefinition attributeDefinition = null;
+		AttributeDefinition<?,?> attributeDefinition = null;
 		
-		for (AttributeDefinition anAttributeDefinition : attributeDefinitions) {
+		for (AttributeDefinition<?,?> anAttributeDefinition : attributeDefinitions) {
 			if (uuid.equals(anAttributeDefinition.getUUID())) {
 				attributeDefinition = anAttributeDefinition;
 				break;

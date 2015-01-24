@@ -226,12 +226,12 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 	protected String processVariables(String value, Event cause) {
 		// Build value map
 		final Map<String, String> valueMap = new HashMap<>();
-		final Map<UUID, AttributeDefinition> attributeMap = new HashMap<>();
-		for (AttributeDefinition def : cause.getEventDefinition().getAttributeDefinitions()) {
+		final Map<UUID, AttributeDefinition<?,?>> attributeMap = new HashMap<>();
+		for (AttributeDefinition<?,?> def : cause.getEventDefinition().getAttributeDefinitions()) {
 			attributeMap.put(def.getUUID(), def);
 		}
 		for (UUID attributeUuid : cause.getAttributes().keySet()) {
-			AttributeDefinition attribute = attributeMap.get(attributeUuid);
+			AttributeDefinition<?,?> attribute = attributeMap.get(attributeUuid);
 			valueMap.put(attribute.getName(), cause.getAttributes().get(attributeUuid));
 		}
 		final StrSubstitutor substitutor = new StrSubstitutor(valueMap, "{{", "}}");

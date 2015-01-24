@@ -1,5 +1,6 @@
 package com.github.kmbulebu.nicknack.core.attributes.filters;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -8,12 +9,12 @@ import java.util.UUID;
  * Specifies the attribute to filter, an operator, and an operand value.
  * 
  */
-public interface AttributeFilterExpression {
+public interface AttributeFilterExpression<U extends Serializable> {
 	
 	public UUID getAttributeDefinitionUuid();
 	
 	public Operator getOperator();
 	
-	public String getOperand();	
+	public U[] getOperand();	
 	
 }

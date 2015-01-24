@@ -3,6 +3,8 @@ package com.github.kmbulebu.nicknack.core.valuetypes;
 import java.io.Serializable;
 import java.util.List;
 
+import com.github.kmbulebu.nicknack.core.attributes.filters.Operator;
+
 /**
  * 
  *
@@ -48,4 +50,22 @@ public interface ValueType<T extends Serializable> {
 	 * @return ValueType The typed value sutiable for consumption by the provider.
 	 */
 	public T load(String savedData);
+	
+	/**
+	 * 
+	 * @param operator The operator
+	 * @param operand1 First operand in the expression.
+	 * @param operand2 Second operand in the expression.
+	 * @return Boolean True if the expression operand1 OPERATOR operand2 evalutes to true. False otherwises. 
+	 */
+	public boolean evaluate(Operator operator, T operand1, T operand2);
+	
+	public boolean evaluate(Operator operator, T operand1, T[] operand2);
+	
+	/**
+	 * An array of operators supported by this ValueType
+	 * @return Operator[] 
+	 */
+	public Operator[] getSupportedOperators();
+
 }

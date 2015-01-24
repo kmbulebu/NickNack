@@ -14,6 +14,6 @@ public interface AttributeFilterExpressionCollection {
 	 *
 	 * @return Collection of AttributeFilterExpressions 
 	 */
-	public Collection<AttributeFilterExpression> getAttributeFilterExpressions();
+	public Collection<AttributeFilterExpression<?>> getAttributeFilterExpressions();
 
 }

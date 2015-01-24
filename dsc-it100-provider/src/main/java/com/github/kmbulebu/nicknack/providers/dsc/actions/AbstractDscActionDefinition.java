@@ -15,7 +15,7 @@ public abstract class AbstractDscActionDefinition extends BasicActionDefinition 
 	
 	private final PublishSubject<WriteCommand> dscWriteObservable;
 	
-	public AbstractDscActionDefinition(PublishSubject<WriteCommand> dscWriteObservable, UUID uuid, String name, AttributeDefinition... attributeDefinitions) {
+	public AbstractDscActionDefinition(PublishSubject<WriteCommand> dscWriteObservable, UUID uuid, String name, AttributeDefinition<?,?>... attributeDefinitions) {
 		super(uuid, name, attributeDefinitions);
 		this.dscWriteObservable = dscWriteObservable;
 	}

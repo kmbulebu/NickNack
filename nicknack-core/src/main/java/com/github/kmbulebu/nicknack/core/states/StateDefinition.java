@@ -13,6 +13,6 @@ public interface StateDefinition {
 	
 	// Group or 'parent'. The plugin or device that owns this.
 	
-	public List<AttributeDefinition> getAttributeDefinitions();
+	public List<AttributeDefinition<?, ?>> getAttributeDefinitions();
 	
 }

@@ -5,14 +5,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
-public class MonthOfYearNumericalAttributeDefinition extends BasicAttributeDefinition{
+public class MonthOfYearNumericalAttributeDefinition extends BasicAttributeDefinition<WholeNumberType, Integer>{
 	
 	public static final MonthOfYearNumericalAttributeDefinition INSTANCE = new MonthOfYearNumericalAttributeDefinition();
 
 	public MonthOfYearNumericalAttributeDefinition() {
-		super(UUID.fromString("f9f4ce53-03a6-4d47-81d1-702663877a94"), "Month of Year (Numerical)", IntegerUnit.INSTANCE, true);
+		super(UUID.fromString("f9f4ce53-03a6-4d47-81d1-702663877a94"), "Month of Year (Numerical)", new WholeNumberType(1, 12, 1), true);
 	}
 	
 	public Map<String, String> getStaticValues() {

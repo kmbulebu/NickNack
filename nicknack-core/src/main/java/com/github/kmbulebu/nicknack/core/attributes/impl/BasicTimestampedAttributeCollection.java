@@ -48,7 +48,7 @@ public class BasicTimestampedAttributeCollection implements AttributeCollection 
 		return this;
 	}
 	
-	public BasicTimestampedAttributeCollection setAttribute(AttributeDefinition attribute, String value) {
+	public BasicTimestampedAttributeCollection setAttribute(AttributeDefinition<?,?> attribute, String value) {
 		attributes.put(attribute.getUUID(), value);
 		return this;
 	}

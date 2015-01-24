@@ -16,6 +16,11 @@ public class HostnameType extends TextType {
 	}
 	
 	@Override
+	public int getMaximumLength() {
+		return 255;
+	}
+	
+	@Override
 	public void setRegexPattern(String regexPattern) {
 		throw new UnsupportedOperationException("regexPattern is immutable.");
 	}

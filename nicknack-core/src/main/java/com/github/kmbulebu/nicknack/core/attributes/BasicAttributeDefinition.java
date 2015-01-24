@@ -1,8 +1,9 @@
 package com.github.kmbulebu.nicknack.core.attributes;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.units.Unit;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 /**
  * Basic implementation of an AttributeDefinition. 
@@ -10,23 +11,23 @@ import com.github.kmbulebu.nicknack.core.units.Unit;
  * May be extended or used as-is.
  *
  */
-public class BasicAttributeDefinition implements AttributeDefinition {
+public class BasicAttributeDefinition<T extends ValueType<U>, U extends Serializable> implements AttributeDefinition<T,U> {
 	
 	private final UUID uuid;
 	private final String name;
 	private final String description;
-	private final Unit units;
+	private final T valueType;
 	private final boolean isRequired;
 	
-	public BasicAttributeDefinition(UUID uuid, String name, Unit units, boolean isRequired) {
-		this(uuid, name, "", units, isRequired);
+	public BasicAttributeDefinition(UUID uuid, String name, T valueType, boolean isRequired) {
+		this(uuid, name, "", valueType, isRequired);
 	}
 	
-	public BasicAttributeDefinition(UUID uuid, String name, String description, Unit units, boolean isRequired) {
+	public BasicAttributeDefinition(UUID uuid, String name, String description,  T valueType, boolean isRequired) {
 		this.uuid = uuid;
 		this.name = name;
 		this.description = description;
-		this.units = units;
+		this.valueType = valueType;
 		this.isRequired = isRequired;
 	}
 	
@@ -41,8 +42,8 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 	}
 
 	@Override
-	public Unit getUnits() {
-		return units;
+	public T getValueType() {
+		return valueType;
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BasicAttributeDefinition other = (BasicAttributeDefinition) obj;
+		BasicAttributeDefinition<?,?> other = (BasicAttributeDefinition<?, ?>) obj;
 		if (uuid == null) {
 			if (other.uuid != null)
 				return false;
@@ -83,7 +84,7 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 	@Override
 	public String toString() {
 		return "BasicAttributeDefinition [uuid=" + uuid + ", name=" + name + ", description=" + description
-				+ ", units=" + units + ", isRequired=" + isRequired + "]";
+				+ ", valueType=" + valueType + ", isRequired=" + isRequired + "]";
 	}
 
 }

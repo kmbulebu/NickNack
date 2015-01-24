@@ -38,6 +38,6 @@ public interface ActionDefinition {
 	 * May include both required and optional attributes.
 	 * @return List of this Action's Attributes
 	 */
-	public List<AttributeDefinition> getAttributeDefinitions();
+	public List<AttributeDefinition<?, ?>> getAttributeDefinitions();
 
 }

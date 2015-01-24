@@ -42,7 +42,7 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	@JsonSerialize(contentAs=AttributeFilterExpressionImpl.class)
 	@JsonDeserialize(contentAs=AttributeFilterExpressionImpl.class)
 	@ElementCollection(targetClass=AttributeFilterExpressionImpl.class, fetch=FetchType.EAGER)
-	private Collection<AttributeFilterExpression> attributeFilterExpressions = new ArrayList<>();
+	private Collection<AttributeFilterExpression<?>> attributeFilterExpressions = new ArrayList<>();
 	
 	@ManyToOne(targetEntity=PlanResource.class)
 	@JsonIgnore
@@ -54,7 +54,7 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	}
 
 	@Override
-	public Collection<AttributeFilterExpression>  getAttributeFilterExpressions() {
+	public Collection<AttributeFilterExpression<?>>  getAttributeFilterExpressions() {
 		return attributeFilterExpressions;
 	}
 
@@ -78,7 +78,7 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 		this.appliesToEventDefinition = appliesToEventDefinition;
 	}
 	
-	public void setAttributeFilterExpressions(Collection<AttributeFilterExpression> attributeFilterExpressions) {
+	public void setAttributeFilterExpressions(Collection<AttributeFilterExpression<?>> attributeFilterExpressions) {
 		this.attributeFilterExpressions = attributeFilterExpressions;
 	}
 

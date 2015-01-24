@@ -23,5 +23,23 @@ public abstract class AbstractValueType<T extends Serializable> implements Value
 		}
 		return valueList;
 	}
+	
+	protected boolean evaluateInOperand(T operand1, T[] operand2) {
+		for (T operand : operand2) {
+			if (operand1.equals(operand)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected boolean evaluateNotInOperand(T operand1, T[] operand2) {
+		for (T operand : operand2) {
+			if (operand1.equals(operand)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

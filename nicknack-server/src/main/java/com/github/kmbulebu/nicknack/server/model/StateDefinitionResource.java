@@ -32,7 +32,7 @@ public class StateDefinitionResource extends ResourceSupport implements StateDef
 
 	@Override
 	@JsonIgnore
-	public List<AttributeDefinition> getAttributeDefinitions() {
+	public List<AttributeDefinition<?,?>> getAttributeDefinitions() {
 		return stateDefinition.getAttributeDefinitions();
 	}
 

@@ -67,14 +67,14 @@ public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 	}
 	
 	@Override
-	public List<AttributeDefinition> getAttributeDefinitions(final UUID actionUUID) throws ActionDefinitionNotFoundException {
+	public List<AttributeDefinition<?,?>> getAttributeDefinitions(final UUID actionUUID) throws ActionDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUUID);
 		}
 		
 		final ActionDefinition actionDefinition = getActionDefinition(actionUUID);
 				
-		final List<AttributeDefinition> attributeDefinitions = Collections.unmodifiableList(actionDefinition.getAttributeDefinitions());
+		final List<AttributeDefinition<?,?>> attributeDefinitions = Collections.unmodifiableList(actionDefinition.getAttributeDefinitions());
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(attributeDefinitions);
@@ -83,16 +83,16 @@ public class ActionDefinitionServiceImpl implements ActionDefinitionService {
 	}
 	
 	@Override
-	public AttributeDefinition getAttributeDefinition(final UUID actionUUID, final UUID uuid) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException {
+	public AttributeDefinition<?,?> getAttributeDefinition(final UUID actionUUID, final UUID uuid) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUUID, uuid);
 		}
 		
-		final List<AttributeDefinition> attributeDefinitions = getAttributeDefinitions(actionUUID);
+		final List<AttributeDefinition<?,?>> attributeDefinitions = getAttributeDefinitions(actionUUID);
 		
-		AttributeDefinition attributeDefinition = null;
+		AttributeDefinition<?,?> attributeDefinition = null;
 		
-		for (AttributeDefinition anAttributeDefinition : attributeDefinitions) {
+		for (AttributeDefinition<?,?> anAttributeDefinition : attributeDefinitions) {
 			if (uuid.equals(anAttributeDefinition.getUUID())) {
 				attributeDefinition = anAttributeDefinition;
 				break;

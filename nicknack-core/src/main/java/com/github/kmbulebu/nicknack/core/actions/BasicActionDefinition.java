@@ -17,12 +17,12 @@ public abstract class BasicActionDefinition implements ActionDefinition {
 	private final UUID uuid;
 	private final String name;
 	private final String description;
-	private final List<AttributeDefinition> attributeDefinitions;
+	private final List<AttributeDefinition<?,?>> attributeDefinitions;
 
-	public BasicActionDefinition(UUID uuid, String name, List<AttributeDefinition> attributeDefinitions) {
+	public BasicActionDefinition(UUID uuid, String name, List<AttributeDefinition<?,?>> attributeDefinitions) {
 		this(uuid, name, "", attributeDefinitions);
 	}
-	public BasicActionDefinition(UUID uuid, String name, String description, List<AttributeDefinition> attributeDefinitions) {
+	public BasicActionDefinition(UUID uuid, String name, String description, List<AttributeDefinition<?,?>> attributeDefinitions) {
 		super();
 		this.uuid = uuid;
 		this.name = name;
@@ -30,11 +30,11 @@ public abstract class BasicActionDefinition implements ActionDefinition {
 		this.attributeDefinitions = attributeDefinitions;
 	}
 	
-	public BasicActionDefinition(UUID uuid, String name, AttributeDefinition... attributeDefinitions) {
+	public BasicActionDefinition(UUID uuid, String name, AttributeDefinition<?,?>... attributeDefinitions) {
 		this(uuid, name, "", attributeDefinitions);
 	}
 	
-	public BasicActionDefinition(UUID uuid, String name, String description, AttributeDefinition... attributeDefinitions) {
+	public BasicActionDefinition(UUID uuid, String name, String description, AttributeDefinition<?,?>... attributeDefinitions) {
 		this(uuid, name, Arrays.asList(attributeDefinitions));
 	}
 
@@ -54,7 +54,7 @@ public abstract class BasicActionDefinition implements ActionDefinition {
 	}
 
 	@Override
-	public List<AttributeDefinition> getAttributeDefinitions() {
+	public List<AttributeDefinition<?,?>> getAttributeDefinitions() {
 		return attributeDefinitions;
 	}
 

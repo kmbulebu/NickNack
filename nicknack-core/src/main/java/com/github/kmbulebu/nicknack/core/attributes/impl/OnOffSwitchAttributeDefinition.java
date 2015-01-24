@@ -3,12 +3,12 @@ package com.github.kmbulebu.nicknack.core.attributes.impl;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.BooleanUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.CheckboxType;
 
-public class OnOffSwitchAttributeDefinition extends BasicAttributeDefinition {
+public class OnOffSwitchAttributeDefinition extends BasicAttributeDefinition<CheckboxType, Boolean> {
 
 	public OnOffSwitchAttributeDefinition(UUID uuid, String name, boolean isRequired) {
-		super(uuid, name, BooleanUnit.INSTANCE, isRequired);
+		super(uuid, name, new CheckboxType(), isRequired);
 	}
 
 	/*@Override

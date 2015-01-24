@@ -32,7 +32,7 @@ public class ActionDefinitionResource extends ResourceSupport implements ActionD
 
 	@Override
 	@JsonIgnore
-	public List<AttributeDefinition> getAttributeDefinitions() {
+	public List<AttributeDefinition<?,?>> getAttributeDefinitions() {
 		return actionDefinition.getAttributeDefinitions();
 	}
 

@@ -3,13 +3,15 @@ package com.github.kmbulebu.nicknack.core.attributes.impl;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.StringUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.TextType;
 
-public class MacAddressAttributeDefinition extends BasicAttributeDefinition {
+public class MacAddressAttributeDefinition extends BasicAttributeDefinition<TextType, String> {
 
 	public MacAddressAttributeDefinition(UUID uuid, String name, boolean isRequired) {
-		super(uuid, name, StringUnit.INSTANCE, isRequired);
+		super(uuid, name, new TextType(), isRequired);
 	}
+	
+	
 
 /*	@Override
 	public String format(String rawValue) {
