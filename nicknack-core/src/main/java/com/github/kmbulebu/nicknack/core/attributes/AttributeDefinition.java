@@ -1,6 +1,5 @@
 package com.github.kmbulebu.nicknack.core.attributes;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
@@ -10,7 +9,7 @@ import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
  * 
  *
  */
-public interface AttributeDefinition<T extends ValueType<U>, U extends Serializable> {
+public interface AttributeDefinition<T extends ValueType<?>> {
 	
 	/**
 	 * A UUID that uniquely identifies the attribute. This value always remains the same from

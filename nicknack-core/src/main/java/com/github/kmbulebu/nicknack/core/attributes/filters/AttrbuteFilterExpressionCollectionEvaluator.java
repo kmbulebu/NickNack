@@ -29,13 +29,13 @@ public class AttrbuteFilterExpressionCollectionEvaluator {
 	 * @throws ParseException 
 	 */
 	
-	public boolean evaluate(AttributeFilterExpressionCollection filterCollection, AttributeCollection attributeCollection, List<AttributeDefinition<?,?>> attributeDefinitions) throws ParseException {
+	public boolean evaluate(AttributeFilterExpressionCollection filterCollection, AttributeCollection attributeCollection, List<AttributeDefinition<?>> attributeDefinitions) throws ParseException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(filterCollection, attributeCollection);
 		}
 		
 		// All attribute filters have to match.
-		for (AttributeFilterExpression<?> expression : filterCollection.getAttributeFilterExpressions()) {
+		for (AttributeFilterExpression expression : filterCollection.getAttributeFilterExpressions()) {
 			final UUID attributeDefinitionUuid = expression.getAttributeDefinitionUuid();
 			if (!evaluate(attributeDefinitionUuid, expression, attributeCollection.getAttributes(), attributeDefinitions)) {
 				if (LOG.isTraceEnabled()) {
@@ -53,12 +53,12 @@ public class AttrbuteFilterExpressionCollectionEvaluator {
 	}
 	
 	// Find an attribute definition that applies to a particular attribute filter.
-	protected AttributeDefinition<?,?> getApplicableAttributeDefinition(final UUID attributeDefinitionUuid, final List<AttributeDefinition<?,?>> attributeDefinitions) {
+	protected AttributeDefinition<?> getApplicableAttributeDefinition(final UUID attributeDefinitionUuid, final List<AttributeDefinition<?>> attributeDefinitions) {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(attributeDefinitionUuid, attributeDefinitions);
 		}
-		AttributeDefinition<?,?> attributeDefinition = null;
-		for (AttributeDefinition<?,?> anAttributeDefinition : attributeDefinitions) {
+		AttributeDefinition<?> attributeDefinition = null;
+		for (AttributeDefinition<?> anAttributeDefinition : attributeDefinitions) {
 			if (anAttributeDefinition.getUUID().equals(attributeDefinitionUuid)) {
 				attributeDefinition = anAttributeDefinition;
 				break;
@@ -71,7 +71,7 @@ public class AttrbuteFilterExpressionCollectionEvaluator {
 	}
 	
 	// Evaluate single attribute filter
-	protected <T extends Serializable> boolean evaluate(final UUID attributeDefinitionUuid, final AttributeFilterExpression<T> attributeFilter, final Map<UUID, ?> eventAttributes, final List<AttributeDefinition<?,?>> attributeDefinitions) throws ParseException {
+	protected <T extends Serializable> boolean evaluate(final UUID attributeDefinitionUuid, final AttributeFilterExpression attributeFilter, final Map<UUID, ?> eventAttributes, final List<AttributeDefinition<?>> attributeDefinitions) throws ParseException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(attributeDefinitionUuid, attributeFilter, eventAttributes, attributeDefinitions);
 		}
@@ -88,8 +88,7 @@ public class AttrbuteFilterExpressionCollectionEvaluator {
 		}
 		
 		// Find the Attribute definition that matches our filter.
-		@SuppressWarnings("unchecked")
-		final AttributeDefinition<?,T> attributeDefinition = (AttributeDefinition<?, T>) getApplicableAttributeDefinition(attributeDefinitionUuid, attributeDefinitions);
+		final AttributeDefinition<?> attributeDefinition = (AttributeDefinition<?>) getApplicableAttributeDefinition(attributeDefinitionUuid, attributeDefinitions);
 		
 		if (attributeDefinition == null) {
 			// Really shouldn't have any filters defined for attributes that don't exist.
@@ -100,8 +99,8 @@ public class AttrbuteFilterExpressionCollectionEvaluator {
 			return false;
 		}
 		
-		final ValueType<T> valueType = attributeDefinition.getValueType();
-		T[] operand = (T[]) attributeFilter.getOperand();
+		final ValueType<?> valueType = attributeDefinition.getValueType();
+		Object[] operand = attributeFilter.getOperand();
 		boolean result;
 		if (attributeFilter.getOperator().isOperandIsArray()) {
 			result = valueType.evaluate(attributeFilter.getOperator(), attributeValue, operand);

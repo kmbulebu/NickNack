@@ -32,7 +32,7 @@ public class EventDefinitionResource extends ResourceSupport implements EventDef
 
 	@Override
 	@JsonIgnore
-	public List<AttributeDefinition<?,?>> getAttributeDefinitions() {
+	public List<AttributeDefinition<?>> getAttributeDefinitions() {
 		return eventDefinition.getAttributeDefinitions();
 	}
 

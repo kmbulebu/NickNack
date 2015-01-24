@@ -18,8 +18,8 @@ public interface ActionDefinitionService {
 	
 	public ActionDefinition getActionDefinition(UUID uuid) throws ActionDefinitionNotFoundException;
 
-	public List<AttributeDefinition<?,?>> getAttributeDefinitions(UUID actionUUID) throws ActionDefinitionNotFoundException;
+	public List<AttributeDefinition<?>> getAttributeDefinitions(UUID actionUUID) throws ActionDefinitionNotFoundException;
 
-	public AttributeDefinition<?,?> getAttributeDefinition(UUID actionUUID, UUID uuid) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException;
+	public AttributeDefinition<?> getAttributeDefinition(UUID actionUUID, UUID uuid) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException;
 
 }

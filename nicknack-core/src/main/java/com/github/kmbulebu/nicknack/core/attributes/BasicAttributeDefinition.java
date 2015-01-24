@@ -1,6 +1,5 @@
 package com.github.kmbulebu.nicknack.core.attributes;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
@@ -11,7 +10,7 @@ import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
  * May be extended or used as-is.
  *
  */
-public class BasicAttributeDefinition<T extends ValueType<U>, U extends Serializable> implements AttributeDefinition<T,U> {
+public class BasicAttributeDefinition<T extends ValueType<?>> implements AttributeDefinition<T> {
 	
 	private final UUID uuid;
 	private final String name;
@@ -72,7 +71,7 @@ public class BasicAttributeDefinition<T extends ValueType<U>, U extends Serializ
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BasicAttributeDefinition<?,?> other = (BasicAttributeDefinition<?, ?>) obj;
+		BasicAttributeDefinition<?> other = (BasicAttributeDefinition<?>) obj;
 		if (uuid == null) {
 			if (other.uuid != null)
 				return false;

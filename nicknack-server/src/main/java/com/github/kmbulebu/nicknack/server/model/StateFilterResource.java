@@ -44,7 +44,7 @@ public class StateFilterResource extends ResourceSupport implements StateFilter 
 	@JsonSerialize(contentAs=AttributeFilterExpressionImpl.class)
 	@JsonDeserialize(contentAs=AttributeFilterExpressionImpl.class)
 	@ElementCollection(targetClass=AttributeFilterExpressionImpl.class, fetch=FetchType.EAGER)
-	private Collection<AttributeFilterExpression<?>> attributeFilterExpressions = new ArrayList<>();
+	private Collection<AttributeFilterExpression> attributeFilterExpressions = new ArrayList<>();
 	
 	@ManyToOne(targetEntity=PlanResource.class)
 	@JsonIgnore
@@ -61,7 +61,7 @@ public class StateFilterResource extends ResourceSupport implements StateFilter 
 	}
 
 	@Override
-	public Collection<AttributeFilterExpression<?>>  getAttributeFilterExpressions() {
+	public Collection<AttributeFilterExpression>  getAttributeFilterExpressions() {
 		return attributeFilterExpressions;
 	}
 
@@ -89,7 +89,7 @@ public class StateFilterResource extends ResourceSupport implements StateFilter 
 		this.description = description;
 	}
 	
-	public void setAttributeFilterExpressions(Collection<AttributeFilterExpression<?>> attributeFilterExpressions) {
+	public void setAttributeFilterExpressions(Collection<AttributeFilterExpression> attributeFilterExpressions) {
 		this.attributeFilterExpressions = attributeFilterExpressions;
 	}
 

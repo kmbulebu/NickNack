@@ -76,22 +76,26 @@ public class TextType extends AbstractValueType<String> {
 	}
 
 	@Override
-	public boolean evaluate(Operator operator, String operand1, String operand2) {
+	public boolean evaluate(Operator operator, Object operand1, Object operand2) {
+		final String op1 = (String) operand1;
+		final String op2 = (String) operand2;
 		switch(operator) {
 		case EQUALS:
-			return operand1.equals(operand2);
+			return op1.equals(op2);
 		default:
 			return false;
 		}
 	}
 	
 	@Override
-	public boolean evaluate(Operator operator, String operand1, String[] operand2) {
+	public boolean evaluate(Operator operator, Object operand1, Object[] operand2) {
+		final String op1 = (String) operand1;
+		final String[] op2 = (String[]) operand2;
 		switch(operator) {
 		case IN:
-			return evaluateInOperand(operand1, operand2);
+			return evaluateInOperand(op1, op2);
 		case NOT_IN:
-			return evaluateNotInOperand(operand1, operand2);
+			return evaluateNotInOperand(op1, op2);
 		default:
 			return false;
 		}

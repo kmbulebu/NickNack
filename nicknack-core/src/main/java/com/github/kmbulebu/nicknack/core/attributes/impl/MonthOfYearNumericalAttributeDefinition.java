@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
-public class MonthOfYearNumericalAttributeDefinition extends BasicAttributeDefinition<WholeNumberType, Integer>{
+public class MonthOfYearNumericalAttributeDefinition extends BasicAttributeDefinition<WholeNumberType>{
 	
 	public static final MonthOfYearNumericalAttributeDefinition INSTANCE = new MonthOfYearNumericalAttributeDefinition();
 

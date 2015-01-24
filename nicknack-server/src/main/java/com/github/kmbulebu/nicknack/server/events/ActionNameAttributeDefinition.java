@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.TextType;
 
-public class ActionNameAttributeDefinition extends BasicAttributeDefinition<TextType, String> {
+public class ActionNameAttributeDefinition extends BasicAttributeDefinition<TextType> {
 	
 	public static final ActionNameAttributeDefinition INSTANCE = new ActionNameAttributeDefinition();
 

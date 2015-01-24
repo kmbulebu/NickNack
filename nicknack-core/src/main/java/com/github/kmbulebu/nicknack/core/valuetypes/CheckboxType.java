@@ -31,7 +31,7 @@ public class CheckboxType extends AbstractValueType<Boolean> {
 	}
 
 	@Override
-	public boolean evaluate(Operator operator, Boolean operand1, Boolean operand2) {
+	public boolean evaluate(Operator operator, Object operand1, Object operand2) {
 		switch(operator) {
 		case EQUALS:
 			return operand1.equals(operand2);
@@ -41,7 +41,7 @@ public class CheckboxType extends AbstractValueType<Boolean> {
 	}
 	
 	@Override
-	public boolean evaluate(Operator operator, Boolean operand1, Boolean[] operand2) {
+	public boolean evaluate(Operator operator, Object operand1, Object[] operand2) {
 		return false;
 	}
 	

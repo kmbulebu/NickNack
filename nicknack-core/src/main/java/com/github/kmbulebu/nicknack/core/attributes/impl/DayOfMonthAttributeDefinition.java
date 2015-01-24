@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
-public class DayOfMonthAttributeDefinition extends BasicAttributeDefinition<WholeNumberType, Integer>{
+public class DayOfMonthAttributeDefinition extends BasicAttributeDefinition<WholeNumberType>{
 	
 	public static final DayOfMonthAttributeDefinition INSTANCE = new DayOfMonthAttributeDefinition();
 

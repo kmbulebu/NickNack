@@ -10,7 +10,7 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.TextType;
 
-public class DayOfWeekAttributeDefinition extends BasicAttributeDefinition<TextType, String>{
+public class DayOfWeekAttributeDefinition extends BasicAttributeDefinition<TextType>{
 	
 	public static final DayOfWeekAttributeDefinition INSTANCE = new DayOfWeekAttributeDefinition();
 

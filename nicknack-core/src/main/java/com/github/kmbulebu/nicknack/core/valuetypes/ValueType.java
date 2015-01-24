@@ -58,9 +58,9 @@ public interface ValueType<T extends Serializable> {
 	 * @param operand2 Second operand in the expression.
 	 * @return Boolean True if the expression operand1 OPERATOR operand2 evalutes to true. False otherwises. 
 	 */
-	public boolean evaluate(Operator operator, T operand1, T operand2);
+	public boolean evaluate(Operator operator, Object operand1, Object operand2);
 	
-	public boolean evaluate(Operator operator, T operand1, T[] operand2);
+	public boolean evaluate(Operator operator, Object operand1, Object[] operand2);
 	
 	/**
 	 * An array of operators supported by this ValueType

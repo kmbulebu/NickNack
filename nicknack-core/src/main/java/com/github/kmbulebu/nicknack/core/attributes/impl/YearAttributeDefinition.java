@@ -8,7 +8,7 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
-public class YearAttributeDefinition extends BasicAttributeDefinition<WholeNumberType, Integer>{
+public class YearAttributeDefinition extends BasicAttributeDefinition<WholeNumberType>{
 	
 	public static final YearAttributeDefinition INSTANCE = new YearAttributeDefinition();
 	

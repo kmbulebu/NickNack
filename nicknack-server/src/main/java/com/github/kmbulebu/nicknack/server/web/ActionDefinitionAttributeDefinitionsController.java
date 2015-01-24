@@ -43,23 +43,23 @@ public class ActionDefinitionAttributeDefinitionsController {
 	private BeanFactory beanFactory;
 	
 	@RequestMapping(value="/attributeDefinitions", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<AttributeDefinitionResource<?,?>> getAttributeDefinitions(@PathVariable UUID actionUuid) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException {
+	public Resources<AttributeDefinitionResource<?>> getAttributeDefinitions(@PathVariable UUID actionUuid) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUuid);
 		}
 		
-		final List<AttributeDefinition<?,?>> attributeDefinitions = actionDefinitionService.getAttributeDefinitions(actionUuid);
+		final List<AttributeDefinition<?>> attributeDefinitions = actionDefinitionService.getAttributeDefinitions(actionUuid);
 		
-		final List<AttributeDefinitionResource<?,?>> attributeDefinitionResources = new ArrayList<>(attributeDefinitions.size());
+		final List<AttributeDefinitionResource<?>> attributeDefinitionResources = new ArrayList<>(attributeDefinitions.size());
 		
-		for (AttributeDefinition<?,?> attributeDefinition : attributeDefinitions) {
-			final AttributeDefinitionResource<?,?> resource = new AttributeDefinitionResource(attributeDefinition);
+		for (AttributeDefinition<?> attributeDefinition : attributeDefinitions) {
+			final AttributeDefinitionResource<?> resource = new AttributeDefinitionResource<>(attributeDefinition);
 			resource.add(linkTo(methodOn(ActionDefinitionAttributeDefinitionsController.class).getAttributeDefinition(actionUuid, attributeDefinition.getUUID())).withSelfRel());
 	
 			attributeDefinitionResources.add(resource);
 		}
 		
-		final Resources<AttributeDefinitionResource<?,?>> resources = new Resources<AttributeDefinitionResource<?,?>>(attributeDefinitionResources);
+		final Resources<AttributeDefinitionResource<?>> resources = new Resources<AttributeDefinitionResource<?>>(attributeDefinitionResources);
 		resources.add(linkTo(methodOn(ActionDefinitionAttributeDefinitionsController.class).getAttributeDefinitions(actionUuid)).withSelfRel());
 		
 		if (LOG.isTraceEnabled()) {
@@ -69,15 +69,15 @@ public class ActionDefinitionAttributeDefinitionsController {
 	}
 	
 	@RequestMapping(value="/attributeDefinitions/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public AttributeDefinitionResource<?,?>  getAttributeDefinition(@PathVariable UUID actionUuid, @PathVariable UUID uuid) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException {
+	public AttributeDefinitionResource<?>  getAttributeDefinition(@PathVariable UUID actionUuid, @PathVariable UUID uuid) throws ActionDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(actionUuid, uuid);
 		}
 		
-		final AttributeDefinition<?,?> attributeDefinition = actionDefinitionService.getAttributeDefinition(actionUuid, uuid);
+		final AttributeDefinition<?> attributeDefinition = actionDefinitionService.getAttributeDefinition(actionUuid, uuid);
 
 		
-		final AttributeDefinitionResource<?,?> resource = new AttributeDefinitionResource(attributeDefinition);
+		final AttributeDefinitionResource<?> resource = new AttributeDefinitionResource<>(attributeDefinition);
 		resource.add(linkTo(methodOn(ActionDefinitionAttributeDefinitionsController.class).getAttributeDefinition(actionUuid, attributeDefinition.getUUID())).withSelfRel());
 
 		

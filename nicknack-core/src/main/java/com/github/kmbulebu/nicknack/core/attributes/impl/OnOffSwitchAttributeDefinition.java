@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.CheckboxType;
 
-public class OnOffSwitchAttributeDefinition extends BasicAttributeDefinition<CheckboxType, Boolean> {
+public class OnOffSwitchAttributeDefinition extends BasicAttributeDefinition<CheckboxType> {
 
 	public OnOffSwitchAttributeDefinition(UUID uuid, String name, boolean isRequired) {
 		super(uuid, name, new CheckboxType(), isRequired);

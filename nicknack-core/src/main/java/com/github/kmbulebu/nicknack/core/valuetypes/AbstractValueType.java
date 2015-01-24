@@ -24,8 +24,8 @@ public abstract class AbstractValueType<T extends Serializable> implements Value
 		return valueList;
 	}
 	
-	protected boolean evaluateInOperand(T operand1, T[] operand2) {
-		for (T operand : operand2) {
+	protected boolean evaluateInOperand(Object operand1, Object[] operand2) {
+		for (Object operand : operand2) {
 			if (operand1.equals(operand)) {
 				return true;
 			}
@@ -33,8 +33,8 @@ public abstract class AbstractValueType<T extends Serializable> implements Value
 		return false;
 	}
 	
-	protected boolean evaluateNotInOperand(T operand1, T[] operand2) {
-		for (T operand : operand2) {
+	protected boolean evaluateNotInOperand(Object operand1, Object[] operand2) {
+		for (Object operand : operand2) {
 			if (operand1.equals(operand)) {
 				return false;
 			}

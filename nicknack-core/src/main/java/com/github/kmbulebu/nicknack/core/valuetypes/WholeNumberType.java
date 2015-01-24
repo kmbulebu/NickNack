@@ -78,7 +78,7 @@ public class WholeNumberType extends AbstractValueType<Integer> {
 	}
 	
 	@Override
-	public boolean evaluate(Operator operator, Integer operand1, Integer operand2) {
+	public boolean evaluate(Operator operator, Object operand1, Object operand2) {
 		switch(operator) {
 		case EQUALS:
 			return operand1.equals(operand2);
@@ -88,7 +88,7 @@ public class WholeNumberType extends AbstractValueType<Integer> {
 	}
 	
 	@Override
-	public boolean evaluate(Operator operator, Integer operand1, Integer[] operand2) {
+	public boolean evaluate(Operator operator, Object operand1, Object[] operand2) {
 		switch(operator) {
 		case IN:
 			return evaluateInOperand(operand1, operand2);

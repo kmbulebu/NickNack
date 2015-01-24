@@ -1,6 +1,5 @@
 package com.github.kmbulebu.nicknack.server.model;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import org.springframework.hateoas.ResourceSupport;
@@ -11,12 +10,12 @@ import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 @Relation(value="AttributeDefinition", collectionRelation="AttributeDefinitions")
-public class AttributeDefinitionResource<T extends ValueType<U>, U extends Serializable> extends ResourceSupport implements AttributeDefinition<T,U> {
+public class AttributeDefinitionResource<T extends ValueType<?>> extends ResourceSupport implements AttributeDefinition<T> {
 		
 	@JsonIgnore
-	public final AttributeDefinition<T,U> attributeDefinition;
+	public final AttributeDefinition<T> attributeDefinition;
 	
-	public AttributeDefinitionResource(AttributeDefinition<T,U> attributeDefinition) {
+	public AttributeDefinitionResource(AttributeDefinition<T> attributeDefinition) {
 		this.attributeDefinition = attributeDefinition;
 	}
 

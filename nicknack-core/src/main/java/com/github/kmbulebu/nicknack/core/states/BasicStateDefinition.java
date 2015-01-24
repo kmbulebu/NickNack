@@ -10,16 +10,16 @@ public class BasicStateDefinition implements StateDefinition {
 	
 	private final UUID uuid;
 	private final String name;
-	private final List<AttributeDefinition<?,?>> attributeDefinitions;
+	private final List<AttributeDefinition<?>> attributeDefinitions;
 
-	public BasicStateDefinition(UUID uuid, String name, List<AttributeDefinition<?,?>> attributeDefinitions) {
+	public BasicStateDefinition(UUID uuid, String name, List<AttributeDefinition<?>> attributeDefinitions) {
 		super();
 		this.uuid = uuid;
 		this.name = name;
 		this.attributeDefinitions = attributeDefinitions;
 	}
 	
-	public BasicStateDefinition(UUID uuid, String name, AttributeDefinition<?,?>... attributeDefinitions) {
+	public BasicStateDefinition(UUID uuid, String name, AttributeDefinition<?>... attributeDefinitions) {
 		this(uuid, name, Arrays.asList(attributeDefinitions));
 	}
 
@@ -34,7 +34,7 @@ public class BasicStateDefinition implements StateDefinition {
 	}
 
 	@Override
-	public List<AttributeDefinition<?,?>> getAttributeDefinitions() {
+	public List<AttributeDefinition<?>> getAttributeDefinitions() {
 		return attributeDefinitions;
 	}
 

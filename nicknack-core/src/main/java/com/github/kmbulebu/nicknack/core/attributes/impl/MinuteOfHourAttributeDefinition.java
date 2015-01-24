@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
-public class MinuteOfHourAttributeDefinition extends BasicAttributeDefinition<WholeNumberType, Integer>{
+public class MinuteOfHourAttributeDefinition extends BasicAttributeDefinition<WholeNumberType>{
 	
 	public static final MinuteOfHourAttributeDefinition INSTANCE = new MinuteOfHourAttributeDefinition();
 

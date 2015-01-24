@@ -67,14 +67,14 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 	}
 	
 	@Override
-	public List<AttributeDefinition<?,?>> getAttributeDefinitions(final UUID stateUUID) throws StateDefinitionNotFoundException {
+	public List<AttributeDefinition<?>> getAttributeDefinitions(final UUID stateUUID) throws StateDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateUUID);
 		}
 		
 		final StateDefinition stateDefinition = getStateDefinition(stateUUID);
 		
-		final List<AttributeDefinition<?,?>> attributeDefinitions = Collections.unmodifiableList(stateDefinition.getAttributeDefinitions());
+		final List<AttributeDefinition<?>> attributeDefinitions = Collections.unmodifiableList(stateDefinition.getAttributeDefinitions());
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(attributeDefinitions);
@@ -83,16 +83,16 @@ public class StateDefinitionServiceImpl implements StateDefinitionService {
 	}
 	
 	@Override
-	public AttributeDefinition<?,?> getAttributeDefinition(final UUID stateUUID, final UUID uuid) throws StateDefinitionNotFoundException, AttributeDefinitionNotFoundException {
+	public AttributeDefinition<?> getAttributeDefinition(final UUID stateUUID, final UUID uuid) throws StateDefinitionNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(stateUUID, uuid);
 		}
 		
-		final List<AttributeDefinition<?,?>> attributeDefinitions = getAttributeDefinitions(stateUUID);
+		final List<AttributeDefinition<?>> attributeDefinitions = getAttributeDefinitions(stateUUID);
 		
-		AttributeDefinition<?,?> attributeDefinition = null;
+		AttributeDefinition<?> attributeDefinition = null;
 		
-		for (AttributeDefinition<?,?> anAttributeDefinition : attributeDefinitions) {
+		for (AttributeDefinition<?> anAttributeDefinition : attributeDefinitions) {
 			if (uuid.equals(anAttributeDefinition.getUUID())) {
 				attributeDefinition = anAttributeDefinition;
 				break;

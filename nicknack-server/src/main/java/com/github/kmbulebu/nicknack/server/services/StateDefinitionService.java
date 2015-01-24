@@ -19,9 +19,9 @@ public interface StateDefinitionService {
 	
 	public StateDefinition getStateDefinition(UUID uuid) throws StateDefinitionNotFoundException;
 
-	public List<AttributeDefinition<?,?>> getAttributeDefinitions(UUID stateUUID) throws StateDefinitionNotFoundException;
+	public List<AttributeDefinition<?>> getAttributeDefinitions(UUID stateUUID) throws StateDefinitionNotFoundException;
 
-	public AttributeDefinition<?,?> getAttributeDefinition(UUID stateUUID, UUID uuid) throws StateDefinitionNotFoundException, AttributeDefinitionNotFoundException;
+	public AttributeDefinition<?> getAttributeDefinition(UUID stateUUID, UUID uuid) throws StateDefinitionNotFoundException, AttributeDefinitionNotFoundException;
 
 	public Map<String, String> getAttributeDefinitionValues(UUID stateUuid, UUID uuid) throws StateDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException;
 

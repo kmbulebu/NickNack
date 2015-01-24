@@ -32,7 +32,7 @@ public class DateTimeType extends AbstractValueType<Date> {
 	}
 	
 	@Override
-	public boolean evaluate(Operator operator, Date operand1, Date operand2) {
+	public boolean evaluate(Operator operator, Object operand1, Object operand2) {
 		switch(operator) {
 		case EQUALS:
 			return operand1.equals(operand2);
@@ -42,7 +42,7 @@ public class DateTimeType extends AbstractValueType<Date> {
 	}
 	
 	@Override
-	public boolean evaluate(Operator operator, Date operand1, Date[] operand2) {
+	public boolean evaluate(Operator operator, Object operand1, Object[] operand2) {
 		switch(operator) {
 		case IN:
 			return evaluateInOperand(operand1, operand2);

@@ -125,23 +125,23 @@ public class EventDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{eventUuid}/attributeDefinitions", method={RequestMethod.GET, RequestMethod.HEAD})
-	public Resources<AttributeDefinitionResource<?,?>> getAttributeDefinitions(@PathVariable UUID eventUuid) throws EventDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
+	public Resources<AttributeDefinitionResource<?>> getAttributeDefinitions(@PathVariable UUID eventUuid) throws EventDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUuid);
 		}
 		
-		final List<AttributeDefinition<?,?>> attributeDefinitions = eventDefinitionService.getAttributeDefinitions(eventUuid);
-		final List<AttributeDefinitionResource<?,?>> attributeDefinitionResources = new ArrayList<AttributeDefinitionResource<?,?>>(attributeDefinitions.size());
+		final List<AttributeDefinition<?>> attributeDefinitions = eventDefinitionService.getAttributeDefinitions(eventUuid);
+		final List<AttributeDefinitionResource<?>> attributeDefinitionResources = new ArrayList<AttributeDefinitionResource<?>>(attributeDefinitions.size());
 		
 		
-		for (AttributeDefinition<?,?> attributeDefinition : attributeDefinitions) {
-			final AttributeDefinitionResource<?,?> resource = new AttributeDefinitionResource(attributeDefinition);
+		for (AttributeDefinition<?> attributeDefinition : attributeDefinitions) {
+			final AttributeDefinitionResource<?> resource = new AttributeDefinitionResource<>(attributeDefinition);
 			resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinition(eventUuid, attributeDefinition.getUUID())).withSelfRel());
 	
 			attributeDefinitionResources.add(resource);
 		}
 		
-		final Resources<AttributeDefinitionResource<?,?>> resources = new Resources<AttributeDefinitionResource<?,?>>(attributeDefinitionResources);
+		final Resources<AttributeDefinitionResource<?>> resources = new Resources<AttributeDefinitionResource<?>>(attributeDefinitionResources);
 		resources.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitions(eventUuid)).withSelfRel());
 	
 		if (LOG.isTraceEnabled()) {
@@ -151,14 +151,14 @@ public class EventDefinitionsController {
 	}
 	
 	@RequestMapping(value="/{eventUuid}/attributeDefinitions/{uuid}", method={RequestMethod.GET, RequestMethod.HEAD})
-	public AttributeDefinitionResource<?,?> getAttributeDefinition(@PathVariable UUID eventUuid, @PathVariable UUID uuid) throws EventDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
+	public AttributeDefinitionResource<?> getAttributeDefinition(@PathVariable UUID eventUuid, @PathVariable UUID uuid) throws EventDefinitionNotFoundException, ProviderNotFoundException, AttributeDefinitionNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(eventUuid, uuid);
 		}
 		
-		final AttributeDefinition<?,?> attributeDefinition = eventDefinitionService.getAttributeDefinition(eventUuid, uuid);
+		final AttributeDefinition<?> attributeDefinition = eventDefinitionService.getAttributeDefinition(eventUuid, uuid);
 
-		final AttributeDefinitionResource<?,?> resource = new AttributeDefinitionResource(attributeDefinition);
+		final AttributeDefinitionResource<?> resource = new AttributeDefinitionResource<>(attributeDefinition);
 		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinition(eventUuid, attributeDefinition.getUUID())).withSelfRel());
 		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitionValues(eventUuid, attributeDefinition.getUUID())).withRel("values"));
 		

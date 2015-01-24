@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.TextType;
 
-public class LongFormatTimeAttributeDefinition extends BasicAttributeDefinition<TextType, String>{
+public class LongFormatTimeAttributeDefinition extends BasicAttributeDefinition<TextType>{
 	
 	public static final LongFormatTimeAttributeDefinition INSTANCE = new LongFormatTimeAttributeDefinition();
 

@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.TextType;
 
-public class MacAddressAttributeDefinition extends BasicAttributeDefinition<TextType, String> {
+public class MacAddressAttributeDefinition extends BasicAttributeDefinition<TextType> {
 
 	public MacAddressAttributeDefinition(UUID uuid, String name, boolean isRequired) {
 		super(uuid, name, new TextType(), isRequired);
