@@ -47,9 +47,13 @@ public class RootController {
 		rootResource.add(getCollectionResourceLink(ProviderResource.class));
 		rootResource.add(getSingleResourceLink(ProviderResource.class));	
 		rootResource.add(getCollectionResourceLink(EventDefinitionResource.class));
+		rootResource.add(getSingleResourceLink(EventDefinitionResource.class));	
 		rootResource.add(getCollectionResourceLink(StateDefinitionResource.class));
+		rootResource.add(getSingleResourceLink(StateDefinitionResource.class));	
 		rootResource.add(getCollectionResourceLink(ActionDefinitionResource.class));
+		rootResource.add(getSingleResourceLink(ActionDefinitionResource.class));	
 		rootResource.add(getCollectionResourceLink(ActionResource.class));
+		rootResource.add(getSingleResourceLink(ActionResource.class));	
 		
 
 		//TODO Add event stream

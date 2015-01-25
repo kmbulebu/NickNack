@@ -1,5 +1,5 @@
 var nicknackApp = angular.module('nicknackApp', ['angular-hal', 'ngRoute', 
-		'nicknackControllers', 'newplanService', 'restService', 'providersService', 'staticDataService']);
+		'nicknackControllers', 'actionsControllers', 'newplanService', 'restService', 'providersService', 'staticDataService', 'actionsService']);
 
 nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {	
 	$routeProvider.when('/newPlan', {
@@ -80,7 +80,7 @@ nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider,
 					return StaticDataService.actionDefinitions();
 				}
 			}
-	}).when('/newActionBookmark', {
+	}).when('/newActionBookmark/:actionDefinitionUuid?', {
 		templateUrl : 'partials/action.html',
 		controller : 'ActionBookmarkCtrl',
 		resolve: {
@@ -89,11 +89,18 @@ nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider,
 							parameters: {}
 					}
 					return newAction;
-				},
-			actionDefinitions: function($route, StaticDataService) {
-					return StaticDataService.actionDefinitions();
+			},
+			actionDefinitions: function($route, ActionsService) {
+					return ActionsService.getActionDefinitions();
+			},
+			attributeDefinitions: function($route, ActionsService) {
+				if ($route.current.params.actionDefinitionUuid) {
+					return ActionsService.getAttributeDefinitions($route.current.params.actionDefinitionUuid)
+				} else {
+					return [];
 				}
 			}
+		}
 	}).when('/providers', {
 		templateUrl : 'partials/providers.html',
 		controller : 'ProvidersCtrl',
