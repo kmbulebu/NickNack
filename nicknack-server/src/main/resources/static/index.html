@@ -8,13 +8,20 @@
 <script src="bower_components/rfc6570/rfc6570.js"></script>
 <script src="bower_components/angular-route/angular-route.min.js"></script>
 <script src="bower_components/angular-hal/angular-hal.js"></script>
+<script src="bower_components/angular-wizard/dist/angular-wizard.min.js"></script>
+<link href="bower_components/angular-wizard/dist/angular-wizard.min.css" rel="stylesheet">
+<script src="bower_components/lodash/dist/lodash.min.js"></script>
 <script src="js/apps.js"></script>
 <script src="js/controllers.js"></script>
 <script src="js/actionsControllers.js"></script>
+<script src="js/plansControllers.js"></script>
 <script src="js/services.js"></script>
 <script src="js/apiService.js"></script>
 <script src="js/providersService.js"></script>
 <script src="js/actionsService.js"></script>
+<script src="js/eventsService.js"></script>
+<script src="js/statesService.js"></script>
+<link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -38,6 +45,7 @@
             <li data-toggle="tab"><a href="#/actionBookmarks">Actions</a></li>
             <li data-toggle="tab"><a href="#/liveEvents">Events</a></li>
             <li data-toggle="tab"><a href="#/providers">Providers</a></li>
+            <li data-toggle="tab"><a href="#/new_plan">Plan Wizard</a></li>
          <!--    <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">

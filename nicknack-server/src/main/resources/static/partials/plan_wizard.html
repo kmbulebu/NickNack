@@ -1,0 +1,119 @@
+<wizard> 
+    <wz-step title="Events">
+        <h1>Events</h1>
+        <p>Choose one or more Events for when this Plan should take action.</p>
+        <div ng-repeat="eventFilter in eventFilters track by $index" class="panel panel-default">
+	        <div class="panel-heading">
+	           
+		        <div>
+		           <label class="control-label">Provider
+	                <select class="form-control" ng-model="eventFilter.provider" ng-change="onProviderChangeUpdateEvents(eventFilter)" ng-options="provider.name for provider in providers"></select>
+		           </label>
+		        </div>
+		        <div>
+		           <label class="control-label">Event
+	                <select class="form-control" ng-model="eventFilter.eventDefinition" ng-change="onEventChange(eventFilter)" ng-options="eventDefinition.name for eventDefinition in eventFilter.eventDefinitions"></select>
+	               </label>
+	            </div>
+	            <button ng-if="$index > 0" class="btn" ng-click="deleteItem(eventFilters, $index)">Remove Event</button>
+	        </div>
+	        <div class="panel-body" ng-if="eventFilter.eventDefinition">
+	           <label class="control-label">Filters
+		            <div class="form-group form-inline" ng-repeat="attributeFilterExpression in eventFilter.attributeFilterExpressions track by $index">
+	                    <button class="btn" ng-click="deleteItem(eventFilter.attributeFilterExpressions, $index)"><span class="glyphicon glyphicon-trash"></span></button>
+	                    <select class="form-control" ng-model="attributeFilterExpression.attributeDefinition" ng-options="attributeDefinition.name for attributeDefinition in eventFilter.attributeDefinitions">
+	                    </select> <select ng-disabled="!attributeFilterExpression.attributeDefinition" class="form-control" ng-model="attributeFilterExpression.operator" ng-options="operator for operator in attributeFilterExpression.attributeDefinition.valueType.supportedOperators">
+	                    </select> <attribute-expression-input ng-disabled="!attributeFilterExpression.attributeDefinition" required class="form-control" ng-model="attributeFilterExpression.operand" definition="attributeFilterExpression.attributeDefinition" operator="attributeFilterExpression.operator"></attribute-expression-input>
+	                </div>
+                </label>
+                <br>
+                <button class="btn" ng-click="addAttributeFilterExpression(eventFilter.attributeFilterExpressions)"><span class="glyphicon glyphicon-plus"></span></button>
+           </div>
+                  
+	    </div>
+	    <button class="btn" ng-click="addEventFilter()">Add Event</button>
+	      
+        <br><br>
+        <input class="btn btn-primary" type="submit" wz-next value="Continue" />
+    </wz-step>
+    <wz-step title="States">
+        <h1>States</h1>
+        <p>Optionally choose one or more states to determine if this Plan should take action.</p>
+         <div ng-repeat="stateFilter in stateFilters track by $index" class="panel panel-default">
+            <div class="panel-heading">
+                <div>
+                   <label class="control-label">Provider
+                    <select class="form-control" ng-model="stateFilter.provider" ng-change="onProviderChangeUpdateStates(stateFilter)" ng-options="provider.name for provider in providers"></select>
+                   </label>
+                </div>
+                <div>
+                   <label class="control-label">State
+                    <select class="form-control" ng-model="stateFilter.stateDefinition" ng-change="onStateChange(stateFilter)" ng-options="stateDefinition.name for stateDefinition in stateFilter.stateDefinitions"></select>
+                   </label>
+                </div>
+                <button class="btn" ng-click="deleteItem(stateFilters, $index)">Remove State</button>
+            </div>
+            <div class="panel-body" ng-if="stateFilter.stateDefinition">
+               <label class="control-label">Filters
+                <div class="form-group form-inline" ng-repeat="attributeFilterExpression in stateFilter.attributeFilterExpressions track by $index">
+                    <button class="btn" ng-click="deleteItem(stateFilter.attributeFilterExpressions, $index)"><span class="glyphicon glyphicon-trash"></span></button>
+                    <select class="form-control" ng-model="attributeFilterExpression.attributeDefinition" ng-options="attributeDefinition.name for attributeDefinition in stateFilter.attributeDefinitions">
+                    </select> <select ng-disabled="!attributeFilterExpression.attributeDefinition" class="form-control" ng-model="attributeFilterExpression.operator" ng-options="operator for operator in attributeFilterExpression.attributeDefinition.valueType.supportedOperators">
+                    </select> <attribute-expression-input ng-disabled="!attributeFilterExpression.attributeDefinition" required class="form-control" ng-model="attributeFilterExpression.operand" definition="attributeFilterExpression.attributeDefinition" operator="attributeFilterExpression.operator"></attribute-expression-input>
+                </div>
+                </label>
+                <br>
+                <button class="btn" ng-click="addAttributeFilterExpression(stateFilter.attributeFilterExpressions)"><span class="glyphicon glyphicon-plus"></span></button>
+            </div>
+        </div>
+        <button class="btn" ng-click="addStateFilter()">Add State</button>
+        
+        <br><br>
+        <input class="btn btn-primary" type="submit" wz-next value="Continue" />
+    </wz-step>
+    <wz-step title="Actions">
+        <h1>Actions</h1>
+        <p>Choose which Actions to perform when this Plan is triggered.</p>
+         <div ng-repeat="action in actions track by $index" class="panel panel-default">
+            <div class="panel-heading">
+                <div>
+                   <label class="control-label">Provider
+                    <select class="form-control" ng-model="action.provider" ng-change="onProviderChangeUpdateActions(action)" ng-options="provider.name for provider in providers"></select>
+                   </label>
+                </div>
+                <div>
+                   <label class="control-label">Action
+                    <select class="form-control" ng-model="action.actionDefinition" ng-change="onActionChange(action)" ng-options="actionDefinition.name for actionDefinition in action.actionDefinitions"></select>
+                   </label>
+                </div>
+                <button ng-if="$index > 0"  class="btn" ng-click="deleteItem(actions, $index)">Remove Action</button>
+            </div>
+            <div class="panel-body" ng-if="action.actionDefinition">
+
+                <div class="form-group" ng-repeat="attributeDefinition in action.attributeDefinitions track by $index">
+                   <label class="control-label">{{attributeDefinition.name}} <span ng-if="attributeDefinition.required" class="label label-default">Required</span>
+                    <attribute-input required ng-required="attributeDefinition.required" class="form-control" ng-model="attributeDefinition.value" definition="attributeDefinition" ></attribute-input>
+                   </label>
+                </div>
+            </div>
+        </div>
+        <button class="btn" ng-click="addAction()">Add Action</button>
+        <br><br>
+        <input class="btn btn-primary" type="submit" wz-next value="Continue" />
+    </wz-step>
+    <wz-step title="Save">
+        <h1>Save</h1>
+        <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="control-label">Description
+                <input type="text"
+                    class="form-control" ng-model="planName"
+                    placeholder="Describe your plan...">
+                </label>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" wz-next ng-click="save()">Save Plan</button>
+    </wz-step>
+</wizard>

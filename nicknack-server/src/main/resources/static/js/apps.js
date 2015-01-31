@@ -1,5 +1,5 @@
-var nicknackApp = angular.module('nicknackApp', ['angular-hal', 'ngRoute', 
-		'nicknackControllers', 'actionsControllers', 'newplanService', 'restService', 'providersService', 'staticDataService', 'actionsService']);
+var nicknackApp = angular.module('nicknackApp', ['angular-hal', 'ngRoute', 'mgo-angular-wizard',
+		'nicknackControllers', 'actionsControllers', 'plansControllers', 'newplanService', 'restService', 'providersService', 'eventsService', 'statesService', 'staticDataService', 'actionsService']);
 
 nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {	
 	$routeProvider.when('/newPlan', {
@@ -123,7 +123,22 @@ nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider,
 				return ProvidersService.getProviderSettings($route.current.params.uuid);
 			},
 		}
-	}).otherwise({
+	}).when('/new_plan', {
+		templateUrl : 'partials/plan_wizard.html',
+		controller : 'PlanCtrl',
+		resolve: {
+			providers: function(ProvidersService) {
+				return ProvidersService.getProviders();
+			},
+			eventDefinitions: function(EventsService) {
+				return EventsService.getEventDefinitions();
+			},
+			actionDefinitions: function(ActionsService) {
+				return ActionsService.getActionDefinitions();
+			}
+		}
+	})
+	.otherwise({
 		redirectTo : '/home'
 	});
 } ]);

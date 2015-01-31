@@ -92,7 +92,7 @@ public class EventDefinitionsController {
 		for (EventDefinition eventDefinition : eventDefinitions) {
 			final EventDefinitionResource resource = new EventDefinitionResource(eventDefinition);
 			resource.add(linkTo(methodOn(EventDefinitionsController.class).getEventDefinition(eventDefinition.getUUID())).withSelfRel());
-			resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitions(eventDefinition.getUUID())).withRel("attributeDefinitions"));
+			resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitions(eventDefinition.getUUID())).withRel("AttributeDefinitions"));
 			eventDefinitionResources.add(resource);
 		}
 		
@@ -115,7 +115,7 @@ public class EventDefinitionsController {
 		final EventDefinition eventDefinition = eventDefinitionService.getEventDefinition(uuid);
 		final EventDefinitionResource resource = new EventDefinitionResource(eventDefinition);
 		resource.add(linkTo(methodOn(EventDefinitionsController.class).getEventDefinition(eventDefinition.getUUID())).withSelfRel());
-		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitions(uuid)).withRel("attributeDefinitions"));
+		resource.add(linkTo(methodOn(EventDefinitionsController.class).getAttributeDefinitions(uuid)).withRel("AttributeDefinitions"));
 		
 		
 		if (LOG.isTraceEnabled()) {

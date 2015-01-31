@@ -69,37 +69,90 @@ actionsControllers.controller('ActionBookmarkCtrl', ['$scope', 'ActionsService',
 
 actionsControllers.directive('attributeInput', [function() {
 	return {
-		scope: {},
+		scope: {
+			definition: '='
+		},
 		restrict: 'AE',
 		replace: 'true',
 		template: '<input type="{{inputType}}"/>',
 		link: function(scope, elem, attrs) {
-			 var definition = angular.fromJson(attrs.definition);
-			 var valueType = definition.valueType;
-			 
-			 if (valueType.name === 'hostname') {
-				 scope.inputType = 'text'; 
-			 } else {
-			 	 scope.inputType = valueType.name;
+			scope.$watch('definition', function(value) {
+			 if (angular.isDefined(value)) {
+				 var valueType = value.valueType;
+				 
+				 if (valueType.name === 'hostname') {
+					 scope.inputType = 'text'; 
+				 } else {
+				 	 scope.inputType = valueType.name;
+				 }
+				 
+				 
+				 if (angular.isDefined(valueType.maximumLength)) {
+					 elem.attr('maxLength', valueType.maximumLength);
+				 }
+				 if (angular.isDefined(valueType.regexPattern)) {
+					 elem.attr('pattern', valueType.regexPattern);
+				 }
+				 if (angular.isDefined(valueType.min)) {
+			 		 elem.attr('min', valueType.min);
+			 	 }
+			 	if (angular.isDefined(valueType.max)) {
+			 		 elem.attr('max', valueType.max);
+			 	 }
+			 	if (angular.isDefined(valueType.step)) {
+			 		 elem.attr('step', valueType.step);
+			 	 }
 			 }
-			 
-			 
-			 if (valueType.maximumLength) {
-				 elem.attr('maxLength', valueType.maximumLength);
-			 }
-			 if (valueType.regexPattern) {
-				 elem.attr('pattern', valueType.regexPattern);
-			 }
-			 if (valueType.min) {
-		 		 elem.attr('min', valueType.min);
-		 	 }
-		 	if (valueType.max) {
-		 		 elem.attr('max', valueType.max);
-		 	 }
-		 	if (valueType.step) {
-		 		 elem.attr('step', valueType.step);
-		 	 }
+			});
+		}
+	};
+}]);
 
+actionsControllers.directive('attributeExpressionInput', [function() {
+	return {
+		scope: {
+			definition: '=',
+			operator: '='
+		},
+		restrict: 'AE',
+		replace: 'true',
+		template: '<input type="{{inputType}}"/>',
+		link: function(scope, elem, attrs) {
+			scope.$watch('operator', function(value) {
+				if (angular.isDefined(value)) {
+					if (value === 'IN' || value === 'NOT_IN') {
+						elem.prop('multiple', true);
+					}
+				}
+			});
+			scope.$watch('definition', function(value) {
+			 if (angular.isDefined(value)) {
+				 var valueType = value.valueType;
+				 
+				 if (valueType.name === 'hostname') {
+					 scope.inputType = 'text'; 
+				 } else {
+				 	 scope.inputType = valueType.name;
+				 }
+				 
+				 
+				 if (angular.isDefined(valueType.maximumLength)) {
+					 elem.attr('maxLength', valueType.maximumLength);
+				 }
+				 if (angular.isDefined(valueType.regexPattern)) {
+					 elem.attr('pattern', valueType.regexPattern);
+				 }
+				 if (angular.isDefined(valueType.min)) {
+			 		 elem.attr('min', valueType.min);
+			 	 }
+			 	if (angular.isDefined(valueType.max)) {
+			 		 elem.attr('max', valueType.max);
+			 	 }
+			 	if (angular.isDefined(valueType.step)) {
+			 		 elem.attr('step', valueType.step);
+			 	 }
+			 }
+			});
 		}
 	};
 }]);

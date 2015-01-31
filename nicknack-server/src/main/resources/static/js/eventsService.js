@@ -1,17 +1,17 @@
-angular.module('actionsService', [ 'apiService' ]).factory(
-		'ActionsService', [ 'ApiService', '$q', function(ApiService, $q) {
+angular.module('eventsService', [ 'apiService' ]).factory(
+		'EventsService', [ 'ApiService', '$q', function(ApiService, $q) {
 
 			return {
-				'getActionDefinitions' : function() {
+				'getEventDefinitions' : function() {
 					var defer = $q.defer();
 					var promise = defer.promise;
 					
 					ApiService.getApi().then(
-						function(action) {
-							action.$get('ActionDefinitions').then(
+						function(event) {
+							event.$get('EventDefinitions').then(
 								function(success) {
-									if (success.$has('ActionDefinitions')) {
-										defer.resolve(success.$get('ActionDefinitions'));
+									if (success.$has('EventDefinitions')) {
+										defer.resolve(success.$get('EventDefinitions'));
 									} else {
 										defer.resolve([]);
 									}
@@ -26,14 +26,14 @@ angular.module('actionsService', [ 'apiService' ]).factory(
 					
 					return promise;
 				},
-				'getActionDefinitionsByProvider' : function(provider) {
+				'getEventDefinitionsByProvider' : function(provider) {
 					var defer = $q.defer();
 					var promise = defer.promise;
 					
-					provider.$get('ActionDefinitions').then(
+					provider.$get('EventDefinitions').then(
 						function(success) {
-							if (success.$has('ActionDefinitions')) {
-								defer.resolve(success.$get('ActionDefinitions'));
+							if (success.$has('EventDefinitions')) {
+								defer.resolve(success.$get('EventDefinitions'));
 							} else {
 								defer.resolve([]);
 							}
@@ -44,12 +44,12 @@ angular.module('actionsService', [ 'apiService' ]).factory(
 					
 					return promise;
 				},
-				'getActionDefinition' : function(uuid) {
+				'getEventDefinition' : function(uuid) {
 					var defer = $q.defer();
 					var promise = defer.promise;
 
 					ApiService.getApi().then(function(api) {
-						api.$get('ActionDefinition', {uuid:uuid}).then(function(success) {
+						api.$get('EventDefinition', {uuid:uuid}).then(function(success) {
 							defer.resolve(success);
 						}, function(error) {
 							defer.reject(error);
@@ -60,11 +60,11 @@ angular.module('actionsService', [ 'apiService' ]).factory(
 
 					return promise;
 				},
-				'getAttributeDefinitions' : function(actionDefinition) {
+				'getAttributeDefinitions' : function(eventDefinition) {
 					var defer = $q.defer();
 					var promise = defer.promise;
 					
-					actionDefinition.$get('AttributeDefinitions').then(
+					eventDefinition.$get('AttributeDefinitions').then(
 						function(success) {
 							if (success.$has('AttributeDefinitions')) {
 								defer.resolve(success.$get('AttributeDefinitions'));
