@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.model.ActionResource;
+import com.github.kmbulebu.nicknack.server.model.EventFilterResource;
 import com.github.kmbulebu.nicknack.server.model.PlanResource;
+import com.github.kmbulebu.nicknack.server.model.StateFilterResource;
 import com.github.kmbulebu.nicknack.server.services.PlansService;
 import com.github.kmbulebu.nicknack.server.services.exceptions.ActionNotFoundException;
 import com.github.kmbulebu.nicknack.server.services.exceptions.EventFilterNotFoundException;
@@ -136,8 +138,8 @@ public class PlansController {
 	
 	private void addLinks(PlanResource resource) throws PlanNotFoundException, ActionNotFoundException, EventFilterNotFoundException, StateFilterNotFoundException {
 		resource.add(linkTo(methodOn(PlansController.class).getPlan(resource.getUUID())).withSelfRel());
-		resource.add(linkTo(methodOn(PlansEventFiltersController.class).getEventFilters(resource.getUUID())).withRel("eventFilters"));
-		resource.add(linkTo(methodOn(PlansStateFiltersController.class).getStateFilters(resource.getUUID())).withRel("stateFilters"));
+		resource.add(linkTo(methodOn(PlansEventFiltersController.class).getEventFilters(resource.getUUID())).withRel(relProvider.getCollectionResourceRelFor(EventFilterResource.class)));
+		resource.add(linkTo(methodOn(PlansStateFiltersController.class).getStateFilters(resource.getUUID())).withRel(relProvider.getCollectionResourceRelFor(StateFilterResource.class)));
 		resource.add(linkTo(methodOn(ActionsController.class).getActionsByPlan(resource.getUUID())).withRel(relProvider.getCollectionResourceRelFor(ActionResource.class)));
 	}
 	

@@ -107,13 +107,11 @@
         <div class="panel-body">
             <div class="form-group">
                 <label class="control-label">Description
-                <input type="text"
-                    class="form-control" ng-model="planName"
-                    placeholder="Describe your plan...">
+                    <input type="text" class="form-control" placeholder="Describe your plan..." ng-model="plan.name">
                 </label>
             </div>
         </div>
     </div>
-    <button class="btn btn-primary" wz-next ng-click="save()">Save Plan</button>
+    <button class="btn btn-primary" ng-click="save()">Save Plan</button>
     </wz-step>
 </wizard>

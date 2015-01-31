@@ -1,5 +1,5 @@
 var nicknackApp = angular.module('nicknackApp', ['angular-hal', 'ngRoute', 'mgo-angular-wizard',
-		'nicknackControllers', 'actionsControllers', 'plansControllers', 'newplanService', 'restService', 'providersService', 'eventsService', 'statesService', 'staticDataService', 'actionsService']);
+		'nicknackControllers', 'actionsControllers', 'plansControllers', 'plansService', 'restService', 'providersService', 'eventsService', 'statesService', 'staticDataService', 'actionsService']);
 
 nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {	
 	$routeProvider.when('/newPlan', {
