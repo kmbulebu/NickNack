@@ -32,8 +32,7 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', 'EventsService', 'S
 		$scope.eventFilters.push({
 			attributeFilterExpressions:[]
 		});
-	};
-	
+	};	
 	
 	$scope.addAttributeFilterExpression = function(attributeFilterExpressions) {
 		attributeFilterExpressions.push({});
