@@ -26,6 +26,101 @@ angular.module('plansService', [ 'apiService' ]).factory(
 					
 					return promise;
 				},
+				'getPlan' : function(uuid) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+
+					ApiService.getApi().then(
+						function(api) {
+							api.$get('Plan', {uuid:uuid}).then(
+								function(success) {
+									defer.resolve(success);
+								}, function(error) {
+									defer.reject(error);
+								}
+							);
+						}, function(error) {
+							defer.reject(error);
+						}
+					);
+
+					return promise;
+				},
+				'getEventFilters' : function(planUuid) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+
+					this.getPlan(planUuid).then(
+						function(planResource) {
+							planResource.$get('EventFilters').then(
+								function(success) {
+									if (success.$has('EventFilters')) {
+										defer.resolve(success.$get('EventFilters'));
+									} else {
+										defer.resolve([]);
+									}
+								}, function(error) {
+									defer.reject(error);
+								}
+							);
+						},
+						function(error) {
+							defer.reject(error);
+						}
+					);
+								
+					return promise;
+				},
+				'getStateFilters' : function(planUuid) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+
+					this.getPlan(planUuid).then(
+						function(planResource) {
+							planResource.$get('StateFilters').then(
+								function(success) {
+									if (success.$has('StateFilters')) {
+										defer.resolve(success.$get('StateFilters'));
+									} else {
+										defer.resolve([]);
+									}
+								}, function(error) {
+									defer.reject(error);
+								}
+							);
+						},
+						function(error) {
+							defer.reject(error);
+						}
+					);
+								
+					return promise;
+				},
+				'getActions' : function(planUuid) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+
+					this.getPlan(planUuid).then(
+						function(planResource) {
+							planResource.$get('Actions').then(
+								function(success) {
+									if (success.$has('Actions')) {
+										defer.resolve(success.$get('Actions'));
+									} else {
+										defer.resolve([]);
+									}
+								}, function(error) {
+									defer.reject(error);
+								}
+							);
+						},
+						function(error) {
+							defer.reject(error);
+						}
+					);
+								
+					return promise;
+				},
 				'createPlan' : function(plan) {
 					var defer = $q.defer();
 					var promise = defer.promise;

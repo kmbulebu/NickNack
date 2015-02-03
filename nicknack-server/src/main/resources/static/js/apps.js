@@ -2,13 +2,7 @@ var nicknackApp = angular.module('nicknackApp', ['angular-hal', 'ngRoute', 'mgo-
 		'nicknackControllers', 'actionsControllers', 'plansControllers', 'plansService', 'restService', 'providersService', 'eventsService', 'statesService', 'staticDataService', 'actionsService']);
 
 nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {	
-	$routeProvider.when('/newPlan', {
-		templateUrl : 'partials/plan.html',
-		controller : 'NewPlanCtrl'
-	}).when('/plans/:planUuid', {
-		templateUrl : 'partials/plan.html',
-		controller : 'NewPlanCtrl'
-	}).when('/liveEvents', {
+	$routeProvider.when('/liveEvents', {
 		templateUrl : 'partials/events.html',
 		controller : 'EventsCtrl'
 	}).when('/now/:providerUuid?', {
@@ -36,18 +30,8 @@ nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider,
 		templateUrl : 'partials/plans.html',
 		controller : 'PlansCtrl',
 		resolve: {
-			plans: function($route, RestService) {
-				return RestService
-					.api()
-					.then(function (apiResource) {
-						return apiResource.$get('Plans');
-				}).then(function (resource) {
-					if (resource.$has('Plans')) {
-						return resource.$get('Plans');
-					} else {
-						return [];
-					}
-				});
+			plans: function(PlansService) {
+				return PlansService.getPlans();
 			}
 		}
 	}).when('/actionBookmarks', {
@@ -123,19 +107,44 @@ nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider,
 				return ProvidersService.getProviderSettings($route.current.params.uuid);
 			},
 		}
-	}).when('/new_plan', {
+	}).when('/plan/:uuid?', {
 		templateUrl : 'partials/plan_wizard.html',
 		controller : 'PlanCtrl',
 		resolve: {
 			providers: function(ProvidersService) {
 				return ProvidersService.getProviders();
 			},
-			eventDefinitions: function(EventsService) {
-				return EventsService.getEventDefinitions();
+			plan: function($route, PlansService) {
+				if ($route.current.params.uuid) {
+					return PlansService.getPlan($route.current.params.uuid);
+				} else {
+					return {};
+				}
 			},
-			actionDefinitions: function(ActionsService) {
-				return ActionsService.getActionDefinitions();
+			eventFilters: function($route, PlansService) {
+				if ($route.current.params.uuid) {
+					return PlansService.getEventFilters($route.current.params.uuid);
+				} else {
+					return [{
+							attributeFilterExpressions:[]
+						}];
+				}
+			},
+			stateFilters: function($route, PlansService) {
+				if ($route.current.params.uuid) {
+					return PlansService.getStateFilters($route.current.params.uuid);
+				} else {
+					return [];
+				}
+			},
+			actions: function($route, PlansService) {
+				if ($route.current.params.uuid) {
+					return PlansService.getActions($route.current.params.uuid);
+				} else {
+					return [{}];
+				}
 			}
+			
 		}
 	})
 	.otherwise({

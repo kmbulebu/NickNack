@@ -39,6 +39,9 @@ public class ActionResource extends ResourceSupport implements Action {
 	private UUID appliesToActionDefinition;
 	
 	@NotNull
+	private UUID appliesToProvider;
+	
+	@NotNull
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<UUID, String> parameters = new HashMap<UUID, String>();
 	
@@ -88,6 +91,14 @@ public class ActionResource extends ResourceSupport implements Action {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public UUID getAppliesToProvider() {
+		return appliesToProvider;
+	}
+
+	public void setAppliesToProvider(UUID appliesToProvider) {
+		this.appliesToProvider = appliesToProvider;
 	}
 
 	@Override

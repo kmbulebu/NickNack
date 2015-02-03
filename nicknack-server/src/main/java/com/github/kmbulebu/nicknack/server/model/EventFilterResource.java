@@ -39,6 +39,9 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	@NotNull
 	private UUID appliesToEventDefinition;
 	
+	@NotNull
+	private UUID appliesToProvider;
+	
 	@JsonSerialize(contentAs=AttributeFilterExpressionImpl.class)
 	@JsonDeserialize(contentAs=AttributeFilterExpressionImpl.class)
 	@ElementCollection(targetClass=AttributeFilterExpressionImpl.class, fetch=FetchType.EAGER)
@@ -81,5 +84,15 @@ public class EventFilterResource extends ResourceSupport implements EventFilter 
 	public void setAttributeFilterExpressions(Collection<AttributeFilterExpression> attributeFilterExpressions) {
 		this.attributeFilterExpressions = attributeFilterExpressions;
 	}
+
+	public UUID getAppliesToProvider() {
+		return appliesToProvider;
+	}
+
+	public void setAppliesToProvider(UUID appliesToProvider) {
+		this.appliesToProvider = appliesToProvider;
+	}
+	
+	
 
 }

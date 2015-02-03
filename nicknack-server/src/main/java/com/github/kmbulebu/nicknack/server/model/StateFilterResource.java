@@ -39,6 +39,9 @@ public class StateFilterResource extends ResourceSupport implements StateFilter 
 	@NotNull
 	private UUID appliesToStateDefinition;
 	
+	@NotNull
+	private UUID appliesToProvider;
+	
 	private String description;
 	
 	@JsonSerialize(contentAs=AttributeFilterExpressionImpl.class)
@@ -91,6 +94,14 @@ public class StateFilterResource extends ResourceSupport implements StateFilter 
 	
 	public void setAttributeFilterExpressions(Collection<AttributeFilterExpression> attributeFilterExpressions) {
 		this.attributeFilterExpressions = attributeFilterExpressions;
+	}
+	
+	public UUID getAppliesToProvider() {
+		return appliesToProvider;
+	}
+
+	public void setAppliesToProvider(UUID appliesToProvider) {
+		this.appliesToProvider = appliesToProvider;
 	}
 
 }

@@ -1,19 +1,5 @@
 var nicknackControllers = angular.module('nicknackControllers', ['staticDataService']);
 
-nicknackControllers.controller('PlansCtrl', ['$scope', '$route', 'WebsiteService', 'StaticDataService', 'plans', 
-                                       function ($scope, $route, WebsiteService, StaticDataService, plans) {
-	
-	$scope.plans = plans;
-	
-	$scope.deletePlan = function(planUuid) {
-		WebsiteService.deletePlan(planUuid).then(function () {
-			$route.reload();
-		});
-		
-	};
-	
-}]);
-
 nicknackControllers.controller('ProvidersCtrl', ['$scope', '$route', 'WebsiteService', 'StaticDataService', 'providers', 
                                              function ($scope, $route, WebsiteService, StaticDataService, providers) {
       	

@@ -1,5 +1,7 @@
 package com.github.kmbulebu.nicknack.server;
 
+import javax.servlet.Filter;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +20,7 @@ import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.github.kmbulebu.nicknack.server.web.EventStreamingServlet;
@@ -25,37 +28,35 @@ import com.github.kmbulebu.nicknack.server.web.EventStreamingServlet;
 @Configuration
 @EnableAutoConfiguration
 @EnableEntityLinks
-@EnableHypermediaSupport(type =  HypermediaType.HAL )
+@EnableHypermediaSupport(type = HypermediaType.HAL)
 @EnableJpaRepositories
 @EnableTransactionManagement
 @EnableSpringDataWebSupport
 @EnableAsync
 @ComponentScan
-@PropertySource(value = { "file:${nicknack.configfile}" }, ignoreResourceNotFound=true)
+@PropertySource(value = { "file:${nicknack.configfile}" }, ignoreResourceNotFound = true)
 public class Application {
-	
+
 	public static final String APP_LOGGER_NAME = "nicknack-server";
-	
+
 	private static final Logger LOG = LogManager.getLogger(APP_LOGGER_NAME);
 
-
 	@Bean
-	public ServletRegistrationBean servletRegistrationBean(EventStreamingServlet eventStreamingServlet){
-	    return new ServletRegistrationBean(eventStreamingServlet, "/api/eventsStream");
+	public ServletRegistrationBean servletRegistrationBean(EventStreamingServlet eventStreamingServlet) {
+		return new ServletRegistrationBean(eventStreamingServlet, "/api/eventsStream");
 	}
-	
+
 	@Bean
 	public EventStreamingServlet eventStreamingServlet() {
 		return new EventStreamingServlet();
 	}
-	
-	
+
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer properties() {
-	    PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
-	    return propertySourcesPlaceholderConfigurer;
+		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+		return propertySourcesPlaceholderConfigurer;
 	}
-	
+
 	@Bean
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
 		final MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
@@ -63,12 +64,15 @@ public class Application {
 		mappingJackson2HttpMessageConverter.getObjectMapper().setSerializationInclusion(Include.ALWAYS);
 		return mappingJackson2HttpMessageConverter;
 	}
-	
+
+	@Bean
+	public Filter shallowETagHeaderFilter() {
+		return new ShallowEtagHeaderFilter();
+	}
 
 	public static void main(String[] args) {
 		LOG.info("Starting NickNack server.");
-        SpringApplication.run(Application.class, args);
-    }
-	
+		SpringApplication.run(Application.class, args);
+	}
 
 }
