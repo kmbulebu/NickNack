@@ -17,7 +17,7 @@
 	                <select required class="form-control" ng-model="eventFilter.eventDefinition" ng-change="onEventChange(eventFilter)" ng-options="eventDefinition.name for eventDefinition in eventFilter.eventDefinitions"></select>
 	               </label>
 	            </div>
-	            <button ng-if="$index > 0" class="btn" ng-click="deleteItem(eventFilters, $index)">Remove Event</button>
+	            <button ng-if="$index > 0" class="btn" ng-click="deleteEventFilter(eventFilters, $index)">Remove Event</button>
 	        </div>
 	        <div class="panel-body" ng-if="eventFilter.eventDefinition">
 	           <label class="control-label">Filters
@@ -55,7 +55,7 @@
                     <select required class="form-control" ng-model="stateFilter.stateDefinition" ng-change="onStateChange(stateFilter)" ng-options="stateDefinition.name for stateDefinition in stateFilter.stateDefinitions"></select>
                    </label>
                 </div>
-                <button class="btn" ng-click="deleteItem(stateFilters, $index)">Remove State</button>
+                <button class="btn" ng-click="deleteStateFilter(stateFilters, $index)">Remove State</button>
             </div>
             <div class="panel-body" ng-if="stateFilter.stateDefinition">
                <label class="control-label">Filters
@@ -92,7 +92,7 @@
                     <select required class="form-control" ng-model="action.actionDefinition" ng-change="onActionChange(action)" ng-options="actionDefinition.name for actionDefinition in action.actionDefinitions"></select>
                    </label>
                 </div>
-                <button ng-if="$index > 0"  class="btn" ng-click="deleteItem(actions, $index)">Remove Action</button>
+                <button ng-if="$index > 0"  class="btn" ng-click="deleteAction(actions, $index)">Remove Action</button>
             </div>
             <div class="panel-body" ng-if="action.actionDefinition">
 

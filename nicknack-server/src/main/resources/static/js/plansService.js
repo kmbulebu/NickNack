@@ -173,11 +173,11 @@ angular.module('plansService', [ 'apiService' ]).factory(
 
 					return promise;
 				},
-				'createAction' : function(planResource, actions) {
+				'createAction' : function(planResource, action) {
 					var defer = $q.defer();
 					var promise = defer.promise;
 					
-					planResource.$post('Actions', null, actions).then(
+					planResource.$post('Actions', null, action).then(
 						function(success) {
 							// Success
 							defer.resolve(success);
@@ -222,6 +222,172 @@ angular.module('plansService', [ 'apiService' ]).factory(
 						}
 					);
 						
+					return promise;
+				},
+				'updatePlan' : function(plan) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+	
+					plan.$put('self', null, plan).then(
+						function(success) {
+							// Success
+							defer.resolve(success);
+						}, function(error) {
+							defer.reject(error);
+						}
+					);
+					
+					return promise;
+				},
+				'updateEventFilter' : function(eventFilterResource, newEventFilter) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+					
+					eventFilterResource.$put('self', null, newEventFilter).then(
+						function(success) {
+							// Success
+							defer.resolve(success);
+						}, function(error) {
+							defer.reject(error);
+						}
+					);
+
+					return promise;
+				},
+				'updateStateFilter' : function(stateFilterResource, newStateFilter) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+					
+					stateFilterResource.$put('self', null, newStateFilter).then(
+						function(success) {
+							// Success
+							defer.resolve(success);
+						}, function(error) {
+							defer.reject(error);
+						}
+					);
+
+					return promise;
+				},
+				'updateAction' : function(actionResource, newAction) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+					
+					actionResource.$put('self', null, newAction).then(
+						function(success) {
+							// Success
+							defer.resolve(success);
+						}, function(error) {
+							defer.reject(error);
+						}
+					);
+					
+					return promise;
+				},
+				'deleteEventFilter' : function(eventFilterResource) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+					
+					eventFilterResource.$del('self').then(
+						function(success) {
+							// Success
+							defer.resolve(success);
+						}, function(error) {
+							defer.reject(error);
+						}
+					);
+
+					return promise;
+				},
+				'deleteStateFilter' : function(stateFilterResource) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+					
+					stateFilterResource.$del('self').then(
+						function(success) {
+							// Success
+							defer.resolve(success);
+						}, function(error) {
+							defer.reject(error);
+						}
+					);
+
+					return promise;
+				},
+				'deleteAction' : function(actionResource) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+					
+					actionResource.$del('self').then(
+						function(success) {
+							// Success
+							defer.resolve(success);
+						}, function(error) {
+							defer.reject(error);
+						}
+					);
+					
+					return promise;
+				},
+				'updateCompletePlan' : function(plan, eventFilters, stateFilters, actions, deletedEventFilters, deletedStateFilters, deletedActions) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+					var self = this;
+					
+					
+					
+					var promises = [];
+					// Update Plan
+					promises.push(self.updatePlan(plan));
+					// Update event filters
+					
+					angular.forEach(eventFilters, function(entry) {
+						if (entry.resource.uuid) {
+							promises.push(self.updateEventFilter(entry.resource, entry.data));
+						} else {
+							promises.push(self.createEventFilter(plan, entry.data));
+						}
+					});
+					// Update state filters
+					angular.forEach(stateFilters, function(entry) {
+						if (entry.resource.uuid) {
+							promises.push(self.updateStateFilter(entry.resource, entry.data));
+						} else {
+							promises.push(self.createStateFilter(plan, entry.data));
+						}
+					});
+					// Update actions
+					angular.forEach(actions, function(entry) {
+						if (entry.resource.uuid) {
+							promises.push(self.updateAction(entry.resource, entry.data));
+						} else {
+							promises.push(self.createAction(plan, entry.data));
+						}
+					});
+					// Delete event filters
+					angular.forEach(deletedEventFilters, function(eventFilter) {
+						promises.push(self.deleteEventFilter(eventFilter));
+					});
+					// Delete state filters
+					angular.forEach(deletedStateFilters, function(stateFilter) {
+						promises.push(self.deleteStateFilter(stateFilter));
+					});
+					// Delete actions
+					angular.forEach(deletedActions, function(action) {
+						promises.push(self.deleteAction(action));
+					});
+					// Create new stuff
+					
+					// Wait for all these actions to complete before resolving
+					$q.all(promises).then(
+						function(success) {
+							defer.resolve(success);
+						},
+						function(error) {
+							defer.reject(error);
+						}
+					);
+				
 					return promise;
 				}
 				

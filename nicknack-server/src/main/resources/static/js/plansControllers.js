@@ -14,11 +14,20 @@ plansControllers.controller('PlansCtrl', ['$scope', '$route', 'PlansService', 'p
       	
       }]);
 
-plansControllers.controller('PlanCtrl', ['$scope', '$route', 'EventsService', 'StatesService', 'ActionsService', 'PlansService', 'providers', 'plan', 'eventFilters', 'stateFilters', 'actions', 
-    function ($scope, $route, EventsService, StatesService, ActionsService, PlansService, providers, plan, eventFilters, stateFilters, actions) {
+plansControllers.controller('PlanCtrl', ['$scope', '$route', 'halClient', 'EventsService', 'StatesService', 'ActionsService', 'PlansService', 'providers', 'plan', 'eventFilters', 'stateFilters', 'actions', 
+    function ($scope, $route, halClient, EventsService, StatesService, ActionsService, PlansService, providers, plan, eventFilters, stateFilters, actions) {
 	
 	// Plan
 	$scope.plan = plan;
+	
+	// Deletes
+	var deletedEventFilters = [];
+	var deletedStateFilters = [];
+	var deletedActions = [];
+	
+	$scope.deleteItem = function(array, index) {
+		array.splice(index, 1);
+	};
 	
 	// Events
 	$scope.providers = providers;
@@ -71,12 +80,15 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', 'EventsService', 'S
 		});
 	};	
 	
-	$scope.addAttributeFilterExpression = function(attributeFilterExpressions) {
-		attributeFilterExpressions.push({});
+	$scope.deleteEventFilter = function(array, index) {
+		if (array[index].uuid) {
+			deletedEventFilters.push(array[index]);
+		}
+		array.splice(index, 1);
 	};
 	
-	$scope.deleteItem = function(array, index) {
-		array.splice(index, 1);
+	$scope.addAttributeFilterExpression = function(attributeFilterExpressions) {
+		attributeFilterExpressions.push({});
 	};
 	
 	angular.forEach($scope.eventFilters, function(eventFilter) {
@@ -140,6 +152,13 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', 'EventsService', 'S
 		});
 	};
 	
+	$scope.deleteStateFilter = function(array, index) {
+		if (array[index].uuid) {
+			deletedEventFilters.push(array[index]);
+		}
+		array.splice(index, 1);
+	};
+	
 	angular.forEach($scope.stateFilters, function(stateFilter) {
 		// If a provider is selected, find the object to mark it as selected
 		if (stateFilter.appliesToProvider) {
@@ -161,9 +180,11 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', 'EventsService', 'S
 			function(success) {
 				action.attributeDefinitions = success;
 				
-				angular.forEach(action.attributeDefinitions, function(attributeDefinition) {
-					attributeDefinition.value = action.attributes[attributeDefinition.uuid];
-				});
+				if (action.attributes) {
+					angular.forEach(action.attributeDefinitions, function(attributeDefinition) {
+						attributeDefinition.value = action.attributes[attributeDefinition.uuid];
+					});
+				}
 			}
 		);
 	};
@@ -193,6 +214,13 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', 'EventsService', 'S
 		});
 	}; 
 	
+	$scope.deleteAction = function(array, index) {
+		if (array[index].uuid) {
+			deletedActions.push(array[index]);
+		}
+		array.splice(index, 1);
+	};
+	
 	angular.forEach($scope.actions, function(action) {
 		// If a provider is selected, find the object to mark it as selected
 		if (action.appliesToProvider) {
@@ -211,7 +239,7 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', 'EventsService', 'S
 		var plan = $scope.plan;
 		
 		// Build eventFilters
-		var eventFilters = [];
+		var eventFilterUpdates = [];
 		angular.forEach($scope.eventFilters, function(eventFilter) {
 			var attributeFilterExpressions = [];
 			angular.forEach(eventFilter.attributeFilterExpressions, function(scopeFilterExpression) {
@@ -221,14 +249,21 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', 'EventsService', 'S
 	             	operand: [scopeFilterExpression.operand]
 				});
 			});
-			eventFilters.push({ 
-				appliesToEventDefinition:eventFilter.eventDefinition.uuid,
-				appliesToProvider:eventFilter.provider.uuid,
-				attributeFilterExpressions:attributeFilterExpressions
-	        });
+			
+			var newEventFilter = {};
+			newEventFilter.appliesToEventDefinition = eventFilter.eventDefinition.uuid;
+			newEventFilter.appliesToProvider = eventFilter.provider.uuid;
+			newEventFilter.attributeFilterExpressions = attributeFilterExpressions;
+			newEventFilter.uuid = eventFilter.uuid;
+
+			eventFilterUpdates.push({
+				resource: eventFilter,
+				data: newEventFilter
+			});
+			
 		});
 		// Build stateFilters
-		var stateFilters = [];
+		var stateFilterUpdates = [];
 		angular.forEach($scope.stateFilters, function(stateFilter) {
 			var attributeFilterExpressions = [];
 			angular.forEach(stateFilter.attributeFilterExpressions, function(scopeFilterExpression) {
@@ -238,29 +273,48 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', 'EventsService', 'S
 	             	operand: [scopeFilterExpression.operand]
 				});
 			});
-			stateFilters.push({ 
+			
+			var newStateFilter = {
 				appliesToStateDefinition:stateFilter.stateDefinition.uuid,
 				appliesToProvider:stateFilter.provider.uuid,
-				attributeFilterExpressions:attributeFilterExpressions
+				attributeFilterExpressions:attributeFilterExpressions,
+				uuid:stateFilter.uuid
+			};
+			stateFilterUpdates.push({ 
+				resource: stateFilter,
+				data: newStateFilter
 	        });
 		});
 		// Build actions
-		var actions = [];
+		var actionUpdates = [];
 		angular.forEach($scope.actions, function(action) {
 			var parameters = {};
 			angular.forEach(action.attributeDefinitions, function(attributeDefinition) {
 				parameters[attributeDefinition.uuid] = attributeDefinition.value;
 			});
-			actions.push({ 
+			var newAction = { 
 				appliesToActionDefinition:action.actionDefinition.uuid,
 				appliesToProvider:action.provider.uuid,
-				parameters:parameters
+				parameters:parameters,
+				uuid: action.uuid
+	        };
+			actionUpdates.push({ 
+				resource: action,
+				data: newAction
 	        });
 		});
 		
 		//Post to web service
 		if (plan.uuid) {
 			// Update existing
+			PlansService.updateCompletePlan(plan, eventFilterUpdates, stateFilterUpdates, actionUpdates, deletedEventFilters, deletedStateFilters, deletedActions).then(
+				function(success) {
+					
+				},
+				function(error) {
+					
+				}
+			);
 		} else {
 			// Create new
 			PlansService.createCompletePlan(plan, eventFilters, stateFilters, actions).then(
