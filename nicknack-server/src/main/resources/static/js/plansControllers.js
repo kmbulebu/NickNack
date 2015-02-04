@@ -14,8 +14,8 @@ plansControllers.controller('PlansCtrl', ['$scope', '$route', 'PlansService', 'p
       	
       }]);
 
-plansControllers.controller('PlanCtrl', ['$scope', '$route', 'halClient', 'EventsService', 'StatesService', 'ActionsService', 'PlansService', 'providers', 'plan', 'eventFilters', 'stateFilters', 'actions', 
-    function ($scope, $route, halClient, EventsService, StatesService, ActionsService, PlansService, providers, plan, eventFilters, stateFilters, actions) {
+plansControllers.controller('PlanCtrl', ['$scope', '$route', '$location', 'EventsService', 'StatesService', 'ActionsService', 'PlansService', 'providers', 'plan', 'eventFilters', 'stateFilters', 'actions', 
+    function ($scope, $route, $location, EventsService, StatesService, ActionsService, PlansService, providers, plan, eventFilters, stateFilters, actions) {
 	
 	// Plan
 	$scope.plan = plan;
@@ -309,7 +309,7 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', 'halClient', 'Event
 			// Update existing
 			PlansService.updateCompletePlan(plan, eventFilterUpdates, stateFilterUpdates, actionUpdates, deletedEventFilters, deletedStateFilters, deletedActions).then(
 				function(success) {
-					
+					$location.hash('#/plans');
 				},
 				function(error) {
 					
@@ -319,7 +319,7 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', 'halClient', 'Event
 			// Create new
 			PlansService.createCompletePlan(plan, eventFilters, stateFilters, actions).then(
 				function(success) {
-					
+					$location.hash('#/plans');
 				},
 				function(error) {
 					

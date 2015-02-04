@@ -1,4 +1,4 @@
-angular.module('newplanService', ['angular-hal']).factory('WebsiteService', [ 'halClient', function(halClient) {
+angular.module('websiteService', ['angular-hal']).factory('WebsiteService', [ 'halClient', function(halClient) {
 
     return {
         'deletePlan' :

@@ -26,7 +26,7 @@ actionsControllers.controller('ActionBookmarkCtrl', ['$scope', 'ActionsService',
 	$scope.onActionDefinitionChange = function(actionDefinition) {
 		$scope.action.appliesToActionDefinition = actionDefinition.uuid;
 		
-		ActionsService.getAttributeDefinitions(actionDefinition.uuid).then(
+		ActionsService.getAttributeDefinitions(actionDefinition).then(
 			function (success) {
 				$scope.attributeDefinitions = success;
 			});

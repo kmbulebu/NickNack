@@ -1,5 +1,5 @@
 var nicknackApp = angular.module('nicknackApp', ['angular-hal', 'ngRoute', 'mgo-angular-wizard',
-		'nicknackControllers', 'actionsControllers', 'plansControllers', 'plansService', 'restService', 'providersService', 'eventsService', 'statesService', 'staticDataService', 'actionsService']);
+		'nicknackControllers', 'actionsControllers', 'plansControllers', 'plansService', 'restService', 'providersService', 'eventsService', 'statesService', 'staticDataService', 'websiteService', 'actionsService']);
 
 nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {	
 	$routeProvider.when('/liveEvents', {
@@ -9,18 +9,8 @@ nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider,
 		templateUrl : 'partials/now.html',
 		controller : 'NowCtrl',
 		resolve: {
-			providers: function($route, RestService) {
-				return RestService
-					.api()
-					.then(function (apiResource) {
-						return apiResource.$get('Providers');
-				}).then(function (resource) {
-					if (resource.$has('Providers')) {
-						return resource.$get('Providers');
-					} else {
-						return [];
-					}
-				});
+			providers: function(ProvidersService) {
+				return ProvidersService.getProviders();
 			}
 		}
 	}).when('/home', {

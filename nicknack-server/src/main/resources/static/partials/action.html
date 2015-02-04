@@ -14,7 +14,7 @@
 			<div class="form-group"
 				ng-repeat="attributeDefinition in attributeDefinitions">
 				<label class="control-label">{{attributeDefinition.name}} <span ng-if="attributeDefinition.required" class="label label-default">Required</span>
-				    <attribute-input required ng-required="attributeDefinition.required" class="form-control" ng-model="action.parameters[attributeDefinition.uuid]" definition="{{attributeDefinition}}"></attribute-input>
+				    <attribute-input required ng-required="attributeDefinition.required" class="form-control" ng-model="action.parameters[attributeDefinition.uuid]" definition="attributeDefinition"></attribute-input>
 				</label>
 			</div>
 			<button ng-click="runNow()" ng-disabled="actionAttributesForm.$invalid" class="btn btn-primary">Run Now</button>
