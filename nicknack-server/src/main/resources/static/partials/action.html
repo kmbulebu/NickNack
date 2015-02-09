@@ -4,17 +4,22 @@
 			<b>Do</b> this action:
 		</div>
 		<div class="panel-body">
+	       	<div>
+	            <label class="control-label">Provider
+	             <select required class="form-control" ng-model="provider" ng-change="onProviderChange(provider)" ng-options="provider.name for provider in providers"></select>
+	            </label>
+            </div>
 			<div class="form-group">
 				<label class="control-label">Action 
-				    <select required id="selectedActionDefinition" class="form-control"
-					   ng-model="selectedActionDefinition" ng-change="onActionDefinitionChange(selectedActionDefinition)" ng-options="actionDefinition.name for actionDefinition in actionDefinitions">
+				    <select required class="form-control"
+					   ng-model="actionDefinition" ng-change="onActionDefinitionChange(provider, actionDefinition)" ng-options="actionDefinition.name for actionDefinition in actionDefinitions">
 					</select>
 				</label>
 			</div>
 			<div class="form-group"
 				ng-repeat="attributeDefinition in attributeDefinitions">
 				<label class="control-label">{{attributeDefinition.name}} <span ng-if="attributeDefinition.required" class="label label-default">Required</span>
-				    <attribute-input required ng-required="attributeDefinition.required" class="form-control" ng-model="action.parameters[attributeDefinition.uuid]" definition="attributeDefinition"></attribute-input>
+				    <attribute-input required ng-required="attributeDefinition.required" class="form-control" ng-model="attributes[attributeDefinition.uuid]" definition="attributeDefinition"></attribute-input>
 				</label>
 			</div>
 			<button ng-click="runNow()" ng-disabled="actionAttributesForm.$invalid" class="btn btn-primary">Run Now</button>
@@ -30,7 +35,7 @@
 		<div class="panel-body">
 			<div class="form-group">
 				<label class="control-label">Description
-				<input required type="text" class="form-control" ng-model="action.description" /> 
+				<input required type="text" class="form-control" ng-model="description" /> 
 				</label>
 			</div>
 			<button ng-click="save()" ng-disabled="actionAttributesForm.$invalid || saveForm.$invalid" class="btn btn-primary">Save</button>

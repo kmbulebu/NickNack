@@ -14,54 +14,73 @@ actionsControllers.controller('ActionBookmarksCtrl', ['$scope', '$route', 'Stati
 	
 }]);
 
-actionsControllers.controller('ActionBookmarkCtrl', ['$scope', 'ActionsService', 'WebsiteService', 'action', 'actionDefinitions', 'attributeDefinitions',
-                                                 function ($scope, ActionsService, WebsiteService, action, actionDefinitions, attributeDefinitions) {
+actionsControllers.controller('ActionBookmarkCtrl', ['$scope', '$location', '$routeParams', 'ActionsService', 'WebsiteService', 'providers', 'action', 'actionDefinitions', 'attributeDefinitions',
+                                                 function ($scope, $location, $routeParams, ActionsService, WebsiteService, providers, action, actionDefinitions, attributeDefinitions) {
 	
 	// Bind to the view
+	$scope.providers = providers;
+	$scope.description = action.description;
+	$scope.attributes = action.attributes;
 	$scope.action = action;
 	$scope.actionDefinitions = actionDefinitions;
-	$scope.attributeDefinitions = [];
+	$scope.attributeDefinitions = attributeDefinitions;
 	
-	// When an action definition is selected, update the parameter list and set the uuid
-	$scope.onActionDefinitionChange = function(actionDefinition) {
-		$scope.action.appliesToActionDefinition = actionDefinition.uuid;
-		
-		ActionsService.getAttributeDefinitions(actionDefinition).then(
-			function (success) {
-				$scope.attributeDefinitions = success;
-			});
-   	};
+	$scope.onProviderChange = function(provider) {
+		$location.path('/newActionBookmark/provider/' + provider.uuid + '/actionDefinition//action/');
+	}
 	
-	// If an action definition is selected, find the object to mark it as selected
-	if ($scope.action.appliesToActionDefinition) {
-		for (i = 0; i < $scope.actionDefinitions.length; i++) {
-			if ($scope.actionDefinitions[i].uuid === $scope.action.appliesToActionDefinition) {
-				$scope.selectedActionDefinition = $scope.actionDefinitions[i];
-				$scope.onActionTypeChange();
+	$scope.onActionDefinitionChange = function(provider, actionDefinition) {
+		$location.path('/newActionBookmark/provider/' + provider.uuid + '/actionDefinition/' + actionDefinition.uuid + '/action/');
+	}
+	
+	if ($routeParams.provider) {
+		for (i = 0; i < providers.length; i++) {
+			if (providers[i].uuid === $routeParams.provider) {
+				$scope.provider = providers[i];
 				break;
 			}
 		}
 	}
 	
+	if ($routeParams.actionDefinitionUuid) {
+		for (i = 0; i < providers.length; i++) {
+			if (actionDefinitions[i].uuid === $routeParams.actionDefinitionUuid) {
+				$scope.actionDefinition = actionDefinitions[i];
+				break;
+			}
+		}
+	}
+	
+	
 	$scope.deleteAction = function(actionUuid) {
 		WebsiteService.deleteActionBookmark(actionUuid).then(function () {
-			$route.reload();
+			window.location = '#/actionBookmarks';
 		});
 		
 	};
 	
+	buildAction = function() {
+		return {
+			appliesToProvider: $scope.provider.uuid,
+			appliesToActionDefinition: $scope.actionDefinition.uuid,
+			attributes: $scope.attributes,
+			description: $scope.description,
+			uuid: $scope.action.uuid
+		};
+	}
+	
 	$scope.runNow = function() {
-		WebsiteService.runActionNow($scope.action);
+		WebsiteService.runActionNow(buildAction());
    	};
 	
    	$scope.save = function() {
-   		if ($scope.action.uuid) {
-	   		WebsiteService.updateActionBookmark($scope.action.uuid, $scope.action).then( function() {
+   		if (action.uuid) {
+	   		WebsiteService.updateActionBookmark(action.uuid, buildAction()).then( function() {
 				window.location = '#/actionBookmarks';
 			});
    		} else {
-   			WebsiteService.saveActionBookmark($scope.action).then( function() {
-				window.location = '#/actionBookmarks';
+   			WebsiteService.saveActionBookmark(buildAction()).then( function() {
+   				window.location = '#/actionBookmarks';
 			});
    		}
    	};

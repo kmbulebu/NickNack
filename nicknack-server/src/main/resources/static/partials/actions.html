@@ -1,13 +1,13 @@
 <h2 class="sub-header">Actions</h2>
 <div>
-<a type="button" href="#/newActionBookmark" class="btn btn-primary">Create New</a>
+<a type="button" href="#newActionBookmark/provider//actionDefinition//action/" class="btn btn-primary">Create New</a>
 </div>
 <br>
 <div class="well clearfix" ng-repeat="action in actions | filter:{description:'!!'} track by $index">
    	<span class="h4">{{action.description}}</span>
    	<div class="pull-right">
     	<a type="button" class="btn btn-primary" ng-click="runNow(action.uuid)"><i class="glyphicon glyphicon-play"></i> Run</a>
-   		<a type="button" class="btn btn-default" href="#/actionBookmarks/{{action.uuid}}"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
+   		<a type="button" class="btn btn-default" href="#/newActionBookmark/provider/{{action.appliesToProvider}}/actionDefinition/{{action.appliesToActionDefinition}}/action/{{action.uuid}}"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
    	</div>  
 </div>  
 

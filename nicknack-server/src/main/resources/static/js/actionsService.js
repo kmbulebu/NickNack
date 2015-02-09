@@ -1,5 +1,5 @@
-angular.module('actionsService', [ 'apiService' ]).factory(
-		'ActionsService', [ 'ApiService', '$q', function(ApiService, $q) {
+angular.module('actionsService', [ 'apiService', 'providersService']).factory(
+		'ActionsService', [ 'ApiService', 'ProvidersService', '$q', function(ApiService, ProvidersService, $q) {
 
 			return {
 				'getActionDefinitions' : function() {
@@ -44,6 +44,30 @@ angular.module('actionsService', [ 'apiService' ]).factory(
 					
 					return promise;
 				},
+				'getActionDefinitionsByProviderUuid' : function(providerUuid) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+					
+					ProvidersService.getProvider(providerUuid).then(
+						function(provider) {
+							provider.$get('ActionDefinitions').then(
+								function(success) {
+									if (success.$has('ActionDefinitions')) {
+										defer.resolve(success.$get('ActionDefinitions'));
+									} else {
+										defer.resolve([]);
+									}
+								}, function(error) {
+									defer.reject(error);
+								}
+							);
+						}, function(error) {
+							defer.reject(error);
+						}
+					);
+					
+					return promise;
+				},
 				'getActionDefinition' : function(uuid) {
 					var defer = $q.defer();
 					var promise = defer.promise;
@@ -76,6 +100,29 @@ angular.module('actionsService', [ 'apiService' ]).factory(
 						}
 					);
 	
+					return promise;
+				},
+				'getAttributeDefinitionsByUuid' : function(actionDefinitionUuid) {
+					var defer = $q.defer();
+					var promise = defer.promise;
+					
+					this.getActionDefinition(actionDefinitionUuid).then(
+						function(actionDefinition) {
+							actionDefinition.$get('AttributeDefinitions').then(
+								function(success) {
+									if (success.$has('AttributeDefinitions')) {
+										defer.resolve(success.$get('AttributeDefinitions'));
+									} else {
+										defer.resolve([]);
+									}
+								}, function(error) {
+									defer.reject(error);
+								}
+							);
+						}, function(error) {
+							defer.reject(error);
+						}
+					);
 					return promise;
 				}
 			};

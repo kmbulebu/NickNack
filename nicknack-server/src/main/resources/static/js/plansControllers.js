@@ -309,7 +309,7 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', '$location', 'Event
 			// Update existing
 			PlansService.updateCompletePlan(plan, eventFilterUpdates, stateFilterUpdates, actionUpdates, deletedEventFilters, deletedStateFilters, deletedActions).then(
 				function(success) {
-					$location.hash('#/plans');
+					$location.path('/plans');
 				},
 				function(error) {
 					
@@ -319,7 +319,7 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', '$location', 'Event
 			// Create new
 			PlansService.createCompletePlan(plan, eventFilters, stateFilters, actions).then(
 				function(success) {
-					$location.hash('#/plans');
+					$location.path('/plans');
 				},
 				function(error) {
 					

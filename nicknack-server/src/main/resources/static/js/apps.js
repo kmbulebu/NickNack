@@ -42,34 +42,30 @@ nicknackApp.config([ '$routeProvider', '$httpProvider', function($routeProvider,
 				});
 			}
 		}
-	}).when('/actionBookmarks/:actionUuid', {
+	}).when('/newActionBookmark/provider/:provider?/actionDefinition/:actionDefinitionUuid?/action/:action?', {
 		templateUrl : 'partials/action.html',
 		controller : 'ActionBookmarkCtrl',
 		resolve: {
+			providers: function(ProvidersService) {
+				return ProvidersService.getProviders();
+			},
 			action: function($route, WebsiteService) {
-					return WebsiteService
-						.getActionBookmark($route.current.params.actionUuid);
-				},
-			actionDefinitions: function($route, StaticDataService) {
-					return StaticDataService.actionDefinitions();
+				if ($route.current.params.action) {
+					return WebsiteService.getActionBookmark($route.current.params.action); 
+				} else {
+					return {attributes:{}};
 				}
-			}
-	}).when('/newActionBookmark/:actionDefinitionUuid?', {
-		templateUrl : 'partials/action.html',
-		controller : 'ActionBookmarkCtrl',
-		resolve: {
-			action: function() {
-					var newAction = {
-							parameters: {}
-					}
-					return newAction;
 			},
 			actionDefinitions: function($route, ActionsService) {
-					return ActionsService.getActionDefinitions();
+				if ($route.current.params.provider) {
+					return ActionsService.getActionDefinitionsByProviderUuid($route.current.params.provider)
+				} else {
+					return [];
+				}
 			},
 			attributeDefinitions: function($route, ActionsService) {
 				if ($route.current.params.actionDefinitionUuid) {
-					return ActionsService.getAttributeDefinitions($route.current.params.actionDefinitionUuid)
+					return ActionsService.getAttributeDefinitionsByUuid($route.current.params.actionDefinitionUuid)
 				} else {
 					return [];
 				}
