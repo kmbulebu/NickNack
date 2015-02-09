@@ -317,7 +317,7 @@ plansControllers.controller('PlanCtrl', ['$scope', '$route', '$location', 'Event
 			);
 		} else {
 			// Create new
-			PlansService.createCompletePlan(plan, eventFilters, stateFilters, actions).then(
+			PlansService.createCompletePlan(plan, eventFilterUpdates, stateFilterUpdates, actionUpdates).then(
 				function(success) {
 					$location.path('/plans');
 				},

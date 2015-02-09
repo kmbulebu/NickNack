@@ -198,15 +198,15 @@ angular.module('plansService', [ 'apiService' ]).factory(
 							var promises = [];
 							// Create event filters
 							angular.forEach(eventFilters, function(eventFilter) {
-								promises.push(self.createEventFilter(planResource, eventFilter));
+								promises.push(self.createEventFilter(planResource, eventFilter.data));
 							});
 							// Create state filters
 							angular.forEach(stateFilters, function(stateFilter) {
-								promises.push(self.createStateFilter(planResource, stateFilter));
+								promises.push(self.createStateFilter(planResource, stateFilter.data));
 							});
 							// Create actions
 							angular.forEach(actions, function(action) {
-								promises.push(self.createAction(planResource, action));
+								promises.push(self.createAction(planResource, action.data));
 							});
 							// Wait for all these posts to complete before resolving
 							$q.all(promises).then(
