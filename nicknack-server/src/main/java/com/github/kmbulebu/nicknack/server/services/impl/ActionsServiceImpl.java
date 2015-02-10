@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.kmbulebu.nicknack.core.plans.Plan;
 import com.github.kmbulebu.nicknack.server.model.ActionRepository;
 import com.github.kmbulebu.nicknack.server.model.ActionResource;
 import com.github.kmbulebu.nicknack.server.model.PlanRepository;
@@ -47,17 +48,25 @@ public class ActionsServiceImpl implements ActionsService {
 		return action;
 	}
 	
-	private void throwIfNotExists(UUID actionUuid) throws ActionNotFoundException {
+	/*private void throwIfNotExists(UUID actionUuid) throws ActionNotFoundException {
 		if (!actionRepo.exists(actionUuid)) {
 			throw new ActionNotFoundException(actionUuid);
 		}
-	}
+	}*/
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional
 	public void deleteAction(UUID uuid) throws ActionNotFoundException {
-		throwIfNotExists(uuid);
-		actionRepo.delete(uuid);
+		final ActionResource resource = getAction(uuid);
+		
+		if (resource.getPlans().isEmpty()) {
+			actionRepo.delete(uuid);
+		} else {
+			for (Plan plan : resource.getPlans()) {
+				deleteAction((PlanResource) plan, resource);
+			}
+		}
+		
 	}
 
 	@Override
@@ -110,6 +119,10 @@ public class ActionsServiceImpl implements ActionsService {
 		}
 		
 		
+		deleteAction(plan, action);
+	}
+	
+	protected void deleteAction(PlanResource plan, ActionResource action) {
 		plan.getActions().remove(action);
 		action.getPlans().remove(plan);
 		
