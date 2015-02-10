@@ -3,16 +3,16 @@ package com.github.kmbulebu.nicknack.providers.dsc.attributes;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
-public class PgmNumberAttributeDefinition extends BasicAttributeDefinition {
+public class PgmNumberAttributeDefinition extends BasicAttributeDefinition<WholeNumberType> {
 	
 	public static final UUID DEF_UUID = UUID.fromString("b60f1f17-4024-40b3-921f-e00ce0790565");
 	
 	public static final PgmNumberAttributeDefinition INSTANCE = new PgmNumberAttributeDefinition();
 	
 	public PgmNumberAttributeDefinition() {
-		super(DEF_UUID, "Pgm Output", IntegerUnit.INSTANCE, true);
+		super(DEF_UUID, "Pgm Output", new WholeNumberType(1, 4, 1), true);
 	}
 
 /*	@Override

@@ -3,16 +3,16 @@ package com.github.kmbulebu.nicknack.providers.dsc.attributes;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.StringUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.TextType;
 
-public class UserCodeAttributeDefinition extends BasicAttributeDefinition {
+public class UserCodeAttributeDefinition extends BasicAttributeDefinition<TextType> {
 	
 	public static final UUID DEF_UUID = UUID.fromString("e41c0c10-1f18-471f-a0ab-888815c54adc");
 	
 	public static final UserCodeAttributeDefinition INSTANCE = new UserCodeAttributeDefinition();
 	
 	public UserCodeAttributeDefinition() {
-		super(DEF_UUID, "User Code", StringUnit.INSTANCE, true);
+		super(DEF_UUID, "User Code", new TextType(), true);
 	}
 
 /*	@Override

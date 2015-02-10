@@ -3,16 +3,16 @@ package com.github.kmbulebu.nicknack.providers.dsc.attributes;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
-public class PartitionNumberAttributeDefinition extends BasicAttributeDefinition {
+public class PartitionNumberAttributeDefinition extends BasicAttributeDefinition<WholeNumberType> {
 	
 	public static final UUID DEF_UUID = UUID.fromString("5748a2bb-8030-4e17-a325-494ad11e3893");
 	
 	public static final PartitionNumberAttributeDefinition INSTANCE = new PartitionNumberAttributeDefinition();
 	
 	public PartitionNumberAttributeDefinition() {
-		super(DEF_UUID, "Partition Number", IntegerUnit.INSTANCE, true);
+		super(DEF_UUID, "Partition Number", new WholeNumberType(1, 16, 1), true);
 	}
 
 	/*@Override
