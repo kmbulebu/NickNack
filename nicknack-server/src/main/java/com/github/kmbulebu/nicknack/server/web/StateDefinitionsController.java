@@ -92,7 +92,7 @@ public class StateDefinitionsController {
 		for (StateDefinition stateDefinition : stateDefinitions) {
 			final StateDefinitionResource resource = new StateDefinitionResource(stateDefinition);
 			resource.add(linkTo(methodOn(StateDefinitionsController.class).getStateDefinition(stateDefinition.getUUID())).withSelfRel());
-			resource.add(linkTo(methodOn(StateDefinitionsController.class).getAttributeDefinitions(stateDefinition.getUUID())).withRel("attributeDefinitions"));
+			resource.add(linkTo(methodOn(StateDefinitionsController.class).getAttributeDefinitions(stateDefinition.getUUID())).withRel("AttributeDefinitions"));
 			stateDefinitionResources.add(resource);
 		}
 		
@@ -115,7 +115,7 @@ public class StateDefinitionsController {
 		final StateDefinition stateDefinition = stateDefinitionService.getStateDefinition(uuid);
 		final StateDefinitionResource resource = new StateDefinitionResource(stateDefinition);
 		resource.add(linkTo(methodOn(StateDefinitionsController.class).getStateDefinition(stateDefinition.getUUID())).withSelfRel());
-		resource.add(linkTo(methodOn(StateDefinitionsController.class).getAttributeDefinitions(uuid)).withRel("attributeDefinitions"));
+		resource.add(linkTo(methodOn(StateDefinitionsController.class).getAttributeDefinitions(uuid)).withRel("AttributeDefinitions"));
 		
 		
 		if (LOG.isTraceEnabled()) {
