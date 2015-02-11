@@ -5,14 +5,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.StringUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.TextType;
 
-public class PlayerItemTypeAttributeDefinition extends BasicAttributeDefinition {
+public class PlayerItemTypeAttributeDefinition extends BasicAttributeDefinition<TextType> {
 	
 	public static final PlayerItemTypeAttributeDefinition INSTANCE = new PlayerItemTypeAttributeDefinition();
 
 	public PlayerItemTypeAttributeDefinition() {
-		super(UUID.fromString("01309847-cd0f-4170-b0cc-3010dbf1f566"), "Media Type", StringUnit.INSTANCE, false);
+		super(UUID.fromString("01309847-cd0f-4170-b0cc-3010dbf1f566"), "Media Type", new TextType(), false);
 	}
 	
 	public static final Map<String, String> VALUES = new HashMap<>();

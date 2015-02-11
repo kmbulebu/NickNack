@@ -3,16 +3,16 @@ package com.github.kmbulebu.nicknack.providers.xbmc.attributes;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
-public class DurationAttributeDefinition extends BasicAttributeDefinition {
+public class DurationAttributeDefinition extends BasicAttributeDefinition<WholeNumberType> {
 	
 	public static final UUID DEF_UUID = UUID.fromString("f9ffe599-6208-41f7-a6fa-124ec4c19576");
 	
 	public static final DurationAttributeDefinition INSTANCE = new DurationAttributeDefinition();
 
 	public DurationAttributeDefinition() {
-		super(DEF_UUID, "Duration (ms)", IntegerUnit.INSTANCE, true);
+		super(DEF_UUID, "Duration (ms)", new WholeNumberType(1500, 10000, 500), true);
 	}
 
 	/*@Override

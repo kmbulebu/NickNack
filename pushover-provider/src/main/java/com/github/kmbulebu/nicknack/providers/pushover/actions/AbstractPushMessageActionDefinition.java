@@ -14,12 +14,12 @@ import com.github.kmbulebu.nicknack.providers.pushover.attributes.UserAttributeD
 
 public abstract class AbstractPushMessageActionDefinition extends BasicActionDefinition {
 	
-	public AbstractPushMessageActionDefinition(UUID uuid, String name, String description, AttributeDefinition... attributeDefinitions) {
+	public AbstractPushMessageActionDefinition(UUID uuid, String name, String description, AttributeDefinition<?>... attributeDefinitions) {
 		super(uuid, name, description, appendCommonAttributeDefinitions(attributeDefinitions));
 	}
 	
-	private static AttributeDefinition[] appendCommonAttributeDefinitions(AttributeDefinition... attributeDefinitions) {
-		final AttributeDefinition[] definitions = Arrays.copyOf(attributeDefinitions, attributeDefinitions.length + 3);
+	private static AttributeDefinition<?>[] appendCommonAttributeDefinitions(AttributeDefinition<?>... attributeDefinitions) {
+		final AttributeDefinition<?>[] definitions = Arrays.copyOf(attributeDefinitions, attributeDefinitions.length + 3);
 		definitions[definitions.length - 3] = MessageAttributeDefinition.INSTANCE;
 		definitions[definitions.length - 2] = UserAttributeDefinition.INSTANCE;
 		definitions[definitions.length - 1] = TokenAttributeDefinition.INSTANCE;

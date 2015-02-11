@@ -3,14 +3,14 @@ package com.github.kmbulebu.nicknack.providers.wemo.attributes;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.StringUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.TextType;
 
-public class FriendlyNameAttributeDefinition extends BasicAttributeDefinition {
+public class FriendlyNameAttributeDefinition extends BasicAttributeDefinition<TextType> {
 	
 	public static final FriendlyNameAttributeDefinition INSTANCE = new FriendlyNameAttributeDefinition();
 	
 	public FriendlyNameAttributeDefinition() {
-		super(UUID.fromString("06c6845b-9804-4cd9-821b-d8a394d50332"), "Friendly Name", StringUnit.INSTANCE, true);
+		super(UUID.fromString("06c6845b-9804-4cd9-821b-d8a394d50332"), "Friendly Name", new TextType(), true);
 	}
 
 }

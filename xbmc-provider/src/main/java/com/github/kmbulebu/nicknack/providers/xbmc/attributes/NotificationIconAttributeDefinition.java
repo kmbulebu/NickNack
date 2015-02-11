@@ -3,16 +3,16 @@ package com.github.kmbulebu.nicknack.providers.xbmc.attributes;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.StringUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.TextType;
 
-public class NotificationIconAttributeDefinition extends BasicAttributeDefinition {
+public class NotificationIconAttributeDefinition extends BasicAttributeDefinition<TextType> {
 	
 	public static final UUID DEF_UUID = UUID.fromString("7ef09391-4239-4f4c-913b-05306171a100");
 	
 	public static final NotificationIconAttributeDefinition INSTANCE = new NotificationIconAttributeDefinition();
 
 	public NotificationIconAttributeDefinition() {
-		super(DEF_UUID, "Icon", StringUnit.INSTANCE, true);
+		super(DEF_UUID, "Icon", new TextType(), true);
 	}
 
 /*	@Override

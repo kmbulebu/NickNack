@@ -3,16 +3,16 @@ package com.github.kmbulebu.nicknack.providers.xbmc.attributes;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.StringUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.TextType;
 
-public class HostAttributeDefinition extends BasicAttributeDefinition {
+public class HostAttributeDefinition extends BasicAttributeDefinition<TextType> {
 	
 	public static final UUID DEF_UUID = UUID.fromString("4e1bd491-fd3d-47bf-9910-8cf79b139b1d");
 	
 	public static final HostAttributeDefinition INSTANCE = new HostAttributeDefinition();
 
 	public HostAttributeDefinition() {
-		super(DEF_UUID, "Host", StringUnit.INSTANCE, true);
+		super(DEF_UUID, "Host", new TextType(), true);
 	}
 
 /*	@Override
