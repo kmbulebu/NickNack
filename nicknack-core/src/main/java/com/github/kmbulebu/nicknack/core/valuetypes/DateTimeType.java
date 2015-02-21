@@ -22,12 +22,12 @@ public class DateTimeType extends AbstractValueType<Date> {
 	}
 
 	@Override
-	public String save(Object settingValue) {
+	public String toString(Object settingValue) {
 		return Long.toString(Date.class.cast(settingValue).getTime());
 	}
 
 	@Override
-	public Date load(String savedData) {
+	public Date fromString(String savedData) {
 		return new Date(Long.parseLong(savedData));
 	}
 	

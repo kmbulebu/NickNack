@@ -21,12 +21,12 @@ public class CheckboxType extends AbstractValueType<Boolean> {
 	}
 
 	@Override
-	public String save(Object settingValue) {
+	public String toString(Object settingValue) {
 		return getTypeClass().cast(settingValue).toString();
 	}
 
 	@Override
-	public Boolean load(String savedData) {
+	public Boolean fromString(String savedData) {
 		return Boolean.parseBoolean(savedData);
 	}
 

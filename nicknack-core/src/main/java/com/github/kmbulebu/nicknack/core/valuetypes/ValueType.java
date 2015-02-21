@@ -39,17 +39,17 @@ public interface ValueType<T extends Serializable> {
 	public List<T> load(List<String> savedData);
 	
 	/**
-	 * Converts or serializes the settingValue to a representation suitable for saving in a configuration file.
+	 * Converts or serializes the settingValue to a representation suitable for showing the user.
 	 * @return String suitable for writing to a configuration file.
 	 */
-	public String save(Object settingValue);
+	public String toString(Object settingValue);
 	
 	/**
-	 * Converts or de-serializes a settingValue stored in the configuration file to a strong typed representation.
-	 * @param savedData String representation of the setting value, created by save().
+	 * Converts a settingValue entered by a user or stored in the configuration file to a strong typed representation.
+	 * @param savedData String representation of the setting value, created by a user or by toString().
 	 * @return ValueType The typed value sutiable for consumption by the provider.
 	 */
-	public T load(String savedData);
+	public T fromString(String savedData);
 	
 	/**
 	 * 

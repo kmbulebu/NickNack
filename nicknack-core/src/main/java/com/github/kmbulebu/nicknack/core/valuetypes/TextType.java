@@ -66,12 +66,12 @@ public class TextType extends AbstractValueType<String> {
 	}
 
 	@Override
-	public String save(Object settingValue) {
+	public String toString(Object settingValue) {
 		return getTypeClass().cast(settingValue);
 	}
 
 	@Override
-	public String load(String savedData) {
+	public String fromString(String savedData) {
 		return savedData;
 	}
 

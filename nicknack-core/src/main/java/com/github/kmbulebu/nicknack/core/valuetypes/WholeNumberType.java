@@ -68,12 +68,12 @@ public class WholeNumberType extends AbstractValueType<Integer> {
 	}
 
 	@Override
-	public String save(Object settingValue) {
+	public String toString(Object settingValue) {
 		return getTypeClass().cast(settingValue).toString();
 	}
 
 	@Override
-	public Integer load(String savedData) {
+	public Integer fromString(String savedData) {
 		return Integer.parseInt(savedData);
 	}
 	

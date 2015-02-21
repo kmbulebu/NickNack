@@ -355,10 +355,10 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 			if (values != null) {
 				if (definition.isArray()) {
 					for (Object value : values) {
-						providerConfig.addProperty(definition.getKey(), definition.getSettingType().save(value));
+						providerConfig.addProperty(definition.getKey(), definition.getSettingType().toString(value));
 					}
 				} else if (!values.isEmpty()){
-					providerConfig.setProperty(definition.getKey(), definition.getSettingType().save(values.get(0)));
+					providerConfig.setProperty(definition.getKey(), definition.getSettingType().toString(values.get(0)));
 				}
 			}
 		}
