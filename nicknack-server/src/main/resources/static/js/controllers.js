@@ -198,7 +198,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
         					StaticDataService.parameterDefinitions(actionDefUuid).then(function (parameterDefinitions) {
         						$scope.actionParameterDefinitions = parameterDefinitions;
         						for (i = 0; i < $scope.actionParameterDefinitions.length; i++) {
-        							$scope.actionParameterValues[i] = actions[0].parameters[$scope.actionParameterDefinitions[i].uuid];
+        							$scope.actionParameterValues[i] = actions[0].attributes[$scope.actionParameterDefinitions[i].uuid];
         						}
         					});
         				});
@@ -370,7 +370,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 					 
 					var action = {
 						appliesToActionDefinition:json.uuid,
-						parameters:actionParameters
+						attributes:actionParameters
 					};
 					
 					newPlanResource.$post('Actions', null, action);
@@ -438,7 +438,7 @@ function ($scope, $rootScope, $routeParams, $route, WebsiteService, StaticDataSe
 				var action = {
 					uuid: $scope.actionUuid,
 					appliesToActionDefinition:json.uuid,
-					parameters:actionParameters
+					attributes:actionParameters
 				};
 				
 				WebsiteService.updateAction($scope.planUuid, action);
