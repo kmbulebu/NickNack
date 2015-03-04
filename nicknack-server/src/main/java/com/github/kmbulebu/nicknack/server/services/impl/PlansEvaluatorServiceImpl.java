@@ -219,13 +219,13 @@ public class PlansEvaluatorServiceImpl implements Action1<Event> {
 		for (UUID key : origAction.getAttributes().keySet()) {
 			newParameters.put(key,  processVariables(origAction.getAttributes().get(key), cause));
 		}
-		newAction.setParameters(newParameters);
+		newAction.setAttributes(newParameters);
 		return newAction;
 	}
 	
-	protected String processVariables(String value, Event cause) {
+	protected String processVariables(Object value, Event cause) {
 		// Build value map
-		final Map<String, String> valueMap = new HashMap<>();
+		final Map<String, Object> valueMap = new HashMap<>();
 		final Map<UUID, AttributeDefinition<?>> attributeMap = new HashMap<>();
 		for (AttributeDefinition<?> def : cause.getEventDefinition().getAttributeDefinitions()) {
 			attributeMap.put(def.getUUID(), def);

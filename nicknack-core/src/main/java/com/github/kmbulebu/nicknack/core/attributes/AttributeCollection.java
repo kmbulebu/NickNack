@@ -14,6 +14,6 @@ public interface AttributeCollection {
 	 * 
 	 * @return Map of attributes where the key is AttributeDefinition's UUID and the value is the attribute value.
 	 */
-	public Map<UUID, String> getAttributes();
+	public Map<UUID, ?> getAttributes();
 
 }

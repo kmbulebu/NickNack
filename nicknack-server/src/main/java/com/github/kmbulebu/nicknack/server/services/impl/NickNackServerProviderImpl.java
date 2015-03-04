@@ -29,6 +29,8 @@ import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.actions.DummyActionDefinition;
+import com.github.kmbulebu.nicknack.server.actions.DummyActionDefinition.DummyAttributeDefinitionA;
+import com.github.kmbulebu.nicknack.server.actions.DummyActionDefinition.DummyAttributeDefinitionB;
 import com.github.kmbulebu.nicknack.server.events.ActionCompletedEventDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionDefinitionAttributeDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionErrorMessageAttributeDefinition;
@@ -104,6 +106,10 @@ public class NickNackServerProviderImpl implements Provider, NickNackServerProvi
 
 	@Override
 	public void run(Action action) throws ActionFailureException, ActionParameterException {
+		if (DummyActionDefinition.INSTANCE.getUUID().equals(action.getAppliesToActionDefinition())) {
+			Integer value = (Integer) action.getAttributes().get(DummyAttributeDefinitionB.INSTANCE);
+			LOG.error("Value: " + value);
+		}
 	}
 
 	@Override

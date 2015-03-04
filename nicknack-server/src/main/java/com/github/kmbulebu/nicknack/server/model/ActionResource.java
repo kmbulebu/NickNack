@@ -43,7 +43,7 @@ public class ActionResource extends ResourceSupport implements Action {
 	
 	@NotNull
 	@ElementCollection(fetch = FetchType.EAGER)
-	private Map<UUID, String> parameters = new HashMap<UUID, String>();
+	private Map<UUID, String> attributes = new HashMap<UUID, String>();
 	
 	@ManyToMany(targetEntity=PlanResource.class)
 	@JsonIgnore
@@ -78,11 +78,11 @@ public class ActionResource extends ResourceSupport implements Action {
 
 	@Override
 	public Map<UUID, String> getAttributes() {
-		return parameters;
+		return attributes;
 	}
 
-	public void setParameters(Map<UUID, String> parameters) {
-		this.parameters = parameters;
+	public void setAttributes(Map<UUID, String> attributes) {
+		this.attributes = attributes;
 	}
 	
 	public String getDescription() {
@@ -104,7 +104,7 @@ public class ActionResource extends ResourceSupport implements Action {
 	@Override
 	public String toString() {
 		return "ActionResource [uuid=" + uuid + ", appliesToActionDefinition=" + appliesToActionDefinition
-				+ ", parameters=" + parameters + "]";
+				+ ", attributes=" + attributes + "]";
 	}
 	
 	

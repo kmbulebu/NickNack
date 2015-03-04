@@ -31,7 +31,7 @@ public class DummyActionDefinition extends BasicActionDefinition {
 
 	}
 	
-public static class DummyAttributeDefinitionB extends BasicAttributeDefinition<WholeNumberType> {
+	public static class DummyAttributeDefinitionB extends BasicAttributeDefinition<WholeNumberType> {
 		
 		private static final UUID PARAM_DEF_UUID = UUID.fromString("128fa012-2054-46f3-8bcd-7db55b189524");
 		public static final DummyAttributeDefinitionB INSTANCE = new DummyAttributeDefinitionB();
