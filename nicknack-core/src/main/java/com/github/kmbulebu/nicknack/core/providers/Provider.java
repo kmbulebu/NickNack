@@ -46,7 +46,7 @@ public interface Provider {
 	 * 
 	 * @return A list of settings available to the user in configuring this provider.
 	 */
-	public List<? extends SettingDefinition<?,?>> getSettingDefinitions();
+	public List<? extends SettingDefinition<?>> getSettingDefinitions();
 	
 	/**
 	 * 

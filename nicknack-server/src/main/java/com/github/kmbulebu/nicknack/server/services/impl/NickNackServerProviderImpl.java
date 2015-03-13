@@ -27,6 +27,7 @@ import com.github.kmbulebu.nicknack.core.providers.ProviderService;
 import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.actions.DummyActionDefinition;
 import com.github.kmbulebu.nicknack.server.events.ActionCompletedEventDefinition;
@@ -126,7 +127,7 @@ public class NickNackServerProviderImpl implements Provider, NickNackServerProvi
 	}
 	
 	@Override
-	public List<? extends SettingDefinition<?,?>> getSettingDefinitions() {
+	public List<? extends SettingDefinition<ValueType>> getSettingDefinitions() {
 		// TODO Auto-generated method stub
 		return null;
 	}

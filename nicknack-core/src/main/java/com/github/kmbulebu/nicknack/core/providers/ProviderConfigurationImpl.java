@@ -1,6 +1,5 @@
 package com.github.kmbulebu.nicknack.core.providers;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,14 +10,14 @@ import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 public class ProviderConfigurationImpl implements ProviderConfiguration {
 	
-	private final Map<String, List<?>> keyToValuesMap = new HashMap<>();
+	private final Map<String, List<String>> keyToValuesMap = new HashMap<>();
 	private Map<String, List<String>> errors = new HashMap<>();
 	private boolean complete;
 	private boolean enabled;
 
 	@Override
-	public <T extends ValueType<U>, U extends Serializable> U getValue(SettingDefinition<T, U> settingDefinition) {
-		final List<U> values = getValues(settingDefinition);
+	public <T extends ValueType> String getValue(SettingDefinition<T> settingDefinition) {
+		final List<String> values = getValues(settingDefinition);
 		if (values == null) {
 			return null;
 		} else {
@@ -27,9 +26,9 @@ public class ProviderConfigurationImpl implements ProviderConfiguration {
 	}
 
 	@Override
-	public <T extends ValueType<U>, U extends Serializable> U getValue(SettingDefinition<T, U> settingDefinition,
-			U defaultValue) {
-		final List<U> values = getValues(settingDefinition);
+	public <T extends ValueType> String getValue(SettingDefinition<T> settingDefinition,
+			String defaultValue) {
+		final List<String> values = getValues(settingDefinition);
 		if (values == null || values.get(0) == null) {
 			return defaultValue;
 		} else {
@@ -37,18 +36,17 @@ public class ProviderConfigurationImpl implements ProviderConfiguration {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends ValueType<U>, U extends Serializable> List<U> getValues(
-			SettingDefinition<T, U> settingDefinition) {
-		return (List<U>) keyToValuesMap.get(settingDefinition.getKey());
+	public <T extends ValueType> List<String> getValues(
+			SettingDefinition<T> settingDefinition) {
+		return keyToValuesMap.get(settingDefinition.getKey());
 	}
 	
-	protected <T extends ValueType<U>, U extends Serializable> void setValues(SettingDefinition<T, U> settingDefinition, List<U> values) {
+	protected <T extends ValueType> void setValues(SettingDefinition<T> settingDefinition, List<String> values) {
 		keyToValuesMap.put(settingDefinition.getKey(), values);
 	}
 	
-	protected void setAllValues(Map<String, List<?>> values) {
+	protected void setAllValues(Map<String, List<String>> values) {
 		keyToValuesMap.clear();
 		keyToValuesMap.putAll(values);
 	}

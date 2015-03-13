@@ -24,7 +24,7 @@ public class ProviderSettingDefinitionsServiceImpl implements ProviderSettingDef
 	private ProviderService providerService;
 
 	@Override
-	public List<? extends SettingDefinition<?, ?>> getSettingDefinitions(UUID providerUuid) throws ProviderNotFoundException {
+	public List<? extends SettingDefinition<?>> getSettingDefinitions(UUID providerUuid) throws ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(providerUuid);
 		}
@@ -35,7 +35,7 @@ public class ProviderSettingDefinitionsServiceImpl implements ProviderSettingDef
 			throw new ProviderNotFoundException(providerUuid);
 		}
 		
-		final List<? extends SettingDefinition<?,?>> settingDefinitions = provider.getSettingDefinitions();
+		final List<? extends SettingDefinition<?>> settingDefinitions = provider.getSettingDefinitions();
 		
 		
 		if (LOG.isTraceEnabled()) {

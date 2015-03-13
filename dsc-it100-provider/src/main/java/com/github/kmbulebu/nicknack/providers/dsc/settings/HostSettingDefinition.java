@@ -3,7 +3,7 @@ package com.github.kmbulebu.nicknack.providers.dsc.settings;
 import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.HostnameType;
 
-public class HostSettingDefinition extends AbstractProviderSettingDefinition<HostnameType, String> {
+public class HostSettingDefinition extends AbstractProviderSettingDefinition<HostnameType> {
 	
 	public HostSettingDefinition() {
 		super("host",

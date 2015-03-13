@@ -1,6 +1,5 @@
 package com.github.kmbulebu.nicknack.core.providers.settings;
 
-import java.io.Serializable;
 import java.util.List;
 
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
@@ -14,7 +13,7 @@ import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
  * @param <T> Class that will represent the type of value for this setting.
  * @param <U> Class that will represent a value for this setting.
  */
-public interface SettingDefinition<T extends ValueType<U>, U extends Serializable> {
+public interface SettingDefinition<T extends ValueType> {
 	
 	/**
 	 * Key to find this setting.
@@ -55,7 +54,7 @@ public interface SettingDefinition<T extends ValueType<U>, U extends Serializabl
 	 * 
 	 * @return List A static list of values that the user may choose from for this Setting or null if the user may supply their own values.
 	 */
-	public List<U> getValueChoices();
+	public List<String> getValueChoices();
 
 	// TODO Do we need a way to convert to/from HTML representations? Not yet, NickNack core will provide base representations to start that are renderable.
 	// TODO Do we allow setting groups? Setting B is only available if Setting A is defined?

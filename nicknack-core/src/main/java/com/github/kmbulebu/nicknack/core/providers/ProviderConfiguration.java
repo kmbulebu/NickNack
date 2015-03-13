@@ -1,6 +1,5 @@
 package com.github.kmbulebu.nicknack.core.providers;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -9,11 +8,11 @@ import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 public interface ProviderConfiguration {
 
-	public <T extends ValueType<U>,U extends Serializable> U getValue(SettingDefinition<T,U> settingDefinition);
+	public <T extends ValueType> String getValue(SettingDefinition<T> settingDefinition);
 	
-	public <T extends ValueType<U>,U extends Serializable> U getValue(SettingDefinition<T,U> settingDefinition, U defaultValue);
+	public <T extends ValueType> String  getValue(SettingDefinition<T> settingDefinition, String defaultValue);
 	
-	public <T extends ValueType<U>,U extends Serializable> List<U> getValues(SettingDefinition<T,U> settingDefinition);
+	public <T extends ValueType> List<String> getValues(SettingDefinition<T> settingDefinition);
 	
 	public boolean isComplete();
 	

@@ -20,6 +20,7 @@ import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
 import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 /**
  * Provides real time clock capabilities to Nick Nack.
@@ -108,7 +109,7 @@ public class WakeOnLanProvider implements Provider {
 	}
 
 	@Override
-	public List<? extends SettingDefinition<?,?>> getSettingDefinitions() {
+	public List<? extends SettingDefinition<ValueType>> getSettingDefinitions() {
 		// TODO Auto-generated method stub
 		return null;
 	}

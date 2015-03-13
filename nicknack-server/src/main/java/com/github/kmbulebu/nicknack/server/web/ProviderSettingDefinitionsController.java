@@ -45,7 +45,7 @@ public class ProviderSettingDefinitionsController {
 			LOG.entry(providerUuid);
 		}
 		
-		final List<? extends SettingDefinition<?, ?>> settingDefinitions = settingDefinitionsService.getSettingDefinitions(providerUuid);
+		final List<? extends SettingDefinition<?>> settingDefinitions = settingDefinitionsService.getSettingDefinitions(providerUuid);
 		
 		final ProviderSettingDefinitionsResource settingDefinitionsResource = new ProviderSettingDefinitionsResource();
 		settingDefinitionsResource.setSettingDefinitions(settingDefinitions);

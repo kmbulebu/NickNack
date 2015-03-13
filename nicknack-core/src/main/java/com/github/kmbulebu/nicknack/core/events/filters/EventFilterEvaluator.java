@@ -14,10 +14,10 @@ public class EventFilterEvaluator extends AttrbuteFilterExpressionCollectionEval
 	
 	/**
 	 * 
-	 * @param eventFilter
-	 * @param event
+	 * @param eventFilter EventFilter to apply to the given Event.
+	 * @param event Event to test against the EventFilter.
 	 * @return True if all attribute filters match. False, if the event is not applicable to the filter, or at least one attribute filter does not match.
-	 * @throws ParseException 
+	 * @throws ParseException If an attribute in the Event Filter can not be converted to its unit value.
 	 */
 	
 	public boolean evaluate(EventFilter eventFilter, Event event) throws ParseException {

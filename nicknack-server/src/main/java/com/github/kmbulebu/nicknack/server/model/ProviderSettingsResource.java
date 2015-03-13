@@ -9,7 +9,7 @@ import org.springframework.hateoas.core.Relation;
 @Relation(value="ProviderSettings", collectionRelation="ProviderSettings")
 public class ProviderSettingsResource extends ResourceSupport {
 	
-	private Map<String, List<?>> settings;
+	private Map<String, List<String>> settings;
 	
 	private Map<String, List<String>> errors;
 	
@@ -17,11 +17,11 @@ public class ProviderSettingsResource extends ResourceSupport {
 	
 	private boolean enabled;
 	
-	public void setSettings(Map<String, List<?>> settings) {
+	public void setSettings(Map<String, List<String>> settings) {
 		this.settings = settings;
 	}
 	
-	public Map<String, List<?>> getSettings() {
+	public Map<String, List<String>> getSettings() {
 		return settings;
 	}
 

@@ -1,33 +1,36 @@
 package com.github.kmbulebu.nicknack.core.valuetypes;
 
 
-public class CheckboxType extends AbstractValueType<Boolean> {
-	
-	@Override
-	public Class<Boolean> getTypeClass() {
-		return Boolean.class;
-	}
+public class CheckboxType extends AbstractValueType {
 
 	@Override
 	public String getName() {
 		return "checkbox";
 	}
+
+	@Override
+	public String getRegexPattern() {
+		return "(true|false|True|False)";
+	}
+
+	@Override
+	public Validation validate(String value) {
+		return alwaysTrueValidation;
+	}
 	
-	@Override
-	public boolean isValid(Boolean input) {
-		return true;
-	}
+	private static final Validation alwaysTrueValidation = new Validation() {
 
-	@Override
-	public String save(Object settingValue) {
-		return getTypeClass().cast(settingValue).toString();
-	}
+		@Override
+		public boolean isValid() {
+			return true;
+		}
 
-	@Override
-	public Boolean load(String savedData) {
-		return Boolean.parseBoolean(savedData);
-	}
-
-
+		@Override
+		public String invalidMessage() {
+			return null;
+		}
+		
+	};
+	
 
 }

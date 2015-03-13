@@ -3,7 +3,7 @@ package com.github.kmbulebu.nicknack.providers.dsc.settings;
 import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
-public class PortSettingDefinition extends AbstractProviderSettingDefinition<WholeNumberType, Integer> {
+public class PortSettingDefinition extends AbstractProviderSettingDefinition<WholeNumberType> {
 
 	public PortSettingDefinition() {
 		super("port", 

@@ -29,6 +29,7 @@ import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 public class ProviderServiceImpl implements ProviderService, OnEventListener, rx.Observable.OnSubscribe<Event> {
 	
@@ -129,34 +130,34 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     }
     
     // TODO This all needs pulled into a separate ProviderConfigurationLoader or whatever class that can properly return the results good or bad with a list of problems.
-	@SuppressWarnings("unchecked")
-	protected ProviderConfiguration loadProviderConfiguration(boolean disabled, List<? extends SettingDefinition<?,?>> definitionsList, Configuration configuration) {
+	protected ProviderConfiguration loadProviderConfiguration(boolean disabled, List<? extends SettingDefinition<?>> definitionsList, Configuration configuration) {
     	final ProviderConfigurationImpl providerConfiguration = new ProviderConfigurationImpl();
     	providerConfiguration.setComplete(true);
     	providerConfiguration.setEnabled(!disabled);
     	if (definitionsList != null) {
-	    	for (SettingDefinition<?,?> definition : definitionsList) {
-	    		final boolean exists = configuration.containsKey(definition.getKey());
-	    		final boolean required = definition.isRequired(); 
-	    		
-	    		// Make sure we have all required settings.
-	    		if (required && !exists) {
-	    			providerConfiguration.addError(definition.getKey(), "Required.");
-	    			providerConfiguration.setComplete(false);
-	    		}
-	    		
-	    		@SuppressWarnings({ "rawtypes" })
-				final List<String> stringValues = (List) configuration.getList(definition.getKey());
-	    		
-	    		@SuppressWarnings("rawtypes")
-				final List values = definition.getSettingType().load(stringValues);
-	    		
-	    		providerConfiguration.setValues(definition, values);
+	    	for (SettingDefinition<?> definition : definitionsList) {
+	    		loadProviderConfigurationSetting(providerConfiguration, definition);
 	    	}
     	}
     	
     	return providerConfiguration;
     }
+	
+	protected <T extends ValueType> void loadProviderConfigurationSetting(ProviderConfigurationImpl providerConfiguration, SettingDefinition<T> definition ) {
+		final boolean exists = configuration.containsKey(definition.getKey());
+		final boolean required = definition.isRequired(); 
+		
+		// Make sure we have all required settings.
+		if (required && !exists) {
+			providerConfiguration.addError(definition.getKey(), "Required.");
+			providerConfiguration.setComplete(false);
+		}
+		
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		final List<String> stringValues = (List) configuration.getList(definition.getKey());
+		
+		providerConfiguration.setValues(definition, stringValues);
+	}
     
     protected List<Exception> initializeProvider(Provider provider) {
     	List<Exception> errors = new ArrayList<Exception>();
@@ -276,7 +277,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	}
 
 	@Override
-	public Map<String, List<?>> getProviderSettings(UUID providerUuid) {
+	public Map<String, List<String>> getProviderSettings(UUID providerUuid) {
 		Provider provider = getProviders().get(providerUuid);
 		ProviderConfiguration config = providerConfigurations.get(providerUuid);
 		
@@ -284,13 +285,13 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 			return null;
 		}
 		
-		final Map<String, List<?>> settings = new HashMap<>();
+		final Map<String, List<String>> settings = new HashMap<>();
 		if (provider.getSettingDefinitions() != null) {
-			for (SettingDefinition<?, ?> definition : provider.getSettingDefinitions()) {
-				List<?> values = config.getValues(definition);
+			for (SettingDefinition<?> definition : provider.getSettingDefinitions()) {
+				List<String> values = config.getValues(definition);
 				
 				if (values == null) {
-					settings.put(definition.getKey(), new ArrayList<Object>());
+					settings.put(definition.getKey(), new ArrayList<String>());
 				} else {
 					settings.put(definition.getKey(), values);
 				}
@@ -337,7 +338,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	}
 
 	@Override
-	public void setProviderSettings(UUID providerUuid, Map<String, List<?>> settings, boolean disabled) {
+	public void setProviderSettings(UUID providerUuid, Map<String, List<String>> settings, boolean disabled) {
 		final Provider provider = getProviders().get(providerUuid);
 		final ProviderConfigurationImpl config = (ProviderConfigurationImpl) providerConfigurations.get(providerUuid);
 		config.setAllValues(settings);
@@ -347,18 +348,18 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 		final Configuration providerConfig = configuration.configurationAt(configKey, true);
 		providerConfig.setProperty("disabled", disabled);
 		
-		final List<? extends SettingDefinition<?, ?>> settingDefinitions = provider.getSettingDefinitions();
+		final List<? extends SettingDefinition<?>> settingDefinitions = provider.getSettingDefinitions();
 		
-		for (SettingDefinition<?, ?> definition : settingDefinitions) {
+		for (SettingDefinition<?> definition : settingDefinitions) {
 			providerConfig.clearProperty(definition.getKey());
-			final List<?> values = settings.get(definition.getKey());
+			final List<String> values = settings.get(definition.getKey());
 			if (values != null) {
 				if (definition.isArray()) {
-					for (Object value : values) {
-						providerConfig.addProperty(definition.getKey(), definition.getSettingType().save(value));
+					for (String value : values) {
+						providerConfig.addProperty(definition.getKey(), value);
 					}
 				} else if (!values.isEmpty()){
-					providerConfig.setProperty(definition.getKey(), definition.getSettingType().save(values.get(0)));
+					providerConfig.setProperty(definition.getKey(), values.get(0));
 				}
 			}
 		}
