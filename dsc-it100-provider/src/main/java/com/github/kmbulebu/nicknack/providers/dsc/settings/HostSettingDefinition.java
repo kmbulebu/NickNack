@@ -1,7 +1,8 @@
 package com.github.kmbulebu.nicknack.providers.dsc.settings;
 
+import valuetypes.HostnameType;
+
 import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderSettingDefinition;
-import com.github.kmbulebu.nicknack.core.valuetypes.HostnameType;
 
 public class HostSettingDefinition extends AbstractProviderSettingDefinition<HostnameType, String> {
 	

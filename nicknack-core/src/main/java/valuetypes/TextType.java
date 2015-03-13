@@ -1,4 +1,4 @@
-package com.github.kmbulebu.nicknack.core.valuetypes;
+package valuetypes;
 
 
 

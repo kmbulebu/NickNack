@@ -1,7 +1,8 @@
 package com.github.kmbulebu.nicknack.providers.dsc.settings;
 
+import valuetypes.WholeNumberType;
+
 import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderSettingDefinition;
-import com.github.kmbulebu.nicknack.core.valuetypes.WholeNumberType;
 
 public class PortSettingDefinition extends AbstractProviderSettingDefinition<WholeNumberType, Integer> {
 

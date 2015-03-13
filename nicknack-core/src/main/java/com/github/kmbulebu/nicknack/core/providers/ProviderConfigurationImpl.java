@@ -6,8 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import valuetypes.ValueType;
+
 import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
-import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 public class ProviderConfigurationImpl implements ProviderConfiguration {
 	

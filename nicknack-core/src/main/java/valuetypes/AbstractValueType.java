@@ -1,4 +1,4 @@
-package com.github.kmbulebu.nicknack.core.valuetypes;
+package valuetypes;
 
 import java.io.Serializable;
 import java.util.ArrayList;
