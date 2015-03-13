@@ -26,7 +26,7 @@ import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
-import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
@@ -147,7 +147,7 @@ public class ClockProvider implements Provider, Runnable {
 	}
 
 	@Override
-	public List<? extends SettingDefinition<?,?>> getSettingDefinitions() {
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
 		return null;
 	}
 

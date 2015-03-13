@@ -1,14 +1,23 @@
 package com.github.kmbulebu.nicknack.providers.dsc.settings;
 
-import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderSettingDefinition;
-import com.github.kmbulebu.nicknack.core.providers.settings.WholeNumberType;
+import java.util.List;
 
-public class PortSettingDefinition extends AbstractProviderSettingDefinition<WholeNumberType, Integer> {
+import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderIntegerSettingDefinition;
+
+public class PortSettingDefinition extends AbstractProviderIntegerSettingDefinition {
 
 	public PortSettingDefinition() {
-		super("port", 
-			  new WholeNumberType(1, 65536, 1), null, "Port Number", 
-			  "Port number of machine with IT-100", true, false);
+		super("port", "Port Number", "Port number of machine with IT-100", true, false);
 	}
-	
+
+	@Override
+	public boolean isValid(Integer value) {
+		return (value <= 65536 && value > 0);
+	}
+
+	@Override
+	public List<Integer> getValueChoices() {
+		return null;
+	}
+
 }

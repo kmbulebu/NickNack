@@ -25,7 +25,7 @@ import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
 import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
-import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 public class ProviderServiceImpl implements ProviderService, OnEventListener, rx.Observable.OnSubscribe<Event> {
@@ -35,7 +35,6 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	private static ProviderServiceImpl service;
     private ProviderLoader loader;
     
-    // TODO Consider a separate ProviderRegistry class to maintain these relationships.
     private final Map<UUID, EventDefinition> eventDefinitions = new HashMap<UUID, EventDefinition>();
     private final Map<UUID, StateDefinition> stateDefinitions = new HashMap<UUID, StateDefinition>();
     private final Map<UUID, ActionDefinition> actionDefinitions = new HashMap<UUID, ActionDefinition>();
@@ -43,7 +42,6 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     private final Map<UUID, UUID> eventDefinitionToProvider = new HashMap<UUID, UUID>();
     private final Map<UUID, UUID> stateDefinitionToProvider = new HashMap<UUID, UUID>();
     private final Map<UUID, UUID> actionDefinitionToProvider = new HashMap<UUID, UUID>();
-    private final Map<UUID, ProviderConfiguration> providerConfigurations = new HashMap<>();
     
     
     private ConnectableObservable<Event> eventStream;
@@ -126,28 +124,25 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     	
     }
     
-    // TODO This all needs pulled into a separate ProviderConfigurationLoader or whatever class that can properly return the results good or bad with a list of problems.
 	@SuppressWarnings("unchecked")
-	protected ProviderConfiguration loadProviderConfiguration(boolean enabled, List<? extends SettingDefinition<?,?>> definitionsList, Configuration configuration) {
+	protected ProviderConfiguration loadProviderConfiguration(List<? extends ProviderSettingDefinition<?>> definitionsList, Configuration configuration) {
     	final ProviderConfigurationImpl providerConfiguration = new ProviderConfigurationImpl();
-    	providerConfiguration.setComplete(true);
-    	providerConfiguration.setEnabled(enabled);
     	if (definitionsList != null) {
-	    	for (SettingDefinition<?,?> definition : definitionsList) {
+	    	for (ProviderSettingDefinition<?> definition : definitionsList) {
 	    		final boolean exists = configuration.containsKey(definition.getKey());
 	    		final boolean required = definition.isRequired(); 
 	    		
 	    		// Make sure we have all required settings.
 	    		if (required && !exists) {
-	    			providerConfiguration.addError(definition.getKey(), "Required.");
-	    			providerConfiguration.setComplete(false);
+	    			// TODO Throw an exception or roll up errors.
+	    			return null;
 	    		}
 	    		
 	    		@SuppressWarnings({ "rawtypes" })
 				final List<String> stringValues = (List) configuration.getList(definition.getKey());
 	    		
 	    		@SuppressWarnings("rawtypes")
-				final List values = definition.getSettingType().load(stringValues);
+				final List values = definition.load(stringValues);
 	    		
 	    		providerConfiguration.setValues(definition, values);
 	    	}
@@ -170,52 +165,56 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 			}
 			final Configuration providerConfig = configuration.configurationAt(configKey, true);
 			
-			final ProviderConfiguration providerConfiguration = loadProviderConfiguration(providerConfig.getBoolean("disabled", false), provider.getSettingDefinitions(), providerConfig);
-			providerConfigurations.put(provider.getUuid(), providerConfiguration);
+			boolean disabled = providerConfig.getBoolean("disabled", false);
 			
-			
-			if (!providerConfiguration.isEnabled() || !providerConfiguration.isComplete() ) {
+			if (disabled) {
 				if (LOG.isInfoEnabled()) {
-					LOG.info("Disabling provider: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
+					LOG.info("Per configuration, disabling provider: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
 				}
 			} else {
-				provider.init(providerConfiguration, this);
+				final ProviderConfiguration providerConfiguration = loadProviderConfiguration(provider.getSettingDefinitions(), providerConfig);
 				
-				if (provider.getEventDefinitions() != null) {
-					for (EventDefinition eventDef : provider.getEventDefinitions()) {
-						UUID uuid = eventDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Event Definition with null UUID.");
-						} else {
-							eventDefinitions.put(uuid, eventDef);
-							eventDefinitionToProvider.put(uuid, provider.getUuid());
+				if (providerConfiguration == null) {
+					LOG.warn("Disabling provider due to incomplete configuration: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
+				} else {
+					provider.init(providerConfiguration, this);
+					
+					if (provider.getEventDefinitions() != null) {
+						for (EventDefinition eventDef : provider.getEventDefinitions()) {
+							UUID uuid = eventDef.getUUID();
+							if (uuid == null) {
+								LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Event Definition with null UUID.");
+							} else {
+								eventDefinitions.put(uuid, eventDef);
+								eventDefinitionToProvider.put(uuid, provider.getUuid());
+							}
 						}
 					}
-				}
-				
-				if (provider.getStateDefinitions() != null) {
-					for (StateDefinition stateDef : provider.getStateDefinitions()) {
-						UUID uuid = stateDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an State Definition with null UUID.");
-						} else {
-							stateDefinitions.put(uuid, stateDef);
-							stateDefinitionToProvider.put(uuid, provider.getUuid());
+					
+					if (provider.getStateDefinitions() != null) {
+						for (StateDefinition stateDef : provider.getStateDefinitions()) {
+							UUID uuid = stateDef.getUUID();
+							if (uuid == null) {
+								LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an State Definition with null UUID.");
+							} else {
+								stateDefinitions.put(uuid, stateDef);
+								stateDefinitionToProvider.put(uuid, provider.getUuid());
+							}
 						}
 					}
-				}
-				
-				if (provider.getActionDefinitions() != null) {
-					for (ActionDefinition actionDef : provider.getActionDefinitions()) {
-						UUID uuid = actionDef.getUUID();
-						if (uuid == null) {
-							LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Action Definition with null UUID.");
-						} else {
-							actionDefinitions.put(uuid, actionDef);
-							actionDefinitionToProvider.put(uuid, provider.getUuid());
+					
+					if (provider.getActionDefinitions() != null) {
+						for (ActionDefinition actionDef : provider.getActionDefinitions()) {
+							UUID uuid = actionDef.getUUID();
+							if (uuid == null) {
+								LOG.error("Provider, " + provider.getName() + " (" + provider.getUuid() + ") has an Action Definition with null UUID.");
+							} else {
+								actionDefinitions.put(uuid, actionDef);
+								actionDefinitionToProvider.put(uuid, provider.getUuid());
+							}
 						}
 					}
-				}
+				}// If configuration good
 			} // If disabled
 		} catch (Exception e) {
 			LOG.error("Failed to initialize provider, " + provider.getName() + " (" + provider.getUuid() + "):" + e.getMessage(), e);
@@ -316,69 +315,6 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 		return initializeProvider(provider);
 	}
 
-	@Override
-	public Map<String, List<?>> getProviderSettings(UUID providerUuid) {
-		Provider provider = getProviders().get(providerUuid);
-		ProviderConfiguration config = providerConfigurations.get(providerUuid);
-		
-		if (provider == null || config == null) {
-			return null;
-		}
-		
-		final Map<String, List<?>> settings = new HashMap<>();
-		for (SettingDefinition<?, ?> definition : provider.getSettingDefinitions()) {
-			List<?> values = config.getValues(definition);
-			
-			if (values == null) {
-				settings.put(definition.getKey(), new ArrayList<Object>());
-			} else {
-				settings.put(definition.getKey(), values);
-			}
-		}
-		return settings;
-		
-	}
 	
-	@Override
-	public boolean isProviderSettingsComplete(UUID providerUuid) {
-		Provider provider = getProviders().get(providerUuid);
-		ProviderConfiguration config = providerConfigurations.get(providerUuid);
-		
-		if (provider == null || config == null) {
-			return false;
-		}
-		
-		return config.isComplete();
-	}
-	
-	@Override
-	public Map<String, List<String>> getProviderSettingsErrors(UUID providerUuid) {
-		Provider provider = getProviders().get(providerUuid);
-		ProviderConfiguration config = providerConfigurations.get(providerUuid);
-		
-		if (provider == null || config == null) {
-			return null;
-		}
-		
-		return config.getErrors();
-	}
-	
-	@Override
-	public boolean isProviderEnabled(UUID providerUuid) {
-		Provider provider = getProviders().get(providerUuid);
-		ProviderConfiguration config = providerConfigurations.get(providerUuid);
-		
-		if (provider == null || config == null) {
-			return false;
-		}
-		
-		return config.isEnabled();
-	}
-
-	@Override
-	public void setProviderSettings(UUID providerUuid, Map<String, List<String>> settings) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

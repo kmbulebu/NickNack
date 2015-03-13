@@ -21,7 +21,7 @@ import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
-import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.actions.ShowNotificationActionDefinition;
@@ -57,12 +57,12 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	private List<XbmcClient> xbmcClients = null;
 	private Map<String, String> hostNameValues;
 	
-	private final List<SettingDefinition<?,?>> settingDefinitions;
+	private final List<ProviderSettingDefinition<?>> settingDefinitions;
 	
 	private final HostsSettingDefinition hostSettingsDefinition;
 	
 	public XbmcProvider() {
-		settingDefinitions = new ArrayList<SettingDefinition<?,?>>(1);
+		settingDefinitions = new ArrayList<ProviderSettingDefinition<?>>(1);
 		hostSettingsDefinition = new HostsSettingDefinition();
 		settingDefinitions.add(hostSettingsDefinition);
 	}
@@ -155,7 +155,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	}
 	
 	@Override
-	public List<? extends SettingDefinition<?,?>> getSettingDefinitions() {
+	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
 		return Collections.unmodifiableList(settingDefinitions);
 	}
 

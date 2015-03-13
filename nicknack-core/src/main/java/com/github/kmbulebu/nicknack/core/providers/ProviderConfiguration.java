@@ -1,24 +1,19 @@
 package com.github.kmbulebu.nicknack.core.providers;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
-import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
-import com.github.kmbulebu.nicknack.core.providers.settings.SettingType;
+import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
 
 public interface ProviderConfiguration {
 
-	public <T extends SettingType<U>,U extends Serializable> U getValue(SettingDefinition<T,U> settingDefinition);
+	public <ValueType> ValueType getValue(ProviderSettingDefinition<ValueType> settingDefinition);
 	
-	public <T extends SettingType<U>,U extends Serializable> U getValue(SettingDefinition<T,U> settingDefinition, U defaultValue);
+	public <ValueType> ValueType getValue(ProviderSettingDefinition<ValueType> settingDefinition, ValueType defaultValue);
 	
-	public <T extends SettingType<U>,U extends Serializable> List<U> getValues(SettingDefinition<T,U> settingDefinition);
+	public <ValueType> List<ValueType> getValues(ProviderSettingDefinition<ValueType> settingDefinition);
 	
-	public boolean isComplete();
+	/*public <ValueType> void putValue(ProviderSettingDefinition<ValueType> settingDefinition, ValueType value);
 	
-	public boolean isEnabled();
-	
-	public Map<String, List<String>> getErrors();
+	public <ValueType> void addValue(ProviderMultiValueSettingDefinition<ValueType> settingDefinition, ValueType value);*/
 	
 }
