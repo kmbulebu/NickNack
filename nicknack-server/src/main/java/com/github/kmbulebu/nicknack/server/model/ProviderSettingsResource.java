@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.core.Relation;
 
-@Relation(value="ProviderSettings", collectionRelation="ProviderSettings")
 public class ProviderSettingsResource extends ResourceSupport {
 	
 	private Map<String, List<?>> settings;

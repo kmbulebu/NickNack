@@ -64,8 +64,8 @@ public class TextType extends AbstractSettingType<String> {
 	}
 
 	@Override
-	public String save(Object settingValue) {
-		return getTypeClass().cast(settingValue);
+	public String save(String settingValue) {
+		return settingValue;
 	}
 
 	@Override

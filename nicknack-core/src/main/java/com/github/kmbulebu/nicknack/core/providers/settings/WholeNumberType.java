@@ -66,8 +66,8 @@ public class WholeNumberType extends AbstractSettingType<Integer> {
 	}
 
 	@Override
-	public String save(Object settingValue) {
-		return getTypeClass().cast(settingValue).toString();
+	public String save(Integer settingValue) {
+		return settingValue.toString();
 	}
 
 	@Override

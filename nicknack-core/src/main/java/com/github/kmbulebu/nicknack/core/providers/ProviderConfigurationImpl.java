@@ -48,11 +48,6 @@ public class ProviderConfigurationImpl implements ProviderConfiguration {
 		keyToValuesMap.put(settingDefinition.getKey(), values);
 	}
 	
-	protected void setAllValues(Map<String, List<?>> values) {
-		keyToValuesMap.clear();
-		keyToValuesMap.putAll(values);
-	}
-	
 	@Override
 	public Map<String, List<String>> getErrors() {
 		return errors;

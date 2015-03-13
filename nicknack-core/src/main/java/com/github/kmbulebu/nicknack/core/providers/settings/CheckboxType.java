@@ -19,8 +19,8 @@ public class CheckboxType extends AbstractSettingType<Boolean> {
 	}
 
 	@Override
-	public String save(Object settingValue) {
-		return getTypeClass().cast(settingValue).toString();
+	public String save(Boolean settingValue) {
+		return settingValue.toString();
 	}
 
 	@Override

@@ -86,11 +86,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	
 	@Override
 	public List<EventDefinition> getEventDefinitions() {
-		if (eventDefinitions == null) {
-			return null;
-		} else {
-			return Collections.unmodifiableList(eventDefinitions);
-		}
+		return Collections.unmodifiableList(eventDefinitions);
 	}
 	
 	@Override
@@ -100,11 +96,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	
 	@Override
 	public List<ActionDefinition> getActionDefinitions() {
-		if (actionDefinitions == null) {
-			return null; 
-		} else {
-			return Collections.unmodifiableList(actionDefinitions);
-		}
+		return Collections.unmodifiableList(actionDefinitions);
 	}
 	
 	@Override
@@ -128,13 +120,11 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 		final List<String> hosts = configuration.getValues(hostSettingsDefinition);
 				
 		for (String host : hosts) {
-			XbmcClient client = new XbmcClient(host, DEFAULT_PORT);
+			XbmcClient client = new XbmcClient();
 			client.setListener(this);
+			client.connect(host, DEFAULT_PORT);
 			xbmcClients.add(client);
 			hostNameValues.put(host, host);
-			
-			// This needs to return immediately or it will block loading others.
-			client.connect();
 		}
 		
 		if (logger.isInfoEnabled()) {
@@ -150,11 +140,9 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	@Override
 	public void shutdown() throws Exception {
 		onEventListener = null;
-		if (xbmcClients != null) {
-			for (XbmcClient client : xbmcClients) {
-				client.setListener(null);
-				client.disconnect();
-			}
+		for (XbmcClient client : xbmcClients) {
+			client.setListener(null);
+			client.disconnect();
 		}
 		xbmcClients = null;
 		

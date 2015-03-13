@@ -32,7 +32,7 @@ public class RootController {
 	
 	@Autowired
 	private EntityLinks entityLinks;
-		
+	
 	@RequestMapping(value="", method={RequestMethod.GET, RequestMethod.HEAD})
 	public RootResource getRoot() {
 		if (LOG.isTraceEnabled()) {
@@ -43,14 +43,11 @@ public class RootController {
 		
 		rootResource.add(linkTo(RootController.class).withSelfRel());
 		rootResource.add(getCollectionResourceLink(PlanResource.class));
-		rootResource.add(getSingleResourceLink(PlanResource.class));
 		rootResource.add(getCollectionResourceLink(ProviderResource.class));
-		rootResource.add(getSingleResourceLink(ProviderResource.class));	
 		rootResource.add(getCollectionResourceLink(EventDefinitionResource.class));
 		rootResource.add(getCollectionResourceLink(StateDefinitionResource.class));
 		rootResource.add(getCollectionResourceLink(ActionDefinitionResource.class));
 		rootResource.add(getCollectionResourceLink(ActionResource.class));
-		
 
 		//TODO Add event stream
 		
@@ -58,11 +55,6 @@ public class RootController {
 			LOG.exit(rootResource);
 		}
 		return rootResource;
-	}
-	
-	private Link getSingleResourceLink(Class<?> type) {
-		return new Link(entityLinks.linkFor(type).toUri().toString() + "/{uuid}", relProvider.getItemResourceRelFor(type));
-		
 	}
 	
 	private Link getCollectionResourceLink(Class<?> type) {

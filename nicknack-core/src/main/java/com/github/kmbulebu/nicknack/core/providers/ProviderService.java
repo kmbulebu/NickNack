@@ -44,5 +44,5 @@ public interface ProviderService {
 	
 	public Map<String, List<String>> getProviderSettingsErrors(UUID providerUuid);
 	
-	public void setProviderSettings(UUID providerUuid, Map<String, List<?>> settings, boolean disabled);
+	public void setProviderSettings(UUID providerUuid, Map<String, List<String>> settings);
 }
