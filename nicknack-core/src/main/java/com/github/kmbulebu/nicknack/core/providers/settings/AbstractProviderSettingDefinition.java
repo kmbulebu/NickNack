@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import valuetypes.ValueType;
 
-
-public abstract class AbstractProviderSettingDefinition<T extends ValueType<U>, U extends Serializable> implements SettingDefinition<T,U> {
+public abstract class AbstractProviderSettingDefinition<T extends SettingType<U>, U extends Serializable> implements SettingDefinition<T,U> {
 	
 	private final String key;
 	private final String name;

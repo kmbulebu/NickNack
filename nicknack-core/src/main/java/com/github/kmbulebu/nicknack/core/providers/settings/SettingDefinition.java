@@ -3,8 +3,6 @@ package com.github.kmbulebu.nicknack.core.providers.settings;
 import java.io.Serializable;
 import java.util.List;
 
-import valuetypes.ValueType;
-
 /**
  * A single setting that may have one or many values.
  * 
@@ -14,7 +12,7 @@ import valuetypes.ValueType;
  * @param <T> Class that will represent the type of value for this setting.
  * @param <U> Class that will represent a value for this setting.
  */
-public interface SettingDefinition<T extends ValueType<U>, U extends Serializable> {
+public interface SettingDefinition<T extends SettingType<U>, U extends Serializable> {
 	
 	/**
 	 * Key to find this setting.

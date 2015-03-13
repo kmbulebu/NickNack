@@ -1,7 +1,7 @@
-package valuetypes;
+package com.github.kmbulebu.nicknack.core.providers.settings;
 
 
-public class CheckboxType extends AbstractValueType<Boolean> {
+public class CheckboxType extends AbstractSettingType<Boolean> {
 	
 	@Override
 	public Class<Boolean> getTypeClass() {

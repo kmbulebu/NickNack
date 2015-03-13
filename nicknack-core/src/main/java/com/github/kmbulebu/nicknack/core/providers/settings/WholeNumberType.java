@@ -1,7 +1,7 @@
-package valuetypes;
+package com.github.kmbulebu.nicknack.core.providers.settings;
 
 
-public class WholeNumberType extends AbstractValueType<Integer> {
+public class WholeNumberType extends AbstractSettingType<Integer> {
 	
 	private int min = Integer.MIN_VALUE;
 	private int max = Integer.MAX_VALUE;

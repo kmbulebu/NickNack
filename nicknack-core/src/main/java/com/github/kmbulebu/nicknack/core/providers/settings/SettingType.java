@@ -1,4 +1,4 @@
-package valuetypes;
+package com.github.kmbulebu.nicknack.core.providers.settings;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @param <T> Class that will represent a value for this type of value.
  */
-public interface ValueType<T extends Serializable> {
+public interface SettingType<T extends Serializable> {
 	
 	public Class<T> getTypeClass();
 	

@@ -6,9 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import valuetypes.ValueType;
-
 import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.SettingType;
 
 public class ProviderConfigurationImpl implements ProviderConfiguration {
 	
@@ -18,7 +17,7 @@ public class ProviderConfigurationImpl implements ProviderConfiguration {
 	private boolean enabled;
 
 	@Override
-	public <T extends ValueType<U>, U extends Serializable> U getValue(SettingDefinition<T, U> settingDefinition) {
+	public <T extends SettingType<U>, U extends Serializable> U getValue(SettingDefinition<T, U> settingDefinition) {
 		final List<U> values = getValues(settingDefinition);
 		if (values == null) {
 			return null;
@@ -28,7 +27,7 @@ public class ProviderConfigurationImpl implements ProviderConfiguration {
 	}
 
 	@Override
-	public <T extends ValueType<U>, U extends Serializable> U getValue(SettingDefinition<T, U> settingDefinition,
+	public <T extends SettingType<U>, U extends Serializable> U getValue(SettingDefinition<T, U> settingDefinition,
 			U defaultValue) {
 		final List<U> values = getValues(settingDefinition);
 		if (values == null || values.get(0) == null) {
@@ -40,12 +39,12 @@ public class ProviderConfigurationImpl implements ProviderConfiguration {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends ValueType<U>, U extends Serializable> List<U> getValues(
+	public <T extends SettingType<U>, U extends Serializable> List<U> getValues(
 			SettingDefinition<T, U> settingDefinition) {
 		return (List<U>) keyToValuesMap.get(settingDefinition.getKey());
 	}
 	
-	protected <T extends ValueType<U>, U extends Serializable> void setValues(SettingDefinition<T, U> settingDefinition, List<U> values) {
+	protected <T extends SettingType<U>, U extends Serializable> void setValues(SettingDefinition<T, U> settingDefinition, List<U> values) {
 		keyToValuesMap.put(settingDefinition.getKey(), values);
 	}
 	

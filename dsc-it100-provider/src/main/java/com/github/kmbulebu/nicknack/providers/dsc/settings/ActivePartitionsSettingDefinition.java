@@ -1,8 +1,7 @@
 package com.github.kmbulebu.nicknack.providers.dsc.settings;
 
-import valuetypes.WholeNumberType;
-
 import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderSettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.WholeNumberType;
 
 public class ActivePartitionsSettingDefinition extends AbstractProviderSettingDefinition<WholeNumberType, Integer>  {
 

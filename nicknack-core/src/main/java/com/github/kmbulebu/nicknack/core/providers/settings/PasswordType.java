@@ -1,4 +1,4 @@
-package valuetypes;
+package com.github.kmbulebu.nicknack.core.providers.settings;
 
 
 public class PasswordType extends TextType {
