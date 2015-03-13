@@ -36,7 +36,7 @@ public interface ProviderService {
 	
 	public List<Exception> addProvider(Provider provider);
 	
-	public Map<String, List<String>> getProviderSettings(UUID providerUuid);
+	public Map<String, List<?>> getProviderSettings(UUID providerUuid);
 	
 	public boolean isProviderSettingsComplete(UUID providerUuid);
 	
@@ -44,5 +44,5 @@ public interface ProviderService {
 	
 	public Map<String, List<String>> getProviderSettingsErrors(UUID providerUuid);
 	
-	public void setProviderSettings(UUID providerUuid, Map<String, List<String>> settings, boolean disabled);
+	public void setProviderSettings(UUID providerUuid, Map<String, List<?>> settings, boolean disabled);
 }

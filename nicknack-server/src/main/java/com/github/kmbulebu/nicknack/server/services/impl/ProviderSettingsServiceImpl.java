@@ -24,7 +24,7 @@ public class ProviderSettingsServiceImpl implements ProviderSettingsService {
 	private ProviderService providerService;
 
 	@Override
-	public Map<String, List<String>> getProviderSettings(UUID providerUuid) throws ProviderNotFoundException {
+	public Map<String, List<?>> getProviderSettings(UUID providerUuid) throws ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(providerUuid);
 		}
@@ -35,7 +35,7 @@ public class ProviderSettingsServiceImpl implements ProviderSettingsService {
 			throw new ProviderNotFoundException(providerUuid);
 		}
 		
-		final Map<String, List<String>> settings = providerService.getProviderSettings(providerUuid);
+		final Map<String, List<?>> settings = providerService.getProviderSettings(providerUuid);
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(providerUuid);
@@ -104,7 +104,7 @@ public class ProviderSettingsServiceImpl implements ProviderSettingsService {
 	}
 
 	@Override
-	public void setProviderSettings(UUID providerUuid, Map<String, List<String>> settings, boolean disabled) throws ProviderNotFoundException {
+	public void setProviderSettings(UUID providerUuid, Map<String, List<?>> settings, boolean disabled) throws ProviderNotFoundException {
 		if (LOG.isTraceEnabled()) {
 			LOG.entry(providerUuid, settings);
 		}

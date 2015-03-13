@@ -2,12 +2,16 @@ package com.github.kmbulebu.nicknack.core.valuetypes;
 
 
 
-public class TextType extends AbstractValueType {
+public class TextType extends AbstractValueType<String> {
 	
 	protected int minimumLength = 0;
 	protected int maximumLength = Integer.MAX_VALUE;
 	protected String regexPattern = null;
-	protected String regexErrorMessage = null;
+
+	@Override
+	public Class<String> getTypeClass() {
+		return String.class;
+	}
 
 	@Override
 	public String getName() {
@@ -15,24 +19,24 @@ public class TextType extends AbstractValueType {
 	}
 	
 	@Override
-	public Validation validate(String input) {		
+	public boolean isValid(String input) {
+		if (input == null) {
+			return false;
+		}
+		
 		if (input.length() < getMinimumLength()) {
-			return buildInvalid("Value must be at least " + getMinimumLength() + " characters long.");
+			return false;
 		}
 		
 		if (input.length() > getMaximumLength()) {
-			return buildInvalid("Value must be at most " + getMaximumLength() + " characters long.");
+			return false;
 		}
 		
 		if (getRegexPattern() != null && !input.matches(getRegexPattern())) {
-			if (getRegexErrorMessage() == null) {
-				return buildInvalid("Value did match regular expression pattern: " + getRegexPattern());
-			} else {
-				return buildInvalid(getRegexErrorMessage());
-			}
+			return false;
 		}
 		
-		return buildValid();
+		return true;
 	}
 
 	public int getMinimumLength() {
@@ -58,13 +62,16 @@ public class TextType extends AbstractValueType {
 	public void setRegexPattern(String regexPattern) {
 		this.regexPattern = regexPattern;
 	}
-	
-	public String getRegexErrorMessage() {
-		return regexErrorMessage;
+
+	@Override
+	public String save(Object settingValue) {
+		return getTypeClass().cast(settingValue);
+	}
+
+	@Override
+	public String load(String savedData) {
+		return savedData;
 	}
 	
-	public void setRegexErrorMessage(String regexErrorMessage) {
-		this.regexErrorMessage = regexErrorMessage;
-	}
 
 }

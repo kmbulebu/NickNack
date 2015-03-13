@@ -87,14 +87,14 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	private Set<Integer> activeZones = null;
 	private Set<Integer> activePartitions = null;
 	
-	private final List<SettingDefinition<?>> settingDefinitions;
+	private final List<SettingDefinition<?,?>> settingDefinitions;
 	private final HostSettingDefinition hostSettingDefinition;
 	private final PortSettingDefinition portSettingDefinition;
 	private final ActivePartitionsSettingDefinition activePartitionsSettingDefinition;
 	private final ActiveZonesSettingDefinition activeZonesSettingDefinition;
 	
 	public DscProvider() {
-		settingDefinitions = new ArrayList<SettingDefinition<?>>(1);
+		settingDefinitions = new ArrayList<SettingDefinition<?,?>>(1);
 		hostSettingDefinition = new HostSettingDefinition();
 		settingDefinitions.add(hostSettingDefinition);
 		
@@ -135,11 +135,7 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 
 	@Override
 	public Collection<ActionDefinition> getActionDefinitions() {
-		if (actionDefinitions == null) {
-			return null;
-		} else {
-			return actionDefinitions.values();
-		}
+		return actionDefinitions.values();
 	}
 
 	@Override
@@ -148,7 +144,7 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	}
 	
 	@Override
-	public List<? extends SettingDefinition<?>> getSettingDefinitions() {
+	public List<? extends SettingDefinition<?,?>> getSettingDefinitions() {
 		return Collections.unmodifiableList(settingDefinitions);
 	}
 
@@ -169,21 +165,21 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 		this.actionDefinitions = new HashMap<>();
 		
 		final String host = configuration.getValue(hostSettingDefinition);
-		final Integer port = Integer.parseInt(configuration.getValue(portSettingDefinition));
+		final Integer port = configuration.getValue(portSettingDefinition);
 		
-		final List<String> activeZoneList = configuration.getValues(activePartitionsSettingDefinition);
+		final List<Integer> activeZoneList = configuration.getValues(activePartitionsSettingDefinition);
 		if (activeZoneList != null && !activeZoneList.isEmpty()) {
 			activeZones = new HashSet<>();
-			for (String zone : activeZoneList) {
-				activeZones.add(Integer.parseInt(zone));
+			for (Integer zone : activeZoneList) {
+				activeZones.add(zone);
 			}
 		}
 		
-		final List<String> activePartitionList = configuration.getValues(activePartitionsSettingDefinition);
+		final List<Integer> activePartitionList = configuration.getValues(activePartitionsSettingDefinition);
 		if (activePartitionList != null && !activePartitionList.isEmpty()) {
 			activePartitions = new HashSet<>();
-			for (String partition : activePartitionList) {
-				activePartitions.add(Integer.parseInt(partition));
+			for (Integer partition : activePartitionList) {
+				activePartitions.add(partition);
 			}
 		}
 
@@ -227,10 +223,8 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	public void shutdown() throws Exception {
 		onEventListener = null;
 		
-		if (it100 != null) {
-			it100.disconnect();
-			it100 = null;
-		}
+		it100.disconnect();
+		it100 = null;
 		
 		eventMapper = null;
 		stateMapper = null;

@@ -1,7 +1,7 @@
 package com.github.kmbulebu.nicknack.core.valuetypes;
 
 
-public class WholeNumberType extends AbstractValueType {
+public class WholeNumberType extends AbstractValueType<Integer> {
 	
 	private int min = Integer.MIN_VALUE;
 	private int max = Integer.MAX_VALUE;
@@ -14,6 +14,10 @@ public class WholeNumberType extends AbstractValueType {
 		this.step = step;
 	}
 
+	@Override
+	public Class<Integer> getTypeClass() {
+		return Integer.class;
+	}
 
 	@Override
 	public String getName() {
@@ -21,27 +25,20 @@ public class WholeNumberType extends AbstractValueType {
 	}
 	
 	@Override
-	public String getRegexPattern() {
-		return "\\d+";
-	}
-	
-	@Override
-	public Validation validate(String input) {
-		final Integer intValue = Integer.parseInt(input);
-		
-		if (intValue < min) {
-			return buildInvalid("Value must be at least " + min + ".");
+	public boolean isValid(Integer input) {
+		if (input == null) {
+			return false;
 		}
 		
-		if (intValue > max) {
-			return buildInvalid("Value must be at most " + max + ".");
+		if (input < min) {
+			return false;
 		}
 		
-		if (intValue % getStep() != 0) {
-			return buildInvalid("Value must be divisible by " + getStep() + ".");
+		if (input > max) {
+			return false;
 		}
 		
-		return buildValid();
+		return true;
 	}
 
 	public int getMin() {
@@ -66,6 +63,16 @@ public class WholeNumberType extends AbstractValueType {
 	
 	public void setStep(int step) {
 		this.step = step;
+	}
+
+	@Override
+	public String save(Object settingValue) {
+		return getTypeClass().cast(settingValue).toString();
+	}
+
+	@Override
+	public Integer load(String savedData) {
+		return Integer.parseInt(savedData);
 	}
 
 }

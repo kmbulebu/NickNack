@@ -1,39 +1,51 @@
 package com.github.kmbulebu.nicknack.core.valuetypes;
 
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 
  *
  * @param <T> Class that will represent a value for this type of value.
  */
-public interface ValueType {
+public interface ValueType<T extends Serializable> {
 	
-	/**
-	 * Name of this ValueType. (Number, Email Address, etc).
-	 * @return
-	 */
+	public Class<T> getTypeClass();
+	
 	public String getName();
 	
 	/**
-	 * A regular expression that may be used for simple, first step validation of a value.
-	 * @return
+	 * Tests if the specified value is valid. 
+	 * 
+	 * @param input User selected or entered value.
+	 * @return boolean True if the value is valid and accepted. False otherwise.
 	 */
-	public String getRegexPattern();
+	public boolean isValid(T input);
+
+	/**
+	 * Converts or serializes the List of values to a representation suitable for saving in a configuration file.
+	 * @param settingValues List of values
+	 * @return List of String representations
+	 */
+	public List<String> save(List<T> settingValues);
 	
 	/**
-	 * Complete validation of a value. Only non-null values that match getRegexPattern() will be passed as input.
-	 * 
-	 * @param value
-	 * @return
+	 * Converts or de-serializes a List of settings stored in the configuration file to a strong typed representation.
+	 * @param savedData List of String representations
+	 * @return List of values
 	 */
-	public Validation validate(String value);
+	public List<T> load(List<String> savedData);
 	
-	public interface Validation {
-		
-		public boolean isValid();
-		
-		public String invalidMessage();
-		
-	}
+	/**
+	 * Converts or serializes the settingValue to a representation suitable for saving in a configuration file.
+	 * @return String suitable for writing to a configuration file.
+	 */
+	public String save(Object settingValue);
 	
+	/**
+	 * Converts or de-serializes a settingValue stored in the configuration file to a strong typed representation.
+	 * @param savedData String representation of the setting value, created by save().
+	 * @return ValueType The typed value sutiable for consumption by the provider.
+	 */
+	public T load(String savedData);
 }

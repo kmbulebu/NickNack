@@ -23,11 +23,10 @@ public class AttrbuteFilterExpressionCollectionEvaluator {
 	
 	/**
 	 * 
-	 * @param filterCollection Collection of filters to evaluate.
-	 * @param attributeCollection Collection of attributes to filter on.
-	 * @param attributeDefinitions List of AttributeDefinitions to describe all the attributes in attributeCollection
+	 * @param filterCollection
+	 * @param attributeCollection
 	 * @return True if all attribute filters match. False, if the event is not applicable to the filter, or at least one attribute filter does not match.
-	 * @throws ParseException If a filter operator did not conform to its units.
+	 * @throws ParseException 
 	 */
 	
 	public boolean evaluate(AttributeFilterExpressionCollection filterCollection, AttributeCollection attributeCollection, List<AttributeDefinition> attributeDefinitions) throws ParseException {

@@ -1,12 +1,13 @@
 package com.github.kmbulebu.nicknack.core.providers.settings;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 
-public abstract class AbstractProviderSettingDefinition<T extends ValueType> implements SettingDefinition<T> {
+public abstract class AbstractProviderSettingDefinition<T extends ValueType<U>, U extends Serializable> implements SettingDefinition<T,U> {
 	
 	private final String key;
 	private final String name;
@@ -14,9 +15,9 @@ public abstract class AbstractProviderSettingDefinition<T extends ValueType> imp
 	private final boolean isRequired;
 	private final boolean isArray;
 	private final T settingType;
-	private final List<String> choices;
+	private final List<U> choices;
 	
-	public AbstractProviderSettingDefinition(String key, T settingType, List<String> choices, String name, String description, boolean isRequired, boolean isArray) {
+	public AbstractProviderSettingDefinition(String key, T settingType, List<U> choices, String name, String description, boolean isRequired, boolean isArray) {
 		super();
 		this.key = key;
 		this.name = name;
@@ -62,7 +63,7 @@ public abstract class AbstractProviderSettingDefinition<T extends ValueType> imp
 	}
 	
 	@Override
-	public List<String> getValueChoices() {
+	public List<U> getValueChoices() {
 		return choices;
 	}
 }

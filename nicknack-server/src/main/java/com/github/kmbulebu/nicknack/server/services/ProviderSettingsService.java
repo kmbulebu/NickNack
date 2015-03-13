@@ -8,9 +8,9 @@ import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundE
 
 public interface ProviderSettingsService {
 	
-	public Map<String, List<String>> getProviderSettings(UUID providerUuid) throws ProviderNotFoundException;
+	public Map<String, List<?>> getProviderSettings(UUID providerUuid) throws ProviderNotFoundException;
 	
-	public void setProviderSettings(UUID providerUuid, Map<String, List<String>> settings, boolean disabled) throws ProviderNotFoundException;
+	public void setProviderSettings(UUID providerUuid, Map<String, List<?>> settings, boolean disabled) throws ProviderNotFoundException;
 	
 	public boolean isProviderSettingsComplete(UUID providerUuid) throws ProviderNotFoundException;
 	

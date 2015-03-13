@@ -45,7 +45,7 @@ public class ProviderSettingsController {
 			LOG.entry(providerUuid);
 		}
 		
-		final Map<String, List<String>> settings = settingsService.getProviderSettings(providerUuid);
+		final Map<String, List<?>> settings = settingsService.getProviderSettings(providerUuid);
 		
 		final ProviderSettingsResource settingsResource = new ProviderSettingsResource();
 		settingsResource.setSettings(settings);

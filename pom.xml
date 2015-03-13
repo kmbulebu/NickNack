@@ -58,10 +58,11 @@
 	<modules>
 		<module>nicknack-core</module>
 		<module>nicknack-server</module>
+		<module>example-provider</module>
 		<module>nicknack-basic-providers</module>
 		<module>xbmc-provider</module>
-		<module>dsc-it100-provider</module>
 		<module>ssh-provider</module>
+		<module>dsc-it100-provider</module>
 		<module>pushover-provider</module>
         <module>wemo-provider</module>
     
@@ -202,9 +203,6 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-                    <additionalparam>-Xdoclint:none</additionalparam>
-                </configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>

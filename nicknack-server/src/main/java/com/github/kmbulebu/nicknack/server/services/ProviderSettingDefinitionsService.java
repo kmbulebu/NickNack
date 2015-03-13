@@ -8,6 +8,6 @@ import com.github.kmbulebu.nicknack.server.services.exceptions.ProviderNotFoundE
 
 public interface ProviderSettingDefinitionsService {
 	
-	public List<? extends SettingDefinition<?>> getSettingDefinitions(UUID providerUuid) throws ProviderNotFoundException;
+	public List<? extends SettingDefinition<?, ?>> getSettingDefinitions(UUID providerUuid) throws ProviderNotFoundException;
 
 }
