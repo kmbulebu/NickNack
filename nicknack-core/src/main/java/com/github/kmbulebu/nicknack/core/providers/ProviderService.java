@@ -1,5 +1,6 @@
 package com.github.kmbulebu.nicknack.core.providers;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,9 +21,21 @@ public interface ProviderService {
 	
 	public ActionDefinition getActionDefinition(UUID actionDefinitionUuid);
 	
+	public Collection<ActionDefinition> getActionDefinitions();
+	
+	public Collection<ActionDefinition> getActionDefinitionsByProviderUuid(UUID providerUuid);
+	
 	public EventDefinition getEventDefinition(UUID eventDefinitionUuid);
 	
+	public Collection<EventDefinition> getEventDefinitions();
+	
+	public Collection<EventDefinition> getEventDefinitionsByProviderUuid(UUID providerUuid);
+	
 	public StateDefinition getStateDefinition(UUID stateDefinitionUuid);
+	
+	public Collection<StateDefinition> getStateDefinitions();
+	
+	public Collection<StateDefinition> getStateDefinitionsByProviderUuid(UUID providerUuid);
 	
 	public AttributeDefinition<?,?> getAttributeDefinition(UUID attributeDefinitionUuid);
 

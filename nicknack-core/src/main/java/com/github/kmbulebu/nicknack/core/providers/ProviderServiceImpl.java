@@ -3,6 +3,7 @@ package com.github.kmbulebu.nicknack.core.providers;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -320,6 +321,54 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	@Override
 	public void setProviderSettings(UUID providerUuid, AttributeCollection settings) {
 		providerToSettings.put(providerUuid, settings);
+	}
+
+	@Override
+	public Collection<ActionDefinition> getActionDefinitions() {
+		return actionDefinitions.values();
+	}
+
+	@Override
+	public Collection<EventDefinition> getEventDefinitions() {
+		return eventDefinitions.values();
+	}
+
+	@Override
+	public Collection<StateDefinition> getStateDefinitions() {
+		return stateDefinitions.values();
+	}
+
+	@Override
+	public Collection<EventDefinition> getEventDefinitionsByProviderUuid(UUID providerUuid) {
+		final Provider provider = providers.get(providerUuid);
+		
+		if (provider == null) {
+			return Collections.emptyList();
+		}
+		
+		return Collections.unmodifiableCollection(provider.getEventDefinitions());
+	}
+
+	@Override
+	public Collection<ActionDefinition> getActionDefinitionsByProviderUuid(UUID providerUuid) {
+		final Provider provider = providers.get(providerUuid);
+		
+		if (provider == null) {
+			return Collections.emptyList();
+		}
+		
+		return Collections.unmodifiableCollection(provider.getActionDefinitions());
+	}
+
+	@Override
+	public Collection<StateDefinition> getStateDefinitionsByProviderUuid(UUID providerUuid) {
+		final Provider provider = providers.get(providerUuid);
+		
+		if (provider == null) {
+			return Collections.emptyList();
+		}
+		
+		return Collections.unmodifiableCollection(provider.getStateDefinitions());
 	}
 
 }

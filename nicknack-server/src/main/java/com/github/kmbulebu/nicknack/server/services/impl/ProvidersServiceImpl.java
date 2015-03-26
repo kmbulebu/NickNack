@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser.InvalidValueException;
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
@@ -22,8 +21,9 @@ import com.github.kmbulebu.nicknack.server.dbmodel.AttributeRepository;
 import com.github.kmbulebu.nicknack.server.dbmodel.ProviderEntity;
 import com.github.kmbulebu.nicknack.server.dbmodel.ProviderRepository;
 import com.github.kmbulebu.nicknack.server.exceptions.EntityDoesNotExist;
+import com.github.kmbulebu.nicknack.server.restmodel.Attribute;
+import com.github.kmbulebu.nicknack.server.restmodel.AttributeDefinition;
 import com.github.kmbulebu.nicknack.server.restmodel.Provider;
-import com.github.kmbulebu.nicknack.server.restmodel.Provider.Setting;
 import com.github.kmbulebu.nicknack.server.services.CoreProviderServiceWrapper;
 import com.github.kmbulebu.nicknack.server.services.ProvidersService;
 
@@ -96,9 +96,9 @@ public class ProvidersServiceImpl implements ProvidersService {
 		restProvider.setVersion(provider.getVersion());
 		
 		if (dbProviderEntity != null && dbProviderEntity.getSettings() != null) {
-			final List<AttributeDefinition<?, ?>> settingDefinitions = provider.getSettingDefinitions();
+			final List<com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?>> settingDefinitions = provider.getSettingDefinitions();
 			if (settingDefinitions != null) {
-				for (AttributeDefinition<?, ?> settingDefinition : settingDefinitions) {
+				for (com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?> settingDefinition : settingDefinitions) {
 					// Find a value, if one exists.
 					final AttributeEntity attributeEntity = providerRepository.findSetting(provider.getUuid(), settingDefinition.getUUID());
 					restProvider.getSettings().add(mapSetting(settingDefinition, attributeEntity));
@@ -111,8 +111,8 @@ public class ProvidersServiceImpl implements ProvidersService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private Provider.Setting mapSetting(AttributeDefinition<?, ?> settingDefinition, AttributeEntity attributeEntity) {
-		Provider.Setting setting = new Provider.Setting();
+	private Attribute mapSetting(com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?> settingDefinition, AttributeEntity attributeEntity) {
+		Attribute setting = new Attribute();
 		setting.setUuid(settingDefinition.getUUID());
 		setting.setName(settingDefinition.getName());
 		setting.setRequired(settingDefinition.isRequired());
@@ -129,8 +129,8 @@ public class ProvidersServiceImpl implements ProvidersService {
 		
 	}
 	
-	private Provider.ValueType mapValueType(ValueType<?> attributeValueType) {
-		Provider.ValueType valueType = new Provider.ValueType();
+	private AttributeDefinition.ValueType mapValueType(ValueType<?> attributeValueType) {
+		AttributeDefinition.ValueType valueType = new AttributeDefinition.ValueType();
 		valueType.setName(attributeValueType.getName());
 		valueType.setIsValidRegex(attributeValueType.getIsValidRegEx());
 		return valueType;
@@ -149,7 +149,7 @@ public class ProvidersServiceImpl implements ProvidersService {
 		}
 		
 		
-		for (Setting setting : provider.getSettings()) {
+		for (Attribute setting : provider.getSettings()) {
 			// If a node doesn't exist yet, create it.
 			AttributeEntity attributeEntity = providerRepository.findSetting(provider.getUuid(), setting.getUuid());
 			if (attributeEntity == null) {
@@ -159,7 +159,7 @@ public class ProvidersServiceImpl implements ProvidersService {
 			}
 		
 			// Find the attribute definition
-			final AttributeDefinition<?,?> attributeDefinition = coreProviderService.getNickNackProviderService().getAttributeDefinition(setting.getUuid());
+			final com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?,?> attributeDefinition = coreProviderService.getNickNackProviderService().getAttributeDefinition(setting.getUuid());
 			
 			// If doesn't exist, ignore.
 			if (attributeDefinition != null) {

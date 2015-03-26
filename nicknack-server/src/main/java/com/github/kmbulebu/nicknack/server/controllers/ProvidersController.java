@@ -53,7 +53,7 @@ public class ProvidersController {
 	@RequestMapping(method={GET, HEAD}, value="/{uuid}")
 	public Provider getProvider(@PathVariable UUID uuid) {
 		if (LOG.isTraceEnabled()) {
-			LOG.entry();
+			LOG.entry(uuid);
 		}
 		
 		final Provider provider = providersService.getProvider(uuid); 
