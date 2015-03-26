@@ -36,6 +36,23 @@ public class AttributeValueParser {
 		return strings;
 	}
 	
+	public <T extends ValueType<U>, U> String[] toStringsFromList(AttributeDefinition<T, U> attributeDefinition, List<Object> values) {
+		if (values == null) {
+			return null;
+		}
+		
+		final String[] strings = new String[values.size()];
+		for (int i = 0; i < values.size(); i++) {
+			if (values.get(i) == null || attributeDefinition.getValueType().getValueClass().isInstance(values.get(i))) {
+				final U castedValue = attributeDefinition.getValueType().getValueClass().cast(values.get(i));
+				strings[i] = attributeDefinition.getValueType().toString(castedValue);
+			} else {
+				strings[i] = null;
+			}
+		}
+		return strings;
+	}
+	
 	public <T extends ValueType<U>, U> U toObject(AttributeDefinition<T, U> attributeDefinition, String value) throws ParseException, InvalidValueException{
 		if (value == null) {
 			return null;

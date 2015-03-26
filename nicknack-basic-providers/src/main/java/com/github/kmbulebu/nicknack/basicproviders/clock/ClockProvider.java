@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
+import com.github.kmbulebu.nicknack.core.attributes.impl.DayOfWeekAttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
 import com.github.kmbulebu.nicknack.core.providers.BaseProvider;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
@@ -29,7 +30,7 @@ public class ClockProvider extends BaseProvider implements Runnable {
 	private OnEventListener onEventListener;
 	
 	public ClockProvider() {
-		super(PROVIDER_UUID, "Clock", "NickNack", 1);
+		super(PROVIDER_UUID, "Clock", "NickNack", 1, DayOfWeekAttributeDefinition.INSTANCE);
 	}
 	
 	@Override

@@ -80,7 +80,9 @@ public class Provider {
 		private String description;
 		private boolean required;
 		private boolean multiValue;
+		private ValueType valueType;
 		private String[] values = new String[]{};
+		private String[] choices;
 		
 		public UUID getUuid() {
 			return uuid;
@@ -118,6 +120,40 @@ public class Provider {
 		public void setValues(String[] values) {
 			this.values = values;
 		}
+		public ValueType getValueType() {
+			return valueType;
+		}
+		public void setValueType(ValueType valueType) {
+			this.valueType = valueType;
+		}
+		public String[] getChoices() {
+			return choices;
+		}
+		public void setChoices(String[] choices) {
+			this.choices = choices;
+		}
+		
+		
+	}
+	
+	public static class ValueType {
+		
+		private String name;
+		private String isValidRegex;
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public String getIsValidRegex() {
+			return isValidRegex;
+		}
+		public void setIsValidRegex(String isValidRegex) {
+			this.isValidRegex = isValidRegex;
+		}
+		
+		
 		
 	}
 

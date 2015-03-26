@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser.InvalidValueException;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType.ParseException;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.dbmodel.AttributeEntity;
@@ -90,17 +91,30 @@ public class ProvidersServiceImpl implements ProvidersService {
 		return restProvider;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private Provider.Setting mapSetting(AttributeDefinition<?, ?> settingDefinition, AttributeEntity attributeEntity) {
 		Provider.Setting setting = new Provider.Setting();
 		setting.setUuid(settingDefinition.getUUID());
 		setting.setName(settingDefinition.getName());
 		setting.setRequired(settingDefinition.isRequired());
 		setting.setDescription(settingDefinition.getDescription());
+		if (settingDefinition.getValueChoices() != null) {
+			settingDefinition.getValueChoices().getValueChoices();
+			setting.setChoices(valueParser.toStringsFromList(settingDefinition, (List<Object>) settingDefinition.getValueChoices().getValueChoices()));
+		}
+		setting.setValueType(mapValueType(settingDefinition.getValueType()));
 		if (attributeEntity != null) {
 			setting.setValues(attributeEntity.getValues());
 		}
 		return setting;
 		
+	}
+	
+	private Provider.ValueType mapValueType(ValueType<?> attributeValueType) {
+		Provider.ValueType valueType = new Provider.ValueType();
+		valueType.setName(attributeValueType.getName());
+		valueType.setIsValidRegex(attributeValueType.getIsValidRegEx());
+		return valueType;
 	}
 
 	@Override
