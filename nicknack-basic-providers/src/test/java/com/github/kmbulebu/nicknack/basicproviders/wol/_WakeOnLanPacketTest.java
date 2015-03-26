@@ -7,7 +7,7 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import com.github.kmbulebu.nicknack.basicproviders.wol.WakeOnLanPacket;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 
 public class _WakeOnLanPacketTest {
 	
@@ -35,7 +35,7 @@ public class _WakeOnLanPacketTest {
 		try {
 			WakeOnLanPacket wolPacket = new WakeOnLanPacket(macAddress);
 			assertTrue(Arrays.equals(expectedPacket, wolPacket.toBytes()));
-		} catch (ActionParameterException e) {
+		} catch (ActionAttributeException e) {
 			fail();
 		}
 	}
@@ -46,21 +46,21 @@ public class _WakeOnLanPacketTest {
 		try {
 			WakeOnLanPacket wolPacket = new WakeOnLanPacket("0A:1B:1C:1D:1E");
 			fail();
-		} catch (ActionParameterException e) {
+		} catch (ActionAttributeException e) {
 			// pass
 		}
 		
 		try {
 			WakeOnLanPacket wolPacket = new WakeOnLanPacket("0A1B1C1D1E1F");
 			fail();
-		} catch (ActionParameterException e) {
+		} catch (ActionAttributeException e) {
 			// pass
 		}
 		
 		try {
 			WakeOnLanPacket wolPacket = new WakeOnLanPacket("0X1B1C1D1E1F");
 			fail();
-		} catch (ActionParameterException e) {
+		} catch (ActionAttributeException e) {
 			// pass
 		}
 		

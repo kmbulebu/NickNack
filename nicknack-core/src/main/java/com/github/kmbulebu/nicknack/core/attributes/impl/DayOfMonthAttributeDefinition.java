@@ -1,26 +1,23 @@
 package com.github.kmbulebu.nicknack.core.attributes.impl;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
-import com.github.kmbulebu.nicknack.core.units.IntegerUnit;
+import com.github.kmbulebu.nicknack.core.valuetypes.builder.ValueTypeBuilder;
+import com.github.kmbulebu.nicknack.core.valuetypes.impl.wholenumber.WholeNumber;
+import com.github.kmbulebu.nicknack.core.valuetypes.impl.wholenumber.WholeNumberRangeChoices;
 
-public class DayOfMonthAttributeDefinition extends BasicAttributeDefinition{
+public class DayOfMonthAttributeDefinition extends BasicAttributeDefinition<WholeNumber,Integer> {
 	
 	public static final DayOfMonthAttributeDefinition INSTANCE = new DayOfMonthAttributeDefinition();
 
 	public DayOfMonthAttributeDefinition() {
-		super(UUID.fromString("99dca082-5d49-40ab-bbe2-853b303f3192"), "Day of Month", IntegerUnit.INSTANCE, true);
-	}
-	
-	public Map<String, String> getStaticValues() {
-		final Map<String, String> values = new HashMap<>();
-		for (int i = 1; i < 32 ; i++) {
-			values.put(Integer.toString(i), Integer.toString(i));
-		}
-		return values;
+		super(UUID.fromString("99dca082-5d49-40ab-bbe2-853b303f3192"), 
+				"Day of Month", 
+				ValueTypeBuilder.wholeNumber().min(1).max(31).build(),
+				new WholeNumberRangeChoices(1, 31), 
+				true,
+				false);
 	}
 
 }

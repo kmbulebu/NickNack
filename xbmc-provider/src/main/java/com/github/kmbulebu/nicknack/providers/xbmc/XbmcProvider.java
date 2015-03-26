@@ -15,13 +15,13 @@ import org.apache.logging.log4j.Logger;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
-import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.actions.ShowNotificationActionDefinition;
@@ -57,12 +57,12 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	private List<XbmcClient> xbmcClients = null;
 	private Map<String, String> hostNameValues;
 	
-	private final List<ProviderSettingDefinition<?>> settingDefinitions;
+	private final List<SettingDefinition<?>> settingDefinitions;
 	
 	private final HostsSettingDefinition hostSettingsDefinition;
 	
 	public XbmcProvider() {
-		settingDefinitions = new ArrayList<ProviderSettingDefinition<?>>(1);
+		settingDefinitions = new ArrayList<SettingDefinition<?>>(1);
 		hostSettingsDefinition = new HostsSettingDefinition();
 		settingDefinitions.add(hostSettingsDefinition);
 	}
@@ -155,7 +155,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	}
 	
 	@Override
-	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+	public List<? extends SettingDefinition<?>> getSettingDefinitions() {
 		return Collections.unmodifiableList(settingDefinitions);
 	}
 
@@ -198,14 +198,14 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 	}
 
 	@Override
-	public void run(Action action) throws ActionFailureException, ActionParameterException {
+	public void run(Action action) throws ActionFailureException, ActionAttributeException {
 		if (logger.isTraceEnabled()) {
 			logger.entry(action);
 		}
 		if (ShowNotificationActionDefinition.INSTANCE.getUUID().equals(action.getAppliesToActionDefinition())) {
 			final String host = action.getAttributes().get(HostAttributeDefinition.DEF_UUID);
 			if (host == null) {
-				final ActionParameterException t = new ActionParameterException(HostAttributeDefinition.INSTANCE.getName() + " is missing.");
+				final ActionAttributeException t = new ActionAttributeException(HostAttributeDefinition.INSTANCE.getName() + " is missing.");
 				if (logger.isTraceEnabled()) {
 					logger.throwing(t);
 				}
@@ -221,7 +221,7 @@ public class XbmcProvider implements Provider, XbmcClient.OnMessageReceivedListe
 			} else {
 				final XbmcClient client = findClient(host);
 				if (client == null) {
-					final ActionParameterException t = new ActionParameterException("Host " + host + " could not be found.");
+					final ActionAttributeException t = new ActionAttributeException("Host " + host + " could not be found.");
 					if (logger.isTraceEnabled()) {
 						logger.throwing(t);
 					}

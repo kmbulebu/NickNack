@@ -2,7 +2,8 @@ package com.github.kmbulebu.nicknack.core.attributes;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.units.Unit;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueChoices;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 /**
  * Basic implementation of an AttributeDefinition. 
@@ -10,26 +11,30 @@ import com.github.kmbulebu.nicknack.core.units.Unit;
  * May be extended or used as-is.
  *
  */
-public class BasicAttributeDefinition implements AttributeDefinition {
+public class BasicAttributeDefinition<T extends ValueType<U>, U> implements AttributeDefinition<T, U> {
 	
 	private final UUID uuid;
 	private final String name;
 	private final String description;
-	private final Unit units;
 	private final boolean isRequired;
+	private final boolean isMultiValue;
+	private final T valueType;
+	private final ValueChoices<U> valueChoices;
 	
-	public BasicAttributeDefinition(UUID uuid, String name, Unit units, boolean isRequired) {
-		this(uuid, name, "", units, isRequired);
+	public BasicAttributeDefinition(UUID uuid, String name, T valueType, ValueChoices<U> valueChoices, boolean isRequired, boolean isMultiValue) {
+		this(uuid, name, "", valueType, valueChoices, isRequired, isMultiValue);
 	}
 	
-	public BasicAttributeDefinition(UUID uuid, String name, String description, Unit units, boolean isRequired) {
+	public BasicAttributeDefinition(UUID uuid, String name, String description,  T valueType, ValueChoices<U> valueChoices, boolean isRequired, boolean isMultiValue) {
 		this.uuid = uuid;
 		this.name = name;
+		this.valueType = valueType;
+		this.valueChoices = valueChoices;
 		this.description = description;
-		this.units = units;
 		this.isRequired = isRequired;
+		this.isMultiValue = isMultiValue;
 	}
-	
+
 	@Override
 	public UUID getUUID() {
 		return uuid;
@@ -41,13 +46,23 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 	}
 
 	@Override
-	public Unit getUnits() {
-		return units;
-	}
-
-	@Override
 	public boolean isRequired() {
 		return isRequired;
+	}
+	
+	@Override
+	public boolean isMultiValue() {
+		return isMultiValue;
+	};
+	
+	@Override
+	public T getValueType() {
+		return valueType;
+	}
+	
+	@Override
+	public ValueChoices<U> getValueChoices() {
+		return valueChoices;
 	}
 	
 	@Override
@@ -63,6 +78,7 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 		return result;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -83,7 +99,10 @@ public class BasicAttributeDefinition implements AttributeDefinition {
 	@Override
 	public String toString() {
 		return "BasicAttributeDefinition [uuid=" + uuid + ", name=" + name + ", description=" + description
-				+ ", units=" + units + ", isRequired=" + isRequired + "]";
+				+ ", isRequired=" + isRequired + ", isMultiValue=" + isMultiValue + ", valueType=" + valueType
+				+ ", valueChoices=" + valueChoices + "]";
 	}
+
+
 
 }

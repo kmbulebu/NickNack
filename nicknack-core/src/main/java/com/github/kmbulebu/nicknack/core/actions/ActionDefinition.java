@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
+import com.github.kmbulebu.nicknack.core.providers.Provider;
 
 /**
  * Define's an Action that a user may perform. 
@@ -38,6 +39,8 @@ public interface ActionDefinition {
 	 * May include both required and optional attributes.
 	 * @return List of this Action's Attributes
 	 */
-	public List<AttributeDefinition> getAttributeDefinitions();
+	public List<AttributeDefinition<?,?>> getAttributeDefinitions();
+	
+	public void run(Action action, Provider provider) throws ActionFailureException, ActionAttributeException;
 
 }

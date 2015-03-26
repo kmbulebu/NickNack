@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.providers.xbmc.XbmcProvider;
 import com.github.kmbulebu.nicknack.providers.xbmc.attributes.DurationAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.xbmc.attributes.MessageAttributeDefinition;
@@ -37,13 +37,13 @@ public class ShowNotificationActionDefinition extends AbstractXbmcActionDefiniti
 	private static final String METHOD = "GUI.ShowNotification";
 	
 	@Override
-	public void run(Action action, XbmcClient client) throws ActionFailureException, ActionParameterException {
+	public void run(Action action, XbmcClient client) throws ActionFailureException, ActionAttributeException {
 		if (logger.isTraceEnabled()) {
 			logger.entry(action, client);
 		}
 		final String title = action.getAttributes().get(TitleAttributeDefinition.DEF_UUID);
 		if (title == null) {
-			final ActionParameterException t = new ActionParameterException(TitleAttributeDefinition.INSTANCE.getName() + " is missing.");
+			final ActionAttributeException t = new ActionAttributeException(TitleAttributeDefinition.INSTANCE.getName() + " is missing.");
 			if (logger.isTraceEnabled()) {
 				logger.throwing(t);
 			}
@@ -52,7 +52,7 @@ public class ShowNotificationActionDefinition extends AbstractXbmcActionDefiniti
 		
 		final String message = action.getAttributes().get(MessageAttributeDefinition.DEF_UUID);
 		if (message == null) {
-			final ActionParameterException t = new ActionParameterException(MessageAttributeDefinition.INSTANCE.getName() + " is missing.");
+			final ActionAttributeException t = new ActionAttributeException(MessageAttributeDefinition.INSTANCE.getName() + " is missing.");
 			if (logger.isTraceEnabled()) {
 				logger.throwing(t);
 			}
@@ -61,7 +61,7 @@ public class ShowNotificationActionDefinition extends AbstractXbmcActionDefiniti
 		
 		final String icon = action.getAttributes().get(NotificationIconAttributeDefinition.DEF_UUID);
 		if (icon == null) {
-			final ActionParameterException t = new ActionParameterException(NotificationIconAttributeDefinition.INSTANCE.getName() + " is missing.");
+			final ActionAttributeException t = new ActionAttributeException(NotificationIconAttributeDefinition.INSTANCE.getName() + " is missing.");
 			if (logger.isTraceEnabled()) {
 				logger.throwing(t);
 			}
@@ -70,7 +70,7 @@ public class ShowNotificationActionDefinition extends AbstractXbmcActionDefiniti
 		
 		final String durationStr = action.getAttributes().get(DurationAttributeDefinition.DEF_UUID);
 		if (durationStr == null) {
-			final ActionParameterException t = new ActionParameterException(DurationAttributeDefinition.INSTANCE.getName() + " is missing.");
+			final ActionAttributeException t = new ActionAttributeException(DurationAttributeDefinition.INSTANCE.getName() + " is missing.");
 			if (logger.isTraceEnabled()) {
 				logger.throwing(t);
 			}

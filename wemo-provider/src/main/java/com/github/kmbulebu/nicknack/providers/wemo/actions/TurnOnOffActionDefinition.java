@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.providers.wemo.WemoProvider;
 import com.github.kmbulebu.nicknack.providers.wemo.attributes.FriendlyNameAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.wemo.attributes.OnAttributeDefinition;
@@ -34,16 +34,16 @@ public class TurnOnOffActionDefinition extends AbstractWemoActionDefinition {
 	}
 
 	@Override
-	public void run(Action action) throws ActionFailureException, ActionParameterException {
+	public void run(Action action) throws ActionFailureException, ActionAttributeException {
 		final String friendlyName = action.getAttributes().get(FriendlyNameAttributeDefinition.INSTANCE.getUUID());
 		final String onStr = action.getAttributes().get(OnAttributeDefinition.INSTANCE.getUUID());
 		
 		if (friendlyName == null || friendlyName.length() < 1) {
-			throw new ActionParameterException(FriendlyNameAttributeDefinition.INSTANCE.getName() + " parameter is required.");
+			throw new ActionAttributeException(FriendlyNameAttributeDefinition.INSTANCE.getName() + " parameter is required.");
 		}
 		
 		if (onStr == null || onStr.length() < 1) {
-			throw new ActionParameterException(OnAttributeDefinition.INSTANCE.getName() + " parameter is required.");
+			throw new ActionAttributeException(OnAttributeDefinition.INSTANCE.getName() + " parameter is required.");
 		}
 		
 		boolean newSwitchOnValue;
@@ -52,7 +52,7 @@ public class TurnOnOffActionDefinition extends AbstractWemoActionDefinition {
 		} else if ("off".equalsIgnoreCase(onStr) || "false".equalsIgnoreCase(onStr)) {
 			newSwitchOnValue = false;
 		} else {
-			throw new ActionParameterException(OnAttributeDefinition.INSTANCE.getName() + " parameter value is not recognized."); 
+			throw new ActionAttributeException(OnAttributeDefinition.INSTANCE.getName() + " parameter value is not recognized."); 
 		}
 		
 		final List<WemoDevice> failedToChange = new LinkedList<>();

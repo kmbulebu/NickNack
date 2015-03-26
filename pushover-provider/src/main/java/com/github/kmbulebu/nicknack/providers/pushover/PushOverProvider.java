@@ -11,12 +11,12 @@ import java.util.UUID;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
-import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.pushover.actions.AbstractPushMessageActionDefinition;
@@ -70,7 +70,7 @@ public class PushOverProvider implements Provider {
 	}
 
 	@Override
-	public void run(Action action) throws ActionFailureException, ActionParameterException {
+	public void run(Action action) throws ActionFailureException, ActionAttributeException {
 		// Look it up.
 		final AbstractPushMessageActionDefinition actionDef = actionDefinitions.get(action.getAppliesToActionDefinition());
 		if (actionDef == null) {
@@ -92,7 +92,7 @@ public class PushOverProvider implements Provider {
 	}
 	
 	@Override
-	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+	public List<? extends SettingDefinition<?>> getSettingDefinitions() {
 		// TODO Auto-generated method stub
 		return null;
 	}

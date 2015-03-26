@@ -33,6 +33,6 @@ public interface EventDefinition {
 	 * as well as some that are sometimes included with an Event.
 	 * @return List of this Event's Attributes
 	 */
-	public List<AttributeDefinition> getAttributeDefinitions();
+	public List<AttributeDefinition<?,?>> getAttributeDefinitions();
 	
 }

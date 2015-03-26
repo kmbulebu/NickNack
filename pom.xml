@@ -58,13 +58,12 @@
 	<modules>
 		<module>nicknack-core</module>
 		<module>nicknack-server</module>
-		<module>example-provider</module>
 		<module>nicknack-basic-providers</module>
-		<module>xbmc-provider</module>
+		<!-- <module>xbmc-provider</module>
 		<module>ssh-provider</module>
 		<module>dsc-it100-provider</module>
 		<module>pushover-provider</module>
-        <module>wemo-provider</module>
+        <module>wemo-provider</module> -->
     
 		<module>nicknack-server-assembly</module>
 	</modules>
@@ -81,7 +80,7 @@
 				<artifactId>nicknack-basic-providers</artifactId>
 				<version>0.0.8-SNAPSHOT</version>
 			</dependency>
-			<dependency>
+		<!--  	<dependency>
 				<groupId>com.github.kmbulebu.nicknack</groupId>
 				<artifactId>xbmc-provider</artifactId>
 				<version>0.0.8-SNAPSHOT</version>
@@ -105,7 +104,7 @@
                 <groupId>com.github.kmbulebu.nicknack</groupId>
                 <artifactId>wemo-provider</artifactId>
                 <version>0.0.8-SNAPSHOT</version>
-            </dependency>
+            </dependency> -->
 			<dependency>
 				<groupId>com.google.code.findbugs</groupId>
 				<artifactId>jsr305</artifactId>
@@ -117,27 +116,16 @@
 				<version>0.20.7</version>
 			</dependency>
 			<dependency>
-				<groupId>commons-configuration</groupId>
-				<artifactId>commons-configuration</artifactId>
-				<version>1.10</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-collections</groupId>
-				<artifactId>commons-collections</artifactId>
-				<version>3.2.1</version>
-				<scope>runtime</scope>
-			</dependency>
-			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-bom</artifactId>
-				<version>2.1</version>
+				<version>2.2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.4.4</version>
+				<version>2.5.1</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -155,8 +143,8 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.2</version>
 					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
+						<source>1.8</source>
+						<target>1.8</target>
 					</configuration>
 				</plugin>
 				<plugin>

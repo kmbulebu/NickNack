@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.providers.ssh.attributes.CommandLineAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.ssh.attributes.HostAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.ssh.attributes.PasswordAttributeDefinition;
@@ -29,7 +29,7 @@ public class ExecuteShellCommandActionDefinition extends AbstractSshActionDefini
 	}
 
 	@Override
-	public void run(Action action) throws ActionFailureException, ActionParameterException {
+	public void run(Action action) throws ActionFailureException, ActionAttributeException {
 		final String host = action.getAttributes().get(HostAttributeDefinition.DEF_UUID);
 		final String portStr = action.getAttributes().get(PortAttributeDefinition.DEF_UUID);
 		final String commandLine = action.getAttributes().get(CommandLineAttributeDefinition.DEF_UUID);
@@ -38,19 +38,19 @@ public class ExecuteShellCommandActionDefinition extends AbstractSshActionDefini
 		final String password = action.getAttributes().get(PasswordAttributeDefinition.DEF_UUID);
 		
 		if (host == null || host.isEmpty()) {
-			throw new ActionParameterException("Host parameter is missing.");
+			throw new ActionAttributeException("Host parameter is missing.");
 		}
 		
 		if (userName == null || userName.isEmpty()) {
-			throw new ActionParameterException("UserName parameter is missing.");
+			throw new ActionAttributeException("UserName parameter is missing.");
 		}
 		
 		if (password == null || password.isEmpty()) {
-			throw new ActionParameterException("Password parameter is missing.");
+			throw new ActionAttributeException("Password parameter is missing.");
 		}
 		
 		if (commandLine == null || commandLine.isEmpty()) {
-			throw new ActionParameterException("Command Line parameter is missing.");
+			throw new ActionAttributeException("Command Line parameter is missing.");
 		}
 		
 		int port;

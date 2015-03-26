@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.providers.pushover.attributes.DeviceAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.pushover.attributes.MessageAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.pushover.attributes.PriorityAttributeDefinition;
@@ -38,7 +38,7 @@ public class PushMessageActionDefinition extends AbstractPushMessageActionDefini
 	
 
 	@Override
-	public void run(Action action) throws ActionFailureException, ActionParameterException {
+	public void run(Action action) throws ActionFailureException, ActionAttributeException {
 		final PushMessage pushMessage = new PushMessage();
 		pushMessage.setTimeStamp(new Date());
 		pushMessage.setMessage(action.getAttributes().get(MessageAttributeDefinition.DEF_UUID));
@@ -57,15 +57,15 @@ public class PushMessageActionDefinition extends AbstractPushMessageActionDefini
 		final String apiToken = action.getAttributes().get(TokenAttributeDefinition.DEF_UUID);
 		
 		if (apiToken == null) {
-			throw new ActionParameterException("Token is required.");
+			throw new ActionAttributeException("Token is required.");
 		}
 		
 		if (pushMessage.getUser() == null) {
-			throw new ActionParameterException("User is required.");
+			throw new ActionAttributeException("User is required.");
 		}
 		
 		if (pushMessage.getMessage() == null) {
-			throw new ActionParameterException("Message is required.");
+			throw new ActionAttributeException("Message is required.");
 		}
 		
 		PushOverClient pushOverClient = new PushOverClientImpl();
@@ -74,7 +74,7 @@ public class PushMessageActionDefinition extends AbstractPushMessageActionDefini
 		try {
 			pushOverClient.sendPushMessage(pushMessage);
 		} catch (PushOverException e) {
-			throw new ActionParameterException(e.getMessage(), e);
+			throw new ActionAttributeException(e.getMessage(), e);
 		} catch (IOException e) {
 			throw new ActionFailureException(e.getMessage(), e);
 		}

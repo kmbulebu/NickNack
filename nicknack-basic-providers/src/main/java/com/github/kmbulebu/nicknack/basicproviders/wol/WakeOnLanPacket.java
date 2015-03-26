@@ -2,21 +2,21 @@ package com.github.kmbulebu.nicknack.basicproviders.wol;
 
 import java.util.Arrays;
 
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 
 public class WakeOnLanPacket {
 	
 	final byte[] macAddress;
 	
-	public WakeOnLanPacket(String macAddress) throws ActionParameterException {
+	public WakeOnLanPacket(String macAddress) throws ActionAttributeException {
 		this.macAddress = toByteArray(macAddress);
 	}
 	
-	protected static final byte[] toByteArray(String macAddress) throws ActionParameterException {
+	protected static final byte[] toByteArray(String macAddress) throws ActionAttributeException {
 		final String[] macAddressSplit = macAddress.split(":");
 		
 		if (macAddressSplit.length != 6) {
-			throw new ActionParameterException("Mac Address must be formatted with five colons.");
+			throw new ActionAttributeException("Mac Address must be formatted with five colons.");
 		}
 
 		final byte[] bytes = new byte[6];
@@ -24,7 +24,7 @@ public class WakeOnLanPacket {
 			try {
 				bytes[i] = new Integer(Integer.parseInt(macAddressSplit[i], 16)).byteValue();
 			} catch (NumberFormatException e) {
-				throw new ActionParameterException("Mac Address must contain only hexadecimal [0-9A-E] values.");
+				throw new ActionAttributeException("Mac Address must contain only hexadecimal [0-9A-E] values.");
 			}
 		}
 		return bytes;

@@ -26,13 +26,13 @@ import com.github.kmbulebu.dsc.it100.commands.write.WriteCommand;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.providers.ProviderConfiguration;
-import com.github.kmbulebu.nicknack.core.providers.settings.ProviderSettingDefinition;
+import com.github.kmbulebu.nicknack.core.providers.settings.SettingDefinition;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.AbstractDscActionDefinition;
@@ -87,14 +87,14 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	private Set<Integer> activeZones = null;
 	private Set<Integer> activePartitions = null;
 	
-	private final List<ProviderSettingDefinition<?>> settingDefinitions;
+	private final List<SettingDefinition<?>> settingDefinitions;
 	private final HostSettingDefinition hostSettingDefinition;
 	private final PortSettingDefinition portSettingDefinition;
 	private final ActivePartitionsSettingDefinition activePartitionsSettingDefinition;
 	private final ActiveZonesSettingDefinition activeZonesSettingDefinition;
 	
 	public DscProvider() {
-		settingDefinitions = new ArrayList<ProviderSettingDefinition<?>>(1);
+		settingDefinitions = new ArrayList<SettingDefinition<?>>(1);
 		hostSettingDefinition = new HostSettingDefinition();
 		settingDefinitions.add(hostSettingDefinition);
 		
@@ -144,7 +144,7 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	}
 	
 	@Override
-	public List<? extends ProviderSettingDefinition<?>> getSettingDefinitions() {
+	public List<? extends SettingDefinition<?>> getSettingDefinitions() {
 		return Collections.unmodifiableList(settingDefinitions);
 	}
 
@@ -250,7 +250,7 @@ public class DscProvider implements Provider, Action1<ReadCommand> {
 	}
 
 	@Override
-	public void run(Action action) throws ActionFailureException, ActionParameterException {
+	public void run(Action action) throws ActionFailureException, ActionAttributeException {
 		final ActionDefinition actionDef = actionDefinitions.get(action.getAppliesToActionDefinition());
 		
 		if (actionDef instanceof AbstractDscActionDefinition) {

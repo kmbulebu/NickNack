@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.core.actions.BasicActionDefinition;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.wemo.attributes.FriendlyNameAttributeDefinition;
@@ -22,6 +22,6 @@ public abstract class AbstractWemoActionDefinition extends BasicActionDefinition
 		return definitions;
 	}
 	
-	public abstract void run(Action action) throws ActionFailureException, ActionParameterException;
+	public abstract void run(Action action) throws ActionFailureException, ActionAttributeException;
 
 }

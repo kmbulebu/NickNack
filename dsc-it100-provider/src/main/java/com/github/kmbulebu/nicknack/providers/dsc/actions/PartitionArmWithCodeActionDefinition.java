@@ -8,7 +8,7 @@ import com.github.kmbulebu.dsc.it100.commands.write.PartitionArmWithCodeCommand;
 import com.github.kmbulebu.dsc.it100.commands.write.WriteCommand;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.providers.dsc.attributes.PartitionNumberAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.attributes.UserCodeAttributeDefinition;
 
@@ -23,15 +23,15 @@ public class PartitionArmWithCodeActionDefinition extends AbstractDscActionDefin
 	}
 
 	@Override
-	public void run(Action action) throws ActionFailureException, ActionParameterException {
+	public void run(Action action) throws ActionFailureException, ActionAttributeException {
 		String partitionStr = action.getAttributes().get(PartitionNumberAttributeDefinition.INSTANCE.getUUID());
 		if (partitionStr == null) {
-			throw new ActionParameterException(PartitionNumberAttributeDefinition.INSTANCE.getName() + " is missing.");
+			throw new ActionAttributeException(PartitionNumberAttributeDefinition.INSTANCE.getName() + " is missing.");
 		}
 		
 		String userCode = action.getAttributes().get(UserCodeAttributeDefinition.INSTANCE.getUUID());
 		if (userCode == null) {
-			throw new ActionParameterException(UserCodeAttributeDefinition.INSTANCE.getName() + " is missing.");
+			throw new ActionAttributeException(UserCodeAttributeDefinition.INSTANCE.getName() + " is missing.");
 		}
 		
 		int partition;
@@ -39,7 +39,7 @@ public class PartitionArmWithCodeActionDefinition extends AbstractDscActionDefin
 		try {
 			partition = Integer.parseInt(partitionStr);
 		} catch (NumberFormatException e) {
-			throw new ActionParameterException("Partition parameter must be an integer number.");
+			throw new ActionAttributeException("Partition parameter must be an integer number.");
 		}
 		
 		final PartitionArmWithCodeCommand command = new PartitionArmWithCodeCommand(partition, userCode);

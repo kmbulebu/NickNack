@@ -14,6 +14,6 @@ public interface AttributeFilterExpression {
 	
 	public Operator getOperator();
 	
-	public String getOperand();	
+	public Object[] getOperands();
 	
 }

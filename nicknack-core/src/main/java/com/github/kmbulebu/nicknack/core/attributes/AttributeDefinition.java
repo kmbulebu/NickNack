@@ -2,14 +2,15 @@ package com.github.kmbulebu.nicknack.core.attributes;
 
 import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.units.Unit;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueChoices;
+import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 
 /**
  * Defines an attribute to be associated with an Event, State, or Action.
  * 
  *
  */
-public interface AttributeDefinition {
+public interface AttributeDefinition<T extends ValueType<U>, U> {
 	
 	/**
 	 * A UUID that uniquely identifies the attribute. This value always remains the same from
@@ -36,17 +37,29 @@ public interface AttributeDefinition {
 	public boolean isRequired();
 	
 	/**
-	 * The units of values for this attribute.
 	 * 
-	 * @return Unit Defines the values of this attribute.
+	 * @return True if this attribute may have multiple, simultaneous values. False if only one.
 	 */
-	public Unit getUnits();
+	public boolean isMultiValue();
+	
+	/**
+	 * The type of values for this attribute.
+	 * 
+	 * @return Defines the values of this attribute.
+	 */
+	public T getValueType();
 	
 	/**
 	 * Human readable help text to further explain the purpose of the attribute.
 	 * @return String Description
 	 */
 	public String getDescription();
+	
+	/**
+	 * 
+	 * @return Null if the attribute accepts any value entered by the user. Or a class that will provide a list of possible values.
+	 */
+	public ValueChoices<U> getValueChoices();
 	
 	
 }

@@ -8,7 +8,7 @@ import com.github.kmbulebu.dsc.it100.commands.write.CommandOutputControl;
 import com.github.kmbulebu.dsc.it100.commands.write.WriteCommand;
 import com.github.kmbulebu.nicknack.core.actions.Action;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.providers.dsc.attributes.PartitionNumberAttributeDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.attributes.PgmNumberAttributeDefinition;
 
@@ -23,15 +23,15 @@ public class CommandOutputActionDefinition extends AbstractDscActionDefinition {
 	}
 
 	@Override
-	public void run(Action action) throws ActionFailureException, ActionParameterException {
+	public void run(Action action) throws ActionFailureException, ActionAttributeException {
 		String partitionStr = action.getAttributes().get(PartitionNumberAttributeDefinition.INSTANCE.getUUID());
 		if (partitionStr == null) {
-			throw new ActionParameterException(PartitionNumberAttributeDefinition.INSTANCE.getName() + " is missing.");
+			throw new ActionAttributeException(PartitionNumberAttributeDefinition.INSTANCE.getName() + " is missing.");
 		}
 		
 		String pgmStr = action.getAttributes().get(PgmNumberAttributeDefinition.INSTANCE.getUUID());
 		if (pgmStr == null) {
-			throw new ActionParameterException(PgmNumberAttributeDefinition.INSTANCE.getName() + " is missing.");
+			throw new ActionAttributeException(PgmNumberAttributeDefinition.INSTANCE.getName() + " is missing.");
 		}
 		
 		int pgm;
@@ -41,7 +41,7 @@ public class CommandOutputActionDefinition extends AbstractDscActionDefinition {
 			pgm = Integer.parseInt(pgmStr);
 			partition = Integer.parseInt(partitionStr);
 		} catch (NumberFormatException e) {
-			throw new ActionParameterException("Parameters must be integer numbers.");
+			throw new ActionAttributeException("Parameters must be integer numbers.");
 		}
 		
 		final CommandOutputControl command = new CommandOutputControl(partition, pgm);

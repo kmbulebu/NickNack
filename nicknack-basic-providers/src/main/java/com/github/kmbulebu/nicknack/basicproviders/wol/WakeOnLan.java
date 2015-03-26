@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 
 public class WakeOnLan {
 	
@@ -23,7 +23,7 @@ public class WakeOnLan {
 		this.macAddresses = macAddresses;
 	}
 	
-	public void send() throws IOException, ActionParameterException {
+	public void send() throws IOException, ActionAttributeException {
 		IOException exception = null;
 		for (String macAddress : macAddresses) {
 			try {
@@ -40,7 +40,7 @@ public class WakeOnLan {
 		}
 	}
 	
-	protected void wakeUp(String macAddress) throws IOException, ActionParameterException {
+	protected void wakeUp(String macAddress) throws IOException, ActionAttributeException {
 		
 		final WakeOnLanPacket packet = new WakeOnLanPacket(macAddress);
 		

@@ -25,16 +25,16 @@ import com.github.kmbulebu.nicknack.core.events.BasicEventDefinition;
  */
 public abstract class BasicTimestampedEventDefinition extends BasicEventDefinition {
 
-	public BasicTimestampedEventDefinition(UUID uuid, String name, List<AttributeDefinition> attributeDefinitions) {
+	public BasicTimestampedEventDefinition(UUID uuid, String name, List<AttributeDefinition<?,?>> attributeDefinitions) {
 		super(uuid, name, addTimeAttributeDefs(attributeDefinitions));
 	}
 	
-	public BasicTimestampedEventDefinition(UUID uuid, String name, AttributeDefinition... attributeDefinitions) {
+	public BasicTimestampedEventDefinition(UUID uuid, String name, AttributeDefinition<?,?>... attributeDefinitions) {
 		super(uuid, name, addTimeAttributeDefs(Arrays.asList(attributeDefinitions)));
 	}
 
-	private static List<AttributeDefinition> addTimeAttributeDefs(List<AttributeDefinition> newAttributeDefinitions) {
-		List<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
+	private static List<AttributeDefinition<?,?>> addTimeAttributeDefs(List<AttributeDefinition<?,?>> newAttributeDefinitions) {
+		List<AttributeDefinition<?,?>> attributeDefinitions = new ArrayList<AttributeDefinition<?,?>>();
 		attributeDefinitions.add(YearAttributeDefinition.INSTANCE);
 		attributeDefinitions.add(MonthOfYearNumericalAttributeDefinition.INSTANCE);
 		attributeDefinitions.add(DayOfMonthAttributeDefinition.INSTANCE);

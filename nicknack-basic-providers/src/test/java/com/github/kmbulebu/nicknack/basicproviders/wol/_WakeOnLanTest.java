@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.github.kmbulebu.nicknack.basicproviders.wol.WakeOnLan;
-import com.github.kmbulebu.nicknack.core.actions.ActionParameterException;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 
 public class _WakeOnLanTest {
 
@@ -17,7 +17,7 @@ public class _WakeOnLanTest {
 		WakeOnLan wol = new WakeOnLan();
 		try {
 			wol.send();
-		} catch (IOException | ActionParameterException e) {
+		} catch (IOException | ActionAttributeException e) {
 			fail();
 		}
 	}
@@ -27,7 +27,7 @@ public class _WakeOnLanTest {
 		WakeOnLan wol = new WakeOnLan("AA:BB:CC:DD:EE:FF");
 		try {
 			wol.send();
-		} catch (IOException | ActionParameterException e) {
+		} catch (IOException | ActionAttributeException e) {
 			fail();
 		}
 	}
