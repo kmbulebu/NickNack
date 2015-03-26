@@ -47,6 +47,21 @@ public class ProvidersController {
 		return providers;
 	}
 	
+	@RequestMapping(method={GET, HEAD}, value="/{uuid}")
+	public Provider getProvider(@PathVariable UUID uuid) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry();
+		}
+		
+		final Provider provider = providersService.getProvider(uuid); 
+		
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(provider);
+		}
+		return provider;
+	}
+	
 
 	@RequestMapping(method={PUT}, value="/{uuid}")
 	public void updateProviderSettings(@PathVariable UUID uuid, @RequestBody Provider provider) throws ParseException, InvalidValueException, EntityDoesNotExist {

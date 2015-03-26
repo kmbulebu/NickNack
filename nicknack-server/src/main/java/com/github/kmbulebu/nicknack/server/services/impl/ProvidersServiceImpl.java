@@ -3,6 +3,7 @@ package com.github.kmbulebu.nicknack.server.services.impl;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -66,6 +67,29 @@ public class ProvidersServiceImpl implements ProvidersService {
 			LOG.exit(restProviders);
 		}
 		return restProviders;
+	}
+	
+	@Override
+	public Provider getProvider(UUID uuid) {
+		if (LOG.isTraceEnabled()) {
+			LOG.entry(uuid);
+		}
+		
+		final com.github.kmbulebu.nicknack.core.providers.Provider coreProvider = coreProviderService.getNickNackProviderService().getProviders().get(uuid);
+		
+		Provider restProvider = null;
+		
+		if (coreProvider == null) {
+			// TODO Throw exception
+		} else {
+			final ProviderEntity providerEntity = providerRepository.findByUuid(uuid);
+			restProvider = mapProvider(coreProvider, providerEntity);
+		}
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.exit(restProvider);
+		}
+		return restProvider;
 	}
 	
 	private Provider mapProvider(com.github.kmbulebu.nicknack.core.providers.Provider provider, ProviderEntity dbProviderEntity) {
@@ -165,5 +189,7 @@ public class ProvidersServiceImpl implements ProvidersService {
 			LOG.exit();
 		}
 	}
+
+	
 	
 }

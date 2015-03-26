@@ -1,6 +1,7 @@
 package com.github.kmbulebu.nicknack.server.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser.InvalidValueException;
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType.ParseException;
@@ -12,5 +13,7 @@ public interface ProvidersService {
 	public List<Provider> getAllProviders();
 
 	public void updateSettings(Provider provider) throws ParseException, InvalidValueException, EntityDoesNotExist;
+
+	public Provider getProvider(UUID uuid);
 
 }
