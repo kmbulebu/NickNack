@@ -34,7 +34,22 @@ public class AttributeDefinitionMapper {
 		AttributeDefinition.ValueType valueType = new AttributeDefinition.ValueType();
 		valueType.setName(attributeValueType.getName());
 		valueType.setIsValidRegex(attributeValueType.getIsValidRegEx());
+		
+		final AttributeDefinition.Operator[] operators = new AttributeDefinition.Operator[attributeValueType.getSupportedOperators().length];
+		for (int i = 0; i < attributeValueType.getSupportedOperators().length; i++) {
+			operators[i] = mapOperator(attributeValueType.getSupportedOperators()[i]);
+		}
+		valueType.setSupportedOperators(operators);
 		return valueType;
+	}
+	
+	private AttributeDefinition.Operator mapOperator(com.github.kmbulebu.nicknack.core.attributes.filters.Operator coreOperator) {
+		final AttributeDefinition.Operator operator = new AttributeDefinition.Operator();
+		operator.setName(coreOperator.getName());
+		operator.setDescription(coreOperator.getDescription());
+		operator.setArrayOperand(coreOperator.isArrayOperand());
+		
+		return operator;
 	}
 
 }

@@ -55,10 +55,13 @@ public class AttributeDefinition {
 		this.choices = choices;
 	}
 	
-public static class ValueType {
+
+	public static class ValueType {
 		
 		private String name;
 		private String isValidRegex;
+		private Operator[] supportedOperators;
+		
 		public String getName() {
 			return name;
 		}
@@ -71,7 +74,39 @@ public static class ValueType {
 		public void setIsValidRegex(String isValidRegex) {
 			this.isValidRegex = isValidRegex;
 		}
+		public Operator[] getSupportedOperators() {
+			return supportedOperators;
+		}
+		public void setSupportedOperators(Operator[] supportedOperators) {
+			this.supportedOperators = supportedOperators;
+		}
+			
+	}
+	
+	public static class Operator {
 		
+		private String name;
+		private String description;
+		private boolean arrayOperand;
+		
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public String getDescription() {
+			return description;
+		}
+		public void setDescription(String description) {
+			this.description = description;
+		}
+		public boolean isArrayOperand() {
+			return arrayOperand;
+		}
+		public void setArrayOperand(boolean arrayOperand) {
+			this.arrayOperand = arrayOperand;
+		}
 		
 		
 	}
