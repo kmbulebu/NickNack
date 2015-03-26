@@ -97,9 +97,7 @@ public class ProvidersServiceImpl implements ProvidersService {
 		setting.setRequired(settingDefinition.isRequired());
 		setting.setDescription(settingDefinition.getDescription());
 		if (attributeEntity != null) {
-			// Need to convert here from Object to String.
-			final String[] strValue = valueParser.toStrings(settingDefinition, attributeEntity.getValues());
-			setting.setValues(strValue);
+			setting.setValues(attributeEntity.getValues());
 		}
 		return setting;
 		
