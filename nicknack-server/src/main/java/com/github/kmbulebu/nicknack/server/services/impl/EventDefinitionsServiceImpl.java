@@ -11,12 +11,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser;
-import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 import com.github.kmbulebu.nicknack.server.Application;
-import com.github.kmbulebu.nicknack.server.restmodel.AttributeDefinition;
 import com.github.kmbulebu.nicknack.server.restmodel.EventDefinition;
 import com.github.kmbulebu.nicknack.server.services.CoreProviderServiceWrapper;
+import com.github.kmbulebu.nicknack.server.services.EventDefinitionMapper;
 import com.github.kmbulebu.nicknack.server.services.EventDefinitionsService;
 
 @Service
@@ -27,7 +25,8 @@ public class EventDefinitionsServiceImpl implements EventDefinitionsService {
 	@Inject
 	private CoreProviderServiceWrapper coreProviderService;
 	
-	private AttributeValueParser valueParser = new AttributeValueParser();
+	@Inject
+	private EventDefinitionMapper eventDefinitionMapper;
 
 	@Override
 	public List<EventDefinition> getAllEventDefinitions() {
@@ -40,7 +39,7 @@ public class EventDefinitionsServiceImpl implements EventDefinitionsService {
 		final List<EventDefinition> eventDefinitions = new ArrayList<>(coreEventDefinitions.size());
 		
 		for (com.github.kmbulebu.nicknack.core.events.EventDefinition coreEventDefinition : coreEventDefinitions) {
-			eventDefinitions.add(mapEventDefinition(coreEventDefinition));
+			eventDefinitions.add(eventDefinitionMapper.map(coreEventDefinition));
 		}
 		
 		if (LOG.isTraceEnabled()) {
@@ -60,7 +59,7 @@ public class EventDefinitionsServiceImpl implements EventDefinitionsService {
 		final List<EventDefinition> eventDefinitions = new ArrayList<>(coreEventDefinitions.size());
 		
 		for (com.github.kmbulebu.nicknack.core.events.EventDefinition coreEventDefinition : coreEventDefinitions) {
-			eventDefinitions.add(mapEventDefinition(coreEventDefinition));
+			eventDefinitions.add(eventDefinitionMapper.map(coreEventDefinition));
 		}
 		
 		if (LOG.isTraceEnabled()) {
@@ -80,53 +79,13 @@ public class EventDefinitionsServiceImpl implements EventDefinitionsService {
 		EventDefinition eventDefinition = null;
 		
 		if (coreEventDefinition != null) {
-			eventDefinition = mapEventDefinition(coreEventDefinition);
+			eventDefinition = eventDefinitionMapper.map(coreEventDefinition);
 		}
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(eventDefinition);
 		}
 		return eventDefinition;
-	}
-
-	private EventDefinition mapEventDefinition(com.github.kmbulebu.nicknack.core.events.EventDefinition coreEventDefinition) {
-		
-		final EventDefinition eventDefinition = new EventDefinition();
-		
-		eventDefinition.setName(coreEventDefinition.getName());
-		eventDefinition.setUuid(coreEventDefinition.getUUID());
-		
-		final List<AttributeDefinition> attributes = new ArrayList<>(coreEventDefinition.getAttributeDefinitions().size());
-		
-		for (com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?,?> coreAttributeDefinition : coreEventDefinition.getAttributeDefinitions()) {
-			attributes.add(mapAttribute(coreAttributeDefinition));
-		}
-		
-		eventDefinition.setAttributes(attributes);
-		return eventDefinition;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private AttributeDefinition mapAttribute(com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?> attributeDefinition) {
-		AttributeDefinition setting = new AttributeDefinition();
-		setting.setUuid(attributeDefinition.getUUID());
-		setting.setName(attributeDefinition.getName());
-		setting.setRequired(attributeDefinition.isRequired());
-		setting.setDescription(attributeDefinition.getDescription());
-		if (attributeDefinition.getValueChoices() != null) {
-			attributeDefinition.getValueChoices().getValueChoices();
-			setting.setChoices(valueParser.toStringsFromList(attributeDefinition, (List<Object>) attributeDefinition.getValueChoices().getValueChoices()));
-		}
-		setting.setValueType(mapValueType(attributeDefinition.getValueType()));
-		return setting;
-		
-	}
-	
-	private AttributeDefinition.ValueType mapValueType(ValueType<?> attributeValueType) {
-		AttributeDefinition.ValueType valueType = new AttributeDefinition.ValueType();
-		valueType.setName(attributeValueType.getName());
-		valueType.setIsValidRegex(attributeValueType.getIsValidRegEx());
-		return valueType;
 	}
 
 }

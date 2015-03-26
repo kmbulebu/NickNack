@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser.InvalidValueException;
-import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType.ParseException;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.dbmodel.AttributeEntity;
@@ -22,9 +21,9 @@ import com.github.kmbulebu.nicknack.server.dbmodel.ProviderEntity;
 import com.github.kmbulebu.nicknack.server.dbmodel.ProviderRepository;
 import com.github.kmbulebu.nicknack.server.exceptions.EntityDoesNotExist;
 import com.github.kmbulebu.nicknack.server.restmodel.Attribute;
-import com.github.kmbulebu.nicknack.server.restmodel.AttributeDefinition;
 import com.github.kmbulebu.nicknack.server.restmodel.Provider;
 import com.github.kmbulebu.nicknack.server.services.CoreProviderServiceWrapper;
+import com.github.kmbulebu.nicknack.server.services.ProviderMapper;
 import com.github.kmbulebu.nicknack.server.services.ProvidersService;
 
 @Service
@@ -40,6 +39,9 @@ public class ProvidersServiceImpl implements ProvidersService {
 	
 	@Inject
 	private AttributeRepository attributeRepository;
+	
+	@Inject
+	private ProviderMapper providerMapper;
 	
 	private AttributeValueParser valueParser = new AttributeValueParser();
 	
@@ -78,62 +80,13 @@ public class ProvidersServiceImpl implements ProvidersService {
 			// TODO Throw exception
 		} else {
 			final ProviderEntity providerEntity = providerRepository.findByUuid(uuid);
-			restProvider = mapProvider(coreProvider, providerEntity);
+			restProvider = providerMapper.map(coreProvider, providerEntity);
 		}
 		
 		if (LOG.isTraceEnabled()) {
 			LOG.exit(restProvider);
 		}
 		return restProvider;
-	}
-	
-	private Provider mapProvider(com.github.kmbulebu.nicknack.core.providers.Provider provider, ProviderEntity dbProviderEntity) {
-		final Provider restProvider = new Provider();
-		
-		restProvider.setUuid(provider.getUuid());
-		restProvider.setName(provider.getName());
-		restProvider.setAuthor(provider.getAuthor());
-		restProvider.setVersion(provider.getVersion());
-		
-		if (dbProviderEntity != null && dbProviderEntity.getSettings() != null) {
-			final List<com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?>> settingDefinitions = provider.getSettingDefinitions();
-			if (settingDefinitions != null) {
-				for (com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?> settingDefinition : settingDefinitions) {
-					// Find a value, if one exists.
-					final AttributeEntity attributeEntity = providerRepository.findSetting(provider.getUuid(), settingDefinition.getUUID());
-					restProvider.getSettings().add(mapSetting(settingDefinition, attributeEntity));
-				}
-			}
-
-		}
-		
-		return restProvider;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private Attribute mapSetting(com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?> settingDefinition, AttributeEntity attributeEntity) {
-		Attribute setting = new Attribute();
-		setting.setUuid(settingDefinition.getUUID());
-		setting.setName(settingDefinition.getName());
-		setting.setRequired(settingDefinition.isRequired());
-		setting.setDescription(settingDefinition.getDescription());
-		if (settingDefinition.getValueChoices() != null) {
-			settingDefinition.getValueChoices().getValueChoices();
-			setting.setChoices(valueParser.toStringsFromList(settingDefinition, (List<Object>) settingDefinition.getValueChoices().getValueChoices()));
-		}
-		setting.setValueType(mapValueType(settingDefinition.getValueType()));
-		if (attributeEntity != null) {
-			setting.setValues(attributeEntity.getValues());
-		}
-		return setting;
-		
-	}
-	
-	private AttributeDefinition.ValueType mapValueType(ValueType<?> attributeValueType) {
-		AttributeDefinition.ValueType valueType = new AttributeDefinition.ValueType();
-		valueType.setName(attributeValueType.getName());
-		valueType.setIsValidRegex(attributeValueType.getIsValidRegEx());
-		return valueType;
 	}
 
 	@Override
