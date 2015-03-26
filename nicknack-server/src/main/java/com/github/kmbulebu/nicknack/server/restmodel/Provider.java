@@ -4,11 +4,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 public class Provider {
 	
+	@JsonView(View.Summary.class)
 	private UUID uuid;
+	
+	@JsonView(View.Summary.class)
 	private String name;
+	
+	@JsonView(View.Summary.class)
 	private String author;
+	
+	@JsonView(View.Summary.class)
 	private int version;
 	
 	private List<Setting> settings = new LinkedList<>();

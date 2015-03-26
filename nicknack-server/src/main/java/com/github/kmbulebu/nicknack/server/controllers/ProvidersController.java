@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser.InvalidValueException;
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType.ParseException;
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.exceptions.EntityDoesNotExist;
 import com.github.kmbulebu.nicknack.server.restmodel.Provider;
+import com.github.kmbulebu.nicknack.server.restmodel.View;
 import com.github.kmbulebu.nicknack.server.services.ProvidersService;
 
 @RestController
@@ -32,6 +34,7 @@ public class ProvidersController {
 	@Inject
 	private ProvidersService providersService;
 	
+	@JsonView(View.Summary.class)
 	@RequestMapping(method={GET, HEAD})
 	public List<Provider> getAllProviders() {
 		if (LOG.isTraceEnabled()) {

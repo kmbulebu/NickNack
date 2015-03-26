@@ -1,6 +1,5 @@
 package com.github.kmbulebu.nicknack.server.services.impl;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -53,14 +52,10 @@ public class ProvidersServiceImpl implements ProvidersService {
 			LOG.entry();
 		}
 		
-		final Collection<com.github.kmbulebu.nicknack.core.providers.Provider> providers = coreProviderService.getNickNackProviderService().getProviders().values();
-		
 		final List<Provider> restProviders = new LinkedList<>();
 		
-		for (com.github.kmbulebu.nicknack.core.providers.Provider provider : providers) {
-			final ProviderEntity providerEntity = providerRepository.findByUuid(provider.getUuid());
-			
-			restProviders.add(mapProvider(provider, providerEntity));
+		for (UUID providerUuid : coreProviderService.getNickNackProviderService().getProviders().keySet()) {
+			restProviders.add(getProvider(providerUuid));
 		}
 		
 		if (LOG.isTraceEnabled()) {
