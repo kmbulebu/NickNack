@@ -72,7 +72,7 @@ public interface Provider {
 	 * Initializes the provider. Called when NickNack finds the provider, but before it interrogates for event definitions and action definitions.
 	 * @throws Exception
 	*/
-	public void init(AttributeCollection settings,  OnEventListener onEventListener) throws Exception;
+	public void init(AttributeCollection settings,  OnEventListener onEventListener) throws BadConfigurationException, ProviderFailureException;
 	
 	public void shutdown() throws Exception;
 	

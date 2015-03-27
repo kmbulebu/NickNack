@@ -2,7 +2,6 @@ package com.github.kmbulebu.nicknack.core.providers;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,9 +18,9 @@ import rx.Subscriber;
 import rx.observables.ConnectableObservable;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.Event;
@@ -44,6 +43,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     private final Map<UUID, UUID> stateDefinitionToProvider = new HashMap<>();
     private final Map<UUID, UUID> actionDefinitionToProvider = new HashMap<>();
     private final Map<UUID, AttributeCollection> providerToSettings = new HashMap<>();
+    private final Map<UUID, Exception> providerInitErrors = new HashMap<>();
     
     
     private ConnectableObservable<Event> eventStream;
@@ -71,7 +71,6 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     public void initialize() {
 		  eventStream = Observable.create(this).publish();
 		  eventStream.connect();
-		  // TODO Do something smart with the errors.
 		  initializeProviders();
     }
 
@@ -81,24 +80,22 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     	return Collections.unmodifiableMap(providers);
     }
     
-    protected List<Exception> initializeProviders() {
+    protected void initializeProviders() {
     	if (LOG.isTraceEnabled()) {
     		LOG.entry();
     	}
-    	
-    	List<Exception> errors = new ArrayList<Exception>();
+
     	if (LOG.isInfoEnabled()) {
     		LOG.info("Initializing providers.");
     	}
     	
     	for (Provider provider : this.providers.values()) {
-			errors.addAll(initializeProvider(provider));
+			initializeProvider(provider);
 		}
 		
     	if (LOG.isTraceEnabled()) {
-    		LOG.exit(errors);
+    		LOG.exit();
     	}
-		return errors;
     }
     
     protected void loadProviders() {
@@ -127,9 +124,7 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
     	}
     }
     
-	protected List<Exception> initializeProvider(Provider provider) {
-    	List<Exception> errors = new ArrayList<Exception>();
-    	
+	protected void initializeProvider(Provider provider) {
     	try {
 			if (LOG.isInfoEnabled()) {
 				LOG.info("Found provider: " + provider.getName() + " v" + provider.getVersion() + " by " + provider.getAuthor());
@@ -181,10 +176,9 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 				}// If configuration good
 		} catch (Exception e) {
 			LOG.error("Failed to initialize provider, " + provider.getName() + " (" + provider.getUuid() + "):" + e.getMessage(), e);
-    		errors.add(e);
+			providerInitErrors.put(provider.getUuid(), e);
     	}
-    	
-    	return errors;
+   
     }
     
     private void addAttributeDefinitions(List<AttributeDefinition<?, ?>> attributeDefinitions) {
@@ -309,8 +303,8 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	}
 
 	@Override
-	public List<Exception> addProvider(Provider provider) {
-		return initializeProvider(provider);
+	public void addProvider(Provider provider) {
+		initializeProvider(provider);
 	}
 
 	@Override
@@ -325,17 +319,17 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 
 	@Override
 	public Collection<ActionDefinition> getActionDefinitions() {
-		return actionDefinitions.values();
+		return Collections.unmodifiableCollection(actionDefinitions.values());
 	}
 
 	@Override
 	public Collection<EventDefinition> getEventDefinitions() {
-		return eventDefinitions.values();
+		return Collections.unmodifiableCollection(eventDefinitions.values());
 	}
 
 	@Override
 	public Collection<StateDefinition> getStateDefinitions() {
-		return stateDefinitions.values();
+		return Collections.unmodifiableCollection(stateDefinitions.values());
 	}
 
 	@Override
@@ -369,6 +363,11 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 		}
 		
 		return Collections.unmodifiableCollection(provider.getStateDefinitions());
+	}
+	
+	@Override
+	public Map<UUID, Exception> getProviderInitializationExceptions() {
+		return Collections.unmodifiableMap(providerInitErrors);
 	}
 
 }

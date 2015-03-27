@@ -114,7 +114,7 @@ public abstract class BaseProvider implements Provider {
 	protected abstract List<State> getStates(StateDefinition stateDefinition);
 	
 	@Override
-	public void init(AttributeCollection settings, OnEventListener onEventListener) throws Exception {
+	public void init(AttributeCollection settings, OnEventListener onEventListener) throws BadConfigurationException, ProviderFailureException {
 		actionDefinitions = new HashMap<>();
 		eventDefinitions = new ArrayList<>();
 		stateDefinitions = new HashMap<>();

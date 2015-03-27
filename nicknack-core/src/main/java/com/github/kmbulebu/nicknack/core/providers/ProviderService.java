@@ -1,16 +1,15 @@
 package com.github.kmbulebu.nicknack.core.providers;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import rx.Observable;
 
 import com.github.kmbulebu.nicknack.core.actions.Action;
+import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.core.actions.ActionDefinition;
 import com.github.kmbulebu.nicknack.core.actions.ActionFailureException;
-import com.github.kmbulebu.nicknack.core.actions.ActionAttributeException;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.Event;
@@ -55,7 +54,9 @@ public interface ProviderService {
 	
 	public void run(Action action) throws ActionFailureException, ActionAttributeException;
 	
-	public List<Exception> addProvider(Provider provider);
+	public void addProvider(Provider provider);
+	
+	public Map<UUID, Exception> getProviderInitializationExceptions();
 
 	public void initialize();
 

@@ -10,8 +10,10 @@ import java.util.concurrent.TimeUnit;
 
 import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
 import com.github.kmbulebu.nicknack.core.events.impl.BasicTimestampedEvent;
+import com.github.kmbulebu.nicknack.core.providers.BadConfigurationException;
 import com.github.kmbulebu.nicknack.core.providers.BaseProvider;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
+import com.github.kmbulebu.nicknack.core.providers.ProviderFailureException;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
@@ -33,7 +35,7 @@ public class ClockProvider extends BaseProvider implements Runnable {
 	}
 	
 	@Override
-	public void init(AttributeCollection settings, OnEventListener onEventListener) throws Exception {
+	public void init(AttributeCollection settings, OnEventListener onEventListener) throws BadConfigurationException, ProviderFailureException {
 		super.init(settings,  onEventListener);
 		addEventDefinition(ClockTickEventDefinition.INSTANCE);
 		addStateDefinition(ClockStateDefinition.INSTANCE);

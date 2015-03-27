@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.UUID;
 
 import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
+import com.github.kmbulebu.nicknack.core.providers.BadConfigurationException;
 import com.github.kmbulebu.nicknack.core.providers.BaseProvider;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
+import com.github.kmbulebu.nicknack.core.providers.ProviderFailureException;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
@@ -24,7 +26,7 @@ public class WakeOnLanProvider extends BaseProvider {
 	}
 	
 	@Override
-	public void init(AttributeCollection settings, OnEventListener onEventListener) throws Exception {
+	public void init(AttributeCollection settings, OnEventListener onEventListener) throws BadConfigurationException, ProviderFailureException {
 		super.init(settings, onEventListener);
 		
 		addActionDefinition(WakeOnLanActionDefinition.INSTANCE);

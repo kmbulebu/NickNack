@@ -22,8 +22,10 @@ import com.github.kmbulebu.dsc.it100.commands.write.StatusRequestCommand;
 import com.github.kmbulebu.dsc.it100.commands.write.WriteCommand;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
 import com.github.kmbulebu.nicknack.core.events.Event;
+import com.github.kmbulebu.nicknack.core.providers.BadConfigurationException;
 import com.github.kmbulebu.nicknack.core.providers.BaseProvider;
 import com.github.kmbulebu.nicknack.core.providers.OnEventListener;
+import com.github.kmbulebu.nicknack.core.providers.ProviderFailureException;
 import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 import com.github.kmbulebu.nicknack.providers.dsc.actions.CommandOutputActionDefinition;
@@ -86,7 +88,7 @@ public class DscProvider extends BaseProvider implements Action1<ReadCommand> {
 	}
 
 	@Override
-	public void init(AttributeCollection settings, OnEventListener onEventListener) throws Exception {
+	public void init(AttributeCollection settings, OnEventListener onEventListener) throws BadConfigurationException, ProviderFailureException {
 		super.init(settings, onEventListener);
 		addEventDefinition(ZoneOpenCloseEventDefinition.INSTANCE);
 		addEventDefinition(PartitionArmedEventDefinition.INSTANCE);
@@ -105,12 +107,21 @@ public class DscProvider extends BaseProvider implements Action1<ReadCommand> {
 		addActionDefinition(new PartitionArmWithCodeActionDefinition());
 		addActionDefinition(new PartitionDisarmActionDefinition());
 		
-		final String host = (String) settings.getAttributes().get(HostSettingDefinition.DEF_UUID);
-		final Integer port = (Integer) settings.getAttributes().get(PortSettingDefinition.DEF_UUID);
+		String host;
+		Integer port;
+		Integer[] activeZonesSetting;
+		Integer[] activePartitionsSetting;
+		
+		try {
+			host = (String) settings.getAttributes().get(HostSettingDefinition.DEF_UUID);
+			port = (Integer) settings.getAttributes().get(PortSettingDefinition.DEF_UUID);
 
-		final Integer[] activeZonesSetting = (Integer[]) settings.getAttributes().get(ActiveZonesSettingDefinition.DEF_UUID);
-		final Integer[] activePartitionsSetting = (Integer[]) settings.getAttributes().get(ActivePartitionsSettingDefinition.DEF_UUID);
+			activeZonesSetting = (Integer[]) settings.getAttributes().get(ActiveZonesSettingDefinition.DEF_UUID);
+			activePartitionsSetting = (Integer[]) settings.getAttributes().get(ActivePartitionsSettingDefinition.DEF_UUID);
 
+		} catch (ClassCastException e) {
+			throw new BadConfigurationException("Unexpected configuration problem.", e);
+		}
 		this.activePartitions = new HashSet<>();
 		for (Integer activePartition : activePartitionsSetting) {
 			this.activePartitions.add(activePartition);
@@ -127,8 +138,7 @@ public class DscProvider extends BaseProvider implements Action1<ReadCommand> {
 		try {
 			it100.connect();
 		} catch (Exception e) {
-			LOG.fatal("Could not connect to DSC IT-100: " + e.getMessage(), e);
-			return;
+			throw new ProviderFailureException("Could not connect to DSC IT-100: " + e.getMessage(), e);
 		}
 		
 		final Observable<ReadCommand> readObservable = it100.getReadObservable();
