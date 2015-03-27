@@ -21,6 +21,10 @@
             <groupId>com.github.kmbulebu.nicknack</groupId>
             <artifactId>nicknack-basic-providers</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.kmbulebu.nicknack</groupId>
+            <artifactId>dsc-it100-provider</artifactId>
+        </dependency> 
 	   <!--  <dependency>
 			<groupId>com.github.kmbulebu.nicknack</groupId>
 			<artifactId>xbmc-provider</artifactId>
@@ -29,10 +33,6 @@
 			<groupId>com.github.kmbulebu.nicknack</groupId>
 			<artifactId>ssh-provider</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.github.kmbulebu.nicknack</groupId>
-			<artifactId>dsc-it100-provider</artifactId>
-		</dependency> 
 		<dependency>
             <groupId>com.github.kmbulebu.nicknack</groupId>
             <artifactId>pushover-provider</artifactId>

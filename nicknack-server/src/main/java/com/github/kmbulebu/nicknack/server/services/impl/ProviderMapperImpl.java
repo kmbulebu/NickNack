@@ -37,7 +37,7 @@ public class ProviderMapperImpl implements ProviderMapper {
 			if (settingDefinitions != null) {
 				for (com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?> settingDefinition : settingDefinitions) {
 					// Find a value, if one exists.
-					final AttributeEntity attributeEntity = providerRepository.findSetting(provider.getUuid(), settingDefinition.getUUID());
+					final AttributeEntity attributeEntity = providerRepository.findSetting(provider.getUuid().toString(), settingDefinition.getUUID().toString());
 					restProvider.getSettings().add(attributeMapper.map(settingDefinition, attributeEntity));
 				}
 			}

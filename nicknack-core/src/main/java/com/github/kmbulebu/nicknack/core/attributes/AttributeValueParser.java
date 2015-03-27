@@ -58,21 +58,17 @@ public class AttributeValueParser {
 			return null;
 		}
 		final T valueType = attributeDefinition.getValueType();
-		if (valueType.getValueClass().isInstance(value)) {
-			// Validate against regex 
-			final String isValidRegex = valueType.getIsValidRegEx();
-			if (isValidRegex != null && !value.matches(isValidRegex)) {
-				throw new ParseException("Value is not a " + valueType.getName());
-			}
-			final U object = attributeDefinition.getValueType().fromString(value);
-			final Result validationResult = valueType.validate(object);
-			if (!validationResult.isValid()) {
-				throw new InvalidValueException(validationResult.getMessages());
-			}
-			return object; 
-		} else {
-			return null;
+		// Validate against regex 
+		final String isValidRegex = valueType.getIsValidRegEx();
+		if (isValidRegex != null && !value.matches(isValidRegex)) {
+			throw new ParseException("Value is not a " + valueType.getName());
 		}
+		final U object = attributeDefinition.getValueType().fromString(value);
+		final Result validationResult = valueType.validate(object);
+		if (!validationResult.isValid()) {
+			throw new InvalidValueException(validationResult.getMessages());
+		}
+		return object; 
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -84,21 +80,17 @@ public class AttributeValueParser {
 		Object[] result = new Object[values.length];
 		final T valueType = attributeDefinition.getValueType();
 		for (int i = 0; i < values.length; i++) {
-			if (valueType.getValueClass().isInstance(values[i])) {
-				// Validate against regex 
-				final String isValidRegex = valueType.getIsValidRegEx();
-				if (isValidRegex != null && !values[i].matches(isValidRegex)) {
-					throw new ParseException("Value is not a " + valueType.getName());
-				}
-				final U object = attributeDefinition.getValueType().fromString(values[i]);
-				final Result validationResult = valueType.validate(object);
-				if (!validationResult.isValid()) {
-					throw new InvalidValueException(validationResult.getMessages());
-				}
-				result[i] = object; 
-			} else {
-				result[i] = null;
+			// Validate against regex 
+			final String isValidRegex = valueType.getIsValidRegEx();
+			if (isValidRegex != null && !values[i].matches(isValidRegex)) {
+				throw new ParseException("Value is not a " + valueType.getName());
 			}
+			final U object = attributeDefinition.getValueType().fromString(values[i]);
+			final Result validationResult = valueType.validate(object);
+			if (!validationResult.isValid()) {
+				throw new InvalidValueException(validationResult.getMessages());
+			}
+			result[i] = object; 
 		}
 		return (U[]) result;
 	}

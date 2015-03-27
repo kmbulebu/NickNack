@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -19,6 +20,7 @@ public class ProviderEntity {
 	private UUID uuid;
 	
 	@RelatedTo(type="HAS_SETTING")
+	@Fetch
 	private Set<AttributeEntity> settings = new HashSet<>();
 
 	public UUID getUuid() {

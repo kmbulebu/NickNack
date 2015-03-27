@@ -95,26 +95,26 @@ public class CommandToEventMapper {
 		return buildEvent(getAttributes(zoneCommand, false), ZoneOpenCloseEventDefinition.INSTANCE);
 	}
 	
-	private Event buildEvent(final Map<UUID, String> attributes, final EventDefinition eventDefinition) {
+	private Event buildEvent(final Map<UUID, Object> attributes, final EventDefinition eventDefinition) {
 		final BasicTimestampedEvent event = new BasicTimestampedEvent(eventDefinition);
 		event.setAttributes(attributes);
 		return event;
 	}
 	
-	protected Map<UUID, String> getAttributes(BaseZoneCommand zoneCommand, boolean isOpen) {
-		final Map<UUID, String> attributes = getAttributes(zoneCommand);
+	protected Map<UUID, Object> getAttributes(BaseZoneCommand zoneCommand, boolean isOpen) {
+		final Map<UUID, Object> attributes = getAttributes(zoneCommand);
 		
-		attributes.put(ZoneOpenAttributeDefinition.INSTANCE.getUUID(), Boolean.toString(isOpen));
+		attributes.put(ZoneOpenAttributeDefinition.INSTANCE.getUUID(), isOpen);
 		
 		return attributes;
 	}
 	
-	protected Map<UUID, String> getAttributes(BaseZoneCommand zoneCommand) {
-		final Map<UUID, String> attributes = new HashMap<>();
+	protected Map<UUID, Object> getAttributes(BaseZoneCommand zoneCommand) {
+		final Map<UUID, Object> attributes = new HashMap<>();
 		
 		final int zone = zoneCommand.getZone();
 		
-		attributes.put(ZoneNumberAttributeDefinition.INSTANCE.getUUID(), Integer.toString(zone));
+		attributes.put(ZoneNumberAttributeDefinition.INSTANCE.getUUID(), zone);
 		final String label = labels.getZoneLabel(zone);
 		
 		if (label != null) {
@@ -125,7 +125,7 @@ public class CommandToEventMapper {
 	}
 	
 	protected Event toEvent(PartitionArmedCommand partitionCommand) {
-		final Map<UUID, String> attributes = getAttributes(partitionCommand);
+		final Map<UUID, Object> attributes = getAttributes(partitionCommand);
 		
 		attributes.put(PartitionArmedModeAttributeDefinition.INSTANCE.getUUID(), partitionCommand.getMode().getDescription());
 		
@@ -136,12 +136,12 @@ public class CommandToEventMapper {
 		return buildEvent(getAttributes(partitionCommand), PartitionDisarmedEventDefinition.INSTANCE);
 	}
 	
-	protected Map<UUID, String> getAttributes(BasePartitionCommand partitionCommand) {
-		final Map<UUID, String> attributes = new HashMap<>();
+	protected Map<UUID, Object> getAttributes(BasePartitionCommand partitionCommand) {
+		final Map<UUID, Object> attributes = new HashMap<>();
 		
 		final int partition = partitionCommand.getPartition();
 		
-		attributes.put(PartitionNumberAttributeDefinition.INSTANCE.getUUID(), Integer.toString(partition));
+		attributes.put(PartitionNumberAttributeDefinition.INSTANCE.getUUID(), partition);
 		final String label = labels.getPartitionLabel(partition);
 		
 		if (label != null) {

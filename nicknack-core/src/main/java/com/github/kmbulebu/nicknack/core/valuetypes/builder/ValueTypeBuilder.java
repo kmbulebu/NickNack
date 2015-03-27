@@ -14,5 +14,9 @@ public class ValueTypeBuilder {
 	public static OnOffBuilder onOff() {
 		return new OnOffBuilder();
 	}
+	
+	public static YesNoBuilder yesNo() {
+		return new YesNoBuilder();
+	}
 
 }

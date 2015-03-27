@@ -1,5 +1,6 @@
 package com.github.kmbulebu.nicknack.server.services.impl;
 
+import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -117,8 +118,9 @@ public class CoreProviderServiceWrapperImpl implements CoreProviderServiceWrappe
 			if (attributeDefinition != null) {
 				try {
 					final Object[] typedValues = valueParser.toObjects(attributeDefinition, attributeEntity.getValues());
-					if (attributeEntity.isMultiValue()) {
-						map.put(attributeEntity.getAttributeDefinitionUuid(), typedValues);
+					if (attributeDefinition.isMultiValue()) {
+						final Object[] typedValueArray = (Object[]) Array.newInstance(attributeDefinition.getValueType().getValueClass(), typedValues.length);
+						map.put(attributeEntity.getAttributeDefinitionUuid(), typedValueArray);
 					} else if (typedValues != null && typedValues.length > 0) {
 						map.put(attributeEntity.getAttributeDefinitionUuid(), typedValues[0]);
 					}

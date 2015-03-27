@@ -2,9 +2,9 @@ package com.github.kmbulebu.nicknack.core.valuetypes.impl.booleans;
 
 import com.github.kmbulebu.nicknack.core.valuetypes.impl.StaticValueChoices;
 
-public class OnOffValueChoices extends StaticValueChoices<Boolean> {
+public class BooleanValueChoices extends StaticValueChoices<Boolean> {
 	
-	public OnOffValueChoices() {
+	public BooleanValueChoices() {
 		super(new Boolean[]{Boolean.TRUE, Boolean.FALSE});
 	}
 

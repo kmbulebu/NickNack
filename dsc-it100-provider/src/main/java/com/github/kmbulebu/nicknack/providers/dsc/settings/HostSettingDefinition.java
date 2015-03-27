@@ -1,26 +1,24 @@
 package com.github.kmbulebu.nicknack.providers.dsc.settings;
 
-import java.util.List;
+import java.util.UUID;
 
-import com.github.kmbulebu.nicknack.core.providers.settings.AbstractProviderHostNameSettingDefinition;
+import com.github.kmbulebu.nicknack.core.attributes.BasicAttributeDefinition;
+import com.github.kmbulebu.nicknack.core.valuetypes.builder.ValueTypeBuilder;
+import com.github.kmbulebu.nicknack.core.valuetypes.impl.text.Text;
 
-public class HostSettingDefinition extends AbstractProviderHostNameSettingDefinition {
+public class HostSettingDefinition extends BasicAttributeDefinition<Text, String> {
 	
+	public static final UUID DEF_UUID = UUID.fromString("03d514c6-371b-488a-bc7b-cb1245ac184d");
+			
 	public HostSettingDefinition() {
-		super("host",
-			"Hostname", 
-			"Hostname of system with IT-100",
-			true, false);
+		super(DEF_UUID, 
+				"Hostname", 
+				"Hostname of system with IT-100", 
+				ValueTypeBuilder.text().minLength(1).build(),
+				null, 
+				true,
+				false);
 	}
 
-	@Override
-	public boolean isValid(String value) {
-		return super.isValid(value);
-	}
-
-	@Override
-	public List<String> getValueChoices() {
-		return null;
-	}
 
 }

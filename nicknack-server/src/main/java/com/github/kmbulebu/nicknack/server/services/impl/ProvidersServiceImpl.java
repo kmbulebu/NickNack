@@ -104,11 +104,10 @@ public class ProvidersServiceImpl implements ProvidersService {
 		
 		for (Attribute setting : provider.getSettings()) {
 			// If a node doesn't exist yet, create it.
-			AttributeEntity attributeEntity = providerRepository.findSetting(provider.getUuid(), setting.getUuid());
+			AttributeEntity attributeEntity = providerRepository.findSetting(provider.getUuid().toString(), setting.getUuid().toString());
 			if (attributeEntity == null) {
 				attributeEntity = new AttributeEntity();
 				attributeEntity.setAttributeDefinitionUuid(setting.getUuid());
-				attributeEntity.setMultiValue(setting.isMultiValue());
 			}
 		
 			// Find the attribute definition

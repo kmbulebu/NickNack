@@ -59,9 +59,9 @@
 		<module>nicknack-core</module>
 		<module>nicknack-server</module>
 		<module>nicknack-basic-providers</module>
+		<module>dsc-it100-provider</module>
 		<!-- <module>xbmc-provider</module>
 		<module>ssh-provider</module>
-		<module>dsc-it100-provider</module>
 		<module>pushover-provider</module>
         <module>wemo-provider</module> -->
     
@@ -80,6 +80,11 @@
 				<artifactId>nicknack-basic-providers</artifactId>
 				<version>0.0.8-SNAPSHOT</version>
 			</dependency>
+			<dependency>
+                <groupId>com.github.kmbulebu.nicknack</groupId>
+                <artifactId>dsc-it100-provider</artifactId>
+                <version>0.0.8-SNAPSHOT</version>
+            </dependency>
 		<!--  	<dependency>
 				<groupId>com.github.kmbulebu.nicknack</groupId>
 				<artifactId>xbmc-provider</artifactId>
@@ -90,11 +95,7 @@
 				<artifactId>ssh-provider</artifactId>
 				<version>0.0.8-SNAPSHOT</version>
 			</dependency>
-			<dependency>
-				<groupId>com.github.kmbulebu.nicknack</groupId>
-				<artifactId>dsc-it100-provider</artifactId>
-				<version>0.0.8-SNAPSHOT</version>
-			</dependency>
+			
 			<dependency>
 				<groupId>com.github.kmbulebu.nicknack</groupId>
 				<artifactId>pushover-provider</artifactId>
