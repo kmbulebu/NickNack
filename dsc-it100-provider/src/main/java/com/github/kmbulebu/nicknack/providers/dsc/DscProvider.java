@@ -268,6 +268,14 @@ public class DscProvider extends BaseProvider implements Action1<ReadCommand> {
 		}
 		return Collections.unmodifiableList(zoneLabels);
 	}
+	
+	public List<Integer> getZoneNumbers() {
+		return new ArrayList<Integer>(activeZones);
+	}
+	
+	public List<Integer> getPartitionNumbers() {
+		return new ArrayList<Integer>(activePartitions);
+	}
 
 
 }
