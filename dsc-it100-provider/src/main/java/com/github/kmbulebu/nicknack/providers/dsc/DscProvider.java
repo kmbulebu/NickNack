@@ -122,6 +122,7 @@ public class DscProvider extends BaseProvider implements Action1<ReadCommand> {
 		} catch (ClassCastException e) {
 			throw new BadConfigurationException("Unexpected configuration problem.", e);
 		}
+		
 		this.activePartitions = new HashSet<>();
 		for (Integer activePartition : activePartitionsSetting) {
 			this.activePartitions.add(activePartition);
@@ -240,6 +241,32 @@ public class DscProvider extends BaseProvider implements Action1<ReadCommand> {
 		}
 		return states;
 		
+	}
+	
+	public List<String> getPartitionLabels() {
+		final List<String> partLabels = new ArrayList<>();
+		for (Integer partNum : activePartitions) {
+			if (partNum != null) {
+				String label = labels.getPartitionLabel(partNum);
+				if (label != null) {
+					partLabels.add(label);
+				}
+			}
+		}
+		return Collections.unmodifiableList(partLabels);
+	}
+	
+	public List<String> getZoneLabels() {
+		final List<String> zoneLabels = new ArrayList<>();
+		for (Integer zoneNum : activeZones) {
+			if (zoneNum != null) {
+				String label = labels.getZoneLabel(zoneNum);
+				if (label != null) {
+					zoneLabels.add(label);
+				}
+			}
+		}
+		return Collections.unmodifiableList(zoneLabels);
 	}
 
 

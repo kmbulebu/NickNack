@@ -1,6 +1,7 @@
 package com.github.kmbulebu.nicknack.core.providers;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -59,5 +60,8 @@ public interface ProviderService {
 	public Map<UUID, Exception> getProviderInitializationExceptions();
 
 	public void initialize();
+
+	public List<Object> getValueChoices(UUID providerUuid, AttributeDefinition<?, ?> attributeDefinition);
+	//public <S extends AttributeDefinition<T,U>, T extends ValueType<U>, U> List<U> getValueChoices(UUID providerUuid, S attributeDefinition);
 
 }

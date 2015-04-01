@@ -2,6 +2,7 @@ package com.github.kmbulebu.nicknack.server.services.impl;
 
 import java.lang.reflect.Array;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -120,6 +121,9 @@ public class CoreProviderServiceWrapperImpl implements CoreProviderServiceWrappe
 					final Object[] typedValues = valueParser.toObjects(attributeDefinition, attributeEntity.getValues());
 					if (attributeDefinition.isMultiValue()) {
 						final Object[] typedValueArray = (Object[]) Array.newInstance(attributeDefinition.getValueType().getValueClass(), typedValues.length);
+						for (int i = 0; i < typedValues.length; i++) {
+							typedValueArray[i] = typedValues[i];
+						}
 						map.put(attributeEntity.getAttributeDefinitionUuid(), typedValueArray);
 					} else if (typedValues != null && typedValues.length > 0) {
 						map.put(attributeEntity.getAttributeDefinitionUuid(), typedValues[0]);

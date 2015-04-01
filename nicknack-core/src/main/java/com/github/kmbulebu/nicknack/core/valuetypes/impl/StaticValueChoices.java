@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.github.kmbulebu.nicknack.core.providers.Provider;
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueChoices;
 
 public class StaticValueChoices<T> implements ValueChoices<T> {
@@ -19,7 +20,7 @@ public class StaticValueChoices<T> implements ValueChoices<T> {
 	}
 
 	@Override
-	public List<T> getValueChoices() {
+	public List<T> getValueChoices(Provider provider) {
 		return valueChoices;
 	}
 

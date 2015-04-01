@@ -15,7 +15,8 @@ import com.github.kmbulebu.nicknack.server.services.ProviderMapper;
 @Service
 public class ProviderMapperImpl implements ProviderMapper {
 	
-	private AttributeMapper attributeMapper = new AttributeMapper();
+	@Inject
+	private AttributeMapper attributeMapper;
 	
 	@Inject
 	private ProviderRepository providerRepository;
@@ -38,7 +39,7 @@ public class ProviderMapperImpl implements ProviderMapper {
 				for (com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?> settingDefinition : settingDefinitions) {
 					// Find a value, if one exists.
 					final AttributeEntity attributeEntity = providerRepository.findSetting(provider.getUuid().toString(), settingDefinition.getUUID().toString());
-					restProvider.getSettings().add(attributeMapper.map(settingDefinition, attributeEntity));
+					restProvider.getSettings().add(attributeMapper.map(settingDefinition, provider.getUuid(), attributeEntity));
 				}
 			}
 

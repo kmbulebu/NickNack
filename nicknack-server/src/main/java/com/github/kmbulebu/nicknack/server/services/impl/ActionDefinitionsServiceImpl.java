@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.github.kmbulebu.nicknack.server.Application;
 import com.github.kmbulebu.nicknack.server.restmodel.ActionDefinition;
-import com.github.kmbulebu.nicknack.server.services.CoreProviderServiceWrapper;
 import com.github.kmbulebu.nicknack.server.services.ActionDefinitionMapper;
 import com.github.kmbulebu.nicknack.server.services.ActionDefinitionsService;
+import com.github.kmbulebu.nicknack.server.services.CoreProviderServiceWrapper;
 
 @Service
 public class ActionDefinitionsServiceImpl implements ActionDefinitionsService {
@@ -39,7 +39,8 @@ public class ActionDefinitionsServiceImpl implements ActionDefinitionsService {
 		final List<ActionDefinition> actionDefinitions = new ArrayList<>(coreActionDefinitions.size());
 		
 		for (com.github.kmbulebu.nicknack.core.actions.ActionDefinition coreActionDefinition : coreActionDefinitions) {
-			actionDefinitions.add(actionDefinitionMapper.map(coreActionDefinition));
+			final UUID providerUuid = coreProviderService.getNickNackProviderService().getProviderByActionDefinitionUuid(coreActionDefinition.getUUID()).getUuid();
+			actionDefinitions.add(actionDefinitionMapper.map(coreActionDefinition, providerUuid));
 		}
 		
 		if (LOG.isTraceEnabled()) {
@@ -59,7 +60,7 @@ public class ActionDefinitionsServiceImpl implements ActionDefinitionsService {
 		final List<ActionDefinition> actionDefinitions = new ArrayList<>(coreActionDefinitions.size());
 		
 		for (com.github.kmbulebu.nicknack.core.actions.ActionDefinition coreActionDefinition : coreActionDefinitions) {
-			actionDefinitions.add(actionDefinitionMapper.map(coreActionDefinition));
+			actionDefinitions.add(actionDefinitionMapper.map(coreActionDefinition, providerUuid));
 		}
 		
 		if (LOG.isTraceEnabled()) {
@@ -79,7 +80,8 @@ public class ActionDefinitionsServiceImpl implements ActionDefinitionsService {
 		ActionDefinition actionDefinition = null;
 		
 		if (coreActionDefinition != null) {
-			actionDefinition = actionDefinitionMapper.map(coreActionDefinition);
+			final UUID providerUuid = coreProviderService.getNickNackProviderService().getProviderByActionDefinitionUuid(coreActionDefinition.getUUID()).getUuid();
+			actionDefinition = actionDefinitionMapper.map(coreActionDefinition, providerUuid);
 		}
 		
 		if (LOG.isTraceEnabled()) {

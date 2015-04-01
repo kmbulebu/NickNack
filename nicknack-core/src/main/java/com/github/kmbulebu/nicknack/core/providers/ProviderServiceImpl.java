@@ -369,5 +369,38 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	public Map<UUID, Exception> getProviderInitializationExceptions() {
 		return Collections.unmodifiableMap(providerInitErrors);
 	}
+	
+/*	@Override
+	public <S extends AttributeDefinition<T,U>, T extends ValueType<U>, U> List<U> getValueChoices(UUID providerUuid, S attributeDefinition) {
+		if (attributeDefinition.getValueChoices() == null) {
+			return Collections.emptyList();
+		}
+		
+		final Provider provider = providers.get(providerUuid);
+		if (provider == null) {
+			LOG.warn("Could not find provider with UUID=" + providerUuid);
+			return Collections.emptyList();
+		}
+		
+		final List<U> valueChoices = attributeDefinition.getValueChoices().getValueChoices(provider);
+		return Collections.unmodifiableList(valueChoices);
+	}*/
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Object> getValueChoices(UUID providerUuid, AttributeDefinition<?, ?> attributeDefinition) {
+		if (attributeDefinition.getValueChoices() == null) {
+			return Collections.emptyList();
+		}
+		
+		final Provider provider = providers.get(providerUuid);
+		if (provider == null) {
+			LOG.warn("Could not find provider with UUID=" + providerUuid);
+			return Collections.emptyList();
+		}
+		
+		final List<Object> valueChoices = (List<Object>) attributeDefinition.getValueChoices().getValueChoices(provider);
+		return Collections.unmodifiableList(valueChoices);
+	}
 
 }

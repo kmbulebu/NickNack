@@ -39,7 +39,8 @@ public class StateDefinitionsServiceImpl implements StateDefinitionsService {
 		final List<StateDefinition> stateDefinitions = new ArrayList<>(coreStateDefinitions.size());
 		
 		for (com.github.kmbulebu.nicknack.core.states.StateDefinition coreStateDefinition : coreStateDefinitions) {
-			stateDefinitions.add(stateDefinitionMapper.map(coreStateDefinition));
+			final UUID providerUuid = coreProviderService.getNickNackProviderService().getProviderByStateDefinitionUuid(coreStateDefinition.getUUID()).getUuid();
+			stateDefinitions.add(stateDefinitionMapper.map(coreStateDefinition, providerUuid));
 		}
 		
 		if (LOG.isTraceEnabled()) {
@@ -59,7 +60,7 @@ public class StateDefinitionsServiceImpl implements StateDefinitionsService {
 		final List<StateDefinition> stateDefinitions = new ArrayList<>(coreStateDefinitions.size());
 		
 		for (com.github.kmbulebu.nicknack.core.states.StateDefinition coreStateDefinition : coreStateDefinitions) {
-			stateDefinitions.add(stateDefinitionMapper.map(coreStateDefinition));
+			stateDefinitions.add(stateDefinitionMapper.map(coreStateDefinition, providerUuid));
 		}
 		
 		if (LOG.isTraceEnabled()) {
@@ -79,7 +80,8 @@ public class StateDefinitionsServiceImpl implements StateDefinitionsService {
 		StateDefinition stateDefinition = null;
 		
 		if (coreStateDefinition != null) {
-			stateDefinition = stateDefinitionMapper.map(coreStateDefinition);
+			final UUID providerUuid = coreProviderService.getNickNackProviderService().getProviderByStateDefinitionUuid(coreStateDefinition.getUUID()).getUuid();
+			stateDefinition = stateDefinitionMapper.map(coreStateDefinition, providerUuid);
 		}
 		
 		if (LOG.isTraceEnabled()) {

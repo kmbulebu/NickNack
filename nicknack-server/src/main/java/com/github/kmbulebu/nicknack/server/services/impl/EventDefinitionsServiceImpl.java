@@ -39,7 +39,8 @@ public class EventDefinitionsServiceImpl implements EventDefinitionsService {
 		final List<EventDefinition> eventDefinitions = new ArrayList<>(coreEventDefinitions.size());
 		
 		for (com.github.kmbulebu.nicknack.core.events.EventDefinition coreEventDefinition : coreEventDefinitions) {
-			eventDefinitions.add(eventDefinitionMapper.map(coreEventDefinition));
+			final UUID providerUuid = coreProviderService.getNickNackProviderService().getProviderByEventDefinitionUuid(coreEventDefinition.getUUID()).getUuid();
+			eventDefinitions.add(eventDefinitionMapper.map(coreEventDefinition, providerUuid));
 		}
 		
 		if (LOG.isTraceEnabled()) {
@@ -59,7 +60,7 @@ public class EventDefinitionsServiceImpl implements EventDefinitionsService {
 		final List<EventDefinition> eventDefinitions = new ArrayList<>(coreEventDefinitions.size());
 		
 		for (com.github.kmbulebu.nicknack.core.events.EventDefinition coreEventDefinition : coreEventDefinitions) {
-			eventDefinitions.add(eventDefinitionMapper.map(coreEventDefinition));
+			eventDefinitions.add(eventDefinitionMapper.map(coreEventDefinition, providerUuid));
 		}
 		
 		if (LOG.isTraceEnabled()) {
@@ -79,7 +80,8 @@ public class EventDefinitionsServiceImpl implements EventDefinitionsService {
 		EventDefinition eventDefinition = null;
 		
 		if (coreEventDefinition != null) {
-			eventDefinition = eventDefinitionMapper.map(coreEventDefinition);
+			final UUID providerUuid = coreProviderService.getNickNackProviderService().getProviderByEventDefinitionUuid(coreEventDefinition.getUUID()).getUuid();
+			eventDefinition = eventDefinitionMapper.map(coreEventDefinition, providerUuid);
 		}
 		
 		if (LOG.isTraceEnabled()) {
