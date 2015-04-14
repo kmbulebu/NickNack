@@ -15,6 +15,7 @@ import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
+import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 public interface ProviderService {
@@ -52,6 +53,8 @@ public interface ProviderService {
 	public void setProviderSettings(UUID providerUuid, AttributeCollection settings);
 	
 	public Observable<Event> getEvents();
+	
+	public List<State> getStates(UUID stateDefinitionUuid);
 	
 	public void run(Action action) throws ActionFailureException, ActionAttributeException;
 	

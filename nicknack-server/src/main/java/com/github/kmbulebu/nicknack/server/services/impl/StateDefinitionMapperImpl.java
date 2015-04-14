@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.kmbulebu.nicknack.server.restmodel.AttributeDefinition;
 import com.github.kmbulebu.nicknack.server.restmodel.StateDefinition;
+import com.github.kmbulebu.nicknack.server.restmodel.impl.StateDefinitionImpl;
 import com.github.kmbulebu.nicknack.server.services.StateDefinitionMapper;
 
 @Service
@@ -25,7 +26,7 @@ public class StateDefinitionMapperImpl implements StateDefinitionMapper {
 	@Override
 	public StateDefinition map(com.github.kmbulebu.nicknack.core.states.StateDefinition coreStateDefinition, UUID providerUuid) {
 		
-		final StateDefinition stateDefinition = new StateDefinition();
+		final StateDefinitionImpl stateDefinition = new StateDefinitionImpl();
 		
 		stateDefinition.setName(coreStateDefinition.getName());
 		stateDefinition.setUuid(coreStateDefinition.getUUID());

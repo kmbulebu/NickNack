@@ -14,10 +14,10 @@ import com.github.kmbulebu.nicknack.providers.dsc.attributes.PartitionNumberAttr
 
 public class PartitionState implements State {
 	
-	final Map<UUID, String> attributes = new HashMap<>();
+	final Map<UUID, Object> attributes = new HashMap<>();
 
 	@Override
-	public Map<UUID, String> getAttributes() {
+	public Map<UUID, Object> getAttributes() {
 		return Collections.unmodifiableMap(attributes);
 	}
 
@@ -27,7 +27,7 @@ public class PartitionState implements State {
 	}
 	
 	public void setPartitionNumber(int partitionNumber) {
-		attributes.put(PartitionNumberAttributeDefinition.INSTANCE.getUUID(), Integer.toString(partitionNumber));
+		attributes.put(PartitionNumberAttributeDefinition.INSTANCE.getUUID(), Integer.valueOf(partitionNumber));
 	}
 	
 	public void setPartitionLabel(String label) {
@@ -35,7 +35,7 @@ public class PartitionState implements State {
 	}
 	
 	public void setPartitionArmed(boolean isArmed) {
-		attributes.put(PartitionArmedAttributeDefinition.INSTANCE.getUUID(), Boolean.toString(isArmed));
+		attributes.put(PartitionArmedAttributeDefinition.INSTANCE.getUUID(), Boolean.valueOf(isArmed));
 	}
 	
 	public void setPartitionArmedMode(String armedMode) {

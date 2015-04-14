@@ -25,6 +25,7 @@ import com.github.kmbulebu.nicknack.core.attributes.AttributeCollection;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition;
 import com.github.kmbulebu.nicknack.core.events.Event;
 import com.github.kmbulebu.nicknack.core.events.EventDefinition;
+import com.github.kmbulebu.nicknack.core.states.State;
 import com.github.kmbulebu.nicknack.core.states.StateDefinition;
 
 public class ProviderServiceImpl implements ProviderService, OnEventListener, rx.Observable.OnSubscribe<Event> {
@@ -369,22 +370,6 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 	public Map<UUID, Exception> getProviderInitializationExceptions() {
 		return Collections.unmodifiableMap(providerInitErrors);
 	}
-	
-/*	@Override
-	public <S extends AttributeDefinition<T,U>, T extends ValueType<U>, U> List<U> getValueChoices(UUID providerUuid, S attributeDefinition) {
-		if (attributeDefinition.getValueChoices() == null) {
-			return Collections.emptyList();
-		}
-		
-		final Provider provider = providers.get(providerUuid);
-		if (provider == null) {
-			LOG.warn("Could not find provider with UUID=" + providerUuid);
-			return Collections.emptyList();
-		}
-		
-		final List<U> valueChoices = attributeDefinition.getValueChoices().getValueChoices(provider);
-		return Collections.unmodifiableList(valueChoices);
-	}*/
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -401,6 +386,31 @@ public class ProviderServiceImpl implements ProviderService, OnEventListener, rx
 		
 		final List<Object> valueChoices = (List<Object>) attributeDefinition.getValueChoices().getValueChoices(provider);
 		return Collections.unmodifiableList(valueChoices);
+	}
+
+	@Override
+	public List<State> getStates(UUID stateDefinitionUuid) {
+		// Find the provider
+		final UUID providerUuid = stateDefinitionToProvider.get(stateDefinitionUuid);
+		
+		if (providerUuid == null) {
+			return Collections.emptyList();
+		}
+		
+		final Provider provider = providers.get(providerUuid);
+		
+		// Should be an unnecessary guard.
+		if (provider == null) {
+			return Collections.emptyList();
+		}
+		
+		final List<State> states = provider.getStates(stateDefinitionUuid);
+		
+		if (states == null) {
+			return Collections.emptyList();
+		}
+		
+		return Collections.unmodifiableList(states);	
 	}
 
 }

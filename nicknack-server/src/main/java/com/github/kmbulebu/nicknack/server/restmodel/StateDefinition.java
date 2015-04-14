@@ -5,38 +5,14 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-public class StateDefinition {
+public interface StateDefinition {
+
+	@JsonView(View.Summary.class)
+	public UUID getUuid();
 	
 	@JsonView(View.Summary.class)
-	private UUID uuid;
-	
-	@JsonView(View.Summary.class)
-	private String name;
-	
-	private List<AttributeDefinition> attributes;
+	public String getName();
 
-	public UUID getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(UUID uuid) {
-		this.uuid = uuid;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<AttributeDefinition> getAttributes() {
-		return attributes;
-	}
-
-	public void setAttributes(List<AttributeDefinition> attributes) {
-		this.attributes = attributes;
-	}
+	public List<? extends AttributeDefinition> getAttributes();
 
 }

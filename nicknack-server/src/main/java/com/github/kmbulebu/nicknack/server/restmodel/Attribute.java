@@ -1,14 +1,13 @@
 package com.github.kmbulebu.nicknack.server.restmodel;
 
-public class Attribute extends AttributeDefinition {
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.kmbulebu.nicknack.server.restmodel.impl.AttributeWithoutDefinitionImpl;
+
+@JsonDeserialize(as=AttributeWithoutDefinitionImpl.class)
+public interface Attribute extends AttributeDefinition {
 	
-	private String[] values = new String[]{};
-	
-	public String[] getValues() {
-		return values;
-	}
-	public void setValues(String[] values) {
-		this.values = values;
-	}
+	@JsonView(View.Summary.class)
+	public String[] getValues();
 
 }

@@ -13,10 +13,10 @@ import com.github.kmbulebu.nicknack.providers.dsc.attributes.ZoneOpenAttributeDe
 
 public class ZoneState implements State {
 	
-	final Map<UUID, String> attributes = new HashMap<>();
+	final Map<UUID, Object> attributes = new HashMap<>();
 
 	@Override
-	public Map<UUID, String> getAttributes() {
+	public Map<UUID, Object> getAttributes() {
 		return Collections.unmodifiableMap(attributes);
 	}
 
@@ -26,7 +26,7 @@ public class ZoneState implements State {
 	}
 	
 	public void setZoneNumber(int zoneNumber) {
-		attributes.put(ZoneNumberAttributeDefinition.INSTANCE.getUUID(), Integer.toString(zoneNumber));
+		attributes.put(ZoneNumberAttributeDefinition.INSTANCE.getUUID(), Integer.valueOf(zoneNumber));
 	}
 	
 	public void setZoneLabel(String label) {
@@ -34,7 +34,7 @@ public class ZoneState implements State {
 	}
 	
 	public void setZoneOpen(boolean isOpen) {
-		attributes.put(ZoneOpenAttributeDefinition.INSTANCE.getUUID(), Boolean.toString(isOpen));
+		attributes.put(ZoneOpenAttributeDefinition.INSTANCE.getUUID(), Boolean.valueOf(isOpen));
 	}
 
 }

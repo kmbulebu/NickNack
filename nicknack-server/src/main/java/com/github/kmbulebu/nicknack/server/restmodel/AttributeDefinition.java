@@ -2,62 +2,31 @@ package com.github.kmbulebu.nicknack.server.restmodel;
 
 import java.util.UUID;
 
-public class AttributeDefinition {
+import com.fasterxml.jackson.annotation.JsonView;
 
-	private UUID uuid;
-	private String name;
-	private String description;
-	private boolean required;
-	private boolean multiValue;
-	private ValueType valueType;
-	private String[] choices;
+public interface AttributeDefinition {
 	
-	public UUID getUuid() {
-		return uuid;
-	}
-	public void setUuid(UUID uuid) {
-		this.uuid = uuid;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public boolean isRequired() {
-		return required;
-	}
-	public void setRequired(boolean required) {
-		this.required = required;
-	}
-	public boolean isMultiValue() {
-		return multiValue;
-	}
-	public void setMultiValue(boolean multiValue) {
-		this.multiValue = multiValue;
-	}
-	public ValueType getValueType() {
-		return valueType;
-	}
-	public void setValueType(ValueType valueType) {
-		this.valueType = valueType;
-	}
-	public String[] getChoices() {
-		return choices;
-	}
-	public void setChoices(String[] choices) {
-		this.choices = choices;
-	}
+	@JsonView(View.Summary.class)
+	public UUID getUuid();
 	
+	@JsonView(View.Summary.class)
+	public String getName();
 
+	public String getDescription();
+	
+	public boolean isRequired();
+
+	@JsonView(View.Summary.class)
+	public boolean isMultiValue();
+
+	@JsonView(View.Summary.class)
+	public ValueType getValueType();
+
+	public String[] getChoices();
+	
 	public static class ValueType {
 		
+		@JsonView(View.Summary.class)
 		private String name;
 		private String isValidRegex;
 		private Operator[] supportedOperators;

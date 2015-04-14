@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser;
 import com.github.kmbulebu.nicknack.core.valuetypes.ValueType;
 import com.github.kmbulebu.nicknack.server.restmodel.AttributeDefinition;
+import com.github.kmbulebu.nicknack.server.restmodel.impl.AttributeDefinitionImpl;
 import com.github.kmbulebu.nicknack.server.services.CoreProviderServiceWrapper;
 
 @Service
@@ -20,13 +21,13 @@ public class AttributeDefinitionMapper {
 	private AttributeValueParser valueParser = new AttributeValueParser();
 	
 	public AttributeDefinition map(com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?> attributeDefinition, UUID providerUuid) {
-		AttributeDefinition setting = new AttributeDefinition();
+		AttributeDefinitionImpl setting = new AttributeDefinitionImpl();
 		mapAttribute(setting, attributeDefinition, providerUuid);
 		return setting;
 		
 	}
 	
-	protected void mapAttribute(AttributeDefinition attribute, com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?> attributeDefinition, UUID providerUuid) {
+	protected void mapAttribute(AttributeDefinitionImpl attribute, com.github.kmbulebu.nicknack.core.attributes.AttributeDefinition<?, ?> attributeDefinition, UUID providerUuid) {
 		attribute.setUuid(attributeDefinition.getUUID());
 		attribute.setName(attributeDefinition.getName());
 		attribute.setRequired(attributeDefinition.isRequired());
