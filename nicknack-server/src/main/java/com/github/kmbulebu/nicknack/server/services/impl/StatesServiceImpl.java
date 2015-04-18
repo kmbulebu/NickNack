@@ -2,19 +2,20 @@ package com.github.kmbulebu.nicknack.server.services.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.github.kmbulebu.nicknack.core.attributes.AttributeValueParser;
 import com.github.kmbulebu.nicknack.core.providers.Provider;
-import com.github.kmbulebu.nicknack.server.restmodel.Attribute;
 import com.github.kmbulebu.nicknack.server.restmodel.State;
 import com.github.kmbulebu.nicknack.server.restmodel.StateDefinition;
-import com.github.kmbulebu.nicknack.server.restmodel.impl.StateImpl;
 import com.github.kmbulebu.nicknack.server.services.CoreProviderServiceWrapper;
 import com.github.kmbulebu.nicknack.server.services.StateDefinitionsService;
 import com.github.kmbulebu.nicknack.server.services.StatesService;
@@ -28,8 +29,7 @@ public class StatesServiceImpl implements StatesService {
 	@Inject
 	private CoreProviderServiceWrapper coreProviderService;
 	
-	@Inject
-	private AttributeMapper attributeMapper;
+	private AttributeValueParser valueParser = new AttributeValueParser();
 
 	@Override
 	public List<State> getAllStates() {
@@ -47,7 +47,7 @@ public class StatesServiceImpl implements StatesService {
 		final List<State> states = new LinkedList<>();
 		
 		for (StateDefinition stateDefinition : stateDefinitions) {
-			states.addAll(getStates(stateDefinition, providerUuid));
+			states.addAll(getStates(stateDefinition.getUuid(), providerUuid));
 		}
 	
 		return Collections.unmodifiableList(states);
@@ -69,29 +69,31 @@ public class StatesServiceImpl implements StatesService {
 		
 		final UUID providerUuid = provider.getUuid();
 	
-		final List<State> states = getStates(definition, providerUuid);
+		final List<State> states = getStates(uuid, providerUuid);
 		
 		return Collections.unmodifiableList(states);
 	}
 	
-	protected List<State> getStates(StateDefinition stateDefinition, UUID providerUuid) {
+	protected List<State> getStates(UUID stateDefinitionUuid, UUID providerUuid) {
 		
-		final List<com.github.kmbulebu.nicknack.core.states.State> coreStates = coreProviderService.getNickNackProviderService().getStates(stateDefinition.getUuid());
+		final List<com.github.kmbulebu.nicknack.core.states.State> coreStates = coreProviderService.getNickNackProviderService().getStates(stateDefinitionUuid);
 		final List<State> states = new ArrayList<>(coreStates.size());
 		
 		for (com.github.kmbulebu.nicknack.core.states.State coreState : coreStates) {
-			final State state = mapState(coreState, stateDefinition, providerUuid);
+			final State state = mapState(coreState, providerUuid);
 			states.add(state);
 		}
 		
 		return states;
 	}
 	
-	public State mapState(com.github.kmbulebu.nicknack.core.states.State coreState, StateDefinition definition, UUID providerUuid) {
+	public State mapState(com.github.kmbulebu.nicknack.core.states.State coreState, UUID providerUuid) {
 		
 		
-		final StateImpl state = new StateImpl(definition);
-		final List<Attribute> attributes = new ArrayList<>(coreState.getAttributes().size());
+		final State state = new State();
+		state.setUuid(coreState.getStateDefinition().getUUID());
+
+		final Map<UUID, String[]> attributeValues = new HashMap<>();
 		
 		for (UUID attributeUuid : coreState.getAttributes().keySet()) {
 			// Find attribute definition
@@ -103,13 +105,13 @@ public class StatesServiceImpl implements StatesService {
 			
 			final Object value = coreState.getAttributes().get(attributeUuid);
 			
-			// Map the attribute 
-			final Attribute attribute = attributeMapper.mapFromSingleValue(coreAttributeDefinition, providerUuid, value);
+			final String strValue = valueParser.toString(coreAttributeDefinition, value);
 			
-			attributes.add(attribute);			
+			attributeValues.put(coreAttributeDefinition.getUUID(), new String[] {strValue});
+				
 		}
 		
-		state.setAttributes(attributes);
+		state.setAttributes(attributeValues);
 		
 		return state;
 	}

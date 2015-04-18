@@ -20,6 +20,7 @@ public class Provider {
 	@JsonView(View.Summary.class)
 	private int version;
 	
+	// TODO Separate the definition from the values, like state and actions.
 	private List<Attribute> settings = new LinkedList<>();
 	
 	public UUID getUuid() {

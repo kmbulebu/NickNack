@@ -11,10 +11,8 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -25,11 +23,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.github.kmbulebu.nicknack.core.providers.ProviderService;
 import com.github.kmbulebu.nicknack.core.providers.ProviderServiceImpl;
 
-@Configuration
-@EnableAutoConfiguration
+@SpringBootApplication
 @EnableSpringDataWebSupport
 @EnableAsync
-@ComponentScan
 @PropertySource(value = { "file:${nicknack.configfile}" }, ignoreResourceNotFound = true)
 public class Application {
 
@@ -49,6 +45,8 @@ public class Application {
 	 * @Bean public EventStreamingServlet eventStreamingServlet() { return new
 	 * EventStreamingServlet(); }*
 	 */
+	
+	
 
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer properties() {
@@ -81,9 +79,6 @@ public class Application {
 		}
 		final ProviderService providerService = ProviderServiceImpl.getInstance(providersPath);
 
-		// TODO Load settings from DB and set them, then init.
-		// providerService.setProviderSettings(providerUuid, settings);
-		// providerService.initialize();
 		return providerService;
 	}
 
